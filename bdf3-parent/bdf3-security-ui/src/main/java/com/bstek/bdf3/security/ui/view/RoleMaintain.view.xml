@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Role">
+      <Property name="creationType">com.bstek.bdf3.security.domain.Role</Property>
+      <PropertyDef name="id">
+        <Property/>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property/>
+        <Property name="label">角色名称</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property/>
+        <Property name="label">描述</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome</Property>
+    <DataSet id="dsRole">
+      <Property name="dataType">[Role]</Property>
+      <Property name="dataProvider">roleController#load</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <ToolBar>
+      <DataPilot>
+        <ClientEvent name="onSubControlAction" signature="self,arg,dialogRole">if (arg.code == &quot;+&quot;) {
+	dialogRole.show();
+} else if (arg.code == &quot;-&quot;) {
+	dorado.MessageBox.confirm(&quot;确认要删除当前记录吗？&quot;, function() {
+		updateAction.execute();
+	});
+}
+</ClientEvent>
+        <Property name="dataSet">dsRole</Property>
+        <Property name="itemCodes">pages,pageSize,+,-</Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick" signature="self,arg,dialogRole">dialogRole.show()
+</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="iconClass">fa fa-pencil</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid>
+      <Property name="dataSet">dsRole</Property>
+      <Property name="readOnly">true</Property>
+      <Property name="showFilterBar">true</Property>
+      <Property name="sortMode">serverSide</Property>
+      <Property name="filterMode">serverSide</Property>
+      <RowNumColumn/>
+      <DataColumn name="name">
+        <Property name="property">name</Property>
+      </DataColumn>
+      <DataColumn name="description">
+        <Property name="property">description</Property>
+      </DataColumn>
+    </DataGrid>
+    <UpdateAction id="updateAction">
+      <ClientEvent name="onSuccess" signature="self,arg,dialogRole">dialogRole.hide()
+</ClientEvent>
+      <Property name="dataResolver">roleController#save</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsRole</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <Dialog id="dialogRole">
+      <ClientEvent name="onHide" signature="self,arg,dsRole">dsRole.getData().cancel();
+</ClientEvent>
+      <Property name="caption">角色维护</Property>
+      <Property name="iconClass">fa fa-users</Property>
+      <Property name="width">500</Property>
+      <Property name="height">300</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="minimizeable">false</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide()
+</ClientEvent>
+          <Property name="caption">取消</Property>
+        </Button>
+        <Button>
+          <Property name="caption">保存</Property>
+          <Property name="action">updateAction</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsRole</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelPosition">left</Property>
+          <Property name="labelAlign">right</Property>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">description</Property>
+            <Property name="property">description</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

@@ -1,0 +1,139 @@
+/* 主色调定义 */
+/* 文字内容色调定义 */
+/* 背景色调定义 */
+/* 边框色调定义 */
+/* 主题色定义 */
+/* Input */
+/* main page */
+html body {
+  padding: 2em;
+  background-color: #f3f3f4;
+}
+
+#search > .ui.input {
+    height: 36px;
+}
+
+/*-----Edit----- */
+
+
+.ui.cards .card .extra.content > .write {
+    cursor: pointer;
+    opacity: 0.75;
+    -webkit-transition: color 0.1s ease;
+    transition: color 0.1s ease;
+}
+
+.ui.cards .card .extra.content > .write:hover {
+    opacity: 1;
+    color: #1E70BF;
+}
+
+#editModal label,
+#addModal label{
+    color: #D4D4D5;
+}
+
+
+#editModal .input > label,
+#addModal .input > label{
+    width: 82px;
+}
+
+#editModal .fields,
+#addModal .fields{
+    padding: 0px 4px 0px 4px;
+}
+
+#editModal textarea::selection,
+#editModal input::selection,
+#editModal textarea:focus,
+#editModal input:focus,
+#addModal textarea::selection,
+#addModal input::selection,
+#addModal textarea:focus,
+#addModal input:focus{
+    background-color: rgba(100, 100, 100, 0.4);
+    color: rgba(255, 255, 255, 0.87);
+}
+
+/*-----Del----- */
+
+.ui.cards .card .extra.content > .trash {
+    cursor: pointer;
+    opacity: 0.75;
+    -webkit-transition: color 0.1s ease;
+    transition: color 0.1s ease;
+}
+
+.ui.cards .card .extra.content > .trash:hover {
+    opacity: 1;
+    color: #FF2733;
+}
+
+#userCards .ui.card .content > .spy {
+    cursor: pointer;
+    opacity: 0.75;
+    color: rgba(0, 0, 0, 0.4);
+    -webkit-transition: color 0.1s ease;
+    transition: color 0.1s ease;
+}
+
+#userCards .ui.card .content > .spy:hover {
+    opacity: 1;
+    color: #1E70BF;
+}
+
+#userCards .ui.card .content > .spy > .icon {
+    margin: 0px;
+}
+
+.ui.cards .description a {
+   line-height: 30px;
+    margin-right: 5px;
+}
+
+#userCards .ui.card {
+    display: none;
+}
+
+#selectedRoleCards .ui.card {
+    box-shadow: 0px 1px 3px 0px #db2828, 0px 0px 0px 1px #db2828;
+}
+
+#roleModal .ui.divider {
+    margin: 30px 0px 30px 0px;
+    color: #D4D4D5;
+
+}
+
+#roleModal .close {
+    font-size: 2em;
+
+}
+
+#roleModal .added {
+    box-shadow: 0px 1px 3px 0px #2185D0, 0px 0px 0px 1px #2185D0;
+}
+
+#roleModal .added .ui.button {
+    background-color: #2185D0;
+    color: #FFFFFF;
+}
+
+
+@media only screen and (max-width: 760px) {
+    #createUserBtn > span {
+        display: none;
+    }
+
+    #createUserBtn {
+        padding: 0.78571429em 0.78571429em 0.78571429em;
+    }
+
+    #createUserBtn,
+    #createUserBtn > .icon {
+        opacity: 0.9;
+        margin: 0em;
+    }
+}

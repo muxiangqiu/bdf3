@@ -1,0 +1,118 @@
+/* 主色调定义 */
+/* 文字内容色调定义 */
+/* 背景色调定义 */
+/* 边框色调定义 */
+/* 主题色定义 */
+/* Input */
+/* main page */
+html body {
+  padding: 1em;
+  background-color: #f3f3f4;
+}
+
+/*-----Edit----- */
+
+
+.ui.cards .card > .extra.content > .write  {
+    cursor: pointer;
+    opacity: 0.75;
+    -webkit-transition: color 0.1s ease;
+    transition: color 0.1s ease;
+}
+
+.ui.cards .card > .extra.content > .write:hover {
+    opacity: 1;
+    color: #1E70BF;
+}
+
+#editModal label{
+    color: #D4D4D5;
+}
+
+
+#editModal .input > label{
+    width: 82px;
+}
+
+
+#editModal textarea::selection,
+#editModal input::selection,
+#editModal textarea:focus,
+#editModal input:focus{
+    background-color: rgba(100, 100, 100, 0.4) !important;
+    color: rgba(255, 255, 255, 0.87) !important;
+}
+
+/*-----Del----- */
+
+.ui.cards .card > .extra.content > .trash {
+    cursor: pointer;
+    opacity: 0.75;
+    -webkit-transition: color 0.1s ease;
+    transition: color 0.1s ease;
+}
+
+.ui.cards .card > .extra.content > .trash:hover {
+    opacity: 1;
+    color: #FF2733;
+}
+
+.ui.cards .ui.card .content > .sitemap {
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.4);
+    opacity: 0.75;
+    -webkit-transition: color 0.1s ease;
+    transition: color 0.1s ease;
+}
+
+.ui.cards .ui.card .content > .sitemap:hover {
+    opacity: 1;
+    color: #1E70BF;
+}
+
+.ui.cards .ui.card .content > .sitemap > .icon {
+    margin: 0px;
+}
+
+
+.ui.breadcrumb {
+    margin: 15px 0 15px 0;
+}
+
+.ui.breadcrumb span:last-child > i {
+   display: none;
+}
+
+.ui.breadcrumb span:last-child > a {
+    color: rgba(0, 0, 0, 0.4);
+    cursor: text;
+}
+
+#urlCards .ui.card {
+    display: none;
+}
+
+
+#selectedUrlCards .ui.card {
+    box-shadow: 0px 1px 3px 0px #db2828, 0px 0px 0px 1px #db2828;
+}
+
+#urlModal .ui.divider {
+    margin: 30px 0px 30px 0px;
+    color: #D4D4D5;
+
+}
+
+#urlModal .close {
+    font-size: 2em;
+}
+
+#urlModal .added {
+    box-shadow: 0px 1px 3px 0px #2185D0, 0px 0px 0px 1px #2185D0;
+}
+
+#urlModal .added .ui.button {
+    background-color: #2185D0;
+    color: #FFFFFF;
+}
+

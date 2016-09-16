@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Url">
+      <Property name="creationType">com.bstek.bdf3.security.domain.Url</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
+      <PropertyDef name="icon">
+        <Property></Property>
+        <Property name="label">图标</Property>
+      </PropertyDef>
+      <PropertyDef name="path">
+        <Property></Property>
+        <Property name="label">路径</Property>
+      </PropertyDef>
+      <PropertyDef name="navigable">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可导航</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="parentId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="order">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">排序号</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <PropertyDef name="children">
+        <Property name="dataType">[SELF]</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <ClientEvent name="onReady" signature="self,arg,tabControl">window.openTab = function (caption, icon, path) {
+	var tab = tabControl.getTab(path);
+	if (!tab) {
+		tab = {
+			$type: &quot;IFrame&quot;,
+			name: path,
+			caption: caption,
+			iconClass: icon,
+			path: path,
+			closeable: true
+		}
+		tab = tabControl.addTab(tab);
+		tab.get(&quot;control&quot;).set(&quot;style&quot;, {
+			&quot;margin-top&quot;: &quot;4px&quot;
+		});
+	}
+	tabControl.set(&quot;currentTab&quot;, tab);
+	
+};
+
+window.refreshTab = function (caption, icon, path) {
+	var tab = tabControl.getTab(path);
+	if (tab) {
+		tab.refresh();
+	}
+	
+}
+</ClientEvent>
+    <Property name="packages">font-awesome,entypo</Property>
+    <Property name="skin">${bdf3.framework.skin}</Property>
+    <DataSet id="dsUrl">
+      <Property name="dataType">[Url]</Property>
+      <Property name="dataProvider">frameworkController#loadUrlsByCurrentUser</Property>
+    </DataSet>
+    <Container layoutConstraint="top">
+      <Property name="height">50</Property>
+      <Property name="style">
+        <Property name="background-color">#01649E</Property>
+      </Property>
+      <Container/>
+      <Container layout="hbox pack:end;align:center;padding:10" layoutConstraint="right">
+        <Property name="width">50%</Property>
+        <SimpleIconButton>
+          <ClientEvent name="onClick">dorado.MessageBox.confirm(&quot;确定要退出系统吗？&quot;, function() {
+	window.location.href = &quot;logout&quot;;
+});
+</ClientEvent>
+          <Property name="iconClass">fa fa-sign-out</Property>
+          <Property name="style">
+            <Property name="color">#fff</Property>
+          </Property>
+          <Property name="tip">退出系统</Property>
+        </SimpleIconButton>
+      </Container>
+    </Container>
+    <SplitPanel>
+      <Property name="position">230</Property>
+      <MainControl>
+        <TabControl id="tabControl">
+          <Property name="showMenuButton">true</Property>
+          <Property name="tabPlacement">top</Property>
+        </TabControl>
+      </MainControl>
+      <SideControl>
+        <Panel>
+          <ClientEvent name="onCreateDom">$(arg.dom)
+	.find(&quot;.d-caption-bar&quot;)
+	.css(&quot;height&quot;, &quot;30px&quot;)
+	.find(&quot;.caption&quot;)
+	.css({
+		&quot;height&quot;: &quot;30px&quot;,
+		&quot;line-height&quot;: &quot;30px&quot;
+	});
+</ClientEvent>
+          <Property name="caption">菜单</Property>
+          <Buttons/>
+          <Children>
+            <DataTree id="dtUrl">
+              <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
+if (data.get(&quot;icon&quot;) != arg.node.get(&quot;iconClass&quot;)) {
+	arg.node.set(&quot;iconClass&quot;, data.get(&quot;icon&quot;));
+}
+
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+</ClientEvent>
+              <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
+if (data.get(&quot;icon&quot;) != arg.node.get(&quot;iconClass&quot;)) {
+	arg.node.set(&quot;iconClass&quot;, data.get(&quot;icon&quot;));
+}
+
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+</ClientEvent>
+              <ClientEvent name="onDataRowClick">var url = self.get(&quot;currentEntity&quot;);
+window.openTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
+</ClientEvent>
+              <ClientEvent name="onDataRowDoubleClick">var url = self.get(&quot;currentEntity&quot;);
+window.refreshTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
+</ClientEvent>
+              <Property name="dataSet">dsUrl</Property>
+              <Property name="currentNodeDataPath">currentNode</Property>
+              <Property name="draggable">false</Property>
+              <Property name="showLines">true</Property>
+              <BindingConfigs>
+                <BindingConfig>
+                  <Property name="childrenProperty">children</Property>
+                  <Property name="labelProperty">name</Property>
+                  <Property name="recursive">true</Property>
+                  <Property name="tipProperty">description</Property>
+                  <Property name="name">name</Property>
+                </BindingConfig>
+              </BindingConfigs>
+            </DataTree>
+          </Children>
+          <Tools/>
+        </Panel>
+      </SideControl>
+    </SplitPanel>
+  </View>
+</ViewConfig>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta charset="UTF-8">
+    <title>错误页面</title>
+    <link rel="stylesheet" type="text/css" href="${contextPath}/static/cola-ui/semantic.css">
+    <style type="text/css">
+        .ui.segment {
+            width: 280px; height: 280px; display: inline-block !important; line-height: 220px;
+        }
+    </style>
+</head>
+<body>
+<div class="ui page dimmer active">
+    <div class="content">
+        <div class="center">
+            #if ($status == 404)
+            <div class="ui circular inverted segment">
+                <div class="ui inverted statistic">
+                    <div class="value">
+                        <i class="find icon"></i>
+                        $status
+                    </div>
+                    <h2 class="ui inverted header"> 页面不存在 </h2>
+                </div>
+            </div>
+            #elseif ($status == 403)
+            <div class="ui circular inverted segment">
+                <div class="ui inverted statistic">
+                    <div class="value">
+                        <i class="protect icon"></i>
+                        $status
+                    </div>
+                    <h2 class="ui inverted header"> 权限不足 </h2>
+                </div>
+            </div>
+            #else
+            <div class="ui circular inverted segment">
+                <div class="ui inverted statistic">
+                    <div class="value">
+                        <i class="frown icon"></i>
+                        $status
+                    </div>
+                    <h2 class="ui inverted header"> 系统出现异常 </h2>
+                </div>
+            </div>
+            #end
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="${contextPath}/static/jquery-2.1.3.js"></script>
+<script src="${contextPath}/static/cola-ui/semantic.js"></script>
+</html>

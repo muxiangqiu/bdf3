@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Url">
+      <ClientEvent name="onRemove">var i = 0;
+arg.entity.parent.each(function(u) {
+	if (u.get(&quot;order&quot;) != i) {
+		console.log(u)
+		u.set(&quot;order&quot;, i);
+	}
+	i++;
+});
+</ClientEvent>
+      <ClientEvent name="onInsert">arg.entity.set(&quot;order&quot;, arg.entity.parent.entityCount);
+</ClientEvent>
+      <Property name="creationType">com.bstek.bdf3.security.domain.Url</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
+      <PropertyDef name="icon">
+        <Property></Property>
+        <Property name="label">图标</Property>
+      </PropertyDef>
+      <PropertyDef name="path">
+        <Property></Property>
+        <Property name="label">路径</Property>
+      </PropertyDef>
+      <PropertyDef name="navigable">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可导航</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="parentId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="order">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">排序号</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <PropertyDef name="children">
+        <Property name="dataType">[SELF]</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <ClientEvent name="onReady">
+</ClientEvent>
+    <Property name="packages">font-awesome,entypo</Property>
+    <Property name="javaScriptFile">static/icons/font-data.js,static/icons/entypo-data.js</Property>
+    <DataSet id="dsUrl">
+      <Property name="dataType">[Url]</Property>
+      <Property name="dataProvider">urlController#load</Property>
+    </DataSet>
+    <UpdateAction id="updateAction">
+      <Property name="dataResolver">urlController#save</Property>
+      <Property name="successMessage">保存成功。</Property>
+      <Property name="executingMessage">正在保存……</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsUrl</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <Dialog id="dialogIcon" layout="vbox">
+      <ClientEvent name="onCreate">view.fontCategories[&quot;其他&quot;] = view.entypoNames;
+var i = 0;
+for(var c in view.fontCategories) {
+	i++;
+	var iconClasses = view.fontCategories[c];
+	var gb = new dorado.widget.GroupBox({
+		caption: c,
+		collapsed: i > 6 ? true : false,
+		layout: {
+			$type: &quot;Form&quot;,
+			cols:&quot;*,*,*,*,*,*,*,*,*,*,*&quot;
+		}
+	});
+	self.addChild(gb);
+	iconClasses.each(function(iconClass) {
+		if (c != &quot;其他&quot;) {
+			iconClass = &quot;fa fa-&quot; + iconClass
+		}
+		var iconControl = new dorado.widget.Control({
+			exClassName: iconClass,
+			width: 40,
+			height: 40,
+			userData: iconClass,
+			style: {
+				&quot;font-size&quot;: &quot;2em&quot;,
+				&quot;border-width&quot;: &quot;1px&quot;,
+				&quot;border-style&quot;: &quot;dotted&quot;,
+				&quot;border-color&quot;: &quot;rgba(0,0,0,0)&quot;,
+				&quot;line-height&quot;: &quot;40px&quot;,
+				&quot;text-align&quot;: &quot;center&quot;
+			},
+			onClick: function(self, arg) {
+				if (view._currentIcon) {
+					$(view._currentIcon.getDom()).css({
+						&quot;backgroundColor&quot;: &quot;&quot;,
+						&quot;color&quot;: &quot;&quot;
+					});
+				}
+				view._currentIcon = self;
+				$(self.getDom()).css({
+					&quot;backgroundColor&quot;: &quot;green&quot;,
+					&quot;color&quot;: &quot;white&quot;
+				});
+			},
+			onDoubleClick: function(s, arg) {
+				var url = view.get(&quot;#dsUrl&quot;).getData(&quot;!currentNode&quot;);
+				url.set(&quot;icon&quot;, s.get(&quot;userData&quot;));
+				self.hide();
+			},
+			onCreateDom: function(self, arg) {
+				$(arg.dom).hover(function() {
+					$(this).css({
+						&quot;border-color&quot;: &quot;#15a4fa&quot;
+					});
+				}, function() {
+					$(this).css({
+						&quot;border-color&quot;: &quot;rgba(0,0,0,0)&quot;
+					});
+				});
+			}
+			
+		});
+		gb.addChild(iconControl);
+	});
+}</ClientEvent>
+      <Property name="caption">图标选择（双击选择）</Property>
+      <Property name="width">500</Property>
+      <Property name="height">500</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="minimizeable">false</Property>
+      <Property name="maximized">true</Property>
+      <Buttons/>
+      <Children/>
+      <Tools/>
+    </Dialog>
+    <SplitPanel>
+      <Property name="position">35%</Property>
+      <MainControl>
+        <Panel>
+          <Property name="caption">详情</Property>
+          <Buttons/>
+          <Children>
+            <AutoForm>
+              <Property name="dataSet">dsUrl</Property>
+              <Property name="cols">*</Property>
+              <Property name="labelAlign">right</Property>
+              <Property name="width">550</Property>
+              <Property name="dataPath">!currentNode</Property>
+              <AutoFormElement>
+                <Property name="name">name</Property>
+                <Property name="property">name</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">icon</Property>
+                <Property name="property">icon</Property>
+                <Property name="trigger">trigger</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">path</Property>
+                <Property name="property">path</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">navigable</Property>
+                <Property name="property">navigable</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">description</Property>
+                <Property name="property">description</Property>
+                <Property name="editorType">TextArea</Property>
+                <Editor/>
+              </AutoFormElement>
+              <Button>
+                <Property name="caption">保存</Property>
+                <Property name="action">updateAction</Property>
+                <Property name="iconClass">fa fa-floppy-o</Property>
+                <Property name="style">
+                  <Property name="float">right</Property>
+                  <Property name="margin-right">25px</Property>
+                </Property>
+              </Button>
+            </AutoForm>
+          </Children>
+          <Tools/>
+        </Panel>
+      </MainControl>
+      <SideControl>
+        <Panel>
+          <Property name="caption">菜单</Property>
+          <Buttons/>
+          <Children>
+            <DataTree id="dtUrl">
+              <ClientEvent name="onContextMenu" signature="self,arg,menu">var url = self.get(&quot;currentEntity&quot;);
+if (!url) {
+	view.get(&quot;^op&quot;).set(&quot;disabled&quot;, true);
+} else {
+	view.get(&quot;^op&quot;).set(&quot;disabled&quot;, false);
+}
+menu.show({
+	position: {
+		left:arg.event.pageX,
+        top:arg.event.pageY
+	}
+});
+</ClientEvent>
+              <ClientEvent name="onDraggingSourceDrop" signature="self,arg,updateAction">var node = arg.draggingInfo.get(&quot;object&quot;);
+var url = node.get(&quot;data&quot;);
+if (url.parent.parent) {
+	url.set(&quot;parentId&quot;, url.parent.parent.get(&quot;id&quot;));
+} else {
+	url.set(&quot;parentId&quot;, null);
+}
+var i = 0;
+url.parent.each(function(u) {
+	if (u.get(&quot;order&quot;) != i) {
+		console.log(u)
+		u.set(&quot;order&quot;, i);
+	}
+	i++;
+});
+
+updateAction.execute();
+</ClientEvent>
+              <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
+if (data.get(&quot;icon&quot;) != arg.node.get(&quot;iconClass&quot;)) {
+	arg.node.set(&quot;iconClass&quot;, data.get(&quot;icon&quot;));
+}
+
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+</ClientEvent>
+              <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
+if (data.get(&quot;icon&quot;) != arg.node.get(&quot;iconClass&quot;)) {
+	arg.node.set(&quot;iconClass&quot;, data.get(&quot;icon&quot;));
+}
+
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+</ClientEvent>
+              <Property name="dataSet">dsUrl</Property>
+              <Property name="currentNodeDataPath">currentNode</Property>
+              <Property name="droppable">true</Property>
+              <Property name="droppableTags">node</Property>
+              <Property name="draggable">true</Property>
+              <Property name="dragTags">node</Property>
+              <Property name="dropMode">onOrInsertItems</Property>
+              <Property name="showLines">true</Property>
+              <BindingConfigs>
+                <BindingConfig>
+                  <Property name="childrenProperty">children</Property>
+                  <Property name="labelProperty">name</Property>
+                  <Property name="recursive">true</Property>
+                  <Property name="tipProperty">description</Property>
+                  <Property name="name">name</Property>
+                </BindingConfig>
+              </BindingConfigs>
+            </DataTree>
+          </Children>
+          <Tools>
+            <SimpleIconButton>
+              <Property name="iconClass">fa fa-plus-circle</Property>
+              <Property name="action">actionAddTop</Property>
+            </SimpleIconButton>
+            <SimpleIconButton>
+              <Property name="iconClass">fa fa-plus-circle</Property>
+              <Property name="action">actionAddSub</Property>
+            </SimpleIconButton>
+            <SimpleIconButton>
+              <Property name="iconClass">fa fa-minus-circle</Property>
+              <Property name="action">actionDel</Property>
+            </SimpleIconButton>
+          </Tools>
+        </Panel>
+      </SideControl>
+    </SplitPanel>
+    <Menu id="menu">
+      <MenuItem>
+        <Property name="action">actionAddTop</Property>
+      </MenuItem>
+      <MenuItem>
+        <Property name="action">actionAddSub</Property>
+        <Property name="tags">op</Property>
+      </MenuItem>
+      <Separator/>
+      <MenuItem>
+        <Property name="action">actionDel</Property>
+        <Property name="tags">op</Property>
+      </MenuItem>
+    </Menu>
+    <Trigger id="trigger">
+      <ClientEvent name="onExecute" signature="self,arg,dialogIcon">dialogIcon.show();
+</ClientEvent>
+    </Trigger>
+    <Action id="actionAddTop">
+      <ClientEvent name="onExecute" signature="self,arg,dsUrl,dtUrl">var current = dsUrl.getData().insert();
+dtUrl.set(&quot;currentEntity&quot;, current);
+</ClientEvent>
+      <Property name="caption">添加顶级菜单</Property>
+      <Property name="iconClass">fa fa-plus-circle</Property>
+      <Property name="tip">添加顶级菜单</Property>
+    </Action>
+    <Action id="actionAddSub">
+      <ClientEvent name="onExecute" signature="self,arg,dsUrl,dtUrl">var url = dsUrl.getData(&quot;!currentNode&quot;);
+if (url) {
+	var current = url.createChild(&quot;children&quot;, {});
+	dtUrl.get(&quot;currentNode&quot;).expand();
+	dtUrl.set(&quot;currentEntity&quot;, current);
+} else {
+	dorado.MessageBox.alert(&quot;请选选择菜单。&quot;);
+}
+
+</ClientEvent>
+      <Property name="iconClass">fa fa-plus-circle</Property>
+      <Property name="caption">添加子级菜单</Property>
+      <Property name="tip">添加子级菜单</Property>
+    </Action>
+    <Action id="actionDel">
+      <ClientEvent name="onExecute" signature="self,arg,dsUrl">var url = dsUrl.getData(&quot;!currentNode&quot;);
+if (url) {
+	delUrl(url);
+} else {
+	dorado.MessageBox.alert(&quot;请选选择菜单。&quot;);
+}
+
+function delUrl(url) {
+	url.remove();
+	var children = url.get(&quot;children&quot;);
+	children.each(function(c) {
+		c.remove();
+		delUrl(c);
+	});
+}
+</ClientEvent>
+      <Property name="caption">删除菜单</Property>
+      <Property name="confirmMessage">确定要删除当前选中菜单？</Property>
+      <Property name="iconClass">fa fa-minus-circle</Property>
+      <Property name="tip">删除菜单</Property>
+    </Action>
+  </View>
+</ViewConfig>

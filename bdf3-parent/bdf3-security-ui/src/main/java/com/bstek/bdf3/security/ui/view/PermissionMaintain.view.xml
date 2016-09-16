@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Role">
+      <ClientEvent name="onInsert">view.get(&quot;^op&quot;).set(&quot;disabled&quot;, false)
+</ClientEvent>
+      <ClientEvent name="onRemove">if (arg.entity.parent.entityCount &lt;= 0) {
+	view.get(&quot;^op&quot;).set(&quot;disabled&quot;, true);
+}
+</ClientEvent>
+      <ClientEvent name="onCurrentChange" signature="self,arg,dsUrl">arg.newCurrent.getAsync(&quot;permissions&quot;, function(permissions) {
+	var urls = dsUrl.getData();
+	var dtUrl = view.get(&quot;@Url&quot;);
+	dtUrl.getPropertyDef(&quot;checked&quot;).disableListeners();
+	urls.each(function(url) {
+		if (url.get(&quot;checked&quot;)) {
+			url.set(&quot;checked&quot;, false);
+		}
+		permissions.each(function(p) {
+			if (url.get(&quot;id&quot;) == p.get(&quot;resourceId&quot;)) {
+				url.set(&quot;checked&quot;, true);
+				return false;
+			}
+		});
+	});
+	dtUrl.getPropertyDef(&quot;checked&quot;).enableListeners();
+});
+
+</ClientEvent>
+      <Property name="creationType">com.bstek.bdf3.security.domain.Role</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">角色名称</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property></Property>
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <Reference name="permissions">
+        <ClientEvent name="beforeLoadData">self.set(&quot;parameter&quot;, arg.entity.get(&quot;id&quot;));
+</ClientEvent>
+        <Property name="dataProvider">roleUrlController#load</Property>
+        <Property name="dataType">[Permission]</Property>
+        <Property name="parameter">$${this.id}</Property>
+      </Reference>
+    </DataType>
+    <DataType name="Url">
+      <Property name="creationType">com.bstek.bdf3.security.domain.Url</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
+      <PropertyDef name="icon">
+        <Property></Property>
+        <Property name="label">图标</Property>
+      </PropertyDef>
+      <PropertyDef name="path">
+        <Property></Property>
+        <Property name="label">路径</Property>
+      </PropertyDef>
+      <PropertyDef name="navigable">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可导航</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="parentId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="order">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">排序号</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <PropertyDef name="checked">
+        <ClientEvent name="onSet" signature="self,arg,dsRole,updateActionUP">var role = dsRole.getData(&quot;#&quot;);
+if (!role) return;
+var permissions = role.get(&quot;permissions&quot;);
+if (view.autoCheckChildren) {
+	arg.entity.get(&quot;children&quot;).each(function(item) {
+		item.set(&quot;checked&quot;, arg.value);
+		doPermission(item, arg.value);
+	});
+}
+
+doPermission(arg.entity, arg.value);
+updateActionUP.execute();
+
+function doPermission(url, checked) {
+	if (url.get(&quot;checked&quot;) == checked) return;
+	if (checked) {
+		var p = permissions.insert();
+		p.set({
+			resourceId: url.get(&quot;id&quot;),
+			roleId: role.get(&quot;id&quot;),
+			attribute: &quot;ROLE_&quot; + role.get(&quot;id&quot;),
+			url: url.toJSON()
+		});
+	} else {
+		permissions.each(function(p) {
+			if (p.get(&quot;resourceId&quot;) == url.get(&quot;id&quot;)) {
+				p.remove();
+				return false;
+			}
+		});
+	}
+}
+
+
+
+
+
+</ClientEvent>
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="children">
+        <Property name="dataType">[SELF]</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Permission">
+      <Property name="creationType">com.bstek.bdf3.security.domain.Permission</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="roleId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="resourceId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="attribute">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="url">
+        <Property name="dataType">OwnedUrl</Property>
+      </PropertyDef>
+      <PropertyDef name="resourceType">
+        <Property></Property>
+        <Property name="defaultValue">URL</Property>
+      </PropertyDef>
+      <PropertyDef name="component">
+        <Property name="dataType">Component</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="OwnedUrl">
+      <Property name="creationType">com.bstek.bdf3.security.domain.Url</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
+      <PropertyDef name="icon">
+        <Property></Property>
+        <Property name="label">图标</Property>
+      </PropertyDef>
+      <PropertyDef name="path">
+        <Property></Property>
+        <Property name="label">路径</Property>
+      </PropertyDef>
+      <PropertyDef name="navigable">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可导航</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="parentId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="order">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">排序号</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <Reference name="viewComponents">
+        <ClientEvent name="beforeLoadData">self.set(&quot;parameter&quot;, arg.entity.get(&quot;path&quot;));
+</ClientEvent>
+        <Property name="dataProvider">roleComponentController#loadComponents</Property>
+        <Property name="dataType">[ViewComponent]</Property>
+      </Reference>
+      <Reference name="permissions">
+        <ClientEvent name="beforeLoadData">self.set(&quot;parameter&quot;, {
+	roleId: arg.entity.parent.parent.parent.get(&quot;id&quot;),
+	urlId: arg.entity.get(&quot;id&quot;)
+});
+</ClientEvent>
+        <Property name="dataType">[Permission]</Property>
+        <Property name="dataProvider">roleComponentController#loadPermissions</Property>
+      </Reference>
+    </DataType>
+    <DataType name="ViewComponent">
+      <Property name="creationType">com.bstek.bdf3.security.ui.builder.ViewComponent</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">组件ID</Property>
+      </PropertyDef>
+      <PropertyDef name="icon">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="desc">
+        <Property></Property>
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <PropertyDef name="enabled">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="sortabled">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="use">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="children">
+        <Property name="dataType">[SELF]</Property>
+      </PropertyDef>
+      <PropertyDef name="checked">
+        <ClientEvent name="onSet" signature="self,arg,dsRole,updateActionCP">var url = dsRole.getData(&quot;#.#permissions.url&quot;);
+var permissions = url.get(&quot;permissions&quot;);
+var role = dsRole.getData(&quot;#&quot;);
+
+doPermission(arg.entity, arg.value);
+var pd = view.get(&quot;@ViewComponent&quot;).getPropertyDef(&quot;componentType&quot;);
+
+pd.disableListeners()
+arg.entity.set(&quot;componentType&quot;, &quot;ReadWrite&quot;);
+pd.enableListeners()
+
+function doPermission(c, checked) {
+	if (c.get(&quot;checked&quot;) == checked) return;
+	if (checked) {
+		var p = permissions.insert();
+		p.set({
+			attribute: &quot;ROLE_&quot; + role.get(&quot;id&quot;) + &quot;_ReadWrite&quot;,
+			roleId: role.get(&quot;id&quot;),
+			resourceType: &quot;COMPONENT&quot;,
+			component: {
+				componentId: c.get(&quot;id&quot;),
+				name: c.get(&quot;name&quot;),
+				description: c.get(&quot;desc&quot;),
+				urlId: url.get(&quot;id&quot;),
+				path: url.get(&quot;path&quot;),
+				componentType: &quot;ReadWrite&quot;
+			}
+		});
+		updateActionCP.execute();
+		
+	} else {
+		permissions.each(function(p) {
+			if (p.get(&quot;component.componentId&quot;) == c.get(&quot;id&quot;)) {
+				p.setCurrent();
+				updateActionCP.execute();
+				return false;
+			}
+		});
+	}
+}
+
+</ClientEvent>
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="componentType">
+        <ClientEvent name="onSet" signature="self,arg,dsRole,updateActionCP">var permissions = dsRole.getData(&quot;#.#permissions.url.permissions&quot;);
+permissions.each(function(p){
+	if (p.get(&quot;component.componentId&quot;) == arg.entity.get(&quot;id&quot;)) {
+		p.set(&quot;component.componentType&quot;, arg.value);
+		p.set(&quot;attribute&quot;, &quot;ROLE_&quot; + p.get(&quot;roleId&quot;) + &quot;_&quot; + arg.value);
+		updateActionCP.execute();
+		return false;
+	}
+});
+</ClientEvent>
+        <ClientEvent name="onGet">var attribute = arg.entity.get(&quot;attribute&quot;);
+if (attribute) {
+	arg.value = attribute.substring(attribute.lastIndexOf(&quot;_&quot;) + 1);
+}
+</ClientEvent>
+        <Property></Property>
+        <Property name="mapping">
+          <Property name="mapValues">
+            <Collection>
+              <Entity>
+                <Property name="key">Read</Property>
+                <Property name="value">只读</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">ReadWrite</Property>
+                <Property name="value">可写</Property>
+              </Entity>
+            </Collection>
+          </Property>
+        </Property>
+        <Property name="label">权限类型</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Component">
+      <Property name="creationType">com.bstek.bdf3.security.domain.Component</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="componentId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="urlId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="path">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="componentType"/>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome</Property>
+    <DataSet id="dsUrl">
+      <Property name="dataType">[Url]</Property>
+      <Property name="dataProvider">urlController#load</Property>
+      <Property name="loadMode">preload</Property>
+    </DataSet>
+    <DataSet id="dsRole">
+      <ClientEvent name="onLoadData" signature="self,arg,dsUrl">if (self.get(&quot;data&quot;).entityCount &lt;= 0) {
+	view.get(&quot;^op&quot;).set(&quot;disabled&quot;, true)
+}
+</ClientEvent>
+      <Property name="dataType">[Role]</Property>
+      <Property name="dataProvider">roleController#load</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="updateActionUP">
+      <Property name="dataResolver">roleUrlController#save</Property>
+      <Property name="executingMessage">正在保存……</Property>
+      <Property name="successMessage">菜单权限保存成功。</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsRole</Property>
+        <Property name="dataPath">#.permissions[#dirty]</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <SplitPanel>
+      <Property name="position">300</Property>
+      <MainControl>
+        <TabControl>
+          <ControlTab>
+            <Property name="caption">所有菜单</Property>
+            <Container>
+              <ToolBar>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.autoCheckChildren = self.get(&quot;toggled&quot;);
+
+</ClientEvent>
+                  <Property name="caption">自动勾选子级菜单</Property>
+                  <Property name="iconClass">fa fa-check</Property>
+                  <Property name="toggleable">true</Property>
+                  <Property name="tags">op</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataTree id="dtUrl">
+                <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
+if (data.get(&quot;icon&quot;) != arg.node.get(&quot;iconClass&quot;)) {
+	arg.node.set(&quot;iconClass&quot;, data.get(&quot;icon&quot;));
+}
+
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+</ClientEvent>
+                <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
+if (data.get(&quot;icon&quot;) != arg.node.get(&quot;iconClass&quot;)) {
+	arg.node.set(&quot;iconClass&quot;, data.get(&quot;icon&quot;));
+}
+
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+</ClientEvent>
+                <Property name="dataSet">dsUrl</Property>
+                <Property name="currentNodeDataPath">currentNode</Property>
+                <Property name="draggable">false</Property>
+                <Property name="showLines">true</Property>
+                <Property name="highlightCurrentRow">false</Property>
+                <Property name="highlightHoverRow">false</Property>
+                <BindingConfigs>
+                  <BindingConfig>
+                    <Property name="childrenProperty">children</Property>
+                    <Property name="labelProperty">name</Property>
+                    <Property name="recursive">true</Property>
+                    <Property name="tipProperty">description</Property>
+                    <Property name="name">name</Property>
+                    <Property name="checkable">true</Property>
+                    <Property name="checkedProperty">checked</Property>
+                    <Property name="autoCheckChildren">false</Property>
+                  </BindingConfig>
+                </BindingConfigs>
+              </DataTree>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">拥有菜单</Property>
+            <Container>
+              <SplitPanel>
+                <Property name="position">250</Property>
+                <MainControl>
+                  <Container>
+                    <ToolBar>
+                      <Fill/>
+                      <ToolBarLabel>
+                        <Property name="text">组件权限设置</Property>
+                      </ToolBarLabel>
+                    </ToolBar>
+                    <DataTreeGrid>
+                      <ClientEvent name="onRenderNode">var data=arg.node.get(&quot;data&quot;);
+var id = data.get(&quot;id&quot;);
+var name = data.get(&quot;name&quot;);
+var desc = data.get(&quot;desc&quot;);
+var cheched = arg.node.get(&quot;checked&quot;);
+$(arg.dom).empty();
+if(id){
+	if (desc &amp;&amp; desc != id) {
+		id = id + &quot; [&quot; + desc + &quot;]&quot;;
+	}
+	if(cheched){
+		var span = $(&quot;&lt;span/>&quot;).css({
+			&quot;color&quot;:&quot;rgb(193, 13, 213)&quot;
+		});
+		span.append(id+&quot;&lt;span style='color:#ccc'>－&quot; + name + &quot;&lt;/span>&quot;);
+		$(arg.dom).append(span);
+	}else{
+		$(arg.dom).append(id+&quot;&lt;span style='color:#777'>－&quot; + name + &quot;&lt;/span>&quot;);
+	}
+}else{
+	$(arg.dom).text(name);
+}</ClientEvent>
+                      <ClientEvent name="onDataNodeCreate" signature="self,arg,dsRole">var data = arg.data;
+var permissions = dsRole.getData(&quot;#.#permissions.url.permissions&quot;);
+var enabled = data.get(&quot;enabled&quot;);
+if (enabled) {
+	arg.node.set(&quot;checkable&quot;, true);
+	permissions.each(function(p) {
+		if (p.get(&quot;component.componentId&quot;) == data.get(&quot;id&quot;)) {
+			var dtViewComponent = view.get(&quot;@ViewComponent&quot;);
+			var pdChecked = dtViewComponent.getPropertyDef(&quot;checked&quot;);
+			var pdAttribute = dtViewComponent.getPropertyDef(&quot;componentType&quot;);
+
+			pdChecked.disableListeners();
+			pdAttribute.disableListeners();
+			data.set({
+				checked: true,
+				attribute: p.get(&quot;attribute&quot;)
+			});
+			pdChecked.enableListeners();
+			pdAttribute.enableListeners();
+			return false;
+		}
+	});
+	
+} else {
+	arg.node.set(&quot;checkable&quot;, false);
+}</ClientEvent>
+                      <Property name="showLines">true</Property>
+                      <Property name="dataPath">#.#permissions.url.viewComponents</Property>
+                      <Property name="dataSet">dsRole</Property>
+                      <Property name="treeColumn">id</Property>
+                      <Property name="selectionMode">multiRows</Property>
+                      <BindingConfigs>
+                        <BindingConfig>
+                          <Property name="childrenProperty">children</Property>
+                          <Property name="checkable">true</Property>
+                          <Property name="checkedProperty">checked</Property>
+                          <Property name="expandLevel">2</Property>
+                          <Property name="iconProperty">icon</Property>
+                          <Property name="labelProperty">id</Property>
+                          <Property name="recursive">true</Property>
+                          <Property name="tipProperty">desc</Property>
+                        </BindingConfig>
+                      </BindingConfigs>
+                      <Columns>
+                        <DataColumn>
+                          <ClientEvent name="onGetCellEditor">if (!arg.data.get(&quot;checked&quot;)) {
+	arg.cellEditor = null;
+}
+</ClientEvent>
+                          <ClientEvent name="onRenderCell">if (arg.data.get(&quot;checked&quot;)) {
+	$(arg.dom).empty().append(&quot;&lt;span style='cursor: pointer;color:rgb(193, 13, 213)'>&quot;+ arg.data.getText(&quot;componentType&quot;) +&quot;&lt;/span>&quot;);
+} else {
+	$(arg.dom).empty().append(&quot;&lt;span style='cursor: not-allowed;font-style:italic;color:#777'>公共&lt;/span>&quot;);
+}
+</ClientEvent>
+                          <Property name="name">componentType</Property>
+                          <Property name="property">componentType</Property>
+                          <Property name="readOnly">false</Property>
+                          <Property name="width">60</Property>
+                          <Property name="align">center</Property>
+                          <Property name="editable">false</Property>
+                          <Property name="trigger">autoOpenMappingDropDown1</Property>
+                          <Editor/>
+                        </DataColumn>
+                        <DataColumn>
+                          <Property name="name">id</Property>
+                          <Property name="property">id</Property>
+                          <Property name="readOnly">true</Property>
+                          <Editor/>
+                        </DataColumn>
+                      </Columns>
+                    </DataTreeGrid>
+                  </Container>
+                </MainControl>
+                <SideControl>
+                  <Container>
+                    <ToolBar>
+                      <DataPilot>
+                        <ClientEvent name="onSubControlAction" signature="self,arg,dgPermission,updateActionUP,dsRole">if (arg.code == &quot;-&quot;) {
+	var selection = dgPermission.get(&quot;selection&quot;);
+	if (selection &amp;&amp; selection.length > 0) {
+		dorado.MessageBox.confirm(&quot;确定要删除勾选的行？&quot;, function() {
+			selection.each(function (item) {
+				item.remove();
+			});
+			updateActionUP.execute(function() {
+				var role = dsRole.getData(&quot;#&quot;);
+				var dtRole = view.get(&quot;@Role&quot;);
+				dtRole.fireEvent(&quot;onCurrentChange&quot;, dtRole, {entityList: role.parent, newCurrent: role, oldCurrent: role});
+			});
+		});
+	} else {
+		dorado.MessageBox.alert(&quot;请先勾选行。&quot;);
+	}
+	arg.processDefault = false;
+}
+</ClientEvent>
+                        <Property name="itemCodes">-</Property>
+                        <Property name="dataSet">dsRole</Property>
+                        <Property name="dataPath">#.permissions</Property>
+                      </DataPilot>
+                    </ToolBar>
+                    <DataGrid id="dgPermission">
+                      <Property name="dataSet">dsRole</Property>
+                      <Property name="dataPath">#.permissions</Property>
+                      <Property name="showFilterBar">true</Property>
+                      <Property name="selectionMode">multiRows</Property>
+                      <Property name="readOnly">true</Property>
+                      <Property name="highlightCurrentRow">true</Property>
+                      <Property name="highlightHoverRow">true</Property>
+                      <Property name="dynaRowHeight">true</Property>
+                      <RowNumColumn/>
+                      <RowSelectorColumn/>
+                      <DataColumn>
+                        <ClientEvent name="onRenderCell">$(arg.dom).addClass(arg.data.get(&quot;url.icon&quot;))
+	.css({
+		&quot;line-height&quot;: $(arg.dom).height() + &quot;px&quot;,
+		display: &quot;block&quot;
+	});
+</ClientEvent>
+                        <Property name="property">url.icon</Property>
+                        <Property name="name">url.Icon</Property>
+                        <Property name="width">40</Property>
+                        <Property name="align">center</Property>
+                        <Property name="supportsOptionMenu">false</Property>
+                        <Property name="filterable">false</Property>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">url.name</Property>
+                        <Property name="name">url.name</Property>
+                      </DataColumn>
+                    </DataGrid>
+                  </Container>
+                </SideControl>
+              </SplitPanel>
+            </Container>
+          </ControlTab>
+        </TabControl>
+      </MainControl>
+      <SideControl>
+        <Panel>
+          <Property name="caption">角色</Property>
+          <Buttons/>
+          <Children>
+            <ToolBar>
+              <DataPilot>
+                <ClientEvent name="onSubControlAction" signature="self,arg,dialogRole">if (arg.code == &quot;+&quot;) {
+	dialogRole.show();
+} else if (arg.code == &quot;-&quot;) {
+	dorado.MessageBox.confirm(&quot;确认要删除当前记录吗？&quot;, function() {
+		updateAction.execute();
+	});
+}
+</ClientEvent>
+                <Property name="dataSet">dsRole</Property>
+                <Property name="itemCodes">pages,+,-</Property>
+              </DataPilot>
+              <ToolBarButton>
+                <ClientEvent name="onClick" signature="self,arg,dialogRole">dialogRole.show()
+</ClientEvent>
+                <Property name="caption">修改</Property>
+                <Property name="iconClass">fa fa-pencil</Property>
+              </ToolBarButton>
+            </ToolBar>
+            <DataGrid>
+              <Property name="dataSet">dsRole</Property>
+              <Property name="readOnly">true</Property>
+              <Property name="showFilterBar">true</Property>
+              <Property name="sortMode">serverSide</Property>
+              <Property name="filterMode">serverSide</Property>
+              <RowNumColumn/>
+              <DataColumn name="name">
+                <Property name="property">name</Property>
+              </DataColumn>
+              <DataColumn name="description">
+                <Property name="property">description</Property>
+              </DataColumn>
+            </DataGrid>
+          </Children>
+          <Tools/>
+        </Panel>
+      </SideControl>
+    </SplitPanel>
+    <Dialog id="dialogRole">
+      <ClientEvent name="onHide" signature="self,arg,dsRole">dsRole.getData().cancel();
+</ClientEvent>
+      <Property name="caption">角色维护</Property>
+      <Property name="iconClass">fa fa-users</Property>
+      <Property name="width">500</Property>
+      <Property name="height">300</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="minimizeable">false</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide()
+</ClientEvent>
+          <Property name="caption">取消</Property>
+        </Button>
+        <Button>
+          <Property name="caption">保存</Property>
+          <Property name="action">updateActionRole</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsRole</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelPosition">left</Property>
+          <Property name="labelAlign">right</Property>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">description</Property>
+            <Property name="property">description</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <UpdateAction id="updateActionRole">
+      <ClientEvent name="onSuccess" signature="self,arg,dialogRole">dialogRole.hide()
+</ClientEvent>
+      <Property name="dataResolver">roleController#save</Property>
+      <Property name="executingMessage">正在保存……</Property>
+      <Property name="successMessage">角色保存成功。</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsRole</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <UpdateAction id="updateActionCP">
+      <Property name="dataResolver">roleComponentController#save</Property>
+      <Property name="successMessage">组件权限保存成功。</Property>
+      <Property name="executingMessage">正在保存……</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsRole</Property>
+        <Property name="dataPath">#.#permissions.url.#permissions</Property>
+        <Property name="firstResultOnly">true</Property>
+      </UpdateItem>
+    </UpdateAction>
+  </View>
+</ViewConfig>

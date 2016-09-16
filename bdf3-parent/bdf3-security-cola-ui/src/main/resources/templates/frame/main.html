@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta charset="UTF-8">
+    <title>$applicationTitle</title>
+    <link rel="stylesheet" type="text/css" href="static/resources/nprogress/nprogress.css">
+    <script src="static/resources/nprogress/nprogress.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/cola-ui/semantic.css">
+    <link rel="stylesheet" type="text/css" href="static/frame/main.css">
+</head>
+<body style="background-color: #f3f3f4 !important">
+<script type="text/javascript">
+    NProgress.configure({showSpinner: false, minimum: 0.3})
+    NProgress.start();
+</script>
+
+<div id="topMenu" class="ui top inverted huge fixed secondary menu">
+    <a id="logo" class="item" c-onclick="showMenuBar()">
+        <i class="cube large icon"></i>
+    </a>
+    <div class="item">
+        $!applicationName
+    </div>
+    <div class="right menu">
+        <a class="icon item" c-onclick="refreshPage()" data-position="bottom center" c-data-tooltip="currentUrl ? '刷新' + currentUrl.name : '刷新不可用' " data-inverted="">
+            <i class="refresh large icon"></i>
+        </a>
+
+        <a class="icon item" c-onclick="openUserCenter()" data-position="bottom center" c-data-tooltip="loginUser ? loginUser.${userMetadataServiceImpl.nicknameProp} : '登录用户名' " data-inverted="">
+            <div id="messageTotal" class="floating ui circular red label">0</div>
+            <img class="ui image avatar" c-src="loginUser.avatar ? loginUser.avatar :'./static/resources/images/avatars/alex.png'">
+        </a>
+    </div>
+
+    <div class="container"></div>
+</div>
+
+<div id="menuWrapper" class="ui visible left vertical sidebar">
+    <div id="menu" class="ui vertical menu">
+        <a id="switchBar" class="item" c-onclick="switchBar()">
+            <i class="content icon"></i>
+            <i class="right floated content icon"></i>
+        </a>
+        <a class="item">
+            <i class="green search icon" c-onclick="switchBar()"></i>
+            <div style="width: auto;" class="ui inverted transparent input">
+                <input type="text" c-bind="searchUrlKey"  placeholder="搜索..." c-onkeyup="searchUrl()">
+            </div>
+        </a>
+        <a class="item" c-searching="searching" c-display="isEmpty(item.parentId) || searching" c-menu-level="item.level" c-parent-id="item.parentId" c-my-id="item.id" c-repeat="urls" c-onclick="menuItemClick(item)">
+            <i c-class="item.icon"></i>
+            <span c-bind="item.name"></span>
+        </a>
+        </div>
+    </div>
+
+</div>
+
+<div id="userCenter" class="ui right vertical overlay sidebar ">
+    <div>
+        <img class="ui image avatar" c-src="loginUser.avatar ? loginUser.avatar :'./static/resources/images/avatars/alex.png'">
+        <div class="user-info" c-bind="loginUser.${userMetadataServiceImpl.nicknameProp}">
+            登录用户名
+        </div>
+    </div>
+    <div class="message"></div>
+    <div class="logout">
+        <a href="$logoutPath" class="ui blue basic button">安全退出</a>
+    </div>
+</div>
+<div class="dimmed pusher"></div>
+
+<div id="main">
+
+</div>
+</body>
+<script src="static/jquery-2.1.3.js"></script>
+<script src="static/jquery.cookie.js"></script>
+<script src="static/cola-ui/3rd.js"></script>
+<script src="static/cola-ui/semantic.js"></script>
+<script src="static/cola-ui/cola-core.js" charset="UTF-8"></script>
+<script src="static/common/common.js"></script>
+<script src="static/frame/main.js"></script>
+<script type="text/javascript">
+    var messageDisabled = $messageDisabled;
+    var longPollingTimeout = $longPollingTimeout;
+    var liveMessage = $liveMessage;
+    var longPollingInterval = $longPollingInterval;
+    var messagePullPath = "$messagePullPath";
+    var messageTotalPullPath = "$messageTotalPullPath";
+</script>
+</html>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="User">
+      <PropertyDef name="username">
+        <Property name="label">用户名</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="password">
+        <Property name="label">密码</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <ClientEvent name="onReady" signature="self,arg,dialogLogin">dialogLogin.show();
+</ClientEvent>
+    <Dialog id="dialogLogin">
+      <Property name="caption">系统登录</Property>
+      <Property name="width">380</Property>
+      <Property name="height">230</Property>
+      <Property name="floating">true</Property>
+      <Property name="closeable">false</Property>
+      <Buttons/>
+      <Children>
+        <AutoForm id="autoFormLogin">
+          <Property name="dataType">User</Property>
+          <Property name="cols">*</Property>
+          <Property name="createPrivateDataSet">true</Property>
+          <Property name="showLabel">true</Property>
+          <AutoFormElement layoutConstraint="align:right">
+            <Property name="name">username</Property>
+            <Property name="property">username</Property>
+            <Property name="labelAlign">right</Property>
+            <Editor>
+              <TextEditor>
+                <Property name="blankText">用户名</Property>
+              </TextEditor>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">password</Property>
+            <Property name="property">password</Property>
+            <Property name="labelAlign">right</Property>
+            <Editor>
+              <PasswordEditor>
+                <Property name="blankText">密码</Property>
+              </PasswordEditor>
+            </Editor>
+          </AutoFormElement>
+          <Container layout="vbox pack:center;align:center">
+            <Button>
+              <Property name="caption">登 录</Property>
+              <Property name="className">d-button-highlight</Property>
+              <Property name="width">300</Property>
+              <Property name="style">
+                <Property name="margin-left">7px</Property>
+                <Property name="margin-top">15px</Property>
+              </Property>
+              <Property name="action">formSubmitAction</Property>
+            </Button>
+          </Container>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <FormSubmitAction id="formSubmitAction">
+      <ClientEvent name="beforeExecute" signature="self,arg,autoFormLogin">var entity = autoFormLogin.get(&quot;entity&quot;);
+if (entity.validate() == &quot;ok&quot;) {
+	var user = entity.toJSON();
+	self.set(&quot;parameter&quot;, user);
+} else {
+	arg.processDefault = false;
+}
+</ClientEvent>
+      <Property name="action">bdf3.security.ui.view.Login.d</Property>
+      <Property name="hotkey">return</Property>
+    </FormSubmitAction>
+  </View>
+</ViewConfig>

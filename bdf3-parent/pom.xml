@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>bdf3-parent</artifactId>
+  <packaging>pom</packaging>
+  <parent>
+    <groupId>com.bstek.bdf3</groupId>
+    <artifactId>bdf3-dependencies</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <relativePath>../bdf3-dependencies/pom.xml</relativePath>
+  </parent>
+  <modules>
+  	<module>bdf3-security</module>
+    <module>bdf3-cola</module>
+    <module>bdf3-jpa</module>
+    <module>bdf3-security-ui</module>
+    <module>bdf3-dorado</module>
+    <module>bdf3-autoconfigure</module>
+    <module>bdf3-dorado-jpa</module>
+    <module>bdf3-security-cola-ui</module>
+    <module>bdf3-saas</module>
+    <module>bdf3-security-saas-cola-ui</module>
+    <module>bdf3-activiti</module>
+    <module>bdf3-activiti-cola-ui</module>
+    <module>bdf3-message</module>
+    <module>bdf3-message-cola-ui</module>
+  </modules>
+  <properties>
+  </properties>
+  <repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>http://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>Nexus Release Repository</name>
+			<url>http://nexus.bsdn.org/content/repositories/dorado_releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Nexus Snapshot Repository</name>
+			<url>http://nexus.bsdn.org/content/repositories/dorado_snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<build>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-source-plugin</artifactId>
+			<configuration>
+				<attach>true</attach>
+			</configuration>
+			<executions>
+				<execution>
+					<phase>compile</phase>
+					<!-- 在compile阶段中执行 -->
+					<goals>
+						<goal>jar</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-javadoc-plugin</artifactId>
+			<configuration>
+				<attach>true</attach>
+			</configuration>
+			<executions>
+				<execution>
+					<phase>package</phase>
+					<!-- 在compile阶段中执行 -->
+					<goals>
+						<goal>jar</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+</build>
+</project>

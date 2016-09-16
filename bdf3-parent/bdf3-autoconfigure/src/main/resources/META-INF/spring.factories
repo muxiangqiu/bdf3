@@ -1,0 +1,21 @@
+# Initializers
+
+# Application Listeners
+
+# Run Listeners
+org.springframework.boot.SpringApplicationRunListener=\
+com.bstek.bdf3.autoconfigure.BDFPreloadSpringApplicationRunListener,\
+com.bstek.bdf3.autoconfigure.dorado.DoradoPreloadSpringApplicationRunListener
+
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.bstek.bdf3.autoconfigure.dorado.DoradoAutoConfiguration,\
+com.bstek.bdf3.autoconfigure.jpa.JpaAutoConfiguration,\
+com.bstek.bdf3.autoconfigure.dorado.jpa.HibernateJpaAutoConfiguration,\
+com.bstek.bdf3.autoconfigure.dorado.jpa.JpaAutoConfiguration,\
+com.bstek.bdf3.autoconfigure.security.SecurityAutoConfiguration,\
+com.bstek.bdf3.autoconfigure.cola.ColaAutoConfiguration,\
+com.bstek.bdf3.autoconfigure.jdbc.DataSourceAutoConfiguration,\
+com.bstek.bdf3.autoconfigure.jpa.HibernateJpaAutoConfiguration,\
+com.bstek.bdf3.autoconfigure.saas.SaasAutoConfiguration,\
+com.bstek.bdf3.autoconfigure.message.MessageAutoConfiguration
