@@ -84,7 +84,7 @@ public class EntityManagerFactoryServiceImpl implements
 
 	private BeanFactory beanFactory;
 	
-	@Value("${bdf3.saas.packagesToScan:com.bstek.bdf3.security.domain}")
+	@Value("${bdf3.saas.packagesToScan:com.bstek.bdf3.security.domain,com.bstek.bdf3.message.domain}")
 	private String packagesToScan;
 	
 
