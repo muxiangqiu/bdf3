@@ -84,6 +84,34 @@ public class DatabaseResourceAllocator implements ResourceAllocator{
 				url.setOrder(3);
 				entityManager.persist(url);
 				
+				url = new Url();
+				url.setId(UUID.randomUUID().toString());
+				url.setName("公告管理");
+				url.setIcon("volume up icon");
+				url.setPath("announce/manage");
+				url.setNavigable(true);
+				url.setOrder(4);
+				entityManager.persist(url);
+				
+				url = new Url();
+				url.setId(UUID.randomUUID().toString());
+				url.setName("公告中心");
+				url.setIcon("announcement icon");
+				url.setPath("announce");
+				url.setNavigable(true);
+				url.setOrder(5);
+				entityManager.persist(url);
+				
+				url = new Url();
+				url.setId(UUID.randomUUID().toString());
+				url.setName("私信中心");
+				url.setIcon("comments outline icon");
+				url.setPath("message");
+				url.setNavigable(true);
+				url.setOrder(6);
+				entityManager.persist(url);
+				
+				
 				entityManager.getTransaction().commit();
 			}
 		} finally {
