@@ -43,7 +43,7 @@ public abstract class LinImpl<T extends Lin<T, Q>, Q extends CommonAbstractCrite
 	protected T parent;
 	protected Junction having;
 	protected List<String> aliases = new ArrayList<String>();
-	private boolean ifResult = true;
+	private Stack<Boolean> ifResult = new Stack<Boolean>();
 
 	
 	public LinImpl(Class<?> domainClass) {
@@ -77,36 +77,45 @@ public abstract class LinImpl<T extends Lin<T, Q>, Q extends CommonAbstractCrite
 	
 	@Override
 	public T addIf(Object target) {
+		boolean result;
 		if (target instanceof Boolean) {
-			ifResult = (Boolean) target && ifResult;
+			result = (Boolean) target;
 		} else if (target instanceof Collection) {
-			ifResult = !CollectionUtils.isEmpty((Collection<?>) target) && ifResult;
+			result = !CollectionUtils.isEmpty((Collection<?>) target);
 		} else {
-			ifResult = !StringUtils.isEmpty(target) && ifResult;
+			result = !StringUtils.isEmpty(target);
 		}
+		ifResult.push(result);
 		return (T) this;
 	}
 
 	@Override
 	public T addIfNot(Object target) {
+		boolean result;
 		if (target instanceof Boolean) {
-			ifResult = !(Boolean) target && ifResult;
+			result = !(Boolean) target;
 		} else if (target instanceof Collection) {
-			ifResult = CollectionUtils.isEmpty((Collection<?>) target) && ifResult;
+			result = CollectionUtils.isEmpty((Collection<?>) target);
 		} else {
-			ifResult = StringUtils.isEmpty(target) && ifResult;
+			result = StringUtils.isEmpty(target);
 		}
+		ifResult.push(result);
 		return (T) this;
 	}
 
 	@Override
 	public T endIf() {
-		ifResult = true;
+		ifResult.pop();
 		return (T) this;
 	}
 	
 	protected boolean beforeMethodInvoke() {
-		return ifResult;
+		for (Boolean r : ifResult) {
+			if (!r) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
