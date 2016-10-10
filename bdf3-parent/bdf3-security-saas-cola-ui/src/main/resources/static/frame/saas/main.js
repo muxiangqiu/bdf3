@@ -256,6 +256,76 @@
 
 
                 }
+            },
+            parseTime: function (time) {
+                var result;
+                var minute = 1000 * 60;
+                var hour = minute * 60;
+                var day = hour * 24;
+                var week = day * 7;
+                var month = day * 30;
+                var year = day * 365;
+
+                var now = new Date().getTime();
+                var diffValue = now - time;
+
+                var yearC = diffValue / year;
+                var monthC = diffValue / month;
+                var weekC = diffValue / week;
+                var dayC = diffValue / day;
+                var hourC = diffValue / hour;
+                var minC = diffValue / minute;
+                if (yearC >= 1) {
+                    result = model.action("formatDate")(time, "yyyy-MM-dd hh:mm");
+                } else if (monthC >= 6) {
+                    result = model.action("formatDate")(time, "MM-dd hh:mm");
+                } else if (monthC >= 1) {
+                    result = Math.floor(monthC) + "个月前";
+                } else if (weekC >= 1) {
+                    result = Math.floor(weekC) + "周前";
+                } else if (dayC >= 1) {
+                    result = Math.floor(dayC) + "天前";
+                } else if (hourC >= 1) {
+                    result = Math.floor(hourC) + "个小时前";
+                } else if (minC >= 1) {
+                    result = Math.floor(minC) + "分钟前";
+                } else {
+                    result = "刚刚";
+                }
+                return result;
+
+            },
+            getContentText: function(message) {
+                var title = message.get("title") || message.get("content");
+                return $("<p>" + title + "</p>").text().replace(/\s+/g, " ");
+            },
+            getIconClass: function(message) {
+                var notifyType = message.get("type");
+                if (notifyType === "Message") {
+                   return "brown comment outline icon"
+                } else if (notifyType === "Announce") {
+                    return "green announcement icon"
+                }
+                return "blue alarm outline icon";
+            },
+            openDetail: function(message) {
+                var notifyType = message.get("type");
+                if (notifyType === "Message") {
+                    model.action("openPage")({
+                        id: "message_" + message.get("group"),
+                        name: "私信详情",
+                        path: "chat/" + message.get("group")
+
+                    });
+                } else if (notifyType === "Announce") {
+                    model.action("openPage")({
+                        id: "announce_" + message.get("id"),
+                        name: "公告详情",
+                        path: "announce/detail/" + message.get("id")
+
+                    });
+                }
+
             }
         });
 
@@ -270,7 +340,9 @@
             if (longPollingTimeout) {
                 options.timeout = longPollingTimeout;
             }
-            return $.ajax(service.messageTotalPull, options).done(function(messageTotal) {
+            return $.ajax(service.messagePull, options).done(function(messages) {
+                model.set("messages", messages);
+                var messageTotal =  messages.length;
                 model.set("messageTotal", messageTotal);
                 if (messageTotal > 0) {
                     $("#messageTotal").css("display", "inline-block").text(messageTotal > 100 ? "99+" : messageTotal);

@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="static/resources/nprogress/nprogress.css">
     <script src="static/resources/nprogress/nprogress.js"></script>
     <link rel="stylesheet" type="text/css" href="static/cola-ui/semantic.css">
-    <link rel="stylesheet" type="text/css" href="static/frame/main.css">
+    <link rel="stylesheet" type="text/css" href="static/frame/saas/main.css">
 </head>
 <body style="background-color: #f3f3f4 !important">
 <script type="text/javascript">
@@ -30,7 +30,7 @@
 
         <a class="icon item" c-onclick="openUserCenter()" data-position="bottom center" c-data-tooltip="loginUser ? loginUser.${userMetadataServiceImpl.nicknameProp} : '登录用户名' " data-inverted="">
             <div id="messageTotal" class="floating ui circular red label">0</div>
-            <img class="ui image avatar" c-src="loginUser.avatar ? loginUser.avatar :'./static/resources/images/avatars/alex.png'">
+            <img class="ui image avatar" c-src="loginUser.avatar ? loginUser.avatar :'./static/resources/images/avatars/large/matthew.png'">
         </a>
     </div>
 
@@ -60,12 +60,25 @@
 
 <div id="userCenter" class="ui right vertical overlay sidebar ">
     <div>
-        <img class="ui image avatar" c-src="loginUser.avatar ? loginUser.avatar :'./static/resources/images/avatars/alex.png'">
+        <img class="ui image avatar" c-src="loginUser.avatar ? loginUser.avatar :'./static/resources/images/avatars/large/matthew.png'">
         <div class="user-info" c-bind="loginUser.${userMetadataServiceImpl.nicknameProp}">
             登录用户名
         </div>
     </div>
-    <div class="message"></div>
+    <div class="message">
+        <div class="ui inverted relaxed divided selection list">
+            <div class="item" c-repeat="messages" c-id="item.id" c-onclick="openDetail(item)">
+                <div class="content right floated">
+                    <i class="wait icon"></i>
+                    <span c-bind="parseTime(item.createdAt)"></span>
+                </div>
+                <i class="large middle aligned green" c-class="getIconClass(item)"></i>
+                <div class="content">
+                    <div class="header" c-bind="getContentText(item)"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="logout">
         <a href="$logoutPath" class="ui blue basic button">安全退出</a>
     </div>
@@ -82,7 +95,7 @@
 <script src="static/cola-ui/semantic.js"></script>
 <script src="static/cola-ui/cola-core.js" charset="UTF-8"></script>
 <script src="static/common/common.js"></script>
-<script src="static/frame/main.js"></script>
+<script src="static/frame/saas/main.js"></script>
 <script type="text/javascript">
     var messageDisabled = $messageDisabled;
     var longPollingTimeout = $longPollingTimeout;

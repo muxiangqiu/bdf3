@@ -144,7 +144,7 @@ public class FrameworkController {
 	
 	@RequestMapping(path = "/service/message/pull", method = RequestMethod.GET)
 	@ResponseBody
-	@Transactional(readOnly = true)
+	@Transactional
 	public List<Notify> getMessages(Authentication authentication) {
 		UserDetails user = (UserDetails) authentication.getPrincipal();
 		return frameworkService.getMessages(user.getUsername());

@@ -74,6 +74,8 @@ public class FrameworkServiceImpl implements FrameworkService {
 
 	@Override
 	public List<Notify> getMessages(String username) {
+		notifyService.pullAnnounce(username);
+		notifyService.pullRemind(username);
 		return notifyService.getUserNotify(username);
 	}
 
