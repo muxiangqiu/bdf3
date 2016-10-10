@@ -72,7 +72,7 @@ public class MenuInitializer extends JpaUtilAble {
 					url = new Url();
 					url.setId(UUID.randomUUID().toString());
 					url.setName("公告管理");
-					url.setIcon("file audio outline icon");
+					url.setIcon("volume up icon");
 					url.setPath("announce/manage");
 					url.setNavigable(true);
 					url.setOrder(4);
@@ -85,6 +85,15 @@ public class MenuInitializer extends JpaUtilAble {
 					url.setPath("announce");
 					url.setNavigable(true);
 					url.setOrder(5);
+					em.persist(url);
+					
+					url = new Url();
+					url.setId(UUID.randomUUID().toString());
+					url.setName("私信中心");
+					url.setIcon("comments outline icon");
+					url.setPath("message");
+					url.setNavigable(true);
+					url.setOrder(6);
 					em.persist(url);
 					
 					em.getTransaction().commit();

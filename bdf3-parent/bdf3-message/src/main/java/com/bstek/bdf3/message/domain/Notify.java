@@ -10,13 +10,15 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.bstek.bdf3.jpa.AdditionalSupport;
+
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2016年9月4日
  */
 @Entity
 @Table(name = "BDF3_NOTIFY")
-public class Notify implements Serializable {
+public class Notify extends AdditionalSupport implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -46,14 +48,14 @@ public class Notify implements Serializable {
 	@Column(name = "SENDER_", length = 64)
 	private String sender;
 	
+	@Column(name = "GROUP_", length = 64)
+	private String group;
+	
 	@Column(name = "CREATED_AT_")
 	private Date createdAt;
 	
 	@Transient
 	private UserNotify userNotify;
-	
-	@Transient
-	private Object additional;
 
 	public String getId() {
 		return id;
@@ -119,6 +121,14 @@ public class Notify implements Serializable {
 		this.sender = sender;
 	}
 
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -134,14 +144,9 @@ public class Notify implements Serializable {
 	public void setUserNotify(UserNotify userNotify) {
 		this.userNotify = userNotify;
 	}
-
-	public Object getAdditional() {
-		return additional;
-	}
-
-	public void setAdditional(Object additional) {
-		this.additional = additional;
-	}
+	
+	
+	
 
 	
 }

@@ -2,19 +2,28 @@
     cola(function (model) {
 
         var service = {
-            add: "../api/announce/add"
+            add: "../api/message/add"
         };
 
 
-        $("#announceForm").form({
+        $("#messageForm").form({
             on: "blur",
             fields: {
-                title: {
-                    identifier: "title",
+                receiver: {
+                    identifier: "receiver",
                     rules: [
                         {
                             type: "empty",
-                            prompt: "请输入标题"
+                            prompt: "请输入接收者"
+                        }
+                    ]
+                },
+                content: {
+                    identifier: "content",
+                    rules: [
+                        {
+                            type: "empty",
+                            prompt: "请输入内容"
                         }
                     ]
                 }
@@ -22,27 +31,27 @@
         });
 
 
-        model.set("announce", {});
+        model.set("message", {});
 
         model.action({
-            openManagePage: function() {
+            openListPage: function() {
                 if (typeof window.parent.expandAndOpenPage === "function") {
-                    window.parent.expandAndOpenPage("announce/manage");
+                    window.parent.expandAndOpenPage("message");
                     window.parent.refreshPage()
                 } else {
                     window.history.back();
                 }
             },
-            publish: function () {
+            send: function () {
                 var options, entity, data;
-                $("#announceForm").form("validate form");
-                if (!$("#announceForm").form("is valid")) {
+                $("#messageForm").form("validate form");
+                if (!$("#messageForm").form("is valid")) {
                     return;
                 }
-                entity = model.get("announce");
+                entity = model.get("message");
 
                 data = entity.toJSON();
-                data.content = tinymce.get("txtAnnounce").getContent();
+                data.content = tinymce.get("txtMessage").getContent();
                 options = {
                     contentType: "application/json",
                     data: JSON.stringify(data),
@@ -54,11 +63,11 @@
                     if (typeof window.parent.refreshMessage === "function") {
                         window.parent.refreshMessage();
                     }
-                    model.action("openManagePage")();
+                    model.action("openListPage")();
                 });
             },
             cancel: function() {
-                model.action("openManagePage")();
+                model.action("openListPage")();
             }
         });
     });

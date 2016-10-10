@@ -31,7 +31,7 @@
 
         <a class="icon item" c-onclick="openUserCenter()" data-position="bottom center" c-data-tooltip="loginUser ? loginUser.${userMetadataServiceImpl.nicknameProp} : '登录用户名' " data-inverted="">
             <div id="messageTotal" class="floating ui circular red label">0</div>
-            <img class="ui image avatar" c-src="loginUser.avatar ? loginUser.avatar :'./static/resources/images/avatars/alex.png'">
+            <img class="ui image avatar" c-src="loginUser.avatar ? loginUser.avatar :'./static/resources/images/avatars/large/matthew.png'">
         </a>
     </div>
 
@@ -61,7 +61,7 @@
 
 <div id="userCenter" class="ui right vertical overlay sidebar ">
     <div>
-        <img class="ui image avatar" c-src="loginUser.avatar ? loginUser.avatar :'./static/resources/images/avatars/alex.png'">
+        <img class="ui image avatar" c-src="loginUser.avatar ? loginUser.avatar :'./static/resources/images/avatars/large/matthew.png'">
         <div class="user-info" c-bind="loginUser.${userMetadataServiceImpl.nicknameProp}">
             登录用户名
         </div>

@@ -11,11 +11,11 @@ import com.bstek.bdf3.message.domain.SubscriptionConfig;
  */
 public interface NotifyService {
 
-	void createAnnounce(String content, String sender);
+	Notify createAnnounce(String content, String sender);
 	
-	void createRemind(String target, String targetType, String action, String sender, String content);
+	Notify createRemind(String target, String targetType, String action, String sender, String content);
 	
-	void createMessage(String content, String sender, String receiver);
+	Notify createMessage(String content, String sender, String receiver);
 	
 	List<Notify> pullAnnounce(String user);
 	

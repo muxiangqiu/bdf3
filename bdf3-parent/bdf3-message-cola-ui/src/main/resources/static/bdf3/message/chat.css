@@ -1,0 +1,64 @@
+/* 主色调定义 */
+/* 文字内容色调定义 */
+/* 背景色调定义 */
+/* 边框色调定义 */
+/* 主题色定义 */
+/* Input */
+/* main page */
+html body {
+  padding: 1em;
+  background-color: #f3f3f4;
+}
+
+#btns {
+    text-align: center;
+}
+
+.ui.button {
+    width: 100px;
+}
+
+.announcement.icon {
+    color: #a5673f;
+}
+
+.ui.list > .item > .content > .header {
+    margin-bottom: .5em;
+}
+
+#announceList .content.right.floated {
+    line-height: 2.5;
+}
+
+.ui.sidebar > .button {
+    position: fixed;
+    right: 15px;
+    top: 59px;
+    width: 60px;
+    height: 60px;
+}
+
+.pusher > .ui.segment {
+    position: fixed;
+    top: 0;
+    bottom: 128px;
+    left: 0;
+    right: 0;
+    overflow: auto
+}
+
+.pusher > .placeholder {
+    height: 141px;
+}
+
+.ui.comments > .comment.me {
+    margin: -1.5em 0 -1em 1.25em;
+    padding: 1.8em 0 1em 2.25em;
+    box-shadow: -1px 0 0 rgba(34,36,38,.15);
+}
+
+.ui.comments > .comment > .avatar > img {
+    width: 100%;
+    height: auto;
+    border-radius: 500rem;
+}

@@ -2,8 +2,9 @@ package com.bstek.bdf3.message.cola.ui.service;
 
 import java.util.List;
 
-import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import com.bstek.bdf3.message.domain.Chat;
 import com.bstek.bdf3.message.domain.Notify;
 
 /**
@@ -12,27 +13,25 @@ import com.bstek.bdf3.message.domain.Notify;
  */
 public interface MessageService {
 	
-	List<Notify> load(Pageable pageable, String title);
-		
-	String add(Notify notify);
-	
-	void modify(Notify notify);
-	
+	List<Chat> load(String user);
+				
 	void remove(String id);
 
 	List<Notify> loadUnread(String user);
 
-	String getPublishPage();
-
 	String getListPage();
 
-	String getDetailPage(String id, String user);
+	String add(String content, String sender, String receiver);
+	
+	String getSendPage();
 
-	Notify getDetail(String id);
+	String getChatPage(String chatId, String username);
 
-	String getManagePage();
+	void removeChat(String id);
 
-	String getModifyPage(String id, String user);
+	void clearChat(String user);
+
+	Chat getChat(String chatId, UserDetails user);
 	
 	
 }

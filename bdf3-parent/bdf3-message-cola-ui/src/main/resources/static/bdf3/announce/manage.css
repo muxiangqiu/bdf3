@@ -29,3 +29,13 @@ html body {
 #announceList .content.right.floated {
     line-height: 2.5;
 }
+
+.item .content.right.floated > span{
+    margin-right: 5px;
+    color: #767676;
+
+}
+
+.item .content.right.floated > .icon{
+    line-height: .9;
+}

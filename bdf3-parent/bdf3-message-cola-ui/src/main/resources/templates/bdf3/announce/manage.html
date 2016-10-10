@@ -36,13 +36,14 @@
     <div id="announceList" class="ui relaxed divided list">
         <div class="item" c-id="'announce_' + item.id" c-repeat="announces">
             <div class="content right floated">
+                <i class="wait icon"></i>
+                <span c-bind="parseTime(item.createdAt)"></span>
                 <i class="link large middle aligned trash outline icon red" c-onclick="confirmRemove(item)"></i>
             </div>
             <i class="large middle aligned announcement icon"></i>
 
             <div class="content">
                 <a class="header" c-bind="item.title" c-href="'../announce/modify/' + item.id"></a>
-                <div class="description" c-bind="'创建于' + formatDate(item.createdAt, 'yyyy-MM-dd hh:mm:ss')"></div>
             </div>
         </div>
     </div>

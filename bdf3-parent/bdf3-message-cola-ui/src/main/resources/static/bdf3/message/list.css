@@ -22,19 +22,21 @@ html body {
     color: #a5673f;
 }
 
-.ui.menu .item .label {
-    margin-left: .5em;
-}
-
-#placeholder {
-    visibility: hidden;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    min-width: 0;
-    margin-left: 0;
-}
-
 .ui.list > .item > .content > .header {
     margin-bottom: .5em;
+}
+
+.item .content.right.floated {
+    line-height: 2.5;
+}
+
+.item .content.right.floated > span{
+    margin-right: 5px;
+    color: #767676;
+
+}
+
+.item .content.right.floated > .icon{
+    line-height: .9;
 }
 

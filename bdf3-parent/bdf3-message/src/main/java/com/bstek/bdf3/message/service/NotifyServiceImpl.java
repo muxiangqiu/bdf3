@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.bstek.bdf3.jpa.JpaUtil;
+import com.bstek.bdf3.message.domain.Chat;
 import com.bstek.bdf3.message.domain.Notify;
 import com.bstek.bdf3.message.domain.NotifyConfig;
 import com.bstek.bdf3.message.domain.NotifyType;
@@ -34,19 +35,19 @@ public class NotifyServiceImpl implements NotifyService {
 	
 
 	@Override
-	public void createAnnounce(String content, String sender) {
+	public Notify createAnnounce(String content, String sender) {
 		Notify notify = new Notify();
 		notify.setContent(content);
 		notify.setId(UUID.randomUUID().toString());
 		notify.setSender(sender);
 		notify.setType(NotifyType.Announce);
 		notify.setCreatedAt(new Date());
-		JpaUtil.persist(notify);
+		return JpaUtil.persist(notify);
 		
 	}
 
 	@Override
-	public void createRemind(String target, String targetType, String action,
+	public Notify createRemind(String target, String targetType, String action,
 			String sender, String content) {
 		Notify notify = new Notify();
 		notify.setContent(content);
@@ -57,25 +58,58 @@ public class NotifyServiceImpl implements NotifyService {
 		notify.setTargetType(targetType);
 		notify.setAction(action);
 		notify.setCreatedAt(new Date());
-		JpaUtil.persist(notify);
+		return JpaUtil.persist(notify);
 	}
 
 	@Override
-	public void createMessage(String content, String sender, String receiver) {
+	public Notify createMessage(String content, String sender, String receiver) {
 		Notify notify = new Notify();
 		notify.setContent(content);
 		notify.setId(UUID.randomUUID().toString());
 		notify.setSender(sender);
 		notify.setType(NotifyType.Message);
 		notify.setCreatedAt(new Date());
-		JpaUtil.persist(notify);
 		
 		UserNotify userNotify = new UserNotify();
 		userNotify.setId(UUID.randomUUID().toString());
 		userNotify.setNotifyId(notify.getId());
 		userNotify.setUser(receiver);
 		userNotify.setCreatedAt(notify.getCreatedAt());
+		
+		Chat chat = null;
+		List<Chat> chats = JpaUtil
+				.linq(Chat.class)
+				.or()
+					.and()
+						.equal("sender", sender)
+						.equal("receiver", receiver)
+					.end()
+					.and()
+						.equal("sender", receiver)
+						.equal("receiver", sender)
+					.end()
+				.findAll();
+			if (chats.isEmpty()) {
+				chat = new Chat();
+				chat.setId(UUID.randomUUID().toString());
+				chat.setRecentNotifyId(notify.getId());
+				chat.setReceiver(receiver);
+				chat.setSender(sender);
+				chat.setRecentTime(notify.getCreatedAt());
+				JpaUtil.persist(chat);
+			} else {
+				chat = chats.get(0);
+				chat.setRecentNotifyId(notify.getId());
+				chat.setReceiver(receiver);
+				chat.setSender(sender);
+				chat.setRecentTime(notify.getCreatedAt());
+				JpaUtil.merge(chat);
+			}
+		notify.setGroup(chat.getId());
+		userNotify.setGroup(chat.getId());
 		JpaUtil.persist(userNotify);
+
+		return JpaUtil.persist(notify);
 	}
 
 	@Override

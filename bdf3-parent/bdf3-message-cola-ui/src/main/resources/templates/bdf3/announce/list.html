@@ -26,21 +26,22 @@
     </h2>
     <div class="ui pointing secondary menu">
         <a class="active item" data-tab="unread">
-            未读公告
-            <div class="ui brown circular label" c-bind="unreadCount"></div>
+            未读 (<span c-bind="unreadCount">0</span>)
         </a>
         <a class="item" data-tab="all">
-            所有公告
-            <div id="placeholder" class="ui brown circular label"></div>
+            所有
         </a>
     </div>
     <div class="ui active tab" data-tab="unread">
         <div class="ui relaxed divided list">
             <div class="item" c-repeat="unreadAnnounces">
+                <div class="content right floated">
+                    <i class="wait icon"></i>
+                    <span c-bind="parseTime(item.createdAt)"></span>
+                </div>
                 <i class="large middle aligned announcement icon"></i>
                 <div class="content">
                     <a class="header" c-bind="item.title" c-href="'announce/detail/' + item.id"></a>
-                    <div class="description" c-bind="'创建于' + formatDate(item.createdAt, 'yyyy-MM-dd hh:mm:ss')"></div>
                 </div>
             </div>
         </div>
@@ -54,10 +55,13 @@
         </div>
         <div class="ui relaxed divided list">
             <div class="item" c-repeat="announces">
+                <div class="content right floated">
+                    <i class="wait icon"></i>
+                    <span c-bind="parseTime(item.createdAt)"></span>
+                </div>
                 <i class="large middle aligned announcement icon"></i>
                 <div class="content">
                     <a class="header" c-bind="item.title" c-href="'announce/detail/' + item.id"></a>
-                    <div class="description" c-bind="'创建于' + formatDate(item.createdAt, 'yyyy-MM-dd hh:mm:ss')"></div>
                 </div>
             </div>
         </div>
