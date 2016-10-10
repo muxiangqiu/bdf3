@@ -34,6 +34,9 @@ public class UserNotify implements Serializable {
 	@Column(name = "GROUP_", length = 64)
 	private String group;
 	
+	@Column(name = "TYPE_")
+	private NotifyType type;
+	
 	@Column(name = "CREATED_AT_")
 	private Date createdAt;
 
@@ -77,6 +80,14 @@ public class UserNotify implements Serializable {
 		this.group = group;
 	}
 
+	public NotifyType getType() {
+		return type;
+	}
+
+	public void setType(NotifyType type) {
+		this.type = type;
+	}
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -84,9 +95,6 @@ public class UserNotify implements Serializable {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-	
-	
-	
-	
 
+	
 }

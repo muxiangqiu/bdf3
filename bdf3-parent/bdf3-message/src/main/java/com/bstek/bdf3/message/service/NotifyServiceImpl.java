@@ -72,6 +72,7 @@ public class NotifyServiceImpl implements NotifyService {
 		
 		UserNotify userNotify = new UserNotify();
 		userNotify.setId(UUID.randomUUID().toString());
+		userNotify.setType(NotifyType.Message);
 		userNotify.setNotifyId(notify.getId());
 		userNotify.setUser(receiver);
 		userNotify.setCreatedAt(notify.getCreatedAt());
@@ -119,13 +120,11 @@ public class NotifyServiceImpl implements NotifyService {
 			un = JpaUtil
 				.linq(UserNotify.class)
 				.equal("user", user)
+				.equal("type", NotifyType.Announce)
 				.notExists(UserNotify.class)
 					.equal("user", user)
-					.greaterThanProperty("createdAt", "createdAt")
-				.end()
-				.exists(Notify.class)
 					.equal("type", NotifyType.Announce)
-					.equalProperty("id", "notifyId")
+					.greaterThanProperty("createdAt", "createdAt")
 				.end()
 				.findOne();
 		} catch (NoResultException e) {
@@ -144,6 +143,7 @@ public class NotifyServiceImpl implements NotifyService {
 		for (Notify notify : notifies) {
 			UserNotify userNotify = new UserNotify();
 			userNotify.setId(UUID.randomUUID().toString());
+			userNotify.setType(NotifyType.Announce);
 			userNotify.setNotifyId(notify.getId());
 			userNotify.setUser(user);
 			userNotify.setCreatedAt(new Date());
@@ -180,6 +180,7 @@ public class NotifyServiceImpl implements NotifyService {
 			for (Notify notify : notifies) {
 				UserNotify userNotify = new UserNotify();
 				userNotify.setId(UUID.randomUUID().toString());
+				userNotify.setType(NotifyType.Remind);
 				userNotify.setNotifyId(notify.getId());
 				userNotify.setUser(user);
 				userNotify.setCreatedAt(new Date());
@@ -254,6 +255,7 @@ public class NotifyServiceImpl implements NotifyService {
 
 			List<Notify> notifies = JpaUtil.linq(Notify.class)
 					.in("id", notifyIds)
+					.desc("createdAt")
 					.findAll();
 			for (Notify notify : notifies) {
 				notify.setUserNotify(userNotifyMap.get(notify.getId()));
