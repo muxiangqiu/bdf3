@@ -33,7 +33,7 @@
               <div class="field">
                   <input type="text" style="visibility: hidden">
               </div>
-              <button class="ui green large circular fluid button" c-onclick="registerUser()"> 用户注册 </button>
+              <div class="ui green large circular fluid button" c-onclick="registerUser()"> 用户注册 </div>
               <div class="ui error message"></div>
           </form>
       </div>
@@ -56,7 +56,7 @@
               <div class="field">
                   <input type="text" data-validate="nickname" placeholder="${userMetadataServiceImpl.nicknameLabel}" c-bind="organization.${userMetadataServiceImpl.nicknameProp}">
               </div>
-              <button class="ui blue large circular fluid button" c-onclick="registerOrganization()"> 公司注册 </button>
+              <div class="ui blue large circular fluid button" c-onclick="registerOrganization()"> 公司注册 </div>
               <div class="ui error message"></div>
           </form>
       </div>

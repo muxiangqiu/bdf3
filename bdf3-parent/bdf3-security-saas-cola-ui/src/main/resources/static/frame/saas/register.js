@@ -183,10 +183,13 @@
                     contentType: "application/json",
                     data: JSON.stringify(data),
                     type: "POST",
-                    url: service.registerUser
+                    url: service.registerUser,
+                    successMessage: "用户组册成功。"
                 };
                 $.ajax(options).done(function () {
-                   window.location.href = loginPath;
+                    setTimeout(function() {
+                        window.location.href = loginPath;
+                    }, 1500);
                 });
             },
             registerOrganization: function() {
@@ -201,10 +204,13 @@
                     contentType: "application/json",
                     data: JSON.stringify(data),
                     type: "POST",
-                    url: service.registerOrganization
+                    url: service.registerOrganization,
+                    successMessage: "公司组册成功。"
                 };
                 $.ajax(options).done(function () {
-                    window.location.href = loginPath;
+                    setTimeout(function() {
+                        window.location.href = loginPath;
+                    }, 1500);
                 });
             }
         });
