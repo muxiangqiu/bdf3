@@ -15,5 +15,9 @@
   		<groupId>com.bstek.bdf3</groupId>
   		<artifactId>bdf3-security-saas-cola-ui</artifactId>
   	</dependency>
+  	<dependency>
+  		<groupId>com.bstek.bdf3</groupId>
+  		<artifactId>bdf3-message-cola-ui</artifactId>
+  	</dependency>
   </dependencies>
 </project>
