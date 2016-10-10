@@ -92,17 +92,19 @@
 
         if (settings.successMessage) {
             showMessage(settings.successMessage, settings.messageTime, settings.messageTarget, settings.messagePosition);
+        } else {
+        	type = settings.type.toUpperCase();
+	        if (type !== "GET") {
+	            messages = {
+	                POST: "添加成功",
+	                PUT: "修改成功",
+	                DELETE: "删除成功"
+	            };
+	
+	            showMessage(messages[type], settings.messageTime, settings.messageTarget, settings.messagePosition);
+	        }
         }
-        type = settings.type.toUpperCase();
-        if (type !== "GET") {
-            messages = {
-                POST: "添加成功",
-                PUT: "修改成功",
-                DELETE: "删除成功"
-            };
-
-            showMessage(messages[type], settings.messageTime, settings.messageTarget, settings.messagePosition);
-        }
+        
         if (startedAjaxList.length === 0) {
             return NProgress.done();
         }
