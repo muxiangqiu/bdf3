@@ -56,6 +56,13 @@
             }
         });
 
+        window.onpopstate = function() {
+            if (window.location.hash) {
+                path = window.location.hash.substring(1);
+                model.action("expandAndOpenPage")(path);
+            }
+        };
+
 
         model.action({
             openUserCenter: function() {
