@@ -49,7 +49,7 @@
             parseMenus(menus, 0);
             model.set("allUrls", urls);
             model.set("urls", urls);
-            model.action("expandAndOpenPage")(current);
+            model.action("expandAndOpenPage")(current || path);
 
             if ($.cookie('switchBarExpand') === "true") {
                 model.action("switchBar")();
@@ -59,7 +59,9 @@
         window.onpopstate = function() {
             if (window.location.hash) {
                 path = window.location.hash.substring(1);
-                model.action("expandAndOpenPage")(path);
+                if (model.get("currentUrl.path") !== path) {
+                    model.action("expandAndOpenPage")(path);
+                }
             }
         };
 
@@ -178,8 +180,8 @@
                 if (!url) return;
                 if (typeof url === "string") {
                    url = {
-                       id: url,
-                       name: url,
+                       id: "temp_" + new Date().getTime(),
+                       name: "当前",
                        path: url
                    };
                 }
