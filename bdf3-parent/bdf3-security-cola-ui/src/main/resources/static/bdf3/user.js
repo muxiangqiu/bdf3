@@ -246,7 +246,12 @@
                     url: service.add
                 };
                 $.ajax(options).done(function () {
-                    model.set("addUser", {});
+                    model.set("addUser", {
+                        accountNonExpired: true,
+                        accountNonLocked: true,
+                        credentialsNonExpired: true,
+                        enabled: true
+                    });
                     model.get("users").insert(data, "begin").setState(cola.Entity.STATE_NONE);
                     $("#addModal").modal("hide");
                     $("#user_" + data[usernameProp]).transition({
