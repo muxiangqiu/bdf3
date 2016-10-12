@@ -26,13 +26,32 @@
             }
         });
 
-
         model.action({
             search: function () {
                 return model.flush("announces");
             },
             publish: function () {
-                window.location.href = "publish";
+                if (typeof window.parent.expandAndOpenPage === "function") {
+                    window.parent.expandAndOpenPage({
+                        id: "announce_publish",
+                        path: "announce/publish",
+                        name: "发布公告"
+
+                    });
+                } else {
+                    window.location.href = "publish";
+                }
+            },
+            modify: function(item) {
+                if (typeof window.parent.expandAndOpenPage === "function") {
+                    window.parent.expandAndOpenPage({
+                        id: "announce_modify" + item.get("id"),
+                        path: "announce/modify/" + item.get("id"),
+                        name: "修改公告"
+                    });
+                } else {
+                    window.location.href = " ../announce/modify/" + item.get("id");
+                }
             },
             confirmRemove: function(item) {
                 model.get("announces").setCurrent(item);

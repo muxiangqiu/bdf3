@@ -39,7 +39,15 @@
                 }
             },
             send: function () {
-                window.location.href = "message/send";
+                if (typeof window.parent.expandAndOpenPage === "function") {
+                    window.parent.expandAndOpenPage({
+                        id: "message_send",
+                        path: "message/send",
+                        name: "发送私信"
+                    });
+                } else {
+                    window.location.href = "message/send";
+                }
             },
             getContentText: function(content) {
                 return $(content).text().replace(/\s+/g, " ");
@@ -51,7 +59,15 @@
                 } else {
                     chatId = item.get("group");
                 }
-                window.location.href = "chat/" + chatId;
+                if (typeof window.parent.expandAndOpenPage === "function") {
+                    window.parent.expandAndOpenPage({
+                        id: "chat_" + chatId,
+                        path: "chat/" + chatId,
+                        name: "对话"
+                    });
+                } else {
+                    window.location.href = "chat/" + chatId;
+                }
             },
             confirmRemove: function(item) {
                 if (item.get("recentTime")) {

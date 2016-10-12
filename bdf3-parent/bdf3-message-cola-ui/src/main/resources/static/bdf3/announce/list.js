@@ -49,6 +49,17 @@
                     window.history.back();
                 }
             },
+            openDetail: function(item) {
+                if (typeof window.parent.expandAndOpenPage === "function") {
+                            window.parent.expandAndOpenPage({
+                        id: "announce_detail" + item.get("id"),
+                        path: "announce/detail/" + item.get("id"),
+                        name: "公告详情"
+                    });
+                } else {
+                    window.location.href = "announce/detail/" + item.get("id");
+                }
+            },
             publish: function () {
                 window.location.href = "announce/publish";
             },

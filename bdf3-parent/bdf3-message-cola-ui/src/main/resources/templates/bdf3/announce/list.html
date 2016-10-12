@@ -41,7 +41,7 @@
                 </div>
                 <i class="large middle aligned announcement icon"></i>
                 <div class="content">
-                    <a class="header" c-bind="item.title" c-href="'announce/detail/' + item.id"></a>
+                    <a class="header" c-bind="item.title" c-onclick="openDetail(item)"></a>
                 </div>
             </div>
         </div>
@@ -61,7 +61,7 @@
                 </div>
                 <i class="large middle aligned announcement icon"></i>
                 <div class="content">
-                    <a class="header" c-bind="item.title" c-href="'announce/detail/' + item.id"></a>
+                    <a class="header" c-bind="item.title" c-onclick="openDetail(item)"></a>
                 </div>
             </div>
         </div>
