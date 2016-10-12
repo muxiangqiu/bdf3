@@ -17,35 +17,34 @@
 <script type="text/javascript">
     NProgress.configure({showSpinner: false, minimum: 0.3})
     NProgress.start();
-    tinymce.init({
-        selector: '#txtMessage',
-        height: 250,
-        theme: 'modern',
-        plugins: [
-            'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-            'searchreplace wordcount visualblocks visualchars code fullscreen',
-            'insertdatetime media nonbreaking save table contextmenu directionality',
-            'emoticons template paste textcolor colorpicker textpattern imagetools'
-        ],
-        toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media | forecolor backcolor emoticons',
-        image_advtab: true,
-        templates: [
-            { title: 'Test template 1', content: 'Test 1' },
-            { title: 'Test template 2', content: 'Test 2' }
-        ]
-    });
+
 </script>
 <div class="ui segment basic">
     <h2 class="ui header">
-        <button class="ui right floated secondary circular button" c-onclick="openManagePage()">私信中心</button>
+        <button class="ui right floated secondary circular button" c-onclick="openListPage()">私信中心</button>
         发送私信
     </h2>
-    <form id="announceForm" class="ui form">
+    <div class="ui floating labeled icon dropdown button">
+        <i class="add user icon"></i>
+        <span class="text">选择接收者</span>
+        <div id="ddUser" class="menu">
+            <div class="ui left icon input">
+                <i class="search icon"></i>
+                <input c-bind="searchKey" type="text" name="search" placeholder="查询..." c-onkeyup="search()">
+            </div>
+            <div class="divider"></div>
+            <div class="item" c-repeat="users" c-data-value="item.username">
+                <img class="ui avatar image" src="../static/resources/images/avatars/large/elyse.png">
+                <span class="text" c-bind="item.nickname + '(' + item.username + ')'"></span>
+            </div>
+        </div>
+    </div>
+    <form id="messageForm" class="ui form">
         <div class="field">
-            <input data-validate="receiver" type="text" c-bind="message.additional" placeholder="请输入接收者">
+            <input id="receiver" data-validate="receiver" type="text" c-bind="message.additional" placeholder="请输入接收者" >
         </div>
         <div class="field">
-            <textarea id="txtMessage" c-bind="message.content"></textarea>
+            <textarea data-validate="content" id="txtMessage" c-bind="message.content"></textarea>
         </div>
         <div class="ui error message"></div>
         <div id="btns" class="field">

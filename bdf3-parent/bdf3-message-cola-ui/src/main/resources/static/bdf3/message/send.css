@@ -14,11 +14,16 @@ html body {
     text-align: center;
 }
 
-.ui.button {
+#btns .ui.button {
     width: 80px;
 }
 
 .ui.right.button {
     width: 100px;
+}
+
+#receiver {
+    visibility: hidden;
+    height: 0px;
 }
 
