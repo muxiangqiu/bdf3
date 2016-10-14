@@ -1,13 +1,71 @@
 (function () {
     cola(function (model) {
-        var errorCount, longPollingTimeOut;
+        var errorCount, longPollingTimeOut, service, initSkin;
 
-        var service = {
+        service = {
             messagePull: messagePullPath,
             messageTotalPull: messageTotalPullPath,
             loadMenus: "./api/menus",
             getLoginUser: "./api/user/detail"
         };
+        
+        refreshSkin = function() {
+        	$("#topMenu").css({
+        		background: topBarBackground,
+        		color: topBarColor
+        	});
+        	$("#topMenu a.icon.item").css({
+        		color: topBarColor
+    		}).hover(function() {
+        		$(this).css({
+        			background: topBarHoverBackground,
+            		color: topBarHoverColor
+        		});
+        	}, function() {
+        		$(this).css({
+        			background: "",
+            		color: topBarColor
+        		});
+        	});
+        	
+        	$("#logo").css({
+    			background: topLeftCornerBackground,
+        		color: topLeftCornerColor
+    		}).hover(function() {
+        		$(this).css({
+        			background: topLeftCornerHoverBackground,
+            		color: topLeftCornerHoverColor
+        		});
+        	}, function() {
+        		$(this).css({
+        			background: topLeftCornerBackground,
+            		color: topLeftCornerColor
+        		});
+        	});
+        	
+        	$("#menu").css({
+        		background: leftBarBackground
+        	});
+        	
+        	$("#menu > .item > .search.icon").css({
+        		color: menuSearchColor
+    		}).hover(function() {
+        		$(this).css({
+            		color: menuSearchHoverColor
+        		});
+        	}, function() {
+        		$(this).css({
+            		color: menuSearchColor
+        		});
+        	});
+        	
+        	$("#userCenter").css({
+        		background: userCenterBackground
+    		})
+        };
+        
+        refreshSkin();
+
         model.set("searching", false);
         model.describe("menus", {
             provider: {
@@ -389,6 +447,7 @@
 
         window.expandAndOpenPage = model.action("expandAndOpenPage");
 
+        window.refreshSkin = refreshSkin;
     });
 
 }).call(this);

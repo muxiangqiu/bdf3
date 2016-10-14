@@ -41,6 +41,42 @@ public class FrameworkController {
 	@Value("${bdf3.application.name:BDF}")
 	private String applicationName;
 	
+	@Value("${bdf3.main.topBarBackground:#09C}")
+	private String topBarBackground;
+	
+	@Value("${bdf3.main.topBarHoverBackground:rgba(255, 255, 255, 0.08)}")
+	private String topBarHoverBackground;
+	
+	@Value("${bdf3.main.topLeftCornerBackground:#0087b4}")
+	private String topLeftCornerBackground;
+	
+	@Value("${bdf3.main.topLeftCornerHoverBackground:#0087b4}")
+	private String topLeftCornerHoverBackground;
+	
+	@Value("${bdf3.main.leftBarBackground:#22282e}")
+	private String leftBarBackground;
+	
+	@Value("${bdf3.main.leftBarHoverBackground:#314253}")
+	private String userCenterBackground;
+	
+	@Value("${bdf3.main.topBarColor:rgba(255, 255, 255, 0.9)}")
+	private String topBarColor;
+	
+	@Value("${bdf3.main.topBarHoverColor:rgba(255, 255, 255, 0.08)}")
+	private String topBarHoverColor;
+	
+	@Value("${bdf3.main.topBarColor:rgba(255, 255, 255, 0.7)}")
+	private String topLeftCornerColor;
+	
+	@Value("${bdf3.main.topBarHoverColor:rgba(255, 255, 255, 0.08)}")
+	private String topLeftCornerHoverColor;
+	
+	@Value("${bdf3.main.menuSearchColor:green}")
+	private String menuSearchColor;
+	
+	@Value("${bdf3.main.menuSearchHoverColor:green}")
+	private String menuSearchHoverColor;
+	
 	@Value("${bdf3.security.logoutPath:/logout}")
 	private String logoutPath;
 	
@@ -74,6 +110,20 @@ public class FrameworkController {
 	public String main(Model model) {
 		model.addAttribute("applicationTitle", applicationTitle);
 		model.addAttribute("applicationName", applicationName);
+		
+		model.addAttribute("topBarBackground", topBarBackground);
+		model.addAttribute("topBarHoverBackground", topBarHoverBackground);
+		model.addAttribute("topLeftCornerBackground", topLeftCornerBackground);
+		model.addAttribute("topLeftCornerHoverBackground", topLeftCornerHoverBackground);
+		model.addAttribute("leftBarBackground", leftBarBackground);
+		model.addAttribute("userCenterBackground", userCenterBackground);
+		model.addAttribute("topBarColor", topBarColor);
+		model.addAttribute("topBarHoverColor", topBarHoverColor);
+		model.addAttribute("topLeftCornerColor", topLeftCornerColor);
+		model.addAttribute("topLeftCornerHoverColor", topLeftCornerHoverColor);
+		model.addAttribute("menuSearchColor", menuSearchColor);
+		model.addAttribute("menuSearchHoverColor", menuSearchHoverColor);
+		
 		model.addAttribute("logoutPath", logoutPath.substring(1));
 		model.addAttribute("messageDisabled", messageDisabled);
 		model.addAttribute("longPollingTimeout", longPollingTimeout);
