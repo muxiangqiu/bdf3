@@ -169,6 +169,10 @@ html body {
     cursor: pointer;
 }
 
+#userCenter .me {
+    margin-bottom: 10px;
+}
+
 #userCenter .logout {
     position: fixed;
     bottom: 2em;
