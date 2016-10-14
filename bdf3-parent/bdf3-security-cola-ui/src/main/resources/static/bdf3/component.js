@@ -2,15 +2,15 @@
     cola(function (model) {
 
         var service = {
-            load: "./service/component/load",
-            loadRoles: "./service/role/load",
-            modify: "./service/component/modify",
-            loadMenus: "./service/url/load-tree",
-            add: "./service/component/add",
-            remove: "./service/component/remove/:id",
-            addPermission: "./service/permission/add",
-            removePermission: "./service/permission/remove/:id",
-            modifyPermission: "./service/permission/modify"
+            load: "./api/component/load",
+            loadRoles: "./api/role/load",
+            modify: "./api/component/modify",
+            loadMenus: "./api/url/load-tree",
+            add: "./api/component/add",
+            remove: "./api/component/remove/:id",
+            addPermission: "./api/permission/add",
+            removePermission: "./api/permission/remove/:id",
+            modifyPermission: "./api/permission/modify"
         };
 
         model.set("searching", false);

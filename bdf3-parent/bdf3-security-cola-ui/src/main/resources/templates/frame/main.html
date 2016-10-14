@@ -6,8 +6,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta charset="UTF-8">
     <title>$applicationTitle</title>
-    <link rel="stylesheet" type="text/css" href="static/resources/nprogress/nprogress.css">
-    <script src="static/resources/nprogress/nprogress.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/nprogress/nprogress.css">
+    <script src="static/nprogress/nprogress.js"></script>
     <link rel="stylesheet" type="text/css" href="static/cola-ui/semantic.css">
     <link rel="stylesheet" type="text/css" href="static/frame/main.css">
 </head>
@@ -21,9 +21,7 @@
     <a id="logo" class="item" c-onclick="showMenuBar()">
         <i class="cube large icon"></i>
     </a>
-    <div class="item">
-        $!applicationName
-    </div>
+    <div class="item" c-bind="applicationName"></div>
     <div class="right menu">
         <a class="icon item" c-onclick="refreshPage()" data-position="bottom center" c-data-tooltip="currentUrl ? '刷新' + currentUrl.name : '刷新不可用' " data-inverted="">
             <i class="refresh large icon"></i>
@@ -60,9 +58,9 @@
 </div>
 
 <div id="userCenter" class="ui right vertical overlay sidebar ">
-    <div>
+    <div class="me">
         <img class="ui image avatar" c-src="loginUser.avatar ? loginUser.avatar :'./static/resources/images/avatars/large/matthew.png'">
-        <div class="user-info" c-bind="loginUser.${userMetadataServiceImpl.nicknameProp}">
+        <div c-onclick="openMe()" class="user-info" c-bind="loginUser.${userMetadataServiceImpl.nicknameProp}">
             登录用户名
         </div>
     </div>
@@ -104,5 +102,6 @@
     var longPollingInterval = $longPollingInterval;
     var messagePullPath = "$messagePullPath";
     var messageTotalPullPath = "$messageTotalPullPath";
+    var applicationName = "$!applicationName";
 </script>
 </html>

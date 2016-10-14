@@ -22,7 +22,7 @@ import com.bstek.bdf3.security.domain.Component;
  * @since 2016年8月3日
  */
 @RestController
-@RequestMapping("/service")
+@RequestMapping("/api")
 @Transactional(readOnly = true)
 public class ComponentController {
 	

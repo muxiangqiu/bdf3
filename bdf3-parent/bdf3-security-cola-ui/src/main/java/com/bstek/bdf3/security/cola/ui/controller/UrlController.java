@@ -21,7 +21,7 @@ import com.bstek.bdf3.security.domain.Url;
  * @since 2016年3月6日
  */
 @RestController
-@RequestMapping("/service")
+@RequestMapping("/api")
 @Transactional(readOnly = true)
 public class UrlController {
 	

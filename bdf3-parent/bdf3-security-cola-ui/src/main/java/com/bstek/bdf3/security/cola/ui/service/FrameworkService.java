@@ -32,4 +32,6 @@ public interface FrameworkService {
 	Long getMessageTotal(String username);
 
 	List<Notify> getMessages(String username);
+
+	String getMePage();
 }

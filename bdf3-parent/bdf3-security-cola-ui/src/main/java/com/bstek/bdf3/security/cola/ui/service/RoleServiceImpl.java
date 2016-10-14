@@ -33,6 +33,16 @@ public class RoleServiceImpl implements RoleService {
 	}
 	
 	@Override
+	public List<Role> load(String username) {
+		return JpaUtil
+				.linq(Role.class)
+				.exists(RoleGrantedAuthority.class)
+					.equalProperty("roleId", "id")
+					.equal("actorId", username)
+				.findAll();
+	}
+	
+	@Override
 	public List<Url> loadUrls(String roleId) {
 		return JpaUtil
 				.linq(Url.class)

@@ -115,6 +115,29 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public void changePassword(String username, String newPassword) {
+		if (SecurityUserUtil.getPasswordProp() != null) {
+			JpaUtil.linu(SecurityUserUtil.getSecurityUserType())
+				.set(SecurityUserUtil.getPasswordProp(), passwordEncoder.encode(newPassword))
+				.equal(SecurityUserUtil.getUsernameProp(), username)
+				.update();
+		}
+	}
+	
+	@Override
+	public boolean validatePassword(String username, String password) {
+		if (SecurityUserUtil.getPasswordProp() != null) {
+			UserDetails user = JpaUtil.linq(SecurityUserUtil.getSecurityUserType())
+				.equal(SecurityUserUtil.getUsernameProp(), username)
+				.findOne();
+			if (passwordEncoder.matches(password, user.getPassword())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
 	@Transactional(readOnly = true)
 	public boolean isExist(String username) {
 		return JpaUtil.linq(SecurityUserUtil.getSecurityUserType()).equal(SecurityUserUtil.getUsernameProp(), username).exists();

@@ -19,7 +19,7 @@ import com.bstek.bdf3.security.saas.cola.ui.service.RegisterService;
  * @since 2016年3月6日
  */
 @RestController
-@RequestMapping("/service")
+@RequestMapping("/api")
 public class RegisterController {
 	
 	@Autowired

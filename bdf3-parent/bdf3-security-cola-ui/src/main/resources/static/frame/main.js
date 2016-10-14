@@ -5,8 +5,8 @@
         var service = {
             messagePull: messagePullPath,
             messageTotalPull: messageTotalPullPath,
-            loadMenus: "./service/menus",
-            getLoginUser: "./service/user/detail"
+            loadMenus: "./api/menus",
+            getLoginUser: "./api/user/detail"
         };
         model.set("searching", false);
         model.describe("menus", {
@@ -17,7 +17,10 @@
 
         model.describe("loginUser", {
             provider: {
-                url: service.getLoginUser
+                url: service.getLoginUser,
+                success: function() {
+                    model.set("applicationName", model.get("loginUser.organization.name") || applicationName);
+                }
             }
         });
 
@@ -67,6 +70,9 @@
 
 
         model.action({
+            openMe: function() {
+                model.action("expandAndOpenPage")("me");
+            },
             openUserCenter: function() {
                 $("#userCenter").sidebar("toggle");
             },

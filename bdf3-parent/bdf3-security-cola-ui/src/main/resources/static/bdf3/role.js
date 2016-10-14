@@ -2,14 +2,14 @@
     cola(function (model) {
 
         var service = {
-            load: "./service/role/load",
-            add: "./service/role/add",
-            remove: "./service/role/remove/:id",
-            modify: "./service/role/modify",
-            loadUrlsByRoleId: "./service/role/load-urls/{{@id}}",
-            loadUrls: "./service/url/load-tree",
-            addUrl: "./service/permission/add",
-            removeUrl: "./service/permission/remove/:roleId/:resourceId"
+            load: "./api/role/load",
+            add: "./api/role/add",
+            remove: "./api/role/remove/:id",
+            modify: "./api/role/modify",
+            loadUrlsByRoleId: "./api/role/load-urls/{{@id}}",
+            loadUrls: "./api/url/load-tree",
+            addUrl: "./api/permission/add",
+            removeUrl: "./api/permission/remove/:roleId/:resourceId"
         };
 
 

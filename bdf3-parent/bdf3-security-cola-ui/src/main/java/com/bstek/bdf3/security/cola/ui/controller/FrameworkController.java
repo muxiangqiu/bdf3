@@ -56,10 +56,10 @@ public class FrameworkController {
     @Value("${bdf3.message.longPollingInterval:15000}")
     private int longPollingInterval;
     
-    @Value("${bdf3.message.pullPath:./service/message/pull}")
+    @Value("${bdf3.message.pullPath:./api/message/pull}")
     private String messagePullPath;
     
-    @Value("${bdf3.message.totallPullPath:./service/message/total/pull}")
+    @Value("${bdf3.message.totallPullPath:./api/message/total/pull}")
     private String messageTotalPullPath;
     
     @Autowired
@@ -119,7 +119,13 @@ public class FrameworkController {
 		return frameworkService.getComponentPage();
 	}
 	
-	@RequestMapping("/service/menus")
+	@RequestMapping("/me") 
+	public String me(Model model) {
+		model.addAttribute(SecurityUserUtil.getUserMetadateService());
+		return frameworkService.getMePage();
+	}
+	
+	@RequestMapping("/api/menus")
 	@ResponseBody
 	@Transactional(readOnly = true)
 	public List<Url> loadUrlsByCurrentUser(Authentication authentication) {
@@ -127,14 +133,14 @@ public class FrameworkController {
 		return urlService.findTreeByUsername(user.getUsername());
 	}
 	
-	@RequestMapping("/service/user/detail")
+	@RequestMapping("/api/user/detail")
 	@ResponseBody
 	@Transactional(readOnly = true)
 	public UserDetails getLoginUser(){
 		return frameworkService.getLoginUserInfo();
 	}
 	
-	@RequestMapping(path = "/service/message/total/pull", method = RequestMethod.GET)
+	@RequestMapping(path = "/api/message/total/pull", method = RequestMethod.GET)
 	@ResponseBody
 	@Transactional
 	public Long getMessageTotal(Authentication authentication) {
@@ -142,7 +148,7 @@ public class FrameworkController {
 		return frameworkService.getMessageTotal(user.getUsername());
 	}
 	
-	@RequestMapping(path = "/service/message/pull", method = RequestMethod.GET)
+	@RequestMapping(path = "/api/message/pull", method = RequestMethod.GET)
 	@ResponseBody
 	@Transactional
 	public List<Notify> getMessages(Authentication authentication) {

@@ -26,6 +26,10 @@ public interface UserService {
 	void removeRoleGrantedAuthority(String id);
 
 	boolean isExist(String username);
+
+	boolean validatePassword(String username, String password);
+
+	void changePassword(String username, String newPassword);
 	
 	
 

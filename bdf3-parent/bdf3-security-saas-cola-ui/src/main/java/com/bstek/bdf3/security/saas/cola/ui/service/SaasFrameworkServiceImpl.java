@@ -19,11 +19,6 @@ public class SaasFrameworkServiceImpl extends FrameworkServiceImpl implements Sa
 	}
 
 	@Override
-	public String getMainPage() {
-		return "frame/saas/main";
-	}
-
-	@Override
 	public String getRegisterPage() {
 		return "frame/saas/register";
 	}

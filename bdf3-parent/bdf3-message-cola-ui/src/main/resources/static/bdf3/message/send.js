@@ -3,13 +3,8 @@
 
         var service = {
             add: "../api/message/add",
-            loadUsers: "../service/user/load"
+            loadUsers: "../api/user/load"
         };
-
-//        $.fn.form.settings.rules.adminLevel = function(value) {
-//            return value && model.get("message.conten")
-//        };
-
 
         tinymce.init({
             selector: '#txtMessage',
@@ -106,7 +101,7 @@
                     url: service.add
                 };
                 $.ajax(options).done(function () {
-                    model.set("announce", {});
+                    model.set("message", {});
                     if (typeof window.parent.refreshMessage === "function") {
                         window.parent.refreshMessage();
                     }

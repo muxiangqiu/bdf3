@@ -58,6 +58,11 @@ public class FrameworkServiceImpl implements FrameworkService {
 	public String getComponentPage() {
 		return "bdf3/component";
 	}
+	
+	@Override
+	public String getMePage() {
+		return "bdf3/me";
+	}
 
 	@Override
 	public UserDetails getLoginUserInfo() {

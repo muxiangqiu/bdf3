@@ -155,16 +155,18 @@ html body {
 #userCenter .ui.avatar {
     border: 2px solid rgba(255, 255, 255, 0.75);
     border-radius: 50%;
-    margin: 4em auto 1em;
+    margin: 2em auto 1em;
     display: block;
-    width: 7em;
-    height: 7em;
+    width: 6em;
+    height: 6em;
+    cursor: pointer;
 }
 
 #userCenter .user-info {
     text-align: center;
     font-size: 1.3em;
     color: #fff;
+    cursor: pointer;
 }
 
 #userCenter .logout {
@@ -172,7 +174,6 @@ html body {
     bottom: 2em;
     left: 5.8em;
 }
-
 
 .pusher {
     min-height: 0px !important;

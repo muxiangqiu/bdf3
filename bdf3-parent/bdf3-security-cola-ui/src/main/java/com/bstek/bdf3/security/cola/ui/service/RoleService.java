@@ -23,4 +23,6 @@ public interface RoleService {
 
 	void modify(Role role);
 
+	List<Role> load(String username);
+
 }

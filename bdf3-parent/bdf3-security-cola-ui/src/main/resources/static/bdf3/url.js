@@ -2,10 +2,10 @@
     cola(function (model) {
 
         var service = {
-            load: "./service/url/load-tree",
-            add: "./service/url/add",
-            remove: "./service/url/remove/:id",
-            modify: "./service/url/modify"
+            load: "./api/url/load-tree",
+            add: "./api/url/add",
+            remove: "./api/url/remove/:id",
+            modify: "./api/url/modify"
         };
 
 

@@ -7,7 +7,7 @@
         $.ajax({
             contentType: "application/json",
             type: "GET",
-            url: window.contextPath + "/service/component/load-by-path"
+            url: window.contextPath + "/api/component/load-by-path"
         }).success(function(result) {
             var i, c, type, widget, do$Dom;
             do$Dom = function(selector) {

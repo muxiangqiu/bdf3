@@ -25,7 +25,7 @@ import com.bstek.bdf3.security.domain.RoleGrantedAuthority;
  */
 @RestController
 @Transactional(readOnly = true)
-@RequestMapping("/service")
+@RequestMapping("/api")
 public class UserController {
 	
 	@Autowired

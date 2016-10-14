@@ -2,14 +2,14 @@
     cola(function (model) {
 
         var service = {
-            load: "./service/user/load",
-            add: "./service/user/add",
-            remove: "./service/user/remove/:username",
-            modify: "./service/user/modify",
-            hasUser: "./service/user/exist/:username",
-            loadRoles: "./service/role/load",
-            addRole: "./service/authority/add",
-            removeRole: "./service/authority/remove/:id"
+            load: "./api/user/load",
+            add: "./api/user/add",
+            remove: "./api/user/remove/:username",
+            modify: "./api/user/modify",
+            hasUser: "./api/user/exist/:username",
+            loadRoles: "./api/role/load",
+            addRole: "./api/authority/add",
+            removeRole: "./api/authority/remove/:id"
         };
 
         window.closeModifyUserModal = function() {

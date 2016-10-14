@@ -25,7 +25,7 @@ public class SaasColaWebSecurityConfigurer extends WebSecurityConfigurer {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/static/**", "/**/*.js", "/**/*.css", "/register", "/service/register/**")
+				.antMatchers("/static/**", "/**/*.js", "/**/*.css", "/register", "/api/register/**")
 				.permitAll()
 				.anyRequest()
 				.authenticated()
