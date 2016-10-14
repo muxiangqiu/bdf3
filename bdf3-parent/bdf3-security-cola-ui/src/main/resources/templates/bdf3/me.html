@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" type="text/css" href="static/nprogress/nprogress.css">
+    <script src="static/nprogress/nprogress.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/cola-ui/semantic.css">
+    <link rel="stylesheet" type="text/css" href="static/bdf3/me.css">
+</head>
+<body>
+<script type="text/javascript">
+    NProgress.configure({showSpinner: false, minimum: 0.3})
+    NProgress.start();
+</script>
+<h2 class="ui icon center aligned header">
+    <img c-src="user.avatar ? user.avatar : 'static/resources/images/avatars/large/matthew.png'" class="ui circular image">
+    <div class="content">
+        <div class="ui large transparent input">
+            <input id="txtNickname" type="text" c-bind="user.${userMetadataServiceImpl.nicknameProp}">
+        </div>
+        <div class="sub header" c-bind="user.${userMetadataServiceImpl.UsernameProp}">kevin</div>
+        <div class="sub header" c-bind="user.organization.name"></div>
+        <div class="sub header" c-bind="user.organization.id"></div>
+        <div class="ui circular labels">
+            <div class="ui label" c-repeat="roles" c-bind="item.name"></div>
+        </div>
+    </div>
+</h2>
+
+<div class="ui centered card">
+    <div class="content">
+        <div class="header">修改密码</div>
+    </div>
+    <div class="content">
+        <form id="editPasswordForm" class="ui form">
+            <div class="field">
+                <input data-validate="password" type="password" placeholder="密码" c-bind="password">
+            </div>
+            <div class="field">
+                <input data-validate="newPassword" type="password" placeholder="新密码" c-bind="newPassword">
+            </div>
+            <div class="field">
+                <input data-validate="newPasswordAgain" type="password" placeholder="确认新密码" c-bind="newPasswordAgain">
+            </div>
+            <div class="field">
+                <div class="ui green circular fluid button" c-onclick="changePassword()">确认修改</div>
+            </div>
+            <div class="field">
+                <div class="ui error message"></div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script src="static/jquery-2.1.3.js"></script>
+<script src="static/jquery.cookie.js"></script>
+<script src="static/cola-ui/3rd.js"></script>
+<script src="static/cola-ui/semantic.js"></script>
+<script src="static/cola-ui/cola-core.js" charset="UTF-8"></script>
+<script src="static/common/common.js"></script>
+<script src="static/bdf3/me.js"></script>
+<script type="text/javascript">
+    var usernameProp = "${userMetadataServiceImpl.usernameProp}";
+    var passwordProp = "$!{userMetadataServiceImpl.passwordProp}";
+    var nicknameProp = "${userMetadataServiceImpl.nicknameProp}";
+    var modifyUserUrl = "$!{userMetadataServiceImpl.modifyUserUrl}";
+</script>
+</html>

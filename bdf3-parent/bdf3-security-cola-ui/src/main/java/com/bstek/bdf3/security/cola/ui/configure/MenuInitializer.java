@@ -96,6 +96,15 @@ public class MenuInitializer extends JpaUtilAble {
 					url.setOrder(6);
 					em.persist(url);
 					
+					url = new Url();
+					url.setId(UUID.randomUUID().toString());
+					url.setName("我的账户");
+					url.setIcon("smile icon");
+					url.setPath("me");
+					url.setNavigable(true);
+					url.setOrder(7);
+					em.persist(url);
+					
 					em.getTransaction().commit();
 				}
 			} finally {

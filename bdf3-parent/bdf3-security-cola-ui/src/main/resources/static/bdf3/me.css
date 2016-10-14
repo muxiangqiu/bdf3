@@ -1,0 +1,27 @@
+/* 主色调定义 */
+/* 文字内容色调定义 */
+/* 背景色调定义 */
+/* 边框色调定义 */
+/* 主题色定义 */
+/* Input */
+/* main page */
+html body {
+  padding: 2em;
+  background-color: #f3f3f4;
+}
+
+.ui.input {
+    border: rgba(0, 0, 0, 0) 1px dashed;
+    -webkit-transition: border .3s ease;
+    -moz-transition: border .3s ease;
+    -o-transition: border .3s ease;
+    transition: border .3s ease;
+}
+
+.ui.input:hover {
+    border: #d4d4d5 1px dashed;
+}
+
+#txtNickname {
+    text-align: center;
+}

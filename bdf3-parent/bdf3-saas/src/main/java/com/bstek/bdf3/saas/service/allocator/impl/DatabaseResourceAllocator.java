@@ -111,6 +111,15 @@ public class DatabaseResourceAllocator implements ResourceAllocator{
 				url.setOrder(6);
 				entityManager.persist(url);
 				
+				url = new Url();
+				url.setId(UUID.randomUUID().toString());
+				url.setName("我的账户");
+				url.setIcon("smile icon");
+				url.setPath("me");
+				url.setNavigable(true);
+				url.setOrder(7);
+				em.persist(url);
+				
 				
 				entityManager.getTransaction().commit();
 			}
