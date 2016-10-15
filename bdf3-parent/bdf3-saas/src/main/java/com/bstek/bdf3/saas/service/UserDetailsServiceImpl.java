@@ -54,6 +54,7 @@ public class UserDetailsServiceImpl extends AbstractUserDetailsService {
 	private Organization loadOrganization() {
 		String organizationId = request.getParameter("organization");
 		Organization organization = organizationService.get(organizationId);
+		Assert.notNull(organization);
 		SaasUtils.setSecurityContext(organizationId);
 		return organization;
 	}

@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.core.annotation.Order;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.stereotype.Component;
@@ -25,6 +27,9 @@ import com.bstek.bdf3.security.domain.Url;
 public class DatabaseResourceAllocator implements ResourceAllocator{
 	
 	@Autowired
+	private DataSourceProperties properties;
+	
+	@Autowired
 	private EntityManagerFactory emf;
 	
 	@Autowired
@@ -35,7 +40,9 @@ public class DatabaseResourceAllocator implements ResourceAllocator{
 	@Override
 	public void allocate(Organization organization) {
 		EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(emf);
-		em.createNativeQuery("create database " + organization.getId()).executeUpdate();
+		if (!EmbeddedDatabaseConnection.isEmbedded(properties.getDriverClassName())) {
+			em.createNativeQuery("create database " + organization.getId()).executeUpdate();
+		}
 		EntityManagerFactory entityManagerFactory = entityManagerFactoryService.getOrCreateEntityManagerFactory(organization);
 		EntityManager entityManager = null;
 		try {
@@ -118,7 +125,7 @@ public class DatabaseResourceAllocator implements ResourceAllocator{
 				url.setPath("me");
 				url.setNavigable(true);
 				url.setOrder(7);
-				em.persist(url);
+				entityManager.persist(url);
 				
 				
 				entityManager.getTransaction().commit();
