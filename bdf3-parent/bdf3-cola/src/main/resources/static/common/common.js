@@ -43,15 +43,15 @@
         }
         return id;
     };
-    showMessage = function(message, time, selector, position) {
+    showMessage = function(message, time, selector, position, themeColor) {
         if (!$messageDom) {
-            $messageDom = $("<div style='display: none;' class='ui success message'></div>").appendTo(selector || "body");
+            $messageDom = $("<div style='display: none;' class='ui " + themeColor + " message'><div class='header'></div>").appendTo(selector || "body");
         }
         if (!selector) {
             $messageDom.appendTo("body");
             $messageDom.css({
                 position: "absolute",
-                top: "0px",
+                bottom: "0px",
                 left: "0px",
                 width: "100%",
                 margin: "0px",
@@ -67,11 +67,11 @@
             $messageDom.appendTo(selector);
             $messageDom.addClass(position || "top attached");
         }
-        $messageDom.text(message);
+        $messageDom.find(".header").text(message);
         $messageDom.animate({opacity: "show"}, "normal", "swing");
         setTimeout(function() {
             $messageDom.animate({opacity: "hide"}, "normal", "swing");
-        }, time || 1500);
+        }, time || 2500);
     };
     startedAjaxList = [];
     $(document).ajaxStart(function (event) {
@@ -89,25 +89,46 @@
         if (index > -1) {
             startedAjaxList.splice(index, 1);
         }
-
-        if (settings.successMessage) {
-            showMessage(settings.successMessage, settings.messageTime, settings.messageTarget, settings.messagePosition);
-        } else {
-        	type = settings.type.toUpperCase();
-	        if (type !== "GET") {
-	            messages = {
-	                POST: "添加成功",
-	                PUT: "修改成功",
-	                DELETE: "删除成功"
-	            };
-	
-	            showMessage(messages[type], settings.messageTime, settings.messageTarget, settings.messagePosition);
+        if (settings.skipMessage === true) {
+        	if (settings.successMessage) {
+	            showMessage(settings.successMessage, settings.messageTime, settings.messageTarget, settings.messagePosition);
+	        } else {
+	        	type = settings.type.toUpperCase();
+		        if (type !== "GET") {
+		            messages = {
+		                POST: "添加成功",
+		                PUT: "修改成功",
+		                DELETE: "删除成功"
+		            };
+		
+		            showMessage(messages[type], settings.messageTime, settings.messageTarget, settings.messagePosition);
+		        }
 	        }
         }
+        
         
         if (startedAjaxList.length === 0) {
             return NProgress.done();
         }
     });
+    $(document).ajaxError(function(event, request, settings){
+    	if (settings.skipMessage === true) {
+	    	if (settings.successMessage) {
+	            showMessage(settings.successMessage, settings.messageTime, settings.messageTarget, settings.messagePosition, "yellow");
+	        } else {
+	        	type = settings.type.toUpperCase();
+		        if (type !== "GET") {
+		            messages = {
+		                POST: "添加失败",
+		                PUT: "修改失败",
+		                DELETE: "删除失败"
+		            };
+		
+		            showMessage(messages[type], settings.messageTime, settings.messageTarget, settings.messagePosition, "red");
+		        }
+	        }
+    	}
+        
+   });
 
 }).call(this);
