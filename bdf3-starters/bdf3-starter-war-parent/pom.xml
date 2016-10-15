@@ -22,4 +22,7 @@
         </pluginRepository>
     </pluginRepositories>
 
-  </project>
+    <modules>
+    	<module>bdf3-sample-war</module>
+    </modules>
+</project>
