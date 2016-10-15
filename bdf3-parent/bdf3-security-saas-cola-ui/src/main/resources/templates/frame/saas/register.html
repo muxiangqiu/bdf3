@@ -16,49 +16,58 @@
 
   <div class="ui two column very relaxed stackable grid">
       <div class="center aligned column">
-          <div class="ui header">用户注册</div>
-          <form id="userForm" class="ui large form">
-              <div class="field">
-                  <input type="text" data-validate="organizationId" placeholder="公司ID" c-bind="user.organizationId">
+          <div class="ui centered card">
+              <div class="content">
+                  <div class="ui header">用户注册</div>
+                  <form id="userForm" class="ui large form">
+                      <div class="field">
+                          <input type="text" data-validate="organizationId" placeholder="公司ID" c-bind="user.organizationId">
+                      </div>
+                      <div class="field">
+                          <input type="text" data-validate="username" placeholder="${userMetadataServiceImpl.usernameLabel}" c-bind="user.${userMetadataServiceImpl.usernameProp}">
+                      </div>
+                      <div class="field">
+                          <input type="password" data-validate="password" placeholder="${userMetadataServiceImpl.passwordLabel}" c-bind="user.${userMetadataServiceImpl.passwordProp}">
+                      </div>
+                      <div class="field">
+                          <input type="text" data-validate="nickname" placeholder="${userMetadataServiceImpl.nicknameLabel}" c-bind="user.${userMetadataServiceImpl.nicknameProp}">
+                      </div>
+                      <div class="field">
+                          <input type="text" style="visibility: hidden">
+                      </div>
+                      <div class="ui green large circular fluid button" c-onclick="registerUser()"> 用户注册 </div>
+                      <div class="ui error message"></div>
+                  </form>
               </div>
-              <div class="field">
-                  <input type="text" data-validate="username" placeholder="${userMetadataServiceImpl.usernameLabel}" c-bind="user.${userMetadataServiceImpl.usernameProp}">
-              </div>
-              <div class="field">
-                  <input type="password" data-validate="password" placeholder="${userMetadataServiceImpl.passwordLabel}" c-bind="user.${userMetadataServiceImpl.passwordProp}">
-              </div>
-              <div class="field">
-                  <input type="text" data-validate="nickname" placeholder="${userMetadataServiceImpl.nicknameLabel}" c-bind="user.${userMetadataServiceImpl.nicknameProp}">
-              </div>
-              <div class="field">
-                  <input type="text" style="visibility: hidden">
-              </div>
-              <div class="ui green large circular fluid button" c-onclick="registerUser()"> 用户注册 </div>
-              <div class="ui error message"></div>
-          </form>
+          </div>
       </div>
       <div class="ui vertical divider">Or </div>
       <div class="center aligned column">
-          <div class="ui header">公司注册</div>
-          <form id="organizationForm" class="ui large form">
-              <div class="field">
-                  <input type="text" data-validate="organizationId" placeholder="公司ID" c-bind="organization.organizationId">
+          <div class="ui centered card">
+              <div class="content">
+                  <div class="ui header">公司注册</div>
+                  <form id="organizationForm" class="ui large form">
+                      <div class="field">
+                          <input type="text" data-validate="organizationId" placeholder="公司ID" c-bind="organization.organizationId">
+                      </div>
+                      <div class="field">
+                          <input type="text" data-validate="organizationName" placeholder="公司名称" c-bind="organization.organizationName">
+                      </div>
+                      <div class="field">
+                          <input type="text" data-validate="username" placeholder="${userMetadataServiceImpl.usernameLabel}" c-bind="organization.${userMetadataServiceImpl.usernameProp}">
+                      </div>
+                      <div class="field">
+                          <input type="password" data-validate="password" placeholder="${userMetadataServiceImpl.passwordLabel}" c-bind="organization.${userMetadataServiceImpl.passwordProp}">
+                      </div>
+                      <div class="field">
+                          <input type="text" data-validate="nickname" placeholder="${userMetadataServiceImpl.nicknameLabel}" c-bind="organization.${userMetadataServiceImpl.nicknameProp}">
+                      </div>
+                      <div class="ui blue large circular fluid button" c-onclick="registerOrganization()"> 公司注册 </div>
+                      <div class="ui error message"></div>
+                  </form>
               </div>
-              <div class="field">
-                  <input type="text" data-validate="organizationName" placeholder="公司名称" c-bind="organization.organizationName">
-              </div>
-              <div class="field">
-                  <input type="text" data-validate="username" placeholder="${userMetadataServiceImpl.usernameLabel}" c-bind="organization.${userMetadataServiceImpl.usernameProp}">
-              </div>
-              <div class="field">
-                  <input type="password" data-validate="password" placeholder="${userMetadataServiceImpl.passwordLabel}" c-bind="organization.${userMetadataServiceImpl.passwordProp}">
-              </div>
-              <div class="field">
-                  <input type="text" data-validate="nickname" placeholder="${userMetadataServiceImpl.nicknameLabel}" c-bind="organization.${userMetadataServiceImpl.nicknameProp}">
-              </div>
-              <div class="ui blue large circular fluid button" c-onclick="registerOrganization()"> 公司注册 </div>
-              <div class="ui error message"></div>
-          </form>
+          </div>
+
       </div>
   </div>
   <script type="text/javascript">
