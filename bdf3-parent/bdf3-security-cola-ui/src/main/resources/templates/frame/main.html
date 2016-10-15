@@ -65,7 +65,7 @@
         </div>
     </div>
     <div class="message">
-        <div class="ui inverted relaxed divided selection list">
+        <div class="ui inverted relaxed divided selection list" c-data-blank="isEmpty(messages)">
             <div class="item" c-repeat="messages" c-id="item.id" c-onclick="openDetail(item)">
                 <div class="content right floated">
                     <i class="wait icon"></i>
@@ -75,6 +75,9 @@
                 <div class="content">
                     <div class="header" c-bind="getContentText(item)"></div>
                 </div>
+            </div>
+            <div class="item blank">
+                没有新通知
             </div>
         </div>
     </div>

@@ -194,4 +194,15 @@ html body {
     }
 }
 
+.ui.list[data-blank="true"] .blank {
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    padding-top: 5em;
+    text-align: center;
+}
+
+.ui.list[data-blank="false"] .blank {
+    display: none;
+}
+
 
