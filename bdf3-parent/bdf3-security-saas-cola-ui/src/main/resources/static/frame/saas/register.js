@@ -2,10 +2,10 @@
     cola(function (model) {
 
         var service = {
-            registerUser: "service/register/user",
-            registerOrganization: "service/register/organization",
-            isExistUser: "service/register/exist/user/:organizationId/:username",
-            isExistOrganization: "service/register/exist/organization/:organizationId"
+            registerUser: "api/register/user",
+            registerOrganization: "api/register/organization",
+            isExistUser: "api/register/exist/user/:organizationId/:username",
+            isExistOrganization: "api/register/exist/organization/:organizationId"
 
         };
 
