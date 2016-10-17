@@ -33,7 +33,7 @@ public class DataSourceServiceImpl implements DataSourceService {
 	@Override
 	public DataSource createDataSource(Organization organization) {
 		String master = "master";
-		if (!EmbeddedDatabaseConnection.isEmbedded(properties.getDriverClassName())) {
+		if (EmbeddedDatabaseConnection.isEmbedded(properties.getDriverClassName())) {
 			master = properties.getName();
 		}
 		DataSourceBuilder factory = DataSourceBuilder
