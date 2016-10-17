@@ -45,7 +45,7 @@
     };
     showMessage = function(message, time, selector, position, themeColor) {
         if (!$messageDom) {
-            $messageDom = $("<div style='display: none;' class='ui " + themeColor + " message'><div class='header'></div>").appendTo(selector || "body");
+            $messageDom = $("<div style='display: none;' class='ui " + themeColor + " message'><div class='header'></div></div>").appendTo(selector || "body");
         }
         if (!selector) {
             $messageDom.appendTo("body");
@@ -89,7 +89,7 @@
         if (index > -1) {
             startedAjaxList.splice(index, 1);
         }
-        if (settings.skipMessage === true) {
+        if (settings.skipMessage !== false) {
         	if (settings.successMessage) {
 	            showMessage(settings.successMessage, settings.messageTime, settings.messageTarget, settings.messagePosition);
 	        } else {
@@ -101,7 +101,7 @@
 		                DELETE: "删除成功"
 		            };
 		
-		            showMessage(messages[type], settings.messageTime, settings.messageTarget, settings.messagePosition);
+		            showMessage(messages[type], settings.messageTime, settings.messageTarget, settings.messagePosition, "yellow");
 		        }
 	        }
         }
@@ -112,9 +112,9 @@
         }
     });
     $(document).ajaxError(function(event, request, settings){
-    	if (settings.skipMessage === true) {
+    	if (settings.skipMessage !== false) {
 	    	if (settings.successMessage) {
-	            showMessage(settings.successMessage, settings.messageTime, settings.messageTarget, settings.messagePosition, "yellow");
+	            showMessage(settings.successMessage, settings.messageTime, settings.messageTarget, settings.messagePosition, "red");
 	        } else {
 	        	type = settings.type.toUpperCase();
 		        if (type !== "GET") {
