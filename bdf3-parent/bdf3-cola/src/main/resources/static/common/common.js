@@ -91,7 +91,7 @@
         }
         if (settings.skipMessage !== false) {
         	if (settings.successMessage) {
-	            showMessage(settings.successMessage, settings.messageTime, settings.messageTarget, settings.messagePosition);
+	            showMessage(settings.successMessage, settings.messageTime, settings.messageTarget, settings.messagePosition, "yellow");
 	        } else {
 	        	type = settings.type.toUpperCase();
 		        if (type !== "GET") {
