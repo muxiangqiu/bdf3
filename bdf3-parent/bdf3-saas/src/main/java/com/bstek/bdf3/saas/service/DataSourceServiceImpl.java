@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.stereotype.Service;
 
 import com.bstek.bdf3.saas.domain.Organization;
@@ -31,10 +32,14 @@ public class DataSourceServiceImpl implements DataSourceService {
 
 	@Override
 	public DataSource createDataSource(Organization organization) {
+		String master = "master";
+		if (!EmbeddedDatabaseConnection.isEmbedded(properties.getDriverClassName())) {
+			master = properties.getName();
+		}
 		DataSourceBuilder factory = DataSourceBuilder
 				.create(this.properties.getClassLoader())
 				.driverClassName(this.properties.getDriverClassName())
-				.url(this.properties.getUrl().replace("master", organization.getId())).username(this.properties.getUsername())
+				.url(this.properties.getUrl().replace(master, organization.getId())).username(this.properties.getUsername())
 				.password(this.properties.getPassword());
 		if (this.properties.getType() != null) {
 			factory.type(this.properties.getType());
