@@ -30,6 +30,8 @@ public interface UserService {
 	boolean validatePassword(String username, String password);
 
 	void changePassword(String username, String newPassword);
+
+	void modifyNickname(String username, String nickname);
 	
 	
 

@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +52,14 @@ public class MeController {
 		UserDetails user = (UserDetails) authentication.getPrincipal();
 		userService.changePassword(user.getUsername(), newPassword);
 	}
+	
+	@RequestMapping(path = "/me/modify-nickname", method = RequestMethod.PUT)
+	@Transactional
+	public void modifyNickname(@RequestBody String nickname, Authentication authentication) {
+		UserDetails user = (UserDetails) authentication.getPrincipal();
+		userService.modifyNickname(user.getUsername(), nickname);
+	}
+
 
 
 }

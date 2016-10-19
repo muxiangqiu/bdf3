@@ -5,7 +5,8 @@
             load: "./api/user/detail",
             loadRoles: "./api/me/load-role",
             validatePassword: "./api/me/validate-password/:password",
-            changePassword: "./api/me/change-password/:newPassword"
+            changePassword: "./api/me/change-password/:newPassword",
+            modifyNickname: "./api/me/modify-nickname"
         };
 
         model.describe("user", {
@@ -108,6 +109,22 @@
                         newPasswordAgain: null
                     });
                 });
+            },
+
+            modifyNickname: function () {
+                var options, nickname;
+                nickname = model.get("user." + nicknameProp);
+                if (nickname) {
+                    options = {
+                        contentType: "application/json",
+                        type: "PUT",
+                        data: model.get("user." + nicknameProp),
+                        successMessage: "昵称修改成功，重新登录后生效。",
+                        url: service.modifyNickname
+                    };
+                    $.ajax(options);
+                }
+
             }
 
         });

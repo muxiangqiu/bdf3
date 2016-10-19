@@ -20,7 +20,7 @@
     <img c-src="user.avatar ? user.avatar : 'static/resources/images/avatars/large/matthew.png'" class="ui circular image">
     <div class="content">
         <div class="ui large transparent input">
-            <input id="txtNickname" type="text" c-bind="user.${userMetadataServiceImpl.nicknameProp}">
+            <input id="txtNickname" placeholder="${userMetadataServiceImpl.nicknameLabel}不能为空" type="text" c-bind="user.${userMetadataServiceImpl.nicknameProp}" c-onchange="modifyNickname()">
         </div>
         <div class="sub header" c-bind="user.${userMetadataServiceImpl.UsernameProp}">kevin</div>
         <div class="sub header" c-bind="user.organization.name"></div>

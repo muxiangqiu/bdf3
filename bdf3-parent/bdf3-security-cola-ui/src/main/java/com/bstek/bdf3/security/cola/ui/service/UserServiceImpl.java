@@ -158,4 +158,13 @@ public class UserServiceImpl implements UserService {
 		RoleGrantedAuthority roleGrantedAuthority = JpaUtil.getOne(RoleGrantedAuthority.class, id);
 		JpaUtil.remove(roleGrantedAuthority);
 	}
+
+	@Override
+	public void modifyNickname(String username, String nickname) {
+		JpaUtil.linu(SecurityUserUtil.getSecurityUserType())
+			.equal(SecurityUserUtil.getUsernameProp(), username)
+			.set(SecurityUserUtil.getNicknameProp(), nickname)
+			.update();
+		
+	}
 }
