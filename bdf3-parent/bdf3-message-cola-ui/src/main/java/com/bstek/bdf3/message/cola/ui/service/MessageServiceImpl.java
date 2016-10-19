@@ -169,6 +169,10 @@ public class MessageServiceImpl implements MessageService {
 				.lind(Notify.class)
 				.in("group", chatIds)
 				.delete();
+			JpaUtil
+				.lind(Chat.class)
+				.in("id", chatIds)
+				.delete();
 		}
 		
 	}
