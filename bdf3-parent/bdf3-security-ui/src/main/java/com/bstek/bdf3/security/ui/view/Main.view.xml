@@ -97,7 +97,7 @@ window.refreshTab = function (caption, icon, path) {
       </Container>
     </Container>
     <SplitPanel>
-      <Property name="position">230</Property>
+      <Property name="position">200</Property>
       <MainControl>
         <TabControl id="tabControl">
           <Property name="showMenuButton">true</Property>

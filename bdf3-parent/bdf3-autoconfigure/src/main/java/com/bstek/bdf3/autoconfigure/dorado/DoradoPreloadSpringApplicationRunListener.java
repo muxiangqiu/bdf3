@@ -25,11 +25,10 @@ public class DoradoPreloadSpringApplicationRunListener implements
 	public void started() {
 		if (ClassUtils.isPresent("com.bstek.dorado.web.loader.DoradoLoader", this.getClass().getClassLoader())){
 			System.setProperty("doradoHome", "classpath:dorado-home/");
-			application.addInitializers(new DoradoApplicationContextInilializer());
 	
 			DoradoLoader doradoLoader = DoradoLoader.getInstance();
 			try {
-//				doradoLoader.preload(true);
+				doradoLoader.preload(null, true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

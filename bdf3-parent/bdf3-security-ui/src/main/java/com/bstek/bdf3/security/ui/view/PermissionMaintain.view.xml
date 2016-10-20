@@ -356,7 +356,7 @@ if (attribute) {
       </UpdateItem>
     </UpdateAction>
     <SplitPanel>
-      <Property name="position">300</Property>
+      <Property name="position">450</Property>
       <MainControl>
         <TabControl>
           <ControlTab>

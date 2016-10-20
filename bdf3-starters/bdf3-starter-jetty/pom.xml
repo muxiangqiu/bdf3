@@ -16,10 +16,10 @@
   		<artifactId>bdf3-cola</artifactId>
   		<exclusions>
 	      	<exclusion>
-	      		<groupId>org.springframework.boot</groupId>
-	      		<artifactId>spring-boot-starter-web</artifactId>
+	      		<groupId>commons-lang</groupId>
+	      		<artifactId>commons-lang</artifactId>
 	      	</exclusion>
-      </exclusions>
+  		</exclusions>
   	</dependency>
   	<dependency>
   		<groupId>org.springframework.boot</groupId>

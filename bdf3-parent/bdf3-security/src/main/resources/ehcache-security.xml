@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ehcache name="ehcache" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<ehcache name="ehcacheSecurity" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:noNamespaceSchemaLocation="ehcache.xsd">
 	<cache name="RequestMap" eternal="true" maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false" memoryStoreEvictionPolicy="LRU" />
     <cache name="UrlAttributeByTargetCacheKey" eternal="true" maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false" memoryStoreEvictionPolicy="LRU" />
