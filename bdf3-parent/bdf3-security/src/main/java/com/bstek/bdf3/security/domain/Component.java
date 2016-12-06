@@ -68,7 +68,7 @@ public class Component implements Resource{
 	
 	/**
 	 * 组件ID
-	 * @return
+	 * @return componentId
 	 */
 	public String getComponentId() {
 		return componentId;

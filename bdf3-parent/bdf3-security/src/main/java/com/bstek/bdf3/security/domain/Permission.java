@@ -44,7 +44,7 @@ public class Permission implements ConfigAttribute{
 
 	/**
 	 * 角色ID
-	 * @return
+	 * @return roleId
 	 */
 	public String getRoleId() {
 		return roleId;
