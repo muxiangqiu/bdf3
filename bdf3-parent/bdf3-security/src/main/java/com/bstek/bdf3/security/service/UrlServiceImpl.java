@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -16,6 +18,7 @@ import com.bstek.bdf3.security.Constants;
 import com.bstek.bdf3.security.decision.manager.SecurityDecisionManager;
 import com.bstek.bdf3.security.domain.Permission;
 import com.bstek.bdf3.security.domain.Url;
+import com.bstek.bdf3.security.user.SecurityUserUtil;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -28,7 +31,10 @@ public class UrlServiceImpl implements UrlService {
 	private UrlServiceCache urlServiceCache;
 	
 	@Autowired
-	private SecurityDecisionManager securityDecisionManager ;
+	private SecurityDecisionManager securityDecisionManager;
+	
+	@Autowired
+	private GrantedAuthorityService grantedAuthorityService;
 	
 	@Override
 	public List<Url> findAll() {
@@ -58,13 +64,18 @@ public class UrlServiceImpl implements UrlService {
 	public List<Url> findTreeByUsername(String username) {
 		List<Url> urls = urlServiceCache.findTree();
 		List<Url> result = new ArrayList<Url>();
+		rebuildLoginUserGrantedAuthorities();
 		for (Url url : urls) {
 			if (decide(url)) {
 				result.add(url);
 			}
 		}
-		
 		return result;
+	}
+	
+	private void rebuildLoginUserGrantedAuthorities() {
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		SecurityUserUtil.setAuthorities(userDetails, grantedAuthorityService.getGrantedAuthorities(userDetails));
 	}
 
 	private boolean decide(Url url) {

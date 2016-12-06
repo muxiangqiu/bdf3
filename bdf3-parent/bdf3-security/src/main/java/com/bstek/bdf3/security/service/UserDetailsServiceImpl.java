@@ -1,6 +1,8 @@
 package com.bstek.bdf3.security.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +17,10 @@ import com.bstek.bdf3.security.user.SecurityUserUtil;
  */
 @Service
 @Transactional(readOnly = true)
-public class UserDetailsServiceImpl extends AbstractUserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
+	
+	@Autowired
+	private GrantedAuthorityService grantedAuthorityService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username)
@@ -23,7 +28,7 @@ public class UserDetailsServiceImpl extends AbstractUserDetailsService {
 		try {
 			
 			UserDetails userDetails = JpaUtil.getOne(SecurityUserUtil.getSecurityUserType(), username);
-			SecurityUserUtil.setAuthorities(userDetails, getGrantedAuthorities(userDetails));
+			SecurityUserUtil.setAuthorities(userDetails, grantedAuthorityService.getGrantedAuthorities(userDetails));
 			return userDetails;
 		} catch (Exception e) {
 			throw new UsernameNotFoundException("Not Found");

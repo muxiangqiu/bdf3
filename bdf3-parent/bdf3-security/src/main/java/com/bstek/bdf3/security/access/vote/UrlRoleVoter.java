@@ -21,6 +21,7 @@ import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
 
@@ -85,6 +86,10 @@ public class UrlRoleVoter implements AccessDecisionVoter<Object> {
 
 	Collection<? extends GrantedAuthority> extractAuthorities(
 			Authentication authentication) {
+		if (authentication.getPrincipal() instanceof UserDetails) {
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			return userDetails.getAuthorities();
+		}
 		return authentication.getAuthorities();
 	}
 }

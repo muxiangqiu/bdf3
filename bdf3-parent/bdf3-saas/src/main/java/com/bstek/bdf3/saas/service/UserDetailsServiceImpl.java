@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,7 @@ import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.saas.SaasUtils;
 import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.security.domain.OrganizationSupport;
-import com.bstek.bdf3.security.service.AbstractUserDetailsService;
+import com.bstek.bdf3.security.service.GrantedAuthorityService;
 import com.bstek.bdf3.security.user.SecurityUserUtil;
 
 /**
@@ -25,10 +26,13 @@ import com.bstek.bdf3.security.user.SecurityUserUtil;
 @Service("saas.userDetailsServiceImpl")
 @Primary
 @Transactional(readOnly = true)
-public class UserDetailsServiceImpl extends AbstractUserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Autowired  
 	private HttpServletRequest request;
+	
+	@Autowired
+	private GrantedAuthorityService grantedAuthorityService;
 	
 	@Autowired
 	private OrganizationService organizationService;
@@ -41,7 +45,7 @@ public class UserDetailsServiceImpl extends AbstractUserDetailsService {
 			UserDetails userDetails = JpaUtil.getOne(SecurityUserUtil.getSecurityUserType(), username);
 			Assert.isInstanceOf(OrganizationSupport.class, userDetails);
 			((OrganizationSupport) userDetails).setOrganization(organization);
-			SecurityUserUtil.setAuthorities(userDetails, getGrantedAuthorities(userDetails));
+			SecurityUserUtil.setAuthorities(userDetails, grantedAuthorityService.getGrantedAuthorities(userDetails));
 			return userDetails;
 		} catch (Exception e) {
 			throw new UsernameNotFoundException(e.getMessage());
