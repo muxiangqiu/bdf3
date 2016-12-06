@@ -52,11 +52,11 @@
         model.get("urlTree",function(urlTree) {
             model.set("urls", urlTree);
             model.set("inSearch", false);
-            model.action("showCards")();
         });
 
         model.set("addUrl", {});
         model.set("editUrl", {});
+
 
         model.action({
             search: function () {
@@ -92,7 +92,6 @@
                         model.set("urls", urls);
                         model.set("inSearch", false);
                     }
-                    model.action("showCards")();
                 });
 
             },
@@ -136,7 +135,6 @@
                     model.set("path", [url.toJSON()]);
                     model.set("urls", model.get("urlTree"));
                     model.set("inSearch", false);
-                    model.action("showCards")();
                     return false;
                 }
                 model.set("path", model.action("getPath")(target));
@@ -146,7 +144,6 @@
                     children = target.get("children");
                 }
                 model.set("urls", children);
-                model.action("showCards")();
                 model.set("inSearch", false);
                 return false;
             },

@@ -11,7 +11,11 @@ html body {
 }
 
 #search > .ui.input {
-    height: 36px;
+     height: 36px;
+ }
+ 
+.ui.cards .card {
+	max-width: 16em
 }
 
 /*-----Edit----- */
@@ -91,10 +95,6 @@ html body {
 .ui.cards .description a {
    line-height: 30px;
     margin-right: 5px;
-}
-
-#userCards .ui.card {
-    display: none;
 }
 
 #selectedRoleCards .ui.card {

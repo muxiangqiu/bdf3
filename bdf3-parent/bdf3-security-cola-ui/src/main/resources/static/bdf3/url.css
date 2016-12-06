@@ -10,6 +10,11 @@ html body {
   background-color: #f3f3f4;
 }
 
+
+.ui.cards .card {
+	max-width: 16em
+}
+
 /*-----Edit----- */
 
 
@@ -88,9 +93,9 @@ html body {
     cursor: text;
 }
 
-#urlCards .ui.card {
-    display: none;
-}
+/*#urlCards .ui.card {*/
+    /*display: none;*/
+/*}*/
 
 
 #selectedUrlCards .ui.card {
@@ -114,5 +119,9 @@ html body {
 #urlModal .added .ui.button {
     background-color: #2185D0;
     color: #FFFFFF;
+}
+
+#addUrlForm .ui.large.transparent.input {
+    margin: 0 0 .7em 0;
 }
 

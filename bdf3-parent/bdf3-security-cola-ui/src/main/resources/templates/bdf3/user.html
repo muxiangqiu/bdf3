@@ -57,7 +57,7 @@
     <!--</form>-->
     <div class="ui card" c-repeat="users" c-id="'user_' + item.${userMetadataServiceImpl.usernameProp}" c-onclick="clickUserCard(item)">
         <div class="content"  style="min-height: 76px">
-            <span class="ui spy icon right floated" data-tooltip="角色设置" data-inverted="" c-onclick="showRoleModal(item)"><i class="spy large icon"></i></span>
+            <span class="ui spy icon right floated" c-onclick="showRoleModal(item)">设置角色</span>
             <div class="header link" c-bind="item.${userMetadataServiceImpl.nicknameProp}"></div>
             <div class="meta" c-bind="item.${userMetadataServiceImpl.usernameProp}"></div>
             <div class="description">

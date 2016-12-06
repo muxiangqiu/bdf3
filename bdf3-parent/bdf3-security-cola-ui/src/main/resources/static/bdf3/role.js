@@ -51,26 +51,15 @@
                     searchKey: "{{searchKey}}"
                 },
                 success: function(self, arg) {
-                    var ids = ["#addRoleForm"];
-                    for(var i = 0; i< arg.result.length; i++) {
-                        ids.push("#role_" + arg.result[i].id);
+
+                    if (arg.result.length !== self.get("pageSize")) {
+                        return;
                     }
-                    $(ids).transition({
-                        animation : 'pulse',
-                        reverse  : "auto",
-                        interval  : 50,
-                        displayType: "flex",
-                        onComplete: function() {
-                            if (arg.result.length !== self.get("pageSize")) {
-                                return;
-                            }
-                            $("#roleCards").visibility({
-                                once: true,
-                                observeChanges: true,
-                                onBottomVisible: function() {
-                                    model.get("roles").nextPage()
-                                }
-                            });
+                    $("#roleCards").visibility({
+                        once: true,
+                        observeChanges: true,
+                        onBottomVisible: function() {
+                            model.get("roles").nextPage()
                         }
                     });
 

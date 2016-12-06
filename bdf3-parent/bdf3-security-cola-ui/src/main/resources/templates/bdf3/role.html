@@ -30,11 +30,11 @@
     <div id="roleCards" class="ui six doubling cards">
         <form id="addRoleForm" class="ui form card">
             <div class="content">
-                <div class="ui large transparent left icon input field" style="margin: 0">
+                <div class="ui large transparent left icon input field">
                     <i class="terminal icon"></i>
                     <input data-validate="name" type="text" c-bind="addRole.name" c-onkeyup="keyup()" placeholder="名称...">
                 </div>
-                <div class="ui large transparent left icon input field" style="margin: 0">
+                <div class="ui large transparent left icon input field">
                     <i class="terminal icon"></i>
                     <input type="text" c-bind="addRole.description" placeholder="描述...">
                 </div>
@@ -45,8 +45,8 @@
             </div>
         </form>
         <div class="ui card" c-repeat="roles" c-id="'role_' + item.id" c-onclick="clickRoleCard(item)">
-            <div class="content" style="min-height: 76px">
-                <span class="ui icon sitemap right floated" data-position="top center" data-tooltip="菜单设置" data-inverted="" c-onclick="showUrlModal(item)"><i class="sitemap large icon"></i></span>
+            <div class="content" style="min-height: 130px">
+                <span class="ui icon sitemap right floated" c-onclick="showUrlModal(item)">设置菜单</span>
                 <div class="header link" c-bind="item.name"></div>
                 <div class="description" c-bind="item.description">
                 </div>

@@ -95,34 +95,22 @@
                     searchKey: "{{searchKey}}"
                 },
                 success: function(self, arg) {
-                    var ids = [];
-                    for(var i = 0; i< arg.result.length; i++) {
-                        ids.push("#user_" + arg.result[i][usernameProp]);
+                    if (arg.result.length !== self.get("pageSize")) {
+                        return;
                     }
-                    $(ids).transition({
-                        animation : 'pulse',
-                        reverse  : "auto",
-                        interval  : 50,
-                        displayType: "flex",
-                        onComplete: function() {
-                            if (arg.result.length !== self.get("pageSize")) {
-                                return;
-                            }
-                            $("#userCards").visibility({
-                                once: true,
-                                observeChanges: true,
-                                onBottomVisible: function() {
-                                    model.get("users").nextPage()
-                                }
-                            });
+                    $("#userCards").visibility({
+                        once: true,
+                        observeChanges: true,
+                        onBottomVisible: function() {
+                            model.get("users").nextPage()
+                        }
+                    });
 
-                            $("#userTable").visibility({
-                                once: true,
-                                observeChanges: true,
-                                onBottomVisible: function() {
-                                    model.get("users").nextPage()
-                                }
-                            });
+                    $("#userTable").visibility({
+                        once: true,
+                        observeChanges: true,
+                        onBottomVisible: function() {
+                            model.get("users").nextPage()
                         }
                     });
 
@@ -161,31 +149,36 @@
             enabled: true
         });
 
-        model.set("showStyleIcon", $.cookie('showStyleIcon'));
+        model.set("switchMode", $.cookie("switchMode"));
 
         model.action({
+            switchGrid: function() {
+                model.set({
+                    showStyleIcon: "list layout",
+                    showStyleTip: "切换为列表",
+                    switchMode: "switchGrid"
+                });
+                $("#userTable").hide();
+                $("#userCards").show();
+                $.cookie("switchMode", "switchGrid", { expires: 10000000 });
+            },
+            switchList: function() {
+                model.set({
+                    showStyleIcon: "grid layout",
+                    showStyleTip: "切换为表格",
+                    switchMode: "switchList"
+                });
+                $("#userTable").show();
+                $("#userCards").hide();
+                $.cookie("switchMode", "switchList", { expires: 10000000 });
+            },
             toggleStyle: function() {
-                var icon;
-                icon = model.get("showStyleIcon");
-                if (!icon) {
-                    icon = "grid layout";
-                }
-                if (icon === "grid layout") {
-                    model.set({
-                        showStyleIcon: "list layout",
-                        showStyleTip: "切换为表格"
-                    });
-                    $("#userTable").hide();
-                    $("#userCards").show();
-                    $.cookie('showStyleIcon', "grid layout", { expires: 10000000 });
+                var switchMode;
+                switchMode = model.get("switchMode");
+                if (switchMode === "switchGrid") {
+                    model.action("switchList")();
                 } else {
-                    model.set({
-                        showStyleIcon: "grid layout",
-                        showStyleTip: "切换为卡片"
-                    });
-                    $("#userCards").hide();
-                    $("#userTable").show();
-                    $.cookie('showStyleIcon', "list layout", { expires: 10000000 });
+                    model.action("switchGrid")();
                 }
             },
             search: function () {
@@ -401,7 +394,15 @@
             }
         });
 
-        model.action("toggleStyle")();
+        if (model.get("switchMode")) {
+            model.action(model.get("switchMode"))();
+        } else {
+            if (cola.device.desktop) {
+                model.action("switchList")();
+            } else {
+                model.action("switchGrid")();
+            }
+        }
     });
 
 }).call(this);

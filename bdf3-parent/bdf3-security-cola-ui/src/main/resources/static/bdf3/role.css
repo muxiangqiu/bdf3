@@ -10,6 +10,10 @@ html body {
   background-color: #f3f3f4;
 }
 
+.ui.cards .card {
+	max-width: 16em
+}
+
 /*-----Edit----- */
 
 
@@ -80,11 +84,6 @@ html body {
     margin-right: 5px;
 }
 
-#roleCards .ui.card {
-    display: none;
-}
-
-
 #selectedUrlCards .ui.card {
     box-shadow: 0px 1px 3px 0px #db2828, 0px 0px 0px 1px #db2828;
 }
@@ -120,4 +119,9 @@ html body {
 .ui.breadcrumb span:last-child > a {
     color: rgba(255, 255, 255, 0.6);
     cursor: text;
+}
+
+
+#addRoleForm .ui.large.transparent.input {
+    margin: 0 0 .7em 0;
 }

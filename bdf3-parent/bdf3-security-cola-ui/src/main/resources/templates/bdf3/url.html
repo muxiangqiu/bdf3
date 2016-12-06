@@ -25,7 +25,6 @@
                 <i class="search icon"></i>
             </div>
         </div>
-
     </div>
 
     <div class="ui large breadcrumb">
@@ -38,15 +37,15 @@
     <div id="urlCards" class="ui six doubling cards">
         <form id="addUrlForm" class="ui form card">
             <div class="content">
-                <div class="ui large transparent left icon input field" style="margin: 0">
+                <div class="ui large transparent left icon input field">
                     <i class="terminal icon"></i>
                     <input data-validate="name" type="text" c-bind="addUrl.name" c-onkeyup="keyup()" placeholder="名称...">
                 </div>
-                <div class="ui large transparent left icon input field" style="margin: 0">
+                <div class="ui large transparent left icon input field">
                     <i class="terminal icon"></i>
                     <input data-validate="icon" type="text" c-bind="addUrl.icon" c-onkeyup="keyup()" placeholder="图标...">
                 </div>
-                <div class="ui large transparent left icon input field" style="margin: 0">
+                <div class="ui large transparent left icon input field">
                     <i class="terminal icon"></i>
                     <input type="text" c-bind="addUrl.path" placeholder="路径...">
                 </div>
@@ -57,8 +56,8 @@
             </div>
         </form>
         <div class="ui card" c-repeat="urls" c-id="'url_' + item.id" c-onclick="clickUrlCard(item)">
-            <div class="content" style="min-height: 95px">
-                <span class="ui icon sitemap right floated" data-tooltip="打开下级菜单" data-inverted="" c-onclick="nextUrls(item)"><i class="large icon" c-class="item.icon"></i></span>
+            <div class="content" style="min-height: 120px">
+                <span class="ui icon sitemap right floated" c-onclick="nextUrls(item)">进入下级</i></span>
                 <div class="header link" c-bind="item.name"></div>
                 <div class="description" c-bind="item.description">
                 </div>
