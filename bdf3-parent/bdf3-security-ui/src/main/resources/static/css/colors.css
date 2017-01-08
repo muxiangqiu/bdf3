@@ -1,0 +1,131 @@
+.text-center {
+    text-align: center !important;
+}
+.text-left {
+    text-align: left !important;
+}
+.text-right {
+    text-align: right !important;
+}
+.red-background {
+    background-color: #db2828 !important;
+}
+.orange-background {
+    background-color: #f2711c !important;
+}
+.yellow-background {
+    background-color: #fbbd08 !important;
+}
+.olive-background {
+    background-color: #b5cc18 !important;
+}
+.green-background {
+    background-color: #21ba45 !important;
+}
+.teal-background {
+    background-color: #00b5ad !important;
+}
+.blue-background {
+    background-color: #2185d0 !important;
+}
+.violet-background {
+    background-color: #6435c9 !important;
+}
+.purple-background {
+    background-color: #a333c8 !important;
+}
+.pink-background {
+    background-color: #ff4081 !important;
+}
+.brown-background {
+    background-color: #a5673f !important;
+}
+.grey-background {
+    background-color: #767676 !important;
+}
+.black-background {
+    background-color: #1b1c1d !important;
+}
+
+.white-text {
+	color: #fff !important;
+}
+.red-text {
+    color: #db2828 !important;
+}
+.orange-text {
+    color: #f2711c !important;
+}
+.yellow-text {
+    color: #fbbd08 !important;
+}
+.olive-text {
+    color: #b5cc18 !important;
+}
+.green-text {
+    color: #21ba45 !important;
+}
+.teal-text {
+    color: #00b5ad !important;
+}
+.blue-text {
+    color: #2185d0 !important;
+}
+.violet-text {
+    color: #6435c9 !important;
+}
+.purple-text {
+    color: #a333c8 !important;
+}
+.pink-text {
+    color: #ff4081 !important;
+}
+.brown-text {
+    color: #a5673f !important;
+}
+.grey-text {
+    color: #767676 !important;
+}
+.black-text {
+    color: #1b1c1d !important;
+}
+
+.red-border {
+    border-color: #db2828 !important;
+}
+.orange-border {
+    border-color: #f2711c !important;
+}
+.yellow-border {
+    border-color: #fbbd08 !important;
+}
+.olive-border {
+    border-color: #b5cc18 !important;
+}
+.green-border {
+    border-color: #21ba45 !important;
+}
+.teal-border {
+    border-color: #00b5ad !important;
+}
+.blue-border {
+    border-color: #2185d0 !important;
+}
+.violet-border {
+    border-color: #6435c9 !important;
+}
+.purple-border {
+    border-color: #a333c8 !important;
+}
+.pink-border {
+    border-color: #ff4081 !important;
+}
+.brown-border {
+    border-color: #a5673f !important;
+}
+.grey-border {
+    border-color: #767676 !important;
+}
+.black-border {
+    border-color: #1b1c1d !important;
+}

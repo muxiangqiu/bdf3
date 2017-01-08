@@ -18,7 +18,7 @@ import com.bstek.bdf3.security.domain.Url;
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2016年7月25日
  */
-@Component
+@Component("cola.menuInitializer")
 public class MenuInitializer extends JpaUtilAble {
 
 	@Value("${bdf3.security.ui.autoCreateIfMenuIsEmpty:true}")

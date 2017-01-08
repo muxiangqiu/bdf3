@@ -89,7 +89,7 @@ public class NotifyServiceImpl implements NotifyService {
 						.equal("sender", receiver)
 						.equal("receiver", sender)
 					.end()
-				.findAll();
+				.list();
 			if (chats.isEmpty()) {
 				chat = new Chat();
 				chat.setId(UUID.randomUUID().toString());
@@ -138,7 +138,7 @@ public class NotifyServiceImpl implements NotifyService {
 				.addIf(lastTime)
 					.greaterThan("createdAt", lastTime)
 				.endIf()
-				.findAll();
+				.list();
 		
 		for (Notify notify : notifies) {
 			UserNotify userNotify = new UserNotify();
@@ -160,7 +160,7 @@ public class NotifyServiceImpl implements NotifyService {
 				.linq(SubscriptionConfig.class, String.class)
 				.select("action")
 				.equal("user", user)
-				.findAll();
+				.list();
 		if (!StringUtils.isEmpty(subscriptions) && actions.isEmpty()) {
 			actions.addAll(Arrays.asList(subscriptions.split(",")));
 		}
@@ -176,7 +176,7 @@ public class NotifyServiceImpl implements NotifyService {
 					.equal("targetType", "targetType")
 					.equal("action", "action")
 					.lessThanProperty("createdAt", "createdAt")
-				.findAll();
+				.list();
 			for (Notify notify : notifies) {
 				UserNotify userNotify = new UserNotify();
 				userNotify.setId(UUID.randomUUID().toString());
@@ -200,7 +200,7 @@ public class NotifyServiceImpl implements NotifyService {
 				.linq(NotifyConfig.class, String.class)
 				.select("action")
 				.equal("reason", reason)
-				.findAll();
+				.list();
 		Date now = new Date();
 		for (String action : actions) {
 			Subscription subscription = new Subscription();
@@ -227,7 +227,7 @@ public class NotifyServiceImpl implements NotifyService {
 	public List<SubscriptionConfig> getSubscriptionConfigs(String user) {
 		return JpaUtil.linq(SubscriptionConfig.class, String.class)
 				.equal("user", user)
-				.findAll();
+				.list();
 	}
 
 	@Override
@@ -248,7 +248,7 @@ public class NotifyServiceImpl implements NotifyService {
 		List<UserNotify> userNotifies = JpaUtil.linq(UserNotify.class)
 			.equal("user", user)
 			.isFalse("read")
-			.findAll();
+			.list();
 		if (!userNotifies.isEmpty()) {
 			Set<String> notifyIds = JpaUtil.collect(userNotifies, "notifyId");
 			Map<String, UserNotify> userNotifyMap = JpaUtil.index(userNotifies, "notifyId");
@@ -256,7 +256,7 @@ public class NotifyServiceImpl implements NotifyService {
 			List<Notify> notifies = JpaUtil.linq(Notify.class)
 					.in("id", notifyIds)
 					.desc("createdAt")
-					.findAll();
+					.list();
 			for (Notify notify : notifies) {
 				notify.setUserNotify(userNotifyMap.get(notify.getId()));
 			}

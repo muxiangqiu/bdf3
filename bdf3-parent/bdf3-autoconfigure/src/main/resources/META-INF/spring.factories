@@ -11,11 +11,16 @@ com.bstek.bdf3.autoconfigure.dorado.DoradoPreloadSpringApplicationRunListener
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.bstek.bdf3.autoconfigure.dorado.DoradoAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.jpa.JpaAutoConfiguration,\
-com.bstek.bdf3.autoconfigure.dorado.jpa.HibernateJpaAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.dorado.jpa.JpaAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.security.SecurityAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.cola.ColaAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.jdbc.DataSourceAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.jpa.HibernateJpaAutoConfiguration,\
+com.bstek.bdf3.autoconfigure.jpa.HibernateJpa1AutoConfiguration,\
+com.bstek.bdf3.autoconfigure.jpa.HibernateJpa2AutoConfiguration,\
+com.bstek.bdf3.autoconfigure.jpa.HibernateJpa3AutoConfiguration,\
+com.bstek.bdf3.autoconfigure.jpa.HibernateJpa4AutoConfiguration,\
+com.bstek.bdf3.autoconfigure.jpa.HibernateJpa5AutoConfiguration,\
+com.bstek.bdf3.autoconfigure.jpa.HibernateJpa6AutoConfiguration,\
 com.bstek.bdf3.autoconfigure.saas.SaasAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.message.MessageAutoConfiguration

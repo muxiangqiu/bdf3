@@ -1,0 +1,59 @@
+.login {
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
+}
+
+.login .top {
+	background-color: #4285f4;
+	 -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
+}
+
+.login .top .banner {
+	background-image: url(dorado/res/static/images/logo-large.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.login .app-name {
+	color: #fff;
+    font-size: 1.7em;
+    text-align: center;
+}
+
+.login .panel-body {
+	background-color: #fff; 
+}
+
+.login .login-btn {
+	display: block;
+	height: 40px;
+}
+
+.login .login-btn.d-button .button-left {
+	height: 40px;
+	line-height: 40px;
+}
+
+.login .login-btn .caption {
+	font-size: 1.5em;
+}
+
+.login .d-text-box {
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #DCDEE0;
+}
+
+.login .d-text-box .editor{
+	height: 35px !important;
+    font-size: 1.2em;
+    padding-left: 6px !important;
+}
+
+.login .d-tip {
+	background-color: #ff4a4f;
+}
+

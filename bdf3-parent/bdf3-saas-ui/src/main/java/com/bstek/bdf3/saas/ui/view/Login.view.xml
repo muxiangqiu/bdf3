@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="User">
+      <PropertyDef name="organization">
+        <Property name="label">公司ID</Property>
+        <Validator type="required">
+          <Property name="name">validator</Property>
+          <Property name="resultMessage">公司ID不能为空</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="username">
+        <Property name="label">用户名</Property>
+        <Validator type="required">
+          <Property name="name">validator</Property>
+          <Property name="resultMessage">用户名不能为空</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="password">
+        <Property name="label">密码</Property>
+        <Validator type="required">
+          <Property name="name">validator</Property>
+          <Property name="resultMessage">密码不能为空</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="remember-me">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="style">
+      <Property name="background">#112345</Property>
+    </Property>
+    <Container>
+      <Property name="style">
+        <Property name="background-image">url(&quot;${configure['bdf3.loginImageBg']}&quot;)</Property>
+        <Property name="background-repeat">no-repeat</Property>
+        <Property name="background-size">cover</Property>
+      </Property>
+      <Container layout="vbox pack:center" layoutConstraint="right">
+        <Property name="width">400</Property>
+        <Property name="height">100%</Property>
+        <FloatPanel id="floatPanel">
+          <Property name="width">350</Property>
+          <Property name="center">true</Property>
+          <Property name="height">500</Property>
+          <Property name="floating">false</Property>
+          <Property name="visible">true</Property>
+          <Property name="exClassName">login</Property>
+          <Buttons/>
+          <Children>
+            <Container layout="vbox pack:center;align:center" layoutConstraint="top">
+              <Property name="exClassName">top</Property>
+              <Property name="height">170</Property>
+              <Control>
+                <Property name="exClassName">banner</Property>
+                <Property name="height">64</Property>
+              </Control>
+              <Label>
+                <Property name="text">${configure['bdf3.appName']}</Property>
+                <Property name="exClassName">app-name</Property>
+              </Label>
+            </Container>
+            <Container layout="vbox pack:center;padding:25">
+              <AutoForm id="autoFormLogin">
+                <Property name="dataType">User</Property>
+                <Property name="createPrivateDataSet">true</Property>
+                <Property name="showLabel">false</Property>
+                <Property name="showHint">false</Property>
+                <Property name="rowPadding">10</Property>
+                <Property name="cols">25,*,*</Property>
+                <AutoFormElement layoutConstraint="colSpan:3">
+                  <Property name="name">organization</Property>
+                  <Property name="property">organization</Property>
+                  <Editor>
+                    <TextEditor>
+                      <Property name="blankText">公司ID</Property>
+                    </TextEditor>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="align:right;colSpan:3">
+                  <Property name="name">username</Property>
+                  <Property name="property">username</Property>
+                  <Property name="labelAlign">right</Property>
+                  <Editor>
+                    <TextEditor>
+                      <Property name="blankText">用户名</Property>
+                    </TextEditor>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:3">
+                  <Property name="name">password</Property>
+                  <Property name="property">password</Property>
+                  <Property name="labelAlign">right</Property>
+                  <Editor>
+                    <PasswordEditor>
+                      <Property name="blankText">密码</Property>
+                    </PasswordEditor>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="property">remember-me</Property>
+                  <Property name="name">remember-me</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <Label>
+                  <Property name="text">保持登陆</Property>
+                </Label>
+                <Link layoutConstraint="align:right">
+                  <Property name="text">没有账户，注册一个</Property>
+                  <Property name="href">${configure['bdf3.registerPath']}</Property>
+                </Link>
+                <Button layoutConstraint="colSpan:3">
+                  <Property name="caption">登 录</Property>
+                  <Property name="action">formSubmitAction</Property>
+                  <Property name="ui">highlight</Property>
+                  <Property name="exClassName">login-btn</Property>
+                </Button>
+                <Tip layoutConstraint="colSpan:3">
+                  <Property name="floating">false</Property>
+                  <Property name="text">${authenticationErrorMsg}</Property>
+                  <Property name="visible">${authenticationErrorMsg!='none'}</Property>
+                  <Property name="hideMode">display</Property>
+                </Tip>
+              </AutoForm>
+            </Container>
+          </Children>
+          <Tools/>
+        </FloatPanel>
+      </Container>
+    </Container>
+    <FormSubmitAction id="formSubmitAction">
+      <ClientEvent name="beforeExecute" signature="self,arg,autoFormLogin">var entity = autoFormLogin.get(&quot;entity&quot;);
+if (entity.validate() == &quot;ok&quot;) {
+	var user = entity.toJSON();
+	self.set(&quot;parameter&quot;, user);
+} else {
+	arg.processDefault = false;
+}
+</ClientEvent>
+      <Property name="action">${configure['bdf3.loginPath']}</Property>
+      <Property name="hotkey">return</Property>
+    </FormSubmitAction>
+  </View>
+</ViewConfig>

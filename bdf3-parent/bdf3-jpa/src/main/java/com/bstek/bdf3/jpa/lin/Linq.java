@@ -20,7 +20,7 @@ public interface Linq extends Lin<Linq, CriteriaQuery<?>>{
 	 * @param <T> 领域类（实体类）范型
 	 * @return 结果集合
 	 */
-	<T> List<T> findAll();
+	<T> List<T> list();
 
 	/**
 	 * 降序排列
@@ -56,7 +56,7 @@ public interface Linq extends Lin<Linq, CriteriaQuery<?>>{
 	 * @param <T> 领域类（实体类）范型
 	 * @return 分页结果（包含索引页号的数据和总记录数）
 	 */
-	<T> Page<T> findAll(Pageable pageable);
+	<T> Page<T> paging(Pageable pageable);
 
 	/**
 	 * 查询记录条数

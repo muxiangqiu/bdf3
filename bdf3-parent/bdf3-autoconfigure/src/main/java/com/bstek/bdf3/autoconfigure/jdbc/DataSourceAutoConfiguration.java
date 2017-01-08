@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
@@ -38,6 +39,72 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 })
 @AutoConfigureAfter(org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class)
 public class DataSourceAutoConfiguration {
+	
+	@Configuration
+	@ConditionalOnMissingBean(DataSource1Initializer.class)
+	protected static class DataSource1InitializerConfiguration {
+
+		@Bean
+		public DataSource1Initializer dataSource1Initializer() {
+			return new DataSource1Initializer();
+		}
+
+	}
+	
+	@Configuration
+	@ConditionalOnMissingBean(DataSource2Initializer.class)
+	protected static class DataSource2InitializerConfiguration {
+
+		@Bean
+		public DataSource2Initializer dataSource2Initializer() {
+			return new DataSource2Initializer();
+		}
+
+	}
+	
+	@Configuration
+	@ConditionalOnMissingBean(DataSource3Initializer.class)
+	protected static class DataSource3InitializerConfiguration {
+
+		@Bean
+		public DataSource3Initializer dataSource3Initializer() {
+			return new DataSource3Initializer();
+		}
+
+	}
+	
+	@Configuration
+	@ConditionalOnMissingBean(DataSource4Initializer.class)
+	protected static class DataSource4InitializerConfiguration {
+
+		@Bean
+		public DataSource4Initializer dataSource4Initializer() {
+			return new DataSource4Initializer();
+		}
+
+	}
+	
+	@Configuration
+	@ConditionalOnMissingBean(DataSource5Initializer.class)
+	protected static class DataSource5InitializerConfiguration {
+
+		@Bean
+		public DataSource5Initializer dataSource5Initializer() {
+			return new DataSource5Initializer();
+		}
+
+	}
+	
+	@Configuration
+	@ConditionalOnMissingBean(DataSource6Initializer.class)
+	protected static class DataSource6InitializerConfiguration {
+
+		@Bean
+		public DataSource6Initializer dataSource6Initializer() {
+			return new DataSource6Initializer();
+		}
+
+	}
 	
 	@Conditional(NonEmbeddedDataSourceCondition.class)
 	protected static class NonEmbeddedConfiguration {

@@ -38,8 +38,8 @@ public class UrlServiceImpl implements UrlService {
 	
 	@Override
 	public List<Url> findAll() {
-		List<Url> urls = JpaUtil.linq(Url.class).findAll();
-		List<Permission> permissions = JpaUtil.linq(Permission.class).equal("resourceType", Url.RESOURCE_TYPE).findAll();
+		List<Url> urls = JpaUtil.linq(Url.class).list();
+		List<Permission> permissions = JpaUtil.linq(Permission.class).equal("resourceType", Url.RESOURCE_TYPE).list();
 		if (!permissions.isEmpty()) {
 			Map<String, Url> urlMap = JpaUtil.index(urls);
 			for (Permission permission : permissions) {

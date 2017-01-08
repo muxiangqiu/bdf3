@@ -4,14 +4,17 @@ import java.util.List;
 
 import com.bstek.bdf3.security.domain.Url;
 
+
+
 /**
+ * 菜单服务接口
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
- * @since 2016年7月11日
+ * @since 2016年1月30日
  */
 public interface UrlService {
-
-	void save(List<Url> urls);
-
+	
 	List<Url> load();
+	
+	void save(List<Url> urls);
 
 }

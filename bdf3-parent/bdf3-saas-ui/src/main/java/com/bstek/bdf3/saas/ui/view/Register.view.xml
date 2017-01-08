@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="User">
+      <Property name="creationType">com.bstek.bdf3.security.domain.User</Property>
+      <PropertyDef name="username">
+        <Property name="label">用户名</Property>
+        <Validator type="required">
+          <Property name="name">validator</Property>
+          <Property name="resultMessage">用户名不能为空</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="nickname">
+        <Property></Property>
+        <Validator type="required">
+          <Property name="name">validator</Property>
+          <Property name="resultMessage">昵称不能为空</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="password">
+        <Property name="label">密码</Property>
+        <Validator type="required">
+          <Property name="name">validator</Property>
+          <Property name="resultMessage">密码不能为空</Property>
+        </Validator>
+        <Validator name="validator1" type="charLength">
+          <Property name="minLength">6</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="organizationId">
+        <Validator type="required">
+          <Property name="name">validator</Property>
+          <Property name="resultMessage">密码不能为空</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="organizationName">
+        <Validator type="required">
+          <Property name="name">validator</Property>
+          <Property name="resultMessage">密码不能为空</Property>
+        </Validator>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="style">
+      <Property name="background">#112345</Property>
+    </Property>
+    <Container>
+      <Property name="style">
+        <Property name="background-image">url(&quot;${configure['bdf3.loginImageBg']}&quot;)</Property>
+        <Property name="background-repeat">no-repeat</Property>
+        <Property name="background-size">cover</Property>
+      </Property>
+      <Container layout="hbox pack:center;regionPadding:120" layoutConstraint="center">
+        <Property name="height">100%</Property>
+        <FloatPanel>
+          <Property name="width">380</Property>
+          <Property name="center">true</Property>
+          <Property name="height">520</Property>
+          <Property name="floating">false</Property>
+          <Property name="visible">true</Property>
+          <Property name="exClassName">login</Property>
+          <Buttons/>
+          <Children>
+            <Container layout="vbox pack:center;align:center" layoutConstraint="top">
+              <Property name="exClassName">top</Property>
+              <Property name="height">140</Property>
+              <Control>
+                <Property name="exClassName">banner</Property>
+                <Property name="height">64</Property>
+              </Control>
+              <Label>
+                <Property name="text">公司注册</Property>
+                <Property name="exClassName">app-name</Property>
+              </Label>
+            </Container>
+            <Container layout="vbox pack:center;padding:25">
+              <AutoForm id="autoFormRegisterOrg">
+                <Property name="dataType">User</Property>
+                <Property name="showLabel">false</Property>
+                <Property name="showHint">false</Property>
+                <Property name="rowPadding">10</Property>
+                <Property name="cols">*</Property>
+                <Property name="createPrivateDataSet">true</Property>
+                <AutoFormElement>
+                  <Property name="name">organizationId</Property>
+                  <Property name="property">organizationId</Property>
+                  <Editor>
+                    <TextEditor>
+                      <ClientEvent name="onPost" signature="self,arg,autoFormRegisterOrg">var organizationId = self.get(&quot;value&quot;);
+var options = {
+    type: &quot;GET&quot;,
+	async: false,
+    url: &quot;api/register/exist/organization/:organizationId&quot;.replace(&quot;:organizationId&quot;, organizationId),
+	success: function(result) {
+		if (result) {
+			 self.get(&quot;entity&quot;).setMessages(&quot;organizationId&quot;, &quot;公司ID已存在。&quot;);
+		} else {
+			self.get(&quot;entity&quot;).setMessages(&quot;organizationId&quot;, null);
+		}
+	}
+};
+if (organizationId) {
+	$.ajax(options);
+}</ClientEvent>
+                      <Property name="blankText">公司ID</Property>
+                    </TextEditor>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">organizationName</Property>
+                  <Property name="property">organizationName</Property>
+                  <Editor>
+                    <TextEditor>
+                      <Property name="blankText">公司名称</Property>
+                    </TextEditor>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">username</Property>
+                  <Property name="property">username</Property>
+                  <Property name="labelAlign">right</Property>
+                  <Editor>
+                    <TextEditor>
+                      <ClientEvent name="onPost">var organizationId = self.get(&quot;entity&quot;).get(&quot;organizationId&quot;)
+var username = self.get(&quot;value&quot;);
+var options = {
+    type: &quot;GET&quot;,
+	async: false,
+    url: &quot;api/register/exist/user/:organizationId/:username&quot;.replace(&quot;:organizationId&quot;, organizationId).replace(&quot;:username&quot;, username),
+	success: function(result) {
+		if (result) {
+			 self.get(&quot;entity&quot;).setMessages(&quot;username&quot;, &quot;用户名已存在。&quot;);
+		} else {
+			self.get(&quot;entity&quot;).setMessages(&quot;username&quot;, null);
+		}
+	}
+};
+if (organizationId &amp;&amp; username) {
+	$.ajax(options);
+}
+</ClientEvent>
+                      <Property name="blankText">用户名</Property>
+                    </TextEditor>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">nickname</Property>
+                  <Property name="property">nickname</Property>
+                  <Editor>
+                    <TextEditor>
+                      <Property name="blankText">昵称</Property>
+                    </TextEditor>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">password</Property>
+                  <Property name="property">password</Property>
+                  <Property name="labelAlign">right</Property>
+                  <Editor>
+                    <PasswordEditor>
+                      <Property name="blankText">密码</Property>
+                    </PasswordEditor>
+                  </Editor>
+                </AutoFormElement>
+                <Button>
+                  <ClientEvent name="onClick" signature="self,arg,autoFormRegisterOrg">var options = {
+    contentType: &quot;application/json&quot;,
+    data: JSON.stringify(autoFormRegisterOrg.get(&quot;entity&quot;).toJSON()),
+    type: &quot;POST&quot;,
+    url: &quot;api/register/organization&quot;,
+	success: function() {
+		 setTimeout(function() {
+			window.location.href = &quot;${configure['bdf3.loginPath']}&quot;;
+	    }, 1500);
+	}
+};
+if (autoFormRegisterOrg.get(&quot;entity&quot;).validate() === &quot;ok&quot;) {
+	$.ajax(options);
+}</ClientEvent>
+                  <Property name="caption">注册</Property>
+                  <Property name="ui">highlight</Property>
+                  <Property name="exClassName">login-btn</Property>
+                </Button>
+                <Link layoutConstraint="align:right">
+                  <Property name="text">现在登录</Property>
+                  <Property name="href">${configure['bdf3.loginPath']}</Property>
+                </Link>
+              </AutoForm>
+            </Container>
+          </Children>
+          <Tools/>
+        </FloatPanel>
+        <FloatPanel>
+          <Property name="width">380</Property>
+          <Property name="center">true</Property>
+          <Property name="height">520</Property>
+          <Property name="floating">false</Property>
+          <Property name="visible">true</Property>
+          <Property name="exClassName">login</Property>
+          <Buttons/>
+          <Children>
+            <Container layout="vbox pack:center;align:center" layoutConstraint="top">
+              <Property name="exClassName">top</Property>
+              <Property name="height">140</Property>
+              <Control>
+                <Property name="exClassName">banner</Property>
+                <Property name="height">64</Property>
+              </Control>
+              <Label>
+                <Property name="text">用户注册</Property>
+                <Property name="exClassName">app-name</Property>
+              </Label>
+            </Container>
+            <Container layout="vbox pack:center;padding:25">
+              <AutoForm id="autoFormRegisterUser">
+                <Property name="dataType">User</Property>
+                <Property name="showLabel">false</Property>
+                <Property name="showHint">false</Property>
+                <Property name="rowPadding">10</Property>
+                <Property name="cols">*</Property>
+                <Property name="createPrivateDataSet">true</Property>
+                <AutoFormElement>
+                  <Property name="name">organizationId</Property>
+                  <Property name="property">organizationId</Property>
+                  <Editor>
+                    <TextEditor>
+                      <ClientEvent name="onPost">var organizationId = self.get(&quot;value&quot;);
+var options = {
+    type: &quot;GET&quot;,
+	async: false,
+    url: &quot;api/register/exist/organization/:organizationId&quot;.replace(&quot;:organizationId&quot;, organizationId),
+	success: function(result) {
+		if (result) {
+			 self.get(&quot;entity&quot;).setMessages(&quot;organizationId&quot;, null);
+			 $.ajax({
+			 	type: &quot;GET&quot;,
+				async: false,
+				url:  &quot;api/register/organization/:organizationId&quot;.replace(&quot;:organizationId&quot;, organizationId),
+				success: function(orgName) {
+					self.get(&quot;entity&quot;).set(&quot;organizationName&quot;, orgName);
+				}
+			 });
+		} else {
+			self.get(&quot;entity&quot;).setMessages(&quot;organizationId&quot;, &quot;公司不存在。&quot;);
+			self.get(&quot;entity&quot;).set(&quot;organizationName&quot;, null);
+		}
+	}
+};
+if (organizationId) {
+	$.ajax(options);
+}</ClientEvent>
+                      <Property name="blankText">公司ID</Property>
+                    </TextEditor>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">organizationName</Property>
+                  <Property name="property">organizationName</Property>
+                  <Property name="editable">false</Property>
+                  <Editor>
+                    <TextEditor>
+                      <Property name="blankText">公司名称</Property>
+                    </TextEditor>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">username</Property>
+                  <Property name="property">username</Property>
+                  <Property name="labelAlign">right</Property>
+                  <Editor>
+                    <TextEditor>
+                      <ClientEvent name="onPost">var organizationId = self.get(&quot;entity&quot;).get(&quot;organizationId&quot;)
+var username = self.get(&quot;value&quot;);
+var options = {
+    type: &quot;GET&quot;,
+	async: false,
+    url: &quot;api/register/exist/user/:organizationId/:username&quot;.replace(&quot;:organizationId&quot;, organizationId).replace(&quot;:username&quot;, username),
+	success: function(result) {
+		if (result) {
+			 self.get(&quot;entity&quot;).setMessages(&quot;username&quot;, &quot;用户名已存在。&quot;);
+		} else {
+			self.get(&quot;entity&quot;).setMessages(&quot;username&quot;, null);
+		}
+	}
+};
+if (organizationId &amp;&amp; username) {
+	$.ajax(options);
+}
+</ClientEvent>
+                      <Property name="blankText">用户名</Property>
+                    </TextEditor>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">nickname</Property>
+                  <Property name="property">nickname</Property>
+                  <Editor>
+                    <TextEditor>
+                      <Property name="blankText">昵称</Property>
+                    </TextEditor>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">password</Property>
+                  <Property name="property">password</Property>
+                  <Property name="labelAlign">right</Property>
+                  <Editor>
+                    <PasswordEditor>
+                      <Property name="blankText">密码</Property>
+                    </PasswordEditor>
+                  </Editor>
+                </AutoFormElement>
+                <Button>
+                  <ClientEvent name="onClick" signature="self,arg,autoFormRegisterUser">var options = {
+    contentType: &quot;application/json&quot;,
+    data: JSON.stringify(autoFormRegisterUser.get(&quot;entity&quot;).toJSON()),
+    type: &quot;POST&quot;,
+    url: &quot;api/register/user&quot;,
+	success: function() {
+		 setTimeout(function() {
+			window.location.href = &quot;${configure['bdf3.loginPath']}&quot;;
+	    }, 1000);
+	}
+};
+if (autoFormRegisterUser.get(&quot;entity&quot;).validate()) {
+	$.ajax(options);
+}
+</ClientEvent>
+                  <Property name="caption">注册</Property>
+                  <Property name="ui">highlight</Property>
+                  <Property name="exClassName">login-btn</Property>
+                </Button>
+                <Link layoutConstraint="align:right">
+                  <Property name="text">现在登录</Property>
+                  <Property name="href">${configure['bdf3.loginPath']}</Property>
+                </Link>
+              </AutoForm>
+            </Container>
+          </Children>
+          <Tools/>
+        </FloatPanel>
+      </Container>
+    </Container>
+  </View>
+</ViewConfig>

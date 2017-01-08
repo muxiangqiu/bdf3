@@ -15,7 +15,7 @@ import com.bstek.bdf3.message.service.NotifyService;
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2016年8月15日
  */
-@Service
+@Service("cola.frameworkService")
 public class FrameworkServiceImpl implements FrameworkService {
 	
 	@Autowired

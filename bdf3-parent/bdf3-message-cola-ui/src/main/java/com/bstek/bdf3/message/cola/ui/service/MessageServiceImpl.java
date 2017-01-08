@@ -61,7 +61,7 @@ public class MessageServiceImpl implements MessageService {
 					.equal("receiver", user)
 				.end()
 				.desc("recentTime")
-				.findAll();
+				.list();
 		if (!chats.isEmpty()) {
 			for (Chat chat : chats) {
 				if (StringUtils.equals(user, chat.getSender())) {
@@ -72,13 +72,13 @@ public class MessageServiceImpl implements MessageService {
 			List<Notify> notifies = 
 					JpaUtil.linq(Notify.class)
 						.in("id", JpaUtil.collect(chats, "recentNotifyId"))
-						.findAll();
+						.list();
 			Map<String, Notify> notifyMap = JpaUtil.index(notifies);
 			
 			List<UserDetails> users = 
 					JpaUtil.linq(SecurityUserUtil.getSecurityUserType())
 					.in(SecurityUserUtil.getUsernameProp(), JpaUtil.collect(chats, "sender"))
-					.findAll();
+					.list();
 			Map<String, UserDetails> userMap = JpaUtil.index(users);
 
 
@@ -104,11 +104,11 @@ public class MessageServiceImpl implements MessageService {
 					.isFalse("read")
 				.end()
 				.desc("createdAt")
-				.findAll();
+				.list();
 		if (!notifies.isEmpty()) {
 			Map<String, List<Notify>> senderMap = JpaUtil.classify(notifies, "sender");
 
-			List<UserDetails> users = JpaUtil.linq(SecurityUserUtil.getSecurityUserType()).in(SecurityUserUtil.getUsernameProp(), senderMap.keySet()).findAll();
+			List<UserDetails> users = JpaUtil.linq(SecurityUserUtil.getSecurityUserType()).in(SecurityUserUtil.getUsernameProp(), senderMap.keySet()).list();
 			Map<String, UserDetails> userMap = JpaUtil.index(users);
 			for (Entry<String, List<Notify>> entry : senderMap.entrySet()) {
 				Notify notify = entry.getValue().get(0);
@@ -159,7 +159,7 @@ public class MessageServiceImpl implements MessageService {
 				.or()
 					.equal("sender", user)
 					.equal("receiver", user)
-				.findAll();
+				.list();
 		if (!chatIds.isEmpty()) {
 			JpaUtil
 				.lind(UserNotify.class)
@@ -191,7 +191,7 @@ public class MessageServiceImpl implements MessageService {
 				.linq(Notify.class)
 				.equal("group", chat.getId())
 				.asc("createdAt")
-				.findAll();
+				.list();
 		Map<String, Object> additional = new HashMap<String, Object>();
 		additional.put("sender", otherUser);
 		additional.put("receiver", user);

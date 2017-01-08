@@ -26,7 +26,7 @@ public class UrlServiceImpl implements UrlService {
 		List<Url> urls = JpaUtil
 				.linq(Url.class)
 				.asc("order")
-				.findAll();
+				.list();
 		for (Url url : urls) {
 			
 			if (childrenMap.containsKey(url.getId())) {
@@ -54,7 +54,7 @@ public class UrlServiceImpl implements UrlService {
 	
 	@Override
 	public List<Url> load() {
-		return JpaUtil.linq(Url.class).asc("order").findAll();
+		return JpaUtil.linq(Url.class).asc("order").list();
 	}
 	
 	@Override

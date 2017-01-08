@@ -15,7 +15,7 @@ import com.bstek.bdf3.dorado.jpa.configure.JpaConfiguration;
  */
 @Configuration
 @ConditionalOnClass(JpaConfiguration.class)
-@AutoConfigureAfter({HibernateJpaAutoConfiguration.class, DoradoAutoConfiguration.class})
+@AutoConfigureAfter(DoradoAutoConfiguration.class)
 @Import(JpaConfiguration.class)
 public class JpaAutoConfiguration {
 	

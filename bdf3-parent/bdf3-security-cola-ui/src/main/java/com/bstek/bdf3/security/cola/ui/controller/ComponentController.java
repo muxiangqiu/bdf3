@@ -21,7 +21,7 @@ import com.bstek.bdf3.security.domain.Component;
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2016年8月3日
  */
-@RestController
+@RestController("cola.componentController")
 @RequestMapping("/api")
 @Transactional(readOnly = true)
 public class ComponentController {

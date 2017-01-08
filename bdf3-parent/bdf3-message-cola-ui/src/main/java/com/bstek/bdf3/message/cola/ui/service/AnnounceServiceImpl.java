@@ -79,7 +79,7 @@ public class AnnounceServiceImpl implements AnnounceService {
 					.isFalse("read")
 				.end()
 				.desc("createdAt")
-				.findAll();
+				.list();
 	}
 
 	@Override

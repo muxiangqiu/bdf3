@@ -1,9 +1,6 @@
 package com.bstek.bdf3.autoconfigure.dorado;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.boot.SpringApplication;
@@ -36,17 +33,8 @@ public class DoradoPreloadSpringApplicationRunListener implements
 				e.printStackTrace();
 			}
 			Set<Object> sources = new HashSet<Object>();
-			List<String> doradoContextLocations = doradoLoader
-					.getContextLocations(false);
-			String[] realResourcesPath;
-			try {
-				realResourcesPath = doradoLoader
-						.getRealResourcesPath(doradoContextLocations);
-				sources.addAll(Arrays.asList(realResourcesPath));
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			sources.addAll(doradoLoader
+					.getContextLocations(false));
 			application.setSources(sources);
 		}
 	}

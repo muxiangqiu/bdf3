@@ -252,7 +252,7 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 									linq.select(projectionMap.get(entityClass));
 								}
 								linq.in(idProperty, collectInfo.getList());
-								List result = linq.findAll();
+								List result = linq.list();
 								Map<Object, Object> map = new HashMap<Object, Object>();
 								for (Object obj : result) {
 									BeanMap beanMap = BeanMap.create(obj);
@@ -402,10 +402,10 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 	}
 
 	@Override
-	public <T> List<T> findAll() {
+	public <T> List<T> list() {
 		if (parent != null) {
 			beforeExecute(sq);
-			return parent.findAll();
+			return parent.list();
 		}
 		beforeExecute(criteria);
 		List<T> list = transform(em.createQuery(criteria), false);
@@ -413,15 +413,15 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 	}
 	
 	@Override
-	public <T> void findAll(Page<T> page) {
+	public <T> void paging(Page<T> page) {
 		if (parent != null) {
 			beforeExecute(sq);
-			parent.findAll(page);
+			parent.paging(page);
 		}
 		List<T> list = Collections.<T> emptyList();
 		Long total = 0L;
 		if (page == null) {
-			list = findAll();
+			list = list();
 			total = (long) list.size();
 		} else {
 			beforeExecute(criteria);
@@ -440,14 +440,14 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 	}
 	
 	@Override
-	public <T> org.springframework.data.domain.Page<T> findAll(Pageable pageable) {
+	public <T> org.springframework.data.domain.Page<T> paging(Pageable pageable) {
 		if (parent != null) {
 			beforeExecute(sq);
-			return parent.findAll(pageable);
+			return parent.paging(pageable);
 		}
 		List<T> list;
 		if (pageable == null) {
-			list = findAll();
+			list = list();
 			return new PageImpl<T>(list);
 		} else {
 			Sort sort = pageable.getSort();
@@ -620,6 +620,49 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 		resultClass = Tuple.class;
 		return this;
 	}
+	
+	@Override
+	public <T> List<T> list(Pageable pageable) {
+		if (parent != null) {
+			applyPredicateToCriteria(sq);
+			return parent.list(pageable);
+		}
+		if (pageable == null) {
+			return list();
+		} else {
+			Sort sort = pageable.getSort();
+			orders.addAll(QueryUtils.toOrders(sort, root, cb));
+			applyPredicateToCriteria(criteria);
+			TypedQuery<?> query = em.createQuery(criteria);
+			
+			query.setFirstResult(pageable.getOffset());
+			query.setMaxResults(pageable.getPageSize());
+
+			return transform(query, false);
+		}
+	}
+
+	@Override
+	public <T> List<T> list(int page, int size) {
+		if (parent != null) {
+			applyPredicateToCriteria(sq);
+			return parent.list(page, size);
+		}
+		applyPredicateToCriteria(criteria);
+		TypedQuery<?> query = em.createQuery(criteria);
+		
+		query.setFirstResult(page*size);
+		query.setMaxResults(size);
+
+		return transform(query, false);
+	}
+
+
+	@Override
+	public <T> List<T> list(Page<T> page) {
+		return list(page.getPageNo() - 1, page.getPageSize());
+	}
+
 
 
 

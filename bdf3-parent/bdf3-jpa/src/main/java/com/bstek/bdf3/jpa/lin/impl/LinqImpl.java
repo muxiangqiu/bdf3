@@ -169,24 +169,24 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 	}
 
 	@Override
-	public <T> List<T> findAll() {
+	public <T> List<T> list() {
 		if (parent != null) {
 			applyPredicateToCriteria(sq);
-			return parent.findAll();
+			return parent.list();
 		}
 		applyPredicateToCriteria(criteria);
 		return transform(em.createQuery(criteria), false);
 	}
 	
 	@Override
-	public <T> Page<T> findAll(Pageable pageable) {
+	public <T> Page<T> paging(Pageable pageable) {
 		if (parent != null) {
 			applyPredicateToCriteria(sq);
-			return parent.findAll(pageable);
+			return parent.paging(pageable);
 		}
 		List<T> list;
 		if (pageable == null) {
-			list = findAll();
+			list = list();
 			return new PageImpl<T>(list);
 		} else {
 			Sort sort = pageable.getSort();
@@ -214,7 +214,7 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 			return parent.list(pageable);
 		}
 		if (pageable == null) {
-			return findAll();
+			return list();
 		} else {
 			Sort sort = pageable.getSort();
 			orders.addAll(QueryUtils.toOrders(sort, root, cb));

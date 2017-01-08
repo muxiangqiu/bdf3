@@ -23,7 +23,7 @@ import com.bstek.bdf3.security.domain.Url;
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2016年3月6日
  */
-@RestController
+@RestController("cola.roleController")
 @RequestMapping("/api")
 @Transactional(readOnly = true)
 public class RoleController {

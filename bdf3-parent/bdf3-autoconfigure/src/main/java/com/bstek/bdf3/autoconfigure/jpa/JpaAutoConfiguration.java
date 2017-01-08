@@ -14,7 +14,16 @@ import com.bstek.bdf3.jpa.JpaConfiguration;
  */
 @Configuration
 @ConditionalOnClass(JpaConfiguration.class)
-@AutoConfigureAfter({HibernateJpaAutoConfiguration.class, JpaRepositoriesAutoConfiguration.class})
+@AutoConfigureAfter({
+	HibernateJpaAutoConfiguration.class,
+	HibernateJpa1AutoConfiguration.class, 
+	HibernateJpa2AutoConfiguration.class, 
+	HibernateJpa3AutoConfiguration.class, 
+	HibernateJpa4AutoConfiguration.class, 
+	HibernateJpa5AutoConfiguration.class, 
+	HibernateJpa6AutoConfiguration.class,
+	JpaRepositoriesAutoConfiguration.class
+})
 @Import(JpaConfiguration.class)
 public class JpaAutoConfiguration {
 	

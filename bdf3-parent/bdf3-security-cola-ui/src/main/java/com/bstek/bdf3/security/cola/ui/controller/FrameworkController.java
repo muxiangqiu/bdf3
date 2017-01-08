@@ -29,7 +29,7 @@ import com.bstek.bdf3.security.user.SecurityUserUtil;
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2016年3月6日
  */
-@Controller
+@Controller("cola.frameworkController")
 public class FrameworkController {
 	
 	@Autowired

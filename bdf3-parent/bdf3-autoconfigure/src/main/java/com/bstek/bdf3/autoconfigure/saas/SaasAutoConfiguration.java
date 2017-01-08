@@ -8,6 +8,7 @@ import org.springframework.cache.interceptor.SimpleKeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.bstek.bdf3.autoconfigure.security.SecurityAutoConfiguration;
@@ -36,6 +37,7 @@ public class SaasAutoConfiguration {
 	}
 	
 	@Bean
+	@Primary
 	public PlatformTransactionManager transactionManager() {
 		return new SaasJpaTransactionManager();
 	}

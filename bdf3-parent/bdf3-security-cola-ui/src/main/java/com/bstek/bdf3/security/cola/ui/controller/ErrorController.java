@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2016年7月25日
  */
-@Controller
+@Controller("cola.errorController")
 public class ErrorController extends BasicErrorController {
 
 	@Autowired

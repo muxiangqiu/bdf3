@@ -49,5 +49,6 @@
     	<module>bdf3-sample-replaceuser</module>
     	<module>bdf3-sample-saas-cola</module>
     	<module>bdf3-sample-activiti-cola</module>
+    	<module>bdf3-sample</module>
     </modules>
 </project>

@@ -6,64 +6,118 @@
     <DataType name="Role">
       <Property name="creationType">com.bstek.bdf3.security.domain.Role</Property>
       <PropertyDef name="id">
-        <Property/>
+        <Property></Property>
         <Property name="label">ID</Property>
       </PropertyDef>
       <PropertyDef name="name">
-        <Property/>
+        <Property></Property>
         <Property name="label">角色名称</Property>
       </PropertyDef>
       <PropertyDef name="description">
-        <Property/>
+        <Property></Property>
         <Property name="label">描述</Property>
       </PropertyDef>
     </DataType>
   </Model>
-  <View>
+  <View layout="padding:15">
     <Property name="packages">font-awesome</Property>
     <DataSet id="dsRole">
       <Property name="dataType">[Role]</Property>
       <Property name="dataProvider">roleController#load</Property>
       <Property name="pageSize">20</Property>
     </DataSet>
-    <ToolBar>
-      <DataPilot>
-        <ClientEvent name="onSubControlAction" signature="self,arg,dialogRole">if (arg.code == &quot;+&quot;) {
+    <Panel layout="padding:5;regionPadding:10">
+      <Property name="caption">角色管理</Property>
+      <Property name="showCaptionBar">false</Property>
+      <Property name="style">
+        <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+      </Property>
+      <Buttons/>
+      <Children>
+        <Container layout="regionPadding:10">
+          <Property name="width">580</Property>
+          <ToolBar>
+            <DataPilot>
+              <ClientEvent name="onSubControlAction" signature="self,arg,dsRole,dialogRole,updateAction">if (arg.code == &quot;+&quot;) {
 	dialogRole.show();
 } else if (arg.code == &quot;-&quot;) {
 	dorado.MessageBox.confirm(&quot;确认要删除当前记录吗？&quot;, function() {
+		dsRole.getData(&quot;#&quot;).remove();
 		updateAction.execute();
 	});
+	arg.processDefault = false;
 }
 </ClientEvent>
-        <Property name="dataSet">dsRole</Property>
-        <Property name="itemCodes">pages,pageSize,+,-</Property>
-      </DataPilot>
-      <ToolBarButton>
-        <ClientEvent name="onClick" signature="self,arg,dialogRole">dialogRole.show()
+              <Property name="dataSet">dsRole</Property>
+              <Property name="itemCodes">+,-</Property>
+            </DataPilot>
+            <ToolBarButton>
+              <ClientEvent name="onClick" signature="self,arg,dialogRole">dialogRole.show()
 </ClientEvent>
-        <Property name="caption">修改</Property>
-        <Property name="iconClass">fa fa-pencil</Property>
-      </ToolBarButton>
-    </ToolBar>
-    <DataGrid>
-      <Property name="dataSet">dsRole</Property>
-      <Property name="readOnly">true</Property>
-      <Property name="showFilterBar">true</Property>
-      <Property name="sortMode">serverSide</Property>
-      <Property name="filterMode">serverSide</Property>
-      <RowNumColumn/>
-      <DataColumn name="name">
-        <Property name="property">name</Property>
-      </DataColumn>
-      <DataColumn name="description">
-        <Property name="property">description</Property>
-      </DataColumn>
-    </DataGrid>
+              <Property name="caption">修改</Property>
+              <Property name="iconClass">fa fa-pencil</Property>
+            </ToolBarButton>
+            <Fill/>
+            <TextEditor>
+              <ClientEvent name="onKeyDown" signature="self,arg,dgRole">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.urlQueryTimeout);
+self.urlQueryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	if (!key) {
+		dgUser.filter();
+	} else {
+		dgRole.filter([{
+			junction: &quot;or&quot;,
+			criterions: [{
+				property: &quot;name&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;description&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}]
+		}]);
+	}
+}, 250);</ClientEvent>
+              <Property name="trigger">triggerClear</Property>
+              <Property name="blankText">按角色名或描述</Property>
+            </TextEditor>
+          </ToolBar>
+          <DataGrid id="dgRole">
+            <Property name="dataSet">dsRole</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="showFilterBar">false</Property>
+            <Property name="sortMode">serverSide</Property>
+            <Property name="filterMode">serverSide</Property>
+            <RowNumColumn/>
+            <DataColumn name="name">
+              <Property name="property">name</Property>
+            </DataColumn>
+            <DataColumn name="description">
+              <Property name="property">description</Property>
+            </DataColumn>
+          </DataGrid>
+          <ToolBar layoutConstraint="bottom">
+            <DataPilot>
+              <Property name="dataSet">dsRole</Property>
+              <Property name="itemCodes">pages,pageSize</Property>
+            </DataPilot>
+          </ToolBar>
+        </Container>
+      </Children>
+      <Tools/>
+    </Panel>
     <UpdateAction id="updateAction">
       <ClientEvent name="onSuccess" signature="self,arg,dialogRole">dialogRole.hide()
 </ClientEvent>
       <Property name="dataResolver">roleController#save</Property>
+      <Property name="successMessage">保存成功。</Property>
+      <Property name="executingMessage">正在执行……</Property>
       <UpdateItem>
         <Property name="dataSet">dsRole</Property>
       </UpdateItem>

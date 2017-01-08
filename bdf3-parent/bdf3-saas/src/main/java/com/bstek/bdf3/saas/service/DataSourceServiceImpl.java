@@ -5,12 +5,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.stereotype.Service;
 
+import com.bstek.bdf3.saas.Constants;
 import com.bstek.bdf3.saas.domain.Organization;
 
 /**
@@ -18,7 +20,10 @@ import com.bstek.bdf3.saas.domain.Organization;
  * @since 2016年8月12日
  */
 @Service
-public class DataSourceServiceImpl implements DataSourceService {
+public class DataSourceServiceImpl implements DataSourceService, InitializingBean {
+	
+	@Autowired
+	private DataSource dataSource;
 
 	@Autowired
 	private DataSourceProperties properties;
@@ -32,7 +37,7 @@ public class DataSourceServiceImpl implements DataSourceService {
 
 	@Override
 	public DataSource createDataSource(Organization organization) {
-		String master = "master";
+		String master = Constants.MASTER;
 		if (EmbeddedDatabaseConnection.isEmbedded(properties.getDriverClassName())) {
 			master = properties.getName();
 		}
@@ -55,6 +60,12 @@ public class DataSourceServiceImpl implements DataSourceService {
 			dataSourceMap.put(organization.getId(), dataSource);
 		}
 		return dataSource;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		dataSourceMap.put(Constants.MASTER, dataSource);
+		
 	}
 
 }

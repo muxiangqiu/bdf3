@@ -52,10 +52,10 @@ public class UserServiceImpl implements UserService {
 
 		Set<String> usernames = JpaUtil.collect(users, SecurityUserUtil.getUsernameProp());
 		if (!usernames.isEmpty()) {
-			List<RoleGrantedAuthority> rgas = JpaUtil.linq(RoleGrantedAuthority.class).in("actorId", usernames).findAll();
+			List<RoleGrantedAuthority> rgas = JpaUtil.linq(RoleGrantedAuthority.class).in("actorId", usernames).list();
 			Set<Role> roleIds = JpaUtil.collect(rgas, "roleId");
 			if (!roleIds.isEmpty()) {
-				List<Map<String, Object>> roles = JpaUtil.linq(Role.class, Map.class).in("id", roleIds).findAll();
+				List<Map<String, Object>> roles = JpaUtil.linq(Role.class, Map.class).in("id", roleIds).list();
 				Map<Object, List<RoleGrantedAuthority>> rgaMap = JpaUtil.classify(rgas, "actorId");
 				Map<Object, Map<String, Object>> roleMap = JpaUtil.index(roles, "id");
 				for (Map<String, Object> user : users) {

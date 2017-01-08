@@ -39,7 +39,7 @@ public class RoleServiceImpl implements RoleService {
 				.exists(RoleGrantedAuthority.class)
 					.equalProperty("roleId", "id")
 					.equal("actorId", username)
-				.findAll();
+				.list();
 	}
 	
 	@Override
@@ -49,7 +49,7 @@ public class RoleServiceImpl implements RoleService {
 				.exists(Permission.class)
 					.equalProperty("resourceId", "id")
 					.equal("roleId", roleId)
-				.findAll();
+				.list();
 	}
 	
 	@Override

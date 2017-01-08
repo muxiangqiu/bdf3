@@ -34,14 +34,14 @@ public class ComponentServiceImpl implements ComponentService {
 
 	@Override
 	public List<Component> load(String roleId, String urlId) {
-		List<Component> components = JpaUtil.linq(Component.class).equal("urlId", urlId).findAll();
+		List<Component> components = JpaUtil.linq(Component.class).equal("urlId", urlId).list();
 		if (!components.isEmpty()) {
 			Set<String> ids = JpaUtil.collectId(components);
 			List<Permission> permissions = JpaUtil.linq(Permission.class)
 				.equal("roleId", roleId)
 				.equal("resourceType", Component.RESOURCE_TYPE)
 				.in("resourceId", ids)
-				.findAll();
+				.list();
 			
 			Map<String, Permission> permissionMap = JpaUtil.index(permissions, "resourceId");
 

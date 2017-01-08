@@ -11,7 +11,7 @@ import com.bstek.dorado.view.View;
 @Component
 public class GenericViewListener extends GenericObjectListener<View> {
 
-	@Value("${bdf3.application.title:BSTEK APPLICATION FRAMEWORK}")
+	@Value("${bdf3.appName}")
 	private String applicationTitle;
 	
 	@Autowired

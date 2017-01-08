@@ -51,10 +51,10 @@ arg.entity.parent.each(function(u) {
       </PropertyDef>
     </DataType>
   </Model>
-  <View>
+  <View layout="regionPadding:15">
     <ClientEvent name="onReady">
 </ClientEvent>
-    <Property name="packages">font-awesome,entypo</Property>
+    <Property name="packages">font-awesome,entypo,colors</Property>
     <Property name="javaScriptFile">static/icons/font-data.js,static/icons/entypo-data.js</Property>
     <DataSet id="dsUrl">
       <Property name="dataType">[Url]</Property>
@@ -68,7 +68,7 @@ arg.entity.parent.each(function(u) {
         <Property name="dataSet">dsUrl</Property>
       </UpdateItem>
     </UpdateAction>
-    <Dialog id="dialogIcon" layout="vbox">
+    <Dialog id="dialogIcon" layout="vbox padding:15">
       <ClientEvent name="onCreate">view.fontCategories[&quot;其他&quot;] = view.entypoNames;
 var i = 0;
 for(var c in view.fontCategories) {
@@ -115,7 +115,7 @@ for(var c in view.fontCategories) {
 			},
 			onDoubleClick: function(s, arg) {
 				var url = view.get(&quot;#dsUrl&quot;).getData(&quot;!currentNode&quot;);
-				url.set(&quot;icon&quot;, s.get(&quot;userData&quot;));
+				url.set(&quot;icon&quot;, s.get(&quot;userData&quot;) + (self.iconColor? &quot; &quot; + self.iconColor : &quot;&quot;));
 				self.hide();
 			},
 			onCreateDom: function(self, arg) {
@@ -135,76 +135,212 @@ for(var c in view.fontCategories) {
 	});
 }</ClientEvent>
       <Property name="caption">图标选择（双击选择）</Property>
-      <Property name="width">500</Property>
+      <Property name="width">600</Property>
       <Property name="height">500</Property>
       <Property name="maximizeable">true</Property>
       <Property name="minimizeable">false</Property>
-      <Property name="maximized">true</Property>
+      <Property name="maximized">false</Property>
+      <Property name="lazyInit">false</Property>
       <Buttons/>
-      <Children/>
+      <Children>
+        <Container layout="hbox pack:center;regionPadding:5">
+          <Property name="height">30</Property>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">blue-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">red-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">orange-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">yellow-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">olive-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">teal-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">violet-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">purple-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">pink-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">brown-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">grey-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">black-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+        </Container>
+      </Children>
       <Tools/>
     </Dialog>
-    <SplitPanel>
-      <Property name="position">35%</Property>
-      <MainControl>
-        <Panel>
-          <Property name="caption">详情</Property>
-          <Buttons/>
-          <Children>
-            <AutoForm>
-              <Property name="dataSet">dsUrl</Property>
-              <Property name="cols">*</Property>
-              <Property name="labelAlign">right</Property>
-              <Property name="width">550</Property>
-              <Property name="dataPath">!currentNode</Property>
-              <AutoFormElement>
-                <Property name="name">name</Property>
-                <Property name="property">name</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">icon</Property>
-                <Property name="property">icon</Property>
-                <Property name="trigger">trigger</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">path</Property>
-                <Property name="property">path</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">navigable</Property>
-                <Property name="property">navigable</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">description</Property>
-                <Property name="property">description</Property>
-                <Property name="editorType">TextArea</Property>
-                <Editor/>
-              </AutoFormElement>
-              <Button>
-                <Property name="caption">保存</Property>
-                <Property name="action">updateAction</Property>
-                <Property name="iconClass">fa fa-floppy-o</Property>
-                <Property name="style">
-                  <Property name="float">right</Property>
-                  <Property name="margin-right">25px</Property>
-                </Property>
-              </Button>
-            </AutoForm>
-          </Children>
-          <Tools/>
-        </Panel>
-      </MainControl>
-      <SideControl>
-        <Panel>
-          <Property name="caption">菜单</Property>
-          <Buttons/>
-          <Children>
-            <DataTree id="dtUrl">
-              <ClientEvent name="onContextMenu" signature="self,arg,menu">var url = self.get(&quot;currentEntity&quot;);
+    <Panel layoutConstraint="left ">
+      <Property name="caption">菜单</Property>
+      <Property name="width">35%</Property>
+      <Property name="style">
+        <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+      </Property>
+      <Buttons/>
+      <Children>
+        <DataTree id="dtUrl" layoutConstraint="padding:15">
+          <ClientEvent name="onContextMenu" signature="self,arg,menu">var url = self.get(&quot;currentEntity&quot;);
 if (!url) {
 	view.get(&quot;^op&quot;).set(&quot;disabled&quot;, true);
 } else {
@@ -217,7 +353,7 @@ menu.show({
 	}
 });
 </ClientEvent>
-              <ClientEvent name="onDraggingSourceDrop" signature="self,arg,updateAction">var node = arg.draggingInfo.get(&quot;object&quot;);
+          <ClientEvent name="onDraggingSourceDrop" signature="self,arg,updateAction">var node = arg.draggingInfo.get(&quot;object&quot;);
 var url = node.get(&quot;data&quot;);
 if (url.parent.parent) {
 	url.set(&quot;parentId&quot;, url.parent.parent.get(&quot;id&quot;));
@@ -235,56 +371,125 @@ url.parent.each(function(u) {
 
 updateAction.execute();
 </ClientEvent>
-              <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
-if (data.get(&quot;icon&quot;) != arg.node.get(&quot;iconClass&quot;)) {
-	arg.node.set(&quot;iconClass&quot;, data.get(&quot;icon&quot;));
+          <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
+var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
+if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
+	if (icon != arg.node.get(&quot;iconClass&quot;)) {
+		arg.node.set(&quot;iconClass&quot;, icon);
+	}
+} else {
+	if (icon != arg.node.get(&quot;icon&quot;)) {
+		arg.node.set(&quot;icon&quot;, icon);
+	}
+}
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+</ClientEvent>
+          <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
+var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
+if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
+	if (icon != arg.node.get(&quot;iconClass&quot;)) {
+		arg.node.set(&quot;iconClass&quot;, icon);
+	}
+} else {
+	if (icon != arg.node.get(&quot;icon&quot;)) {
+		arg.node.set(&quot;icon&quot;, icon);
+	}
 }
 
 $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
 </ClientEvent>
-              <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
-if (data.get(&quot;icon&quot;) != arg.node.get(&quot;iconClass&quot;)) {
-	arg.node.set(&quot;iconClass&quot;, data.get(&quot;icon&quot;));
-}
-
-$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+          <ClientEvent name="onDataRowDoubleClick" signature="self,arg,dialogIcon">dialogIcon.show();
 </ClientEvent>
-              <Property name="dataSet">dsUrl</Property>
-              <Property name="currentNodeDataPath">currentNode</Property>
-              <Property name="droppable">true</Property>
-              <Property name="droppableTags">node</Property>
-              <Property name="draggable">true</Property>
-              <Property name="dragTags">node</Property>
-              <Property name="dropMode">onOrInsertItems</Property>
-              <Property name="showLines">true</Property>
-              <BindingConfigs>
-                <BindingConfig>
-                  <Property name="childrenProperty">children</Property>
-                  <Property name="labelProperty">name</Property>
-                  <Property name="recursive">true</Property>
-                  <Property name="tipProperty">description</Property>
-                  <Property name="name">name</Property>
-                </BindingConfig>
-              </BindingConfigs>
-            </DataTree>
-          </Children>
-          <Tools>
-            <SimpleIconButton>
-              <Property name="iconClass">fa fa-plus-circle</Property>
-              <Property name="action">actionAddTop</Property>
-            </SimpleIconButton>
-            <SimpleIconButton>
-              <Property name="iconClass">fa fa-plus-circle</Property>
-              <Property name="action">actionAddSub</Property>
-            </SimpleIconButton>
-            <SimpleIconButton>
-              <Property name="iconClass">fa fa-minus-circle</Property>
-              <Property name="action">actionDel</Property>
-            </SimpleIconButton>
-          </Tools>
-        </Panel>
-      </SideControl>
-    </SplitPanel>
+          <Property name="dataSet">dsUrl</Property>
+          <Property name="currentNodeDataPath">currentNode</Property>
+          <Property name="droppable">true</Property>
+          <Property name="droppableTags">node</Property>
+          <Property name="draggable">true</Property>
+          <Property name="dragTags">node</Property>
+          <Property name="dropMode">onOrInsertItems</Property>
+          <Property name="showLines">true</Property>
+          <BindingConfigs>
+            <BindingConfig>
+              <Property name="childrenProperty">children</Property>
+              <Property name="labelProperty">name</Property>
+              <Property name="recursive">true</Property>
+              <Property name="tipProperty">description</Property>
+              <Property name="name">name</Property>
+            </BindingConfig>
+          </BindingConfigs>
+        </DataTree>
+      </Children>
+      <Tools>
+        <SimpleIconButton>
+          <Property name="iconClass">fa fa-plus-circle</Property>
+          <Property name="action">actionAddTop</Property>
+        </SimpleIconButton>
+        <SimpleIconButton>
+          <Property name="iconClass">fa fa-plus-circle</Property>
+          <Property name="action">actionAddSub</Property>
+        </SimpleIconButton>
+        <SimpleIconButton>
+          <Property name="iconClass">fa fa-minus-circle</Property>
+          <Property name="action">actionDel</Property>
+        </SimpleIconButton>
+      </Tools>
+    </Panel>
+    <Panel>
+      <Property name="caption">详情</Property>
+      <Property name="style">
+        <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+      </Property>
+      <Buttons/>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsUrl</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelAlign">right</Property>
+          <Property name="width">550</Property>
+          <Property name="dataPath">!currentNode</Property>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">icon</Property>
+            <Property name="property">icon</Property>
+            <Property name="trigger">trigger</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">path</Property>
+            <Property name="property">path</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">navigable</Property>
+            <Property name="property">navigable</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">description</Property>
+            <Property name="property">description</Property>
+            <Property name="editorType">TextArea</Property>
+            <Editor/>
+          </AutoFormElement>
+          <Button>
+            <Property name="caption">保存</Property>
+            <Property name="action">updateAction</Property>
+            <Property name="iconClass">fa fa-floppy-o</Property>
+            <Property name="style">
+              <Property name="float">right</Property>
+              <Property name="margin-right">25px</Property>
+            </Property>
+            <Property name="ui">highlight</Property>
+          </Button>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Panel>
     <Menu id="menu">
       <MenuItem>
         <Property name="action">actionAddTop</Property>

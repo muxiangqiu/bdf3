@@ -1,0 +1,74 @@
+.main .top {
+	background-color: #4285f4;
+}
+.main .banner {
+	background-image: url(dorado/res/static/images/logo.svg);
+	background-repeat: no-repeat;
+	background-position: 24px center;
+}
+
+.main .app-name {
+	color: #fff;
+    margin-left: 80px;
+    font-size: 1.7em;
+    line-height: 64px;
+    display: inline-block;
+}
+
+.main .personal-center-btn {
+	background-image: url(dorado/res/static/images/personal-center.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+	float: right;
+    height: 64px;
+    width: 64px;
+    cursor: pointer;
+}
+
+.main .personal-center-btn:focus {
+	background-color: rgba(0,0,0,0.20);
+    outline: none;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.personal-center .avatar {
+	background-image: url(dorado/res/static/images/avatar.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.personal-center .username {
+	color: #8c8c8c;
+}
+
+.personal-center .nickname {
+	font-size: 1.2em;
+}
+
+.personal-center .buttons {
+	border-top: #ccc 1px solid;
+}
+
+.personal-center.d-shadow-sides {
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+}
+
+.main .workarea {
+	background-color: #ccc;
+}
+
+.main .d-cardbook {
+    background-color: #f7f7f7;
+}
+
+.main .d-tree .row {
+	background-color: #f7f7f7;
+}
+
+.main .d-tree .current-row {
+    color: #ffffff;
+    background-color: #15a4fa;
+}

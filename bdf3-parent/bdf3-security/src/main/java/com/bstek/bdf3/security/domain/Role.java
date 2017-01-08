@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.security.core.GrantedAuthority;
+
 /**
  * 角色信息
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -32,6 +34,9 @@ public class Role implements Serializable {
 	
 	@Transient
 	private List<Permission> permissions;
+	
+	@Transient
+	private List<GrantedAuthority> authorities;
 	
 	public String getId() {
 		return id;
@@ -76,6 +81,20 @@ public class Role implements Serializable {
 	public void setPermissions(List<Permission> permissions) {
 		this.permissions = permissions;
 	}
+
+	/**
+	 * 授权权限信息
+	 * @return authorities
+	 */
+	public List<GrantedAuthority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(List<GrantedAuthority> authorities) {
+		this.authorities = authorities;
+	}
+	
+	
 	
 	
 

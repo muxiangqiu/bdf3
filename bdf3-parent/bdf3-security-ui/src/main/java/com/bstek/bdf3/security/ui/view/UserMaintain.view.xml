@@ -46,62 +46,137 @@
       </PropertyDef>
     </DataType>
   </Model>
-  <View>
-    <Property name="packages">font-awesome</Property>
+  <View layout="padding:15">
+    <Property name="packages">font-awesome,colors</Property>
     <DataSet id="dsUser">
       <Property name="dataType">[User]</Property>
       <Property name="dataProvider">userController#load</Property>
       <Property name="pageSize">20</Property>
     </DataSet>
-    <ToolBar>
-      <DataPilot>
-        <ClientEvent name="onSubControlAction" signature="self,arg,dialogUser">if (arg.code == &quot;+&quot;) {
+    <Panel layout="padding:5;regionPadding:10">
+      <Property name="style">
+        <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+      </Property>
+      <Property name="showCaptionBar">false</Property>
+      <Buttons/>
+      <Children>
+        <ToolBar>
+          <DataPilot>
+            <ClientEvent name="onSubControlAction" signature="self,arg,dialogUser,updateAction,dsUser">if (arg.code == &quot;+&quot;) {
 	view.get(&quot;@User&quot;).getPropertyDef(&quot;password&quot;).set(&quot;readOnly&quot;, false);
 	dialogUser.show();
 } else if (arg.code == &quot;-&quot;) {
 	dorado.MessageBox.confirm(&quot;确认要删除当前记录吗？&quot;, function() {
+		dsUser.getData(&quot;#&quot;).remove();
 		updateAction.execute();
 	});
+	arg.processDefault = false;
 }
 </ClientEvent>
-        <Property name="dataSet">dsUser</Property>
-        <Property name="itemCodes">pages,pageSize,+,-</Property>
-      </DataPilot>
-      <ToolBarButton>
-        <ClientEvent name="onClick" signature="self,arg,dialogUser,dialogUser">view.get(&quot;@User&quot;).getPropertyDef(&quot;password&quot;).set(&quot;readOnly&quot;, true);
+            <Property name="dataSet">dsUser</Property>
+            <Property name="itemCodes">+,-</Property>
+          </DataPilot>
+          <ToolBarButton>
+            <ClientEvent name="onClick" signature="self,arg,dialogUser,dialogUser">view.get(&quot;@User&quot;).getPropertyDef(&quot;password&quot;).set(&quot;readOnly&quot;, true);
 dialogUser.show()
 </ClientEvent>
-        <Property name="caption">修改</Property>
-        <Property name="iconClass">fa fa-pencil</Property>
-      </ToolBarButton>
-    </ToolBar>
-    <DataGrid>
-      <Property name="dataSet">dsUser</Property>
-      <Property name="readOnly">true</Property>
-      <Property name="showFilterBar">true</Property>
-      <Property name="sortMode">serverSide</Property>
-      <Property name="filterMode">serverSide</Property>
-      <RowNumColumn/>
-      <DataColumn name="username">
-        <Property name="property">username</Property>
-      </DataColumn>
-      <DataColumn>
-        <Property name="property">nickname</Property>
-        <Property name="name">nickname</Property>
-      </DataColumn>
-      <DataColumn name="accountNonExpired">
-        <Property name="property">accountNonExpired</Property>
-      </DataColumn>
-      <DataColumn name="accountNonLocked">
-        <Property name="property">accountNonLocked</Property>
-      </DataColumn>
-      <DataColumn name="credentialsNonExpired">
-        <Property name="property">credentialsNonExpired</Property>
-      </DataColumn>
-      <DataColumn name="enabled">
-        <Property name="property">enabled</Property>
-      </DataColumn>
-    </DataGrid>
+            <Property name="caption">修改</Property>
+            <Property name="iconClass">fa fa-pencil</Property>
+          </ToolBarButton>
+          <ToolBarButton>
+            <ClientEvent name="onClick" signature="self,arg,ajaxActionResetPassword,dsUser">var user = dsUser.getData(&quot;#&quot;);
+if (user) {
+	dorado.MessageBox.confirm(&quot;你确定要重置【&quot; + user.get(&quot;nickname&quot;) + &quot;】的密码吗？&quot;, function() {
+		var newPassword = Math.round(Math.random()*1000000) + &quot;&quot;;
+		ajaxActionResetPassword.set(&quot;parameter&quot;, {
+			username: user.get(&quot;username&quot;),
+			newPassword: newPassword
+		}).execute(function() {
+			dorado.MessageBox.alert(&quot;新的密码为：&quot; + newPassword);
+		});
+	});
+	
+} else {
+	dorado.MessageBox.alert(&quot;请先选择用户。&quot;);
+}
+</ClientEvent>
+            <Property name="caption">重置密码</Property>
+            <Property name="iconClass">fa fa-key yellow-text</Property>
+            <Property name="action">ajaxActionResetPassword</Property>
+          </ToolBarButton>
+          <Fill/>
+          <TextEditor>
+            <ClientEvent name="onKeyDown" signature="self,arg,dgUser">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.urlQueryTimeout);
+self.urlQueryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	if (!key) {
+		dgUser.filter();
+	} else {
+		dgUser.filter([{
+			junction: &quot;or&quot;,
+			criterions: [{
+				property: &quot;username&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;nickname&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}]
+		}]);
+	}
+}, 250);</ClientEvent>
+            <Property name="trigger">triggerClear</Property>
+            <Property name="blankText">按用户名或昵称</Property>
+          </TextEditor>
+        </ToolBar>
+        <DataGrid id="dgUser">
+          <Property name="dataSet">dsUser</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="showFilterBar">false</Property>
+          <Property name="sortMode">serverSide</Property>
+          <Property name="filterMode">serverSide</Property>
+          <Property name="allowNoCurrent">false</Property>
+          <RowNumColumn/>
+          <DataColumn name="username">
+            <Property name="property">username</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">nickname</Property>
+            <Property name="name">nickname</Property>
+          </DataColumn>
+          <DataColumn name="accountNonExpired">
+            <Property name="property">accountNonExpired</Property>
+          </DataColumn>
+          <DataColumn name="accountNonLocked">
+            <Property name="property">accountNonLocked</Property>
+          </DataColumn>
+          <DataColumn name="credentialsNonExpired">
+            <Property name="property">credentialsNonExpired</Property>
+          </DataColumn>
+          <DataColumn name="enabled">
+            <Property name="property">enabled</Property>
+          </DataColumn>
+        </DataGrid>
+        <ToolBar layoutConstraint="bottom">
+          <DataPilot>
+            <Property name="dataSet">dsUser</Property>
+            <Property name="itemCodes">pages,pageSize</Property>
+          </DataPilot>
+        </ToolBar>
+        <AjaxAction id="ajaxActionResetPassword">
+          <Property name="service">userController#changePassword</Property>
+          <Property name="executingMessage">正在执行……</Property>
+          <Property name="successMessage">密码重置成功。</Property>
+        </AjaxAction>
+      </Children>
+      <Tools/>
+    </Panel>
     <UpdateAction id="updateAction">
       <ClientEvent name="onSuccess" signature="self,arg,dialogUser">dialogUser.hide()
 </ClientEvent>
@@ -116,9 +191,8 @@ dialogUser.show()
       <ClientEvent name="onHide" signature="self,arg,dsUser">dsUser.getData().cancel();
 </ClientEvent>
       <Property name="caption">用户维护</Property>
-      <Property name="iconClass">fa fa-user</Property>
       <Property name="width">500</Property>
-      <Property name="height">500</Property>
+      <Property name="height">400</Property>
       <Property name="maximizeable">true</Property>
       <Property name="minimizeable">false</Property>
       <Buttons>
@@ -151,6 +225,7 @@ dialogUser.show()
           <AutoFormElement>
             <Property name="name">password</Property>
             <Property name="property">password</Property>
+            <Property name="editorType">PasswordEditor</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

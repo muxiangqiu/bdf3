@@ -6,7 +6,6 @@ import java.util.List;
 import com.bstek.bdf3.dorado.jpa.lin.Linq;
 import com.bstek.bdf3.dorado.jpa.parser.CriterionParser;
 import com.bstek.bdf3.dorado.jpa.policy.CriteriaContext;
-import com.bstek.bdf3.jpa.Junction;
 import com.bstek.dorado.data.provider.Criteria;
 
 /**
@@ -16,7 +15,6 @@ import com.bstek.dorado.data.provider.Criteria;
 public class QBCCriteriaContext implements CriteriaContext {
 	private Linq linq;
 	private Object current;
-	private Junction junction;
 	private Class<?> entityClass;
 	private String alias;
 	private Criteria criteria;
@@ -44,14 +42,6 @@ public class QBCCriteriaContext implements CriteriaContext {
 	@Override
 	public <E> E getCurrent() {
 		return (E) current;
-	}
-	
-	public Junction getJunction() {
-		return junction;
-	}
-
-	public void setJunction(Junction junction) {
-		this.junction = junction;
 	}
 
 	public Class<?> getEntityClass() {

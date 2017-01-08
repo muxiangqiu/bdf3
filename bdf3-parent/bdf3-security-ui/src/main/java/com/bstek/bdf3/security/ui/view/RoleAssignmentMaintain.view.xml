@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Role">
+      <Property name="creationType">com.bstek.bdf3.security.domain.Role</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">角色名称</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property></Property>
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <Reference name="usersWithout">
+        <Property name="dataProvider">roleAssignmentController#loadUsersWithout</Property>
+        <Property name="dataType">[User]</Property>
+        <Property name="parameter">$${this.id}</Property>
+        <Property name="pageSize">20</Property>
+        <Property name="submittable">false</Property>
+      </Reference>
+      <Reference name="usersWithin">
+        <Property name="dataProvider">roleAssignmentController#loadUsersWithin</Property>
+        <Property name="dataType">[User]</Property>
+        <Property name="parameter">$${this.id}</Property>
+        <Property name="pageSize">20</Property>
+        <Property name="submittable">false</Property>
+      </Reference>
+      <PropertyDef name="authorities">
+        <Property name="dataType">[RoleGrantedAuthority]</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="User">
+      <Property name="creationType">com.bstek.bdf3.security.domain.User</Property>
+      <PropertyDef name="username">
+        <Property></Property>
+        <Property name="label">用户名</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="nickname">
+        <Property></Property>
+        <Property name="label">昵称</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="password">
+        <Property></Property>
+        <Property name="label">密码</Property>
+        <Property name="required">true</Property>
+        <Validator type="charLength">
+          <Property name="minLength">6</Property>
+          <Property name="name">validator</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="accountNonExpired">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">账户未过期</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="accountNonLocked">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">账户未锁定</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="credentialsNonExpired">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">证书未过期</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="enabled">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可用</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="RoleGrantedAuthority">
+      <Property name="creationType">com.bstek.bdf3.security.domain.RoleGrantedAuthority</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="actorId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="roleId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="role">
+        <Property name="dataType">Role</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View layout="padding:5;regionPadding:10">
+    <Property name="packages">font-awesome,colors</Property>
+    <DataSet id="dsRole">
+      <Property name="dataType">[Role]</Property>
+      <Property name="dataProvider">roleController#load</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="loadMode">preload</Property>
+    </DataSet>
+    <SplitPanel>
+      <Property name="position">500</Property>
+      <Property name="ignored">true</Property>
+      <MainControl>
+        <TabControl>
+          <ClientEvent name="beforeTabChange" signature="self,arg,dsUser">if (arg.newTab.get(&quot;caption&quot;) == &quot;拥有菜单&quot;) {
+	var urls = dsUser.getData(&quot;#.urls&quot;);
+	if (urls) {
+		urls.flushAsync();
+	}
+}
+</ClientEvent>
+          <ControlTab>
+            <Property name="caption">所有角色</Property>
+            <Container>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataSet">dsRole</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <Property name="caption">保存</Property>
+                  <Property name="iconClass">fa fa-floppy-o</Property>
+                  <Property name="action">updateAction</Property>
+                  <Property name="tags">op</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgAllRole">
+                <Property name="dataSet">dsRole</Property>
+                <Property name="showFilterBar">true</Property>
+                <Property name="selectionMode">multiRows</Property>
+                <Property name="highlightCurrentRow">false</Property>
+                <Property name="highlightHoverRow">false</Property>
+                <Property name="dynaRowHeight">true</Property>
+                <Property name="sortMode">serverSide</Property>
+                <Property name="filterMode">serverSide</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <ClientEvent name="onRenderHeaderCell">$(arg.dom).parent().addClass(&quot;row-selector&quot;)
+</ClientEvent>
+                  <Property name="property">checked</Property>
+                  <Property name="name">checked</Property>
+                  <Property name="width">20</Property>
+                  <Property name="supportsOptionMenu">false</Property>
+                  <Property name="filterable">false</Property>
+                </DataColumn>
+                <DataColumn name="name">
+                  <Property name="property">name</Property>
+                  <Property name="readOnly">true</Property>
+                </DataColumn>
+                <DataColumn name="description">
+                  <Property name="property">description</Property>
+                  <Property name="readOnly">true</Property>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">拥有角色</Property>
+            <Container>
+              <ToolBar>
+                <DataPilot>
+                  <ClientEvent name="onSubControlAction" signature="self,arg,dgRga,updateAction,dsUser">if (arg.code == &quot;-&quot;) {
+	var selection = dgRga.get(&quot;selection&quot;);
+	if (selection &amp;&amp; selection.length > 0) {
+		dorado.MessageBox.confirm(&quot;确定要删除勾选的行？&quot;, function() {
+			selection.each(function (item) {
+				item.remove();
+			});
+			updateAction.execute(function() {
+				var user = dsUser.getData(&quot;#&quot;);
+				var dtUser = view.get(&quot;@User&quot;);
+				dtUser.fireEvent(&quot;onCurrentChange&quot;, dtUser, {entityList: user.parent, newCurrent: user, oldCurrent: user});
+			});
+		});
+	} else {
+		dorado.MessageBox.alert(&quot;请先勾选行。&quot;);
+	}
+	arg.processDefault = false;
+}
+</ClientEvent>
+                  <Property name="itemCodes">-</Property>
+                  <Property name="dataSet">dsUser</Property>
+                  <Property name="dataPath">#.authorities</Property>
+                </DataPilot>
+              </ToolBar>
+              <DataGrid id="dgRga">
+                <Property name="dataSet">dsUser</Property>
+                <Property name="dataPath">#.authorities</Property>
+                <Property name="showFilterBar">false</Property>
+                <Property name="selectionMode">multiRows</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="highlightCurrentRow">false</Property>
+                <Property name="highlightHoverRow">false</Property>
+                <Property name="dynaRowHeight">true</Property>
+                <RowNumColumn/>
+                <RowSelectorColumn/>
+                <IndicatorColumn/>
+                <DataColumn>
+                  <Property name="property">role.name</Property>
+                  <Property name="name">role.name</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">role.description</Property>
+                  <Property name="name">role.description</Property>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">拥有菜单</Property>
+            <Container>
+              <DataGrid id="dgUrl">
+                <Property name="dataSet">dsUser</Property>
+                <Property name="dataPath">#.urls</Property>
+                <Property name="showFilterBar">true</Property>
+                <Property name="selectionMode">multiRows</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="highlightCurrentRow">false</Property>
+                <Property name="highlightHoverRow">false</Property>
+                <Property name="dynaRowHeight">true</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <ClientEvent name="onRenderCell">$(arg.dom).addClass(arg.data.get(&quot;icon&quot;))
+	.css({
+		&quot;line-height&quot;: $(arg.dom).height() + &quot;px&quot;,
+		display: &quot;block&quot;
+	});
+</ClientEvent>
+                  <Property name="property">icon</Property>
+                  <Property name="name">icon</Property>
+                  <Property name="width">60</Property>
+                  <Property name="align">center</Property>
+                  <Property name="supportsOptionMenu">false</Property>
+                  <Property name="filterable">false</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">name</Property>
+                  <Property name="name">name</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">path</Property>
+                  <Property name="name">path</Property>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </ControlTab>
+        </TabControl>
+      </MainControl>
+      <SideControl>
+        <Panel>
+          <Property name="caption">用户</Property>
+          <Buttons/>
+          <Children>
+            <ToolBar>
+              <DataPilot>
+                <Property name="dataSet">dsUser</Property>
+                <Property name="itemCodes">pages</Property>
+              </DataPilot>
+            </ToolBar>
+            <DataGrid>
+              <Property name="dataSet">dsUser</Property>
+              <Property name="readOnly">true</Property>
+              <Property name="showFilterBar">true</Property>
+              <Property name="sortMode">serverSide</Property>
+              <Property name="filterMode">serverSide</Property>
+              <RowNumColumn/>
+              <DataColumn name="username">
+                <Property name="property">username</Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="property">nickname</Property>
+                <Property name="name">nickname</Property>
+              </DataColumn>
+              <DataColumn name="enabled">
+                <Property name="property">enabled</Property>
+              </DataColumn>
+            </DataGrid>
+          </Children>
+          <Tools/>
+        </Panel>
+      </SideControl>
+    </SplitPanel>
+    <Panel layout="padding:5;regionPadding:10" layoutConstraint="left">
+      <Property name="caption">角色</Property>
+      <Property name="width">400</Property>
+      <Property name="style">
+        <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+      </Property>
+      <Buttons/>
+      <Children>
+        <ToolBar>
+          <DataPilot>
+            <ClientEvent name="onSubControlAction" signature="self,arg,dialogRole,dsRole,updateAction">if (arg.code == &quot;+&quot;) {
+	dialogRole.show();
+} else if (arg.code == &quot;-&quot;) {
+	dorado.MessageBox.confirm(&quot;确认要删除当前记录吗？&quot;, function() {
+		dsRole.getData(&quot;#&quot;).remove();
+		updateAction.execute();
+	});
+	arg.processDefault = false;
+}
+</ClientEvent>
+            <Property name="dataSet">dsRole</Property>
+            <Property name="itemCodes">+,-</Property>
+          </DataPilot>
+          <ToolBarButton>
+            <ClientEvent name="onClick" signature="self,arg,dialogRole">dialogRole.show()
+</ClientEvent>
+            <Property name="caption">修改</Property>
+            <Property name="iconClass">fa fa-pencil</Property>
+          </ToolBarButton>
+          <Fill/>
+          <TextEditor>
+            <ClientEvent name="onKeyDown" signature="self,arg,dgRole">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.urlQueryTimeout);
+self.urlQueryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	if (!key) {
+		dgUser.filter();
+	} else {
+		dgRole.filter([{
+			junction: &quot;or&quot;,
+			criterions: [{
+				property: &quot;name&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;description&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}]
+		}]);
+	}
+}, 250);</ClientEvent>
+            <Property name="trigger">triggerClear</Property>
+            <Property name="blankText">按角色名或描述</Property>
+          </TextEditor>
+        </ToolBar>
+        <DataGrid id="dgRole">
+          <Property name="dataSet">dsRole</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="showFilterBar">false</Property>
+          <Property name="sortMode">serverSide</Property>
+          <Property name="filterMode">serverSide</Property>
+          <RowNumColumn/>
+          <DataColumn name="name">
+            <Property name="property">name</Property>
+          </DataColumn>
+          <DataColumn name="description">
+            <Property name="property">description</Property>
+          </DataColumn>
+        </DataGrid>
+        <ToolBar layoutConstraint="bottom">
+          <DataPilot>
+            <Property name="dataSet">dsRole</Property>
+            <Property name="itemCodes">|&lt;,&lt;</Property>
+          </DataPilot>
+          <Fill/>
+          <DataPilot>
+            <Property name="dataSet">dsRole</Property>
+            <Property name="itemCodes">>,>|</Property>
+          </DataPilot>
+        </ToolBar>
+      </Children>
+      <Tools/>
+    </Panel>
+    <Panel>
+      <Property name="caption">成员分配</Property>
+      <Property name="style">
+        <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+      </Property>
+      <Buttons/>
+      <Children>
+        <Container layout="padding:5;regionPadding:10" layoutConstraint="left">
+          <Property name="width">45%</Property>
+          <ToolBar>
+            <ToolBarLabel>
+              <Property name="text">未分配用户</Property>
+              <Property name="exClassName">blue-text</Property>
+            </ToolBarLabel>
+            <Fill/>
+            <TextEditor>
+              <ClientEvent name="onKeyDown" signature="self,arg,userSource">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.urlQueryTimeout);
+self.urlQueryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	if (!key) {
+		userSource.filter();
+	} else {
+		userSource.filter([{
+			junction: &quot;or&quot;,
+			criterions: [{
+				property: &quot;username&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;nickname&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}]
+		}]);
+	}
+}, 250);</ClientEvent>
+              <Property name="trigger">triggerClear</Property>
+              <Property name="blankText">按用户名或昵称</Property>
+            </TextEditor>
+          </ToolBar>
+          <DataGrid id="userSource">
+            <Property name="dataSet">dsRole</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="showFilterBar">false</Property>
+            <Property name="sortMode">serverSide</Property>
+            <Property name="filterMode">serverSide</Property>
+            <Property name="dataPath">#.usersWithout</Property>
+            <Property name="selectionMode">multiRows</Property>
+            <RowSelectorColumn/>
+            <RowNumColumn/>
+            <DataColumn name="username">
+              <Property name="property">username</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="property">nickname</Property>
+              <Property name="name">nickname</Property>
+            </DataColumn>
+          </DataGrid>
+          <ToolBar layoutConstraint="bottom">
+            <DataPilot>
+              <Property name="dataSet">dsRole</Property>
+              <Property name="dataPath">#.usersWithout</Property>
+              <Property name="itemCodes">|&lt;,&lt;</Property>
+            </DataPilot>
+            <Fill/>
+            <DataPilot>
+              <Property name="dataSet">dsRole</Property>
+              <Property name="dataPath">#.usersWithout</Property>
+              <Property name="itemCodes">>,>|</Property>
+            </DataPilot>
+          </ToolBar>
+        </Container>
+        <Container layout="vbox pack:center;align:center" layoutConstraint="left">
+          <Property name="width">10%</Property>
+          <Property name="style">
+            <Property name="background-color">#ededed</Property>
+          </Property>
+          <Button>
+            <Property name="caption">添加</Property>
+            <Property name="action">actionAddUser</Property>
+          </Button>
+          <Button>
+            <Property name="caption">移除</Property>
+            <Property name="action">actionRemoveUser</Property>
+          </Button>
+        </Container>
+        <Container layout="padding:5;regionPadding:10" layoutConstraint="left">
+          <Property name="width">45%</Property>
+          <ToolBar>
+            <ToolBarLabel>
+              <Property name="text">已分配用户</Property>
+              <Property name="exClassName">green-text</Property>
+            </ToolBarLabel>
+            <Fill/>
+            <TextEditor>
+              <ClientEvent name="onKeyDown" signature="self,arg,userTarget">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.urlQueryTimeout);
+self.urlQueryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	if (!key) {
+		userTarget.filter();
+	} else {
+		userTarget.filter([{
+			junction: &quot;or&quot;,
+			criterions: [{
+				property: &quot;username&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;nickname&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}]
+		}]);
+	}
+}, 250);</ClientEvent>
+              <Property name="trigger">triggerClear</Property>
+              <Property name="blankText">按用户名或昵称</Property>
+            </TextEditor>
+          </ToolBar>
+          <DataGrid id="userTarget">
+            <Property name="dataSet">dsRole</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="showFilterBar">false</Property>
+            <Property name="sortMode">serverSide</Property>
+            <Property name="filterMode">serverSide</Property>
+            <Property name="dataPath">#.usersWithin</Property>
+            <Property name="selectionMode">multiRows</Property>
+            <RowSelectorColumn/>
+            <RowNumColumn/>
+            <DataColumn name="username">
+              <Property name="property">username</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="property">nickname</Property>
+              <Property name="name">nickname</Property>
+            </DataColumn>
+          </DataGrid>
+          <ToolBar layoutConstraint="bottom">
+            <DataPilot>
+              <Property name="dataSet">dsRole</Property>
+              <Property name="itemCodes">|&lt;,&lt;</Property>
+              <Property name="dataPath">#.usersWithin</Property>
+            </DataPilot>
+            <Fill/>
+            <DataPilot>
+              <Property name="dataSet">dsRole</Property>
+              <Property name="itemCodes">>,>|</Property>
+              <Property name="dataPath">#.usersWithin</Property>
+            </DataPilot>
+          </ToolBar>
+        </Container>
+      </Children>
+      <Tools/>
+    </Panel>
+    <UpdateAction id="updateAction">
+      <ClientEvent name="onSuccess" signature="self,arg,dialogRole">dialogRole.hide();
+</ClientEvent>
+      <Property name="dataResolver">roleAssignmentController#save</Property>
+      <Property name="successMessage">保存成功。</Property>
+      <Property name="executingMessage">正在保存……</Property>
+      <Property name="ignored">false</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsRole</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <Action id="actionAddUser">
+      <ClientEvent name="onExecute" signature="self,arg,dsRole,updateAction,userSource">var added = userSource.get(&quot;selection&quot;);
+if (added) {
+	if (!(added instanceof Array)) {
+		added = [added];
+	}
+	var authorities = dsRole.getData(&quot;#.authorities&quot;);
+	added.each(function (a) {
+		authorities.insert({
+			actorId: a.get(&quot;username&quot;),
+			roleId: dsRole.getData(&quot;#.id&quot;)
+		});
+		dsRole.getData(&quot;#.usersWithin&quot;).insert(a);
+	}); 
+	updateAction.execute();
+} else {
+	dorado.MessageBox.alert(&quot;请先选择需要添加的用户。&quot;);
+}
+
+</ClientEvent>
+    </Action>
+    <Action id="actionRemoveUser">
+      <ClientEvent name="onExecute" signature="self,arg,dsRole,updateAction,userTarget">
+var removed = userTarget.get(&quot;selection&quot;);
+if (removed) {
+	if (!(removed instanceof Array)) {
+		removed = [removed];
+	}
+	var authorities = dsRole.getData(&quot;#.authorities&quot;);
+	removed.each(function (r) {
+		var n = authorities.insert({
+			actorId: r.get(&quot;username&quot;),
+			roleId: dsRole.getData(&quot;#.id&quot;)
+		});
+		n.setState(dorado.Entity.STATE_DELETED);
+		dsRole.getData(&quot;#.usersWithout&quot;).insert(r);
+	}); 
+	updateAction.execute();
+} else {
+	dorado.MessageBox.alert(&quot;请先选择需要移除的用户。&quot;);
+}
+</ClientEvent>
+    </Action>
+    <Dialog id="dialogRole">
+      <ClientEvent name="onHide" signature="self,arg,dsRole">dsRole.getData().cancel();
+</ClientEvent>
+      <Property name="caption">角色维护</Property>
+      <Property name="width">500</Property>
+      <Property name="height">300</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="minimizeable">false</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide()
+</ClientEvent>
+          <Property name="caption">取消</Property>
+        </Button>
+        <Button>
+          <Property name="caption">保存</Property>
+          <Property name="action">updateAction</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsRole</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelPosition">left</Property>
+          <Property name="labelAlign">right</Property>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">description</Property>
+            <Property name="property">description</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

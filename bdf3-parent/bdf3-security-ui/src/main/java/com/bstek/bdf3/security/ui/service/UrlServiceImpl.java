@@ -5,20 +5,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.bdf3.dorado.jpa.policy.SaveContext;
-import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicy;
-import com.bstek.bdf3.security.Constants;
+import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicyAdapter;
+import com.bstek.bdf3.security.cache.SecurityCacheEvict;
+import com.bstek.bdf3.security.domain.Permission;
 import com.bstek.bdf3.security.domain.Url;
+
+
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
- * @since 2016年7月11日
+ * @since 2016年1月30日
  */
 @Service("ui.urlService")
+@Transactional(readOnly = true)
 public class UrlServiceImpl implements UrlService {
 	
 	@Override
@@ -28,7 +32,7 @@ public class UrlServiceImpl implements UrlService {
 		List<Url> urls = JpaUtil
 				.linq(Url.class)
 				.asc("order")
-				.findAll();
+				.list();
 		for (Url url : urls) {
 			
 			if (childrenMap.containsKey(url.getId())) {
@@ -55,17 +59,22 @@ public class UrlServiceImpl implements UrlService {
 	}
 
 	@Override
-	@CacheEvict(cacheNames = {
-		Constants.URL_TREE_CACHE_KEY, 
-		Constants.URL_TREE_BY_USRNAME_CACHE_KEY, 
-		Constants.REQUEST_MAP_CACHE_KEY,
-		Constants.URL_ATTRIBUTE_BY_TARGET_CACHE_KEY,
-		Constants.COMPONENT_MAP_CACHE_KEY,
-		Constants.COMPONENT_ATTRIBUTE_MAP_CACHE_KEY,
-		Constants.COMPONENT_ATTRIBUTE_BY_TARGET_CACHE_KEY}, allEntries = true)
+	@SecurityCacheEvict
+	@Transactional
 	public void save(List<Url> urls) {
-		JpaUtil.save(urls, new SmartSavePolicy() {
+		JpaUtil.save(urls, new SmartSavePolicyAdapter() {
 			
+			
+			
+			@Override
+			public void beforeDelete(SaveContext context) {
+				Url url = context.getEntity();
+				JpaUtil.lind(Permission.class)
+					.equal("resourceId", url.getId())
+					.equal("resourceType", Url.RESOURCE_TYPE)
+					.delete();
+			}
+
 			@Override
 			public void apply(SaveContext context) {
 				Url url = context.getEntity();
@@ -75,12 +84,11 @@ public class UrlServiceImpl implements UrlService {
 						url.setParentId(parent.getId());
 					}
 				}
-				
 				super.apply(context);
-				
-				
-			}
+			}	
 		});
 	}
-}
 
+
+
+}

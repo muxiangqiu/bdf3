@@ -14,6 +14,7 @@ import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
@@ -25,11 +26,16 @@ import org.springframework.context.weaving.LoadTimeWeaverAware;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.instrument.classloading.LoadTimeWeaver;
 import org.springframework.jndi.JndiLocatorDelegate;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
+import org.springframework.orm.jpa.vendor.AbstractJpaVendorAdapter;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.util.ClassUtils;
 
+import com.bstek.bdf3.saas.Constants;
 import com.bstek.bdf3.saas.domain.Organization;
 
 /**
@@ -38,18 +44,18 @@ import com.bstek.bdf3.saas.domain.Organization;
  */
 @Service
 public class EntityManagerFactoryServiceImpl implements
-		EntityManagerFactoryService, BeanClassLoaderAware, BeanFactoryAware, BeanNameAware, ResourceLoaderAware, LoadTimeWeaverAware {
+		EntityManagerFactoryService, BeanClassLoaderAware, BeanFactoryAware, BeanNameAware, ResourceLoaderAware, LoadTimeWeaverAware, InitializingBean {
 	
 	private Map<String, EntityManagerFactory> emfMap = new ConcurrentHashMap<String, EntityManagerFactory>();
 	
 	@Autowired
 	private DataSourceService dataSourceService;
 	
+	@Autowired
+	private EntityManagerFactory emf;
+	
 	@Autowired(required = false)
 	private JtaTransactionManager jtaTransactionManager;
-		
-	@Autowired
-	private EntityManagerFactoryBuilder entityManagerFactoryBuilder;
 
 	private LoadTimeWeaver loadTimeWeaver;
 
@@ -84,10 +90,32 @@ public class EntityManagerFactoryServiceImpl implements
 
 	private BeanFactory beanFactory;
 	
+	@Autowired(required = false)
+	private PersistenceUnitManager persistenceUnitManager;
+	
 	@Value("${bdf3.saas.packagesToScan:com.bstek.bdf3.security.domain,com.bstek.bdf3.message.domain}")
 	private String packagesToScan;
 	
+	protected AbstractJpaVendorAdapter createJpaVendorAdapter() {
+		return new HibernateJpaVendorAdapter();
+	}
+	
+	public JpaVendorAdapter getJpaVendorAdapter() {
+		AbstractJpaVendorAdapter adapter = createJpaVendorAdapter();
+		adapter.setShowSql(properties.isShowSql());
+		adapter.setDatabase(properties.getDatabase());
+		adapter.setDatabasePlatform(properties.getDatabasePlatform());
+		adapter.setGenerateDdl(properties.isGenerateDdl());
+		return adapter;
+	}
 
+	public EntityManagerFactoryBuilder getEntityManagerFactoryBuilder() {
+		JpaVendorAdapter jpaVendorAdapter = getJpaVendorAdapter();
+		EntityManagerFactoryBuilder builder = new EntityManagerFactoryBuilder(
+				jpaVendorAdapter, properties.getProperties(),
+				this.persistenceUnitManager);
+		return builder;
+	}
 
 	@Override
 	public EntityManagerFactory getEntityManagerFactory(Organization organization) {
@@ -99,7 +127,7 @@ public class EntityManagerFactoryServiceImpl implements
 		DataSource dataSource = dataSourceService.getOrCreateDataSource(organization);
 		Map<String, Object> vendorProperties = getVendorProperties(dataSource);
 		customizeVendorProperties(vendorProperties);
-		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = entityManagerFactoryBuilder.dataSource(dataSource).packages(packagesToScan.split(","))
+		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = getEntityManagerFactoryBuilder().dataSource(dataSource).packages(packagesToScan.split(","))
 				.properties(vendorProperties).jta(isJta()).build();
 		entityManagerFactoryBean.setBeanClassLoader(classLoader);
 		entityManagerFactoryBean.setBeanFactory(beanFactory);
@@ -241,6 +269,11 @@ public class EntityManagerFactoryServiceImpl implements
 			emfMap.put(organization.getId(), emf);
 		}
 		return emf;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		emfMap.put(Constants.MASTER, emf);
 	}
 
 }

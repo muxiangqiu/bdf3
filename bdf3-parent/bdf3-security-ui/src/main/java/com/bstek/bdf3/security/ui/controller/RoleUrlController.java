@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.security.domain.Permission;
 import com.bstek.bdf3.security.ui.service.RoleUrlService;
@@ -14,12 +13,12 @@ import com.bstek.dorado.annotation.DataProvider;
 import com.bstek.dorado.annotation.DataResolver;
 
 
+
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2016年3月6日
  */
 @Controller
-@Transactional(readOnly = true)
 public class RoleUrlController {
 	
 	@Autowired
@@ -31,7 +30,6 @@ public class RoleUrlController {
 	}
 	
 	@DataResolver
-	@Transactional
 	public void save(List<Permission> permissions) {
 		roleUrlService.save(permissions);
 	}

@@ -155,8 +155,8 @@ function doPermission(url, checked) {
       </PropertyDef>
     </DataType>
   </Model>
-  <View>
-    <Property name="packages">font-awesome</Property>
+  <View layout="regionPadding:15">
+    <Property name="packages">font-awesome,entypo,colors</Property>
     <DataSet id="dsUrl">
       <Property name="dataType">[Url]</Property>
       <Property name="dataProvider">urlController#load</Property>
@@ -179,72 +179,191 @@ function doPermission(url, checked) {
         <Property name="dataSet">dsRole</Property>
       </UpdateItem>
     </UpdateAction>
-    <SplitPanel>
-      <Property name="position">500</Property>
-      <MainControl>
-        <TabControl>
-          <ControlTab>
-            <Property name="caption">所有菜单</Property>
-            <Container>
-              <ToolBar>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">view.autoCheckChildren = self.get(&quot;toggled&quot;);
+    <Panel layout="padding:5;regionPadding:10" layoutConstraint="left">
+      <Property name="caption">角色</Property>
+      <Property name="width">50%</Property>
+      <Property name="style">
+        <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+      </Property>
+      <Buttons/>
+      <Children>
+        <ToolBar>
+          <DataPilot>
+            <ClientEvent name="onSubControlAction" signature="self,arg,dialogRole">if (arg.code == &quot;+&quot;) {
+	dialogRole.show();
+} else if (arg.code == &quot;-&quot;) {
+	dorado.MessageBox.confirm(&quot;确认要删除当前记录吗？&quot;, function() {
+		updateAction.execute();
+	});
+}
+</ClientEvent>
+            <Property name="dataSet">dsRole</Property>
+            <Property name="itemCodes">+,-</Property>
+          </DataPilot>
+          <ToolBarButton>
+            <ClientEvent name="onClick" signature="self,arg,dialogRole">dialogRole.show()
+</ClientEvent>
+            <Property name="caption">修改</Property>
+            <Property name="iconClass">fa fa-pencil</Property>
+          </ToolBarButton>
+          <Fill/>
+          <TextEditor>
+            <ClientEvent name="onKeyDown" signature="self,arg,dgRole">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.urlQueryTimeout);
+self.urlQueryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	if (!key) {
+		dgUser.filter();
+	} else {
+		dgRole.filter([{
+			junction: &quot;or&quot;,
+			criterions: [{
+				property: &quot;name&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;description&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}]
+		}]);
+	}
+}, 250);</ClientEvent>
+            <Property name="trigger">triggerClear</Property>
+            <Property name="blankText">按角色名或描述</Property>
+          </TextEditor>
+        </ToolBar>
+        <DataGrid id="dgRole">
+          <Property name="dataSet">dsRole</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="showFilterBar">false</Property>
+          <Property name="sortMode">serverSide</Property>
+          <Property name="filterMode">serverSide</Property>
+          <RowNumColumn/>
+          <DataColumn name="name">
+            <Property name="property">name</Property>
+          </DataColumn>
+          <DataColumn name="description">
+            <Property name="property">description</Property>
+          </DataColumn>
+        </DataGrid>
+        <ToolBar layoutConstraint="bottom">
+          <DataPilot>
+            <Property name="dataSet">dsRole</Property>
+            <Property name="itemCodes">pages</Property>
+          </DataPilot>
+        </ToolBar>
+      </Children>
+      <Tools/>
+    </Panel>
+    <CardBook id="cardBook">
+      <Property name="ignored">false</Property>
+      <Property name="style">
+        <Property name="background-color">transparent</Property>
+        <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+      </Property>
+      <Panel layout="padding:5;regionPadding:10">
+        <Property name="caption">菜单分配</Property>
+        <Buttons/>
+        <Children>
+          <ToolBar>
+            <ToolBarButton>
+              <ClientEvent name="onClick">view.autoCheckChildren = self.get(&quot;toggled&quot;);
 
 </ClientEvent>
-                  <Property name="caption">自动勾选子级菜单</Property>
-                  <Property name="iconClass">fa fa-check</Property>
-                  <Property name="toggleable">true</Property>
-                  <Property name="tags">op</Property>
-                </ToolBarButton>
-                <ToolBarButton>
-                  <Property name="caption">保存</Property>
-                  <Property name="iconClass">fa fa-floppy-o</Property>
-                  <Property name="action">updateAction</Property>
-                  <Property name="tags">op</Property>
-                </ToolBarButton>
-              </ToolBar>
-              <DataTree id="dtUrl">
-                <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
-if (data.get(&quot;icon&quot;) != arg.node.get(&quot;iconClass&quot;)) {
-	arg.node.set(&quot;iconClass&quot;, data.get(&quot;icon&quot;));
+              <Property name="caption">自动勾选子级菜单</Property>
+              <Property name="iconClass">fa fa-check</Property>
+              <Property name="toggleable">true</Property>
+              <Property name="tags">op</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <Property name="caption">保存</Property>
+              <Property name="iconClass">fa fa-floppy-o</Property>
+              <Property name="action">updateActionRole</Property>
+              <Property name="tags">op</Property>
+            </ToolBarButton>
+            <Fill/>
+            <ToolBarButton>
+              <ClientEvent name="onClick" signature="self,arg,cardBook">cardBook.set(&quot;currentIndex&quot;, 1);
+</ClientEvent>
+              <Property name="caption">查看分配情况</Property>
+              <Property name="iconClass">fa fa-file-text-o</Property>
+            </ToolBarButton>
+          </ToolBar>
+          <DataTree id="dtUrl">
+            <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
+var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
+if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
+	if (icon != arg.node.get(&quot;iconClass&quot;)) {
+		arg.node.set(&quot;icon&quot;, &quot;&quot;);
+		arg.node.set(&quot;iconClass&quot;, icon);
+	}
+} else {
+	if (icon != arg.node.get(&quot;icon&quot;)) {
+		arg.node.set(&quot;iconClass&quot;, null);
+		arg.node.set(&quot;icon&quot;, icon);
+	}
 }
 
 $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
 </ClientEvent>
-                <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
-if (data.get(&quot;icon&quot;) != arg.node.get(&quot;iconClass&quot;)) {
-	arg.node.set(&quot;iconClass&quot;, data.get(&quot;icon&quot;));
+            <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
+var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
+if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
+	if (icon != arg.node.get(&quot;iconClass&quot;)) {
+		arg.node.set(&quot;icon&quot;, null);
+		arg.node.set(&quot;iconClass&quot;, icon);
+	}
+} else {
+	if (icon != arg.node.get(&quot;icon&quot;)) {
+		arg.node.set(&quot;iconClass&quot;, null);
+		arg.node.set(&quot;icon&quot;, icon);
+	}
 }
-
 $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
 </ClientEvent>
-                <Property name="dataSet">dsUrl</Property>
-                <Property name="currentNodeDataPath">currentNode</Property>
-                <Property name="draggable">false</Property>
-                <Property name="showLines">true</Property>
-                <Property name="highlightCurrentRow">false</Property>
-                <Property name="highlightHoverRow">false</Property>
-                <BindingConfigs>
-                  <BindingConfig>
-                    <Property name="childrenProperty">children</Property>
-                    <Property name="labelProperty">name</Property>
-                    <Property name="recursive">true</Property>
-                    <Property name="tipProperty">description</Property>
-                    <Property name="name">name</Property>
-                    <Property name="checkable">true</Property>
-                    <Property name="checkedProperty">checked</Property>
-                    <Property name="autoCheckChildren">false</Property>
-                  </BindingConfig>
-                </BindingConfigs>
-              </DataTree>
-            </Container>
-          </ControlTab>
-          <ControlTab>
-            <Property name="caption">拥有菜单</Property>
-            <Container>
-              <ToolBar>
-                <DataPilot>
-                  <ClientEvent name="onSubControlAction" signature="self,arg,dgPermission,updateAction,dsRole">if (arg.code == &quot;-&quot;) {
+            <Property name="dataSet">dsUrl</Property>
+            <Property name="currentNodeDataPath">currentNode</Property>
+            <Property name="draggable">false</Property>
+            <Property name="showLines">true</Property>
+            <Property name="highlightCurrentRow">false</Property>
+            <Property name="highlightHoverRow">false</Property>
+            <BindingConfigs>
+              <BindingConfig>
+                <Property name="childrenProperty">children</Property>
+                <Property name="labelProperty">name</Property>
+                <Property name="recursive">true</Property>
+                <Property name="tipProperty">description</Property>
+                <Property name="name">name</Property>
+                <Property name="checkable">true</Property>
+                <Property name="checkedProperty">checked</Property>
+                <Property name="autoCheckChildren">false</Property>
+              </BindingConfig>
+            </BindingConfigs>
+          </DataTree>
+        </Children>
+        <Tools/>
+      </Panel>
+      <Panel layout="padding:5;regionPadding:10">
+        <Property name="caption">分配情况</Property>
+        <Buttons/>
+        <Children>
+          <ToolBar>
+            <ToolBarButton>
+              <ClientEvent name="onClick" signature="self,arg,cardBook">cardBook.set(&quot;currentIndex&quot;, 0);
+</ClientEvent>
+              <Property name="caption">返回菜单分配</Property>
+              <Property name="iconClass">fa fa-long-arrow-left</Property>
+            </ToolBarButton>
+            <Fill/>
+            <DataPilot>
+              <ClientEvent name="onSubControlAction" signature="self,arg,dgPermission,updateAction,dsRole">if (arg.code == &quot;-&quot;) {
 	var selection = dgPermission.get(&quot;selection&quot;);
 	if (selection &amp;&amp; selection.length > 0) {
 		dorado.MessageBox.confirm(&quot;确定要删除勾选的行？&quot;, function() {
@@ -263,94 +382,48 @@ $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
 	arg.processDefault = false;
 }
 </ClientEvent>
-                  <Property name="itemCodes">-</Property>
-                  <Property name="dataSet">dsRole</Property>
-                  <Property name="dataPath">#.permissions</Property>
-                </DataPilot>
-              </ToolBar>
-              <DataGrid id="dgPermission">
-                <Property name="dataSet">dsRole</Property>
-                <Property name="dataPath">#.permissions</Property>
-                <Property name="showFilterBar">true</Property>
-                <Property name="selectionMode">multiRows</Property>
-                <Property name="readOnly">true</Property>
-                <Property name="width">500</Property>
-                <Property name="highlightCurrentRow">false</Property>
-                <Property name="highlightHoverRow">false</Property>
-                <Property name="dynaRowHeight">true</Property>
-                <RowNumColumn/>
-                <RowSelectorColumn/>
-                <DataColumn>
-                  <ClientEvent name="onRenderCell">$(arg.dom).addClass(arg.data.get(&quot;url.icon&quot;))
+              <Property name="itemCodes">-</Property>
+              <Property name="dataSet">dsRole</Property>
+              <Property name="dataPath">#.permissions</Property>
+            </DataPilot>
+          </ToolBar>
+          <DataGrid id="dgPermission">
+            <Property name="dataSet">dsRole</Property>
+            <Property name="dataPath">#.permissions</Property>
+            <Property name="selectionMode">multiRows</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="highlightCurrentRow">false</Property>
+            <Property name="highlightHoverRow">false</Property>
+            <Property name="dynaRowHeight">true</Property>
+            <RowNumColumn/>
+            <RowSelectorColumn/>
+            <DataColumn>
+              <ClientEvent name="onRenderCell">$(arg.dom).addClass(arg.data.get(&quot;url.icon&quot;))
 	.css({
 		&quot;line-height&quot;: $(arg.dom).height() + &quot;px&quot;,
 		display: &quot;block&quot;
 	});
 </ClientEvent>
-                  <Property name="property">url.icon</Property>
-                  <Property name="name">url.Icon</Property>
-                  <Property name="width">60</Property>
-                  <Property name="align">center</Property>
-                  <Property name="supportsOptionMenu">false</Property>
-                  <Property name="filterable">false</Property>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">url.name</Property>
-                  <Property name="name">url.name</Property>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">url.path</Property>
-                  <Property name="name">url.path</Property>
-                </DataColumn>
-              </DataGrid>
-            </Container>
-          </ControlTab>
-        </TabControl>
-      </MainControl>
-      <SideControl>
-        <Panel>
-          <Property name="caption">角色</Property>
-          <Buttons/>
-          <Children>
-            <ToolBar>
-              <DataPilot>
-                <ClientEvent name="onSubControlAction" signature="self,arg,dialogRole">if (arg.code == &quot;+&quot;) {
-	dialogRole.show();
-} else if (arg.code == &quot;-&quot;) {
-	dorado.MessageBox.confirm(&quot;确认要删除当前记录吗？&quot;, function() {
-		updateAction.execute();
-	});
-}
-</ClientEvent>
-                <Property name="dataSet">dsRole</Property>
-                <Property name="itemCodes">pages,+,-</Property>
-              </DataPilot>
-              <ToolBarButton>
-                <ClientEvent name="onClick" signature="self,arg,dialogRole">dialogRole.show()
-</ClientEvent>
-                <Property name="caption">修改</Property>
-                <Property name="iconClass">fa fa-pencil</Property>
-              </ToolBarButton>
-            </ToolBar>
-            <DataGrid>
-              <Property name="dataSet">dsRole</Property>
-              <Property name="readOnly">true</Property>
-              <Property name="showFilterBar">true</Property>
-              <Property name="sortMode">serverSide</Property>
-              <Property name="filterMode">serverSide</Property>
-              <RowNumColumn/>
-              <DataColumn name="name">
-                <Property name="property">name</Property>
-              </DataColumn>
-              <DataColumn name="description">
-                <Property name="property">description</Property>
-              </DataColumn>
-            </DataGrid>
-          </Children>
-          <Tools/>
-        </Panel>
-      </SideControl>
-    </SplitPanel>
+              <Property name="property">url.icon</Property>
+              <Property name="name">url.Icon</Property>
+              <Property name="width">60</Property>
+              <Property name="align">center</Property>
+              <Property name="supportsOptionMenu">false</Property>
+              <Property name="filterable">false</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="property">url.name</Property>
+              <Property name="name">url.name</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="property">url.path</Property>
+              <Property name="name">url.path</Property>
+            </DataColumn>
+          </DataGrid>
+        </Children>
+        <Tools/>
+      </Panel>
+    </CardBook>
     <Dialog id="dialogRole">
       <ClientEvent name="onHide" signature="self,arg,dsRole">dsRole.getData().cancel();
 </ClientEvent>
@@ -397,6 +470,8 @@ $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
       <ClientEvent name="onSuccess" signature="self,arg,dialogRole">dialogRole.hide()
 </ClientEvent>
       <Property name="dataResolver">roleController#save</Property>
+      <Property name="executingMessage">正在执行……</Property>
+      <Property name="successMessage">菜单分配修改成功。</Property>
       <UpdateItem>
         <Property name="dataSet">dsRole</Property>
       </UpdateItem>

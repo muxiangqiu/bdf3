@@ -22,8 +22,8 @@ public class ComponentServiceImpl implements ComponentService {
 
 	@Override
 	public List<Component> findAll() {
-		List<Component> components = JpaUtil.linq(Component.class).findAll();
-		List<Permission> permissions = JpaUtil.linq(Permission.class).equal("resourceType", Component.RESOURCE_TYPE).findAll();
+		List<Component> components = JpaUtil.linq(Component.class).list();
+		List<Permission> permissions = JpaUtil.linq(Permission.class).equal("resourceType", Component.RESOURCE_TYPE).list();
 		if (!permissions.isEmpty()) {
 			Map<String, Component> componentMap = JpaUtil.index(components);
 			for (Permission permission : permissions) {

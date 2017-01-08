@@ -3,24 +3,28 @@ package com.bstek.bdf3.security.ui.service;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.bdf3.dorado.jpa.lin.Linq;
 import com.bstek.bdf3.dorado.jpa.policy.SaveContext;
 import com.bstek.bdf3.dorado.jpa.policy.SavePolicy;
 import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicyAdapter;
-import com.bstek.bdf3.security.Constants;
+import com.bstek.bdf3.security.cache.SecurityCacheEvict;
 import com.bstek.bdf3.security.domain.Component;
 import com.bstek.bdf3.security.domain.Permission;
 import com.bstek.bdf3.security.domain.Url;
+
+
+
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2016年7月12日
  */
-@Service("ui.roleUrlService")
+@Service
+@Transactional(readOnly = true)
 public class RoleUrlServiceImpl implements RoleUrlService {
 
 	private SavePolicy permissionSavePolicy = new PermissionSavePolicy();
@@ -34,18 +38,12 @@ public class RoleUrlServiceImpl implements RoleUrlService {
 				.equal("roleId", roleId)
 				.equal("resourceType", Url.RESOURCE_TYPE)
 				.collect(Url.class, "resourceId")
-				.findAll();
+				.list();
 	}
 	
 	@Override
-	@CacheEvict(cacheNames = {
-		Constants.URL_TREE_CACHE_KEY, 
-		Constants.URL_TREE_BY_USRNAME_CACHE_KEY, 
-		Constants.REQUEST_MAP_CACHE_KEY,
-		Constants.URL_ATTRIBUTE_BY_TARGET_CACHE_KEY,
-		Constants.COMPONENT_MAP_CACHE_KEY,
-		Constants.COMPONENT_ATTRIBUTE_MAP_CACHE_KEY,
-		Constants.COMPONENT_ATTRIBUTE_BY_TARGET_CACHE_KEY}, allEntries = true)
+	@SecurityCacheEvict
+	@Transactional
 	public void save(List<Permission> permissions) {
 		JpaUtil.save(permissions, permissionSavePolicy);
 	}
@@ -62,7 +60,7 @@ public class RoleUrlServiceImpl implements RoleUrlService {
 				.exists(Component.class)
 					.equalProperty("id", "resourceId")
 					.equal("urlId", permission.getResourceId())
-				.findAll();
+				.list();
 			Set<String> ids = linq.getLinqContext().getSet("resourceId");
 			if (ids != null) {
 				JpaUtil

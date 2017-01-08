@@ -1,19 +1,28 @@
 package com.bstek.bdf3.saas.service.allocator.impl;
 
-import java.util.UUID;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.io.Resource;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.saas.domain.Organization;
+import com.bstek.bdf3.saas.service.DataSourceService;
 import com.bstek.bdf3.saas.service.EntityManagerFactoryService;
 import com.bstek.bdf3.saas.service.allocator.ResourceAllocator;
 import com.bstek.bdf3.security.domain.Url;
@@ -23,8 +32,11 @@ import com.bstek.bdf3.security.domain.Url;
  * @since 2016年8月12日
  */
 @Component
-@Order(100)
-public class DatabaseResourceAllocator implements ResourceAllocator{
+@Order(1000)
+public class DatabaseResourceAllocator implements ResourceAllocator {
+	
+	@Autowired
+	private ConfigurableApplicationContext applicationContext;
 	
 	@Autowired
 	private DataSourceProperties properties;
@@ -35,6 +47,12 @@ public class DatabaseResourceAllocator implements ResourceAllocator{
 	@Autowired
 	private EntityManagerFactoryService entityManagerFactoryService;
 	
+	@Autowired
+	private DataSourceService dataSourceService;
+	
+	@Value("${bdf3.saas.resourceScript:}")
+	private String resourceScript;
+	
 	
 
 	@Override
@@ -44,95 +62,59 @@ public class DatabaseResourceAllocator implements ResourceAllocator{
 			em.createNativeQuery("create database " + organization.getId()).executeUpdate();
 		}
 		EntityManagerFactory entityManagerFactory = entityManagerFactoryService.getOrCreateEntityManagerFactory(organization);
-		EntityManager entityManager = null;
 		try {
 			entityManagerFactory.getMetamodel().entity(Url.class);
-			entityManager = entityManagerFactory.createEntityManager();
+			runDataScripts(dataSourceService.getDataSource(organization));
 		} catch (IllegalArgumentException e) {
-			entityManager = emf.createEntityManager();
 		}
-		try {
-			
-			if (!JpaUtil.linq(Url.class, entityManager).exists()) {
-				entityManager.getTransaction().begin();
-				Url url = new Url();
-				url.setId(UUID.randomUUID().toString());
-				url.setName("用户管理");
-				url.setIcon("user icon");
-				url.setPath("user");
-				url.setNavigable(true);
-				url.setOrder(0);
-				entityManager.persist(url);
-				
-				url = new Url();
-				url.setId(UUID.randomUUID().toString());
-				url.setName("菜单管理");
-				url.setIcon("sitemap icon");
-				url.setPath("url");
-				url.setNavigable(true);
-				url.setOrder(1);
-				entityManager.persist(url);
-				
-				url = new Url();
-				url.setId(UUID.randomUUID().toString());
-				url.setName("角色管理");
-				url.setIcon("spy icon");
-				url.setPath("role");
-				url.setNavigable(true);
-				url.setOrder(2);
-				entityManager.persist(url);
-				
-				url = new Url();
-				url.setId(UUID.randomUUID().toString());
-				url.setName("分配组件");
-				url.setIcon("cubes icon");
-				url.setPath("component");
-				url.setNavigable(true);
-				url.setOrder(3);
-				entityManager.persist(url);
-				
-				url = new Url();
-				url.setId(UUID.randomUUID().toString());
-				url.setName("公告管理");
-				url.setIcon("volume up icon");
-				url.setPath("announce/manage");
-				url.setNavigable(true);
-				url.setOrder(4);
-				entityManager.persist(url);
-				
-				url = new Url();
-				url.setId(UUID.randomUUID().toString());
-				url.setName("公告中心");
-				url.setIcon("announcement icon");
-				url.setPath("announce");
-				url.setNavigable(true);
-				url.setOrder(5);
-				entityManager.persist(url);
-				
-				url = new Url();
-				url.setId(UUID.randomUUID().toString());
-				url.setName("私信中心");
-				url.setIcon("comments outline icon");
-				url.setPath("message");
-				url.setNavigable(true);
-				url.setOrder(6);
-				entityManager.persist(url);
-				
-				url = new Url();
-				url.setId(UUID.randomUUID().toString());
-				url.setName("我的账户");
-				url.setIcon("smile icon");
-				url.setPath("me");
-				url.setNavigable(true);
-				url.setOrder(7);
-				entityManager.persist(url);
-				
-				
-				entityManager.getTransaction().commit();
+	}
+	
+	private void runDataScripts(DataSource dataSource) {
+		List<Resource> scripts = getScripts(resourceScript, "saas");
+		runScripts(scripts, dataSource);
+	}
+
+	private List<Resource> getScripts(String locations, String fallback) {
+		if (StringUtils.isEmpty(locations)) {
+			String platform = this.properties.getPlatform();
+			locations = "classpath*:" + fallback + "-" + platform + ".sql,";
+			locations += "classpath*:" + fallback + ".sql";
+		}
+		return getResources(locations);
+	}
+
+	private List<Resource> getResources(String locations) {
+		List<Resource> resources = new ArrayList<Resource>();
+		for (String location : StringUtils.commaDelimitedListToStringArray(locations)) {
+			try {
+				for (Resource resource : this.applicationContext.getResources(location)) {
+					if (resource.exists()) {
+						resources.add(resource);
+					}
+				}
 			}
-		} finally {
-			entityManager.close();
+			catch (IOException ex) {
+				throw new IllegalStateException(
+						"Unable to load resource from " + location, ex);
+			}
 		}
+		return resources;
+	}
+
+	private void runScripts(List<Resource> resources, DataSource dataSource) {
+		if (resources.isEmpty()) {
+			return;
+		}
+		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+		populator.setContinueOnError(this.properties.isContinueOnError());
+		populator.setSeparator(this.properties.getSeparator());
+		if (this.properties.getSqlScriptEncoding() != null) {
+			populator.setSqlScriptEncoding(this.properties.getSqlScriptEncoding().name());
+		}
+		for (Resource resource : resources) {
+			populator.addScript(resource);
+		}
+		DatabasePopulatorUtils.execute(populator, dataSource);
 	}
 	
 	

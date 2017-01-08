@@ -8,7 +8,7 @@ import com.bstek.bdf3.security.domain.ComponentType;
 import com.bstek.bdf3.security.ui.utils.UrlUtils;
 import com.bstek.dorado.view.widget.base.Button;
 
-
+@org.springframework.stereotype.Component
 public class ButtonFilter extends AbstractFilter<Button> {
 
 	@Override

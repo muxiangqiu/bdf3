@@ -22,7 +22,7 @@ public class UserGrantedAuthorityProvider implements GrantedAuthorityProvider {
 	@Override
 	public Collection<? extends GrantedAuthority> provide(
 			UserDetails userDetails) {
-		List<GrantedAuthority> authorities = JpaUtil.linq(RoleGrantedAuthority.class).equal("actorId", userDetails.getUsername()).findAll();
+		List<GrantedAuthority> authorities = JpaUtil.linq(RoleGrantedAuthority.class).equal("actorId", userDetails.getUsername()).list();
 		return authorities;
 	}
 
