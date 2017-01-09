@@ -1,4 +1,4 @@
-package com.bstek.bdf3.saas.service.allocator;
+package com.bstek.bdf3.saas.resource;
 
 import com.bstek.bdf3.saas.domain.Organization;
 

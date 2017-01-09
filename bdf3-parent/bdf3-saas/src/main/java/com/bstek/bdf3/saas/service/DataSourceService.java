@@ -15,4 +15,6 @@ public interface DataSourceService {
 	DataSource createDataSource(Organization organization);
 	
 	DataSource getOrCreateDataSource(Organization organization);
+	
+	void removeDataSource(Organization organization);
 }

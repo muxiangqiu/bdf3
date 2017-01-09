@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.saas.domain.Organization;
-import com.bstek.bdf3.saas.service.allocator.ResourceAllocator;
+import com.bstek.bdf3.saas.resource.ResourceAllocator;
+import com.bstek.bdf3.saas.resource.ResourceReleaser;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -20,6 +21,9 @@ public class OrganizationServiceImpl implements OrganizationService, Initializin
 
 	@Autowired
 	private List<ResourceAllocator> allocators;
+	
+	@Autowired
+	private List<ResourceReleaser> releasers;
 	
 	@Override
 	public Organization get(String id) {
@@ -37,8 +41,15 @@ public class OrganizationServiceImpl implements OrganizationService, Initializin
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		AnnotationAwareOrderComparator.sort(allocators);
+		AnnotationAwareOrderComparator.sort(releasers);
+	}
 
-		
+	@Override
+	public void remove(Organization organization) {
+		JpaUtil.remove(organization);
+		for (ResourceReleaser releaser : releasers) {
+			releaser.release(organization);
+		}
 	}
 
 }

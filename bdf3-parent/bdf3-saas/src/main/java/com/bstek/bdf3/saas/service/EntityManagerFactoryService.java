@@ -15,5 +15,7 @@ public interface EntityManagerFactoryService {
 	EntityManagerFactory createEntityManagerFactory(Organization organization);
 
 	EntityManagerFactory getOrCreateEntityManagerFactory(Organization organization);
+	
+	void removeEntityManagerFactory(Organization organization);
 
 }

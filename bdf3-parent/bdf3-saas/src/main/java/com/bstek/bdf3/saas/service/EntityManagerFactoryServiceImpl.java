@@ -276,4 +276,10 @@ public class EntityManagerFactoryServiceImpl implements
 		emfMap.put(Constants.MASTER, emf);
 	}
 
+	@Override
+	public void removeEntityManagerFactory(Organization organization) {
+		emfMap.remove(organization.getId());
+		dataSourceService.removeDataSource(organization);
+	}
+
 }

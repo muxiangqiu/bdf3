@@ -1,4 +1,4 @@
-package com.bstek.bdf3.saas.service.allocator.impl;
+package com.bstek.bdf3.saas.resource;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +24,6 @@ import org.springframework.util.StringUtils;
 import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.saas.service.DataSourceService;
 import com.bstek.bdf3.saas.service.EntityManagerFactoryService;
-import com.bstek.bdf3.saas.service.allocator.ResourceAllocator;
 import com.bstek.bdf3.security.domain.Url;
 
 /**

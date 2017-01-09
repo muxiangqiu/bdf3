@@ -11,4 +11,6 @@ public interface OrganizationService {
 	Organization get(String id);
 	
 	void register(Organization organization);
+	
+	void remove(Organization organization);
 }

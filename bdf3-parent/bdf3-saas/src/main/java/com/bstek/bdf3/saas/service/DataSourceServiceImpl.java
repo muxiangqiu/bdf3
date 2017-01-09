@@ -68,4 +68,10 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 		
 	}
 
+	@Override
+	public void removeDataSource(Organization organization) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
