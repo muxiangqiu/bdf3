@@ -58,7 +58,7 @@ public class PersonalCenterServiceImpl implements PersonalCenterService {
 	
 	@Override
 	public List<Url> getUrls(String username) {
-		return urlService.findTreeByUsername(username);
+		return urlService.getAccessibleUrlsByUsername(username);
 	}
 	
 	@Override

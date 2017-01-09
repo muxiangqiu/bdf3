@@ -66,7 +66,19 @@ public class UrlServiceImpl implements UrlService {
 		List<Url> result = new ArrayList<Url>();
 		rebuildLoginUserGrantedAuthorities();
 		for (Url url : urls) {
-			if (decide(url)) {
+			if (decide(null, url)) {
+				result.add(url);
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public List<Url> getAccessibleUrlsByUsername(String username) {
+		List<Url> urls = urlServiceCache.findTree();
+		List<Url> result = new ArrayList<Url>();
+		for (Url url : urls) {
+			if (decide(username, url)) {
 				result.add(url);
 			}
 		}
@@ -78,17 +90,17 @@ public class UrlServiceImpl implements UrlService {
 		SecurityUserUtil.setAuthorities(userDetails, grantedAuthorityService.getGrantedAuthorities(userDetails));
 	}
 
-	private boolean decide(Url url) {
+	private boolean decide(String username, Url url) {
 		if (!url.isNavigable()) {
 			return false;
 		}
-		if (securityDecisionManager.decide(url)) {
+		if (securityDecisionManager.decide(username, url)) {
 			List<Url> children = url.getChildren();
 			List<Url> newChildren = new ArrayList<Url>();
 			url.setChildren(newChildren);
 			if (!CollectionUtils.isEmpty(children)) {
 				for (Url child : children) {
-					if (decide(child)) {
+					if (decide(username, child)) {
 						newChildren.add(child);
 					}
 				}

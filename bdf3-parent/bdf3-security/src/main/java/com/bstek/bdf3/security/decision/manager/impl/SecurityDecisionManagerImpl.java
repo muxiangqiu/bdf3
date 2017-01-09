@@ -9,6 +9,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityMetadataSource;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ import org.springframework.util.CollectionUtils;
 
 import com.bstek.bdf3.security.decision.manager.SecurityDecisionManager;
 import com.bstek.bdf3.security.domain.Resource;
+import com.bstek.bdf3.security.domain.User;
+import com.bstek.bdf3.security.service.GrantedAuthorityService;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -30,11 +33,19 @@ public class SecurityDecisionManagerImpl implements SecurityDecisionManager {
 	@Autowired
 	private AccessDecisionManager accessDecisionManager;
 	
+	@Autowired
+	private GrantedAuthorityService grantedAuthorityService;
+	
 	@Override
 	public boolean decide(Resource resource) {
+		return decide(null, resource);
+	}
+	
+	@Override
+	public boolean decide(String username, Resource resource) {
 		if (resource != null) {
 			Collection<ConfigAttribute> attributes = findConfigAttributes(resource);
-			Authentication authentication = getAuthentication();
+			Authentication authentication = getAuthentication(username);
 			try {
 				accessDecisionManager.decide(authentication, resource, attributes);
 			} catch (AccessDeniedException e) {
@@ -47,7 +58,13 @@ public class SecurityDecisionManagerImpl implements SecurityDecisionManager {
 		return true;
 	}
 
-	protected Authentication getAuthentication() {
+	protected Authentication getAuthentication(String username) {
+		if (username != null) {
+			User user = new User();
+			user.setUsername(username);
+			user.setAuthorities(grantedAuthorityService.getGrantedAuthorities(user));
+			return new UsernamePasswordAuthenticationToken(user, null);
+		}
 		return SecurityContextHolder.getContext().getAuthentication();
 	}
 

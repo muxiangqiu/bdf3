@@ -28,4 +28,12 @@ public interface SecurityDecisionManager {
 	 * @return 权限列表
 	 */
 	Collection<ConfigAttribute> findConfigAttributes(Resource resource);
+
+	/**
+	 * 决策给定的资源，当前登陆用户是否有权限
+	 * @param username 用户名
+	 * @param resource 资源
+	 * @return 结果。true为有权限，否则没有
+	 */
+	boolean decide(String username, Resource resource);
 }

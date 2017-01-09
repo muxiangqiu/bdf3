@@ -19,10 +19,17 @@ public interface UrlService {
 	List<Url> findAll();
 
 	/**
-	 * 获取用户有权访问的菜单，已树形结构返回
+	 * 获取用户有权访问的菜单，已树形结构返回(基于当前登录用户)
 	 * @param username 用户名
 	 * @return 菜单列表
 	 */
 	List<Url> findTreeByUsername(String username);
+
+	/**
+	 * 获取用户有权访问的菜单，已树形结构返回（基于传入的用户名）
+	 * @param username 用户名
+	 * @return 菜单列表
+	 */
+	List<Url> getAccessibleUrlsByUsername(String username);
 
 }
