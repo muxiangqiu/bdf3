@@ -1,18 +1,29 @@
 package com.bstek.bdf3.dorado.jpa;
 
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import com.bstek.bdf3.dorado.jpa.lin.Linq;
 import com.bstek.bdf3.dorado.jpa.lin.impl.LinqImpl;
@@ -22,6 +33,7 @@ import com.bstek.bdf3.dorado.jpa.policy.SavePolicy;
 import com.bstek.bdf3.dorado.jpa.policy.impl.DirtyTreeSavePolicy;
 import com.bstek.bdf3.jpa.lin.Lind;
 import com.bstek.bdf3.jpa.lin.Linu;
+import com.bstek.dorado.data.entity.EntityUtils;
 
 
 /**
@@ -242,8 +254,149 @@ public abstract class JpaUtil {
 	}
 	
 	public static Long executeCountQuery(TypedQuery<Long> query) {
-
 		return com.bstek.bdf3.jpa.JpaUtil.executeCountQuery(query);
+	}
+	
+	/**
+	 * 根据属性收集属性对应的数据
+	 * @param source 源
+	 * @param propertyName 属性名
+	 * @param <T> 范型
+	 * @return source集合每个对象的propertyName属性值的一个集合
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <T> Set<T> collect(Collection<?> source, String propertyName) {
+		if (CollectionUtils.isEmpty(source)) {
+			return Collections.EMPTY_SET;
+		}
+		Set result = new HashSet(source.size());
+
+		for (Object obj : source) {
+			Object value = null;
+			if (obj instanceof Map) {
+				value = ((Map) obj).get(propertyName);
+			} else if (obj instanceof Tuple) {
+				value = ((Tuple) obj).get(propertyName);
+			} else if (EntityUtils.isEntity(obj)) {
+				value = EntityUtils.getValue(obj, propertyName);
+			} else if (obj != null) {
+				PropertyDescriptor pd = BeanUtils.getPropertyDescriptor(obj.getClass(), propertyName);
+				try {
+					value = pd.getReadMethod().invoke(obj, new Object[]{});
+				} catch (IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+			if (value != null) {
+				result.add(value);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 根据属性收集属性对应的数据
+	 * @param source 源
+	 * @param <T> 领域类（实体类）范型
+	 * @return source集合每个对象的propertyName属性值的一个集合
+	 */
+	@SuppressWarnings({"unchecked"})
+	public static <T> Set<T> collectId(Collection<?> source) {
+		if (CollectionUtils.isEmpty(source)) {
+			return Collections.EMPTY_SET;
+		}
+		String idName = getIdName(source.iterator().next().getClass());
+		return collect(source, idName);
+	}
+	
+	/**
+	 * source转Map，Key为propertyName对应的值，Value为source中propertyName属性值相同的元素
+	 * @param source 源
+	 * @param propertyName 属性名
+	 * @param <K> propertyName对应的属性的类型
+	 * @param <V> source集合元素类型
+	 * @return 分类Map
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <K, V> Map<K, List<V>> classify(Collection<V> source, String propertyName) {
+		if (CollectionUtils.isEmpty(source)) {
+			return Collections.EMPTY_MAP;
+		}
+		Map result = new HashMap();
+
+		for (Object obj : source) {
+			Object value = getValue(obj, propertyName);
+			Object target = result.get(value);
+			if (target != null) {
+				((List) target).add(obj);
+			} else {
+				List list = new ArrayList();
+				list.add(obj);
+				result.put(value, list);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * source转Map，Key为source元素的propertyName属性值，Value为该元素
+	 * @param source 源集合
+	 * @param propertyName 属性名
+	 * @param <K> propertyName对应的属性的类型
+	 * @param <V> source集合元素类型
+	 * @return 索引Map
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <K, V> Map<K, V> index(Collection<V> source, String propertyName) {
+		if (CollectionUtils.isEmpty(source)) {
+			return Collections.EMPTY_MAP;
+		}
+		Map result = new HashMap();
+
+		for (Object obj : source) {
+			Object value = getValue(obj, propertyName);
+			result.put(value, obj);
+		}
+		return result;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static Object getValue(Object obj, String propertyName) {
+		Object value = null;
+		if (obj instanceof Map) {
+			value = ((Map) obj).get(propertyName);
+		} else if (obj instanceof Tuple) {
+			value = ((Tuple) obj).get(propertyName);
+		} else if (EntityUtils.isEntity(obj)) {
+			value = EntityUtils.getValue(obj, propertyName);
+		}  else if (obj != null) {
+			PropertyDescriptor pd = BeanUtils.getPropertyDescriptor(obj.getClass(), propertyName);
+			try {
+				value = pd.getReadMethod().invoke(obj, new Object[]{});
+			} catch (IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		return value;
+	}
+	
+	/**
+	 * source转Map，Key为source元素主键属性属性值，Value为该元素
+	 * @param source 源集合
+	 * @param <K> propertyName对应的属性的类型
+	 * @param <V> source集合元素类型
+	 * @return 索引Map
+	 */
+	@SuppressWarnings("unchecked")
+	public static <K, V> Map<K, V> index(Collection<V> source) {
+		if (CollectionUtils.isEmpty(source)) {
+			return Collections.EMPTY_MAP;
+		}
+		String idName = getIdName(source.iterator().next().getClass());
+		return index(source, idName);
+
 	}
 	
 	public static <T> TypedQuery<Long> getCountQuery(CriteriaQuery<T> cq) {
