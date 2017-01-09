@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="User">
+      <Property name="creationType">com.bstek.bdf3.security.domain.User</Property>
+      <PropertyDef name="username">
+        <Property></Property>
+        <Property name="label">用户名</Property>
+      </PropertyDef>
+      <PropertyDef name="nickname">
+        <Property></Property>
+        <Property name="label">昵称</Property>
+      </PropertyDef>
+      <PropertyDef name="accountNonExpired">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">账户未过期</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="accountNonLocked">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">账户未锁定</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="credentialsNonExpired">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">证书未过期</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="enabled">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可用</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="roles">
+        <Property name="dataType">[Role]</Property>
+      </PropertyDef>
+      <PropertyDef name="urls">
+        <Property name="dataType">[Url]</Property>
+      </PropertyDef>
+      <PropertyDef name="permissions">
+        <Property name="dataType">[Permission]</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Role">
+      <Property name="creationType">com.bstek.bdf3.security.domain.Role</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">角色名称</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property></Property>
+        <Property name="label">描述</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Url">
+      <Property name="creationType">com.bstek.bdf3.security.domain.Url</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
+      <PropertyDef name="icon">
+        <Property></Property>
+        <Property name="label">图标</Property>
+      </PropertyDef>
+      <PropertyDef name="path">
+        <Property></Property>
+        <Property name="label">路径</Property>
+      </PropertyDef>
+      <PropertyDef name="navigable">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可导航</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="parentId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="order">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">排序号</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <PropertyDef name="children">
+        <Property name="dataType">[SELF]</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Permission">
+      <Property name="creationType">com.bstek.bdf3.security.domain.Permission</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="roleId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="resourceId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="attribute">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="url">
+        <Property name="dataType">Url</Property>
+      </PropertyDef>
+      <PropertyDef name="role">
+        <Property name="dataType">Role</Property>
+      </PropertyDef>
+      <PropertyDef name="component">
+        <Property name="dataType">Component</Property>
+      </PropertyDef>
+      <PropertyDef name="componentType">
+        <ClientEvent name="onGet">var attribute = arg.entity.get(&quot;attribute&quot;);
+if (attribute) {
+	arg.value = attribute.substring(attribute.lastIndexOf(&quot;_&quot;) + 1);
+}
+</ClientEvent>
+        <Property></Property>
+        <Property name="mapping">
+          <Property name="mapValues">
+            <Collection>
+              <Entity>
+                <Property name="key">Read</Property>
+                <Property name="value">只读</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">ReadWrite</Property>
+                <Property name="value">可写</Property>
+              </Entity>
+            </Collection>
+          </Property>
+        </Property>
+        <Property name="label">权限类型</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Component">
+      <Property name="creationType">com.bstek.bdf3.security.domain.Component</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="componentId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="urlId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="path">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="componentType"/>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome,colors</Property>
+    <DataSet id="dsQuery">
+      <Property name="dataType">[Url]</Property>
+    </DataSet>
+    <DataSet id="dsUser">
+      <Property name="dataType">[User]</Property>
+      <Property name="dataProvider">personalCenterController#loadUser</Property>
+      <Property name="parameter">${empty param.username ? loginUsername : param.username}</Property>
+      <Property name="readOnly">true</Property>
+    </DataSet>
+    <Container layout="regionPadding:15">
+      <FieldSet layoutConstraint="top">
+        <Property name="caption">基本信息</Property>
+        <Buttons/>
+        <Children>
+          <AutoForm>
+            <Property name="dataSet">dsUser</Property>
+            <Property name="cols">*,*,*</Property>
+            <Property name="labelAlign">right</Property>
+            <Property name="labelSeparator">:</Property>
+            <Property name="width">600</Property>
+            <AutoFormElement>
+              <Property name="name">username</Property>
+              <Property name="property">username</Property>
+              <Property name="editorType">Label</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">accountNonExpired</Property>
+              <Property name="property">accountNonExpired</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">accountNonLocked</Property>
+              <Property name="property">accountNonLocked</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">nickname</Property>
+              <Property name="property">nickname</Property>
+              <Property name="editorType">Label</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">credentialsNonExpired</Property>
+              <Property name="property">credentialsNonExpired</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">enabled</Property>
+              <Property name="property">enabled</Property>
+              <Editor/>
+            </AutoFormElement>
+          </AutoForm>
+        </Children>
+      </FieldSet>
+      <Panel layout="padding:5;regionPadding:10" layoutConstraint="left">
+        <Property name="style">
+          <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+          <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+          <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        </Property>
+        <Property name="showCaptionBar">false</Property>
+        <Property name="width">33%</Property>
+        <Buttons/>
+        <Children>
+          <ToolBar>
+            <ToolBarLabel>
+              <Property name="text">分配的角色</Property>
+            </ToolBarLabel>
+          </ToolBar>
+          <DataGrid id="dgRole">
+            <Property name="dataSet">dsUser</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="showFilterBar">false</Property>
+            <Property name="sortMode">clientSide</Property>
+            <Property name="filterMode">clientSide</Property>
+            <Property name="dataPath">#.roles</Property>
+            <RowNumColumn/>
+            <DataColumn name="name">
+              <Property name="property">name</Property>
+            </DataColumn>
+            <DataColumn name="description">
+              <Property name="property">description</Property>
+            </DataColumn>
+          </DataGrid>
+        </Children>
+        <Tools/>
+      </Panel>
+      <Panel layout="padding:5;regionPadding:10">
+        <Property name="style">
+          <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+          <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+          <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        </Property>
+        <Property name="showCaptionBar">false</Property>
+        <Buttons/>
+        <Children>
+          <ToolBar>
+            <ToolBarLabel>
+              <Property name="text">拥有菜单</Property>
+            </ToolBarLabel>
+            <Fill/>
+            <TextEditor>
+              <ClientEvent name="onKeyDown" signature="self,arg,dsUser,dsQuery,dtUrl">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.urlQueryTimeout);
+self.urlQueryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	var urls = dsUser.getData(&quot;#.urls&quot;);
+	var result = [];
+	var parseUrls = function(urls, result) {
+		if (urls.entityCount &lt;= 0) {
+			return;
+		}
+		urls.each(function(url) {
+			var name = url.get(&quot;name&quot;) || &quot;&quot;;
+			var description = url.get(&quot;description&quot;) || &quot;&quot;;
+			if (name.indexOf(key) != -1 || description.indexOf(key) != -1) {
+				result.push(url.toJSON());
+			}
+			parseUrls(url.get(&quot;children&quot;), result);
+		});
+	};
+	if (!key) {
+		dtUrl.set({
+			dataPath: &quot;#.urls&quot;,
+			dataSet: dsUser
+		});
+		return;
+	}
+	parseUrls(urls, result);
+	dsQuery.setData(result);
+	dtUrl.set({
+		dataPath: &quot;*&quot;,
+		dataSet: dsQuery
+	});
+}, 150);</ClientEvent>
+              <Property name="trigger">triggerClear</Property>
+              <Property name="blankText">搜索</Property>
+            </TextEditor>
+          </ToolBar>
+          <DataTree id="dtUrl">
+            <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
+var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
+if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
+	if (icon != arg.node.get(&quot;iconClass&quot;)) {
+		arg.node.set(&quot;iconClass&quot;, icon);
+	}
+} else {
+	if (icon != arg.node.get(&quot;icon&quot;)) {
+		arg.node.set(&quot;icon&quot;, icon);
+	}
+}
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+</ClientEvent>
+            <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
+var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
+if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
+	if (icon != arg.node.get(&quot;iconClass&quot;)) {
+		arg.node.set(&quot;iconClass&quot;, icon);
+	}
+} else {
+	if (icon != arg.node.get(&quot;icon&quot;)) {
+		arg.node.set(&quot;icon&quot;, icon);
+	}
+}
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+</ClientEvent>
+            <Property name="dataSet">dsUser</Property>
+            <Property name="currentNodeDataPath">currentNode</Property>
+            <Property name="draggable">false</Property>
+            <Property name="showLines">true</Property>
+            <Property name="highlightCurrentRow">true</Property>
+            <Property name="highlightHoverRow">true</Property>
+            <Property name="dataPath">#.urls</Property>
+            <BindingConfigs>
+              <BindingConfig>
+                <Property name="childrenProperty">children</Property>
+                <Property name="labelProperty">name</Property>
+                <Property name="recursive">true</Property>
+                <Property name="tipProperty">description</Property>
+                <Property name="name">name</Property>
+                <Property name="autoCheckChildren">false</Property>
+              </BindingConfig>
+            </BindingConfigs>
+          </DataTree>
+        </Children>
+        <Tools/>
+      </Panel>
+      <Panel layout="padding:5;regionPadding:10" layoutConstraint="right">
+        <Property name="style">
+          <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+          <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+          <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
+        </Property>
+        <Property name="showCaptionBar">false</Property>
+        <Property name="width">33%</Property>
+        <Buttons/>
+        <Children>
+          <ToolBar>
+            <ToolBarLabel>
+              <Property name="text">分配的组件</Property>
+            </ToolBarLabel>
+          </ToolBar>
+          <DataGrid id="dgC">
+            <Property name="dataSet">dsUser</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="showFilterBar">false</Property>
+            <Property name="sortMode">clientSide</Property>
+            <Property name="filterMode">clientSide</Property>
+            <Property name="dataPath">#.permissions</Property>
+            <RowNumColumn/>
+            <DataColumn>
+              <Property name="property">url.name</Property>
+              <Property name="name">url.name</Property>
+              <Property name="caption">菜单</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="property">role.name</Property>
+              <Property name="name">role.name</Property>
+              <Property name="caption">角色</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="property">component.componentId</Property>
+              <Property name="name">component.componentId</Property>
+              <Property name="caption">组件ID</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="property">componentType</Property>
+              <Property name="name">componentType</Property>
+            </DataColumn>
+          </DataGrid>
+        </Children>
+        <Tools/>
+      </Panel>
+    </Container>
+  </View>
+</ViewConfig>

@@ -162,7 +162,10 @@ arg.returnValue = false;</ClientEvent>
                   <Property name="exClassName">username</Property>
                 </Label>
                 <Button>
-                  <Property name="caption">个人详情</Property>
+                  <ClientEvent name="onClick" signature="self,arg,personalCenter">window.openTab(&quot;个人中心&quot;, &quot;fa fa-tachometer red-text&quot;, &quot;${configure['bdf3.personCenter']}&quot;);
+personalCenter.hide();
+</ClientEvent>
+                  <Property name="caption">个人中心</Property>
                   <Property name="ui">highlight</Property>
                 </Button>
               </Container>

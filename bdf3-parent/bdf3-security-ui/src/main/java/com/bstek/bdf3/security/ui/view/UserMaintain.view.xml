@@ -104,7 +104,19 @@ if (user) {
 </ClientEvent>
             <Property name="caption">重置密码</Property>
             <Property name="iconClass">fa fa-key yellow-text</Property>
-            <Property name="action">ajaxActionResetPassword</Property>
+          </ToolBarButton>
+          <ToolBarButton>
+            <ClientEvent name="onClick" signature="self,arg,ajaxActionResetPassword,dsUser">var user = dsUser.getData(&quot;#&quot;);
+if (user) {
+	if (parent.openTab) {
+		parent.openTab(user.get(&quot;nickname&quot;) + &quot;详情&quot;, &quot;fa fa-tachometer red-text&quot;, &quot;${configure['bdf3.personCenter']}&quot; + &quot;?username=&quot; + user.get(&quot;username&quot;));
+	}
+} else {
+	dorado.MessageBox.alert(&quot;请先选择用户。&quot;);
+}
+</ClientEvent>
+            <Property name="caption">查看详情</Property>
+            <Property name="iconClass">fa fa-file-text blue-text</Property>
           </ToolBarButton>
           <Fill/>
           <TextEditor>
