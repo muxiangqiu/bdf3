@@ -8,10 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.bdf3.dorado.jpa.policy.SaveContext;
-import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicy;
+import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicyAdapter;
 import com.bstek.bdf3.saas.domain.Organization;
-import com.bstek.dorado.data.entity.EntityState;
-import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
@@ -34,20 +32,14 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@Override
 	@Transactional
 	public void save(List<Organization> organizations) {
-		JpaUtil.save(organizations, new SmartSavePolicy() {
+		JpaUtil.save(organizations, new SmartSavePolicyAdapter() {
 
 			@Override
-			public void apply(SaveContext context) {
-				EntityState state = EntityUtils.getState(context.getEntity());
-				if (EntityState.DELETED.equals(state)) {
-					Organization organization = context.getEntity();
-					organizationService.remove(organization);
-				} else {
-					super.apply(context);
-				}
-				
+			public void beforeDelete(SaveContext context) {
+				Organization organization = context.getEntity();
+				organizationService.releaseResource(organization);
 			}
-			
+
 		});
 
 	}

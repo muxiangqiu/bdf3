@@ -6,12 +6,12 @@
     <DataType name="Organization">
       <Property name="creationType">com.bstek.bdf3.saas.domain.Organization</Property>
       <PropertyDef name="id">
-        <Property/>
+        <Property></Property>
         <Property name="label">公司ID</Property>
         <Property name="readOnly">true</Property>
       </PropertyDef>
       <PropertyDef name="name">
-        <Property/>
+        <Property></Property>
         <Property name="label">公司名称</Property>
       </PropertyDef>
     </DataType>
@@ -40,8 +40,8 @@
               <ClientEvent name="onSubControlAction" signature="self,arg,dsOrg,dialogOrg,updateAction">if (arg.code == &quot;+&quot;) {
 	dialogOrg.show();
 } else if (arg.code == &quot;-&quot;) {
-	dorado.MessageBox.confirm(&quot;确认要删除当前记录吗？&quot;, function() {
-		dsRole.getData(&quot;#&quot;).remove();
+	dorado.MessageBox.confirm(&quot;删除公司会同时删除公司对应的数据库。确认要删除当前公司吗？&quot;, function() {
+		dsOrg.getData(&quot;#&quot;).remove();
 		updateAction.execute();
 	});
 	arg.processDefault = false;

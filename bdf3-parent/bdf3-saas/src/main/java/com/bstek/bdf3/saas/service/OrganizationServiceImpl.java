@@ -45,8 +45,7 @@ public class OrganizationServiceImpl implements OrganizationService, Initializin
 	}
 
 	@Override
-	public void remove(Organization organization) {
-		JpaUtil.remove(organization);
+	public void releaseResource(Organization organization) {
 		for (ResourceReleaser releaser : releasers) {
 			releaser.release(organization);
 		}

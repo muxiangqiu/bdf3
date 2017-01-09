@@ -12,5 +12,5 @@ public interface OrganizationService {
 	
 	void register(Organization organization);
 	
-	void remove(Organization organization);
+	void releaseResource(Organization organization);
 }
