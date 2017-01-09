@@ -265,7 +265,7 @@ if (attribute) {
         <Children>
           <ToolBar>
             <ToolBarLabel>
-              <Property name="text">拥有菜单</Property>
+              <Property name="text">拥有的菜单</Property>
             </ToolBarLabel>
             <Fill/>
             <TextEditor>
