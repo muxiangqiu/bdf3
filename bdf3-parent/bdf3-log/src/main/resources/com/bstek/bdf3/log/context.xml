@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"  xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	">
+	<aop:aspectj-autoproxy/>
+	<bean class="com.bstek.bdf3.log.LogAspect">
+		<property name="disabled" value="${bdf3.log.disabled}"></property>
+		<property name="contextHandler" ref="log.contextHandler"></property>
+	</bean>
+	<bean id="log.contextHandler" class="com.bstek.bdf3.log.context.ContextHandlerImpl">
+		<property name="expressionHandler" ref="dorado.expressionHandler"></property>
+	</bean>
+	
+	<bean id="log.smartContextProvider" class="com.bstek.bdf3.log.context.provider.SmartContextProvider">
+		<property name="contextHandler" ref="log.contextHandler"></property>
+	</bean>
+	<bean id="log.parameterContextProvider" class="com.bstek.bdf3.log.context.provider.ParameterContextProvider">
+		<property name="contextHandler" ref="log.contextHandler"></property>
+	</bean>
+	<bean id="log.returnValueContextProvider" class="com.bstek.bdf3.log.context.provider.ReturnValueContextProvider">
+		<property name="contextHandler" ref="log.contextHandler"></property>
+	</bean>
+	<bean id="log.defaultLogger" class="com.bstek.bdf3.log.logger.DefaultLogger">
+		<property name="contextHandler" ref="log.contextHandler"></property>
+	</bean>
+	
+	<bean parent="dorado.expressionVarsInitializerRegister">
+		<property name="contextInitializer">
+			<bean class="com.bstek.bdf3.log.context.ContextVariablesInitializer" />
+		</property>
+	</bean>
+	
+</beans>

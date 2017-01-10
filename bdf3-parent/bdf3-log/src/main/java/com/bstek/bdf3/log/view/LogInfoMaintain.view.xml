@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="LogInfo">
+      <Property name="creationType">com.bstek.bdf3.log.model.LogInfo</Property>
+      <PropertyDef name="id">
+        <Property/>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="module">
+        <Property/>
+        <Property name="label">模块</Property>
+      </PropertyDef>
+      <PropertyDef name="title">
+        <Property/>
+        <Property name="label">标题</Property>
+      </PropertyDef>
+      <PropertyDef name="desc">
+        <Property/>
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <PropertyDef name="operation">
+        <Property/>
+        <Property name="label">操作</Property>
+      </PropertyDef>
+      <PropertyDef name="operationUser">
+        <Property/>
+        <Property name="label">操作人</Property>
+      </PropertyDef>
+      <PropertyDef name="operationUserNickname">
+        <Property/>
+        <Property name="label">操作人昵称</Property>
+      </PropertyDef>
+      <PropertyDef name="operationDate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">操作时间</Property>
+      </PropertyDef>
+      <PropertyDef name="category">
+        <Property/>
+        <Property name="label">分类</Property>
+      </PropertyDef>
+      <PropertyDef name="IP">
+        <Property/>
+        <Property name="label">IP地址</Property>
+      </PropertyDef>
+      <PropertyDef name="source">
+        <Property/>
+        <Property name="label">来源</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View layout="padding:15">
+    <Property name="packages">font-awesome,colors</Property>
+    <DataSet id="dsLogInfo">
+      <Property name="dataType">[LogInfo]</Property>
+      <Property name="dataProvider">logInfoController#load</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <Panel layout="padding:5;regionPadding:10">
+      <Property name="showCaptionBar">false</Property>
+      <Buttons/>
+      <Children>
+        <ToolBar>
+          <ToolBarButton>
+            <ClientEvent name="onClick" signature="self,arg,ajaxActionResetPassword,dsUser">var user = dsUser.getData(&quot;#&quot;);
+if (user) {
+	if (parent.openTab) {
+		parent.openTab(user.get(&quot;nickname&quot;) + &quot;详情&quot;, &quot;fa fa-tachometer red-text&quot;, &quot;${configure['bdf3.personCenter']}&quot; + &quot;?username=&quot; + user.get(&quot;username&quot;));
+	}
+} else {
+	dorado.MessageBox.alert(&quot;请先选择用户。&quot;);
+}
+</ClientEvent>
+            <Property name="caption">查看详情</Property>
+            <Property name="iconClass">fa fa-file-text blue-text</Property>
+          </ToolBarButton>
+          <Fill/>
+          <TextEditor>
+            <ClientEvent name="onKeyDown" signature="self,arg,dgLogInfo">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.urlQueryTimeout);
+self.urlQueryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	if (!key) {
+		dgLogInfo.filter();
+	} else {
+		dgLogInfo.filter([{
+			junction: &quot;or&quot;,
+			criterions: [{
+				property: &quot;operationUser&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;operationUserNickname&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;module&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;title&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;desc&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;operation&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;category&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;IP&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}]
+		}]);
+	}
+}, 250);</ClientEvent>
+            <Property name="trigger">triggerClear</Property>
+            <Property name="blankText">搜索</Property>
+          </TextEditor>
+        </ToolBar>
+        <DataGrid id="dgLogInfo">
+          <Property name="dataSet">dsLogInfo</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="showFilterBar">false</Property>
+          <Property name="sortMode">serverSide</Property>
+          <Property name="filterMode">serverSide</Property>
+          <Property name="allowNoCurrent">false</Property>
+          <RowNumColumn/>
+          <DataColumn name="module">
+            <Property name="property">module</Property>
+          </DataColumn>
+          <DataColumn name="title">
+            <Property name="property">title</Property>
+          </DataColumn>
+          <DataColumn name="desc">
+            <Property name="property">desc</Property>
+          </DataColumn>
+          <DataColumn name="operation">
+            <Property name="property">operation</Property>
+          </DataColumn>
+          <DataColumn name="operationUser">
+            <Property name="property">operationUser</Property>
+          </DataColumn>
+          <DataColumn name="operationUserNickname">
+            <Property name="property">operationUserNickname</Property>
+          </DataColumn>
+          <DataColumn name="operationDate">
+            <Property name="property">operationDate</Property>
+          </DataColumn>
+          <DataColumn name="category">
+            <Property name="property">category</Property>
+          </DataColumn>
+          <DataColumn name="IP">
+            <Property name="property">IP</Property>
+          </DataColumn>
+          <DataColumn name="source">
+            <Property name="property">source</Property>
+          </DataColumn>
+        </DataGrid>
+        <ToolBar layoutConstraint="bottom">
+          <DataPilot>
+            <Property name="dataSet">dsLogInfo</Property>
+            <Property name="itemCodes">pages,pageSize</Property>
+          </DataPilot>
+        </ToolBar>
+      </Children>
+      <Tools/>
+    </Panel>
+    <Dialog id="dialogUser">
+      <ClientEvent name="onHide" signature="self,arg,dsUser">dsUser.getData().cancel();
+</ClientEvent>
+      <Property name="caption">用户维护</Property>
+      <Property name="width">500</Property>
+      <Property name="height">400</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="minimizeable">false</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide()
+</ClientEvent>
+          <Property name="caption">取消</Property>
+        </Button>
+        <Button>
+          <Property name="caption">保存</Property>
+          <Property name="action">updateAction</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsUser</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelPosition">left</Property>
+          <Property name="labelAlign">right</Property>
+          <AutoFormElement>
+            <Property name="name">username</Property>
+            <Property name="property">username</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">nickname</Property>
+            <Property name="property">nickname</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">password</Property>
+            <Property name="property">password</Property>
+            <Property name="editorType">PasswordEditor</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">accountNonExpired</Property>
+            <Property name="property">accountNonExpired</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">accountNonLocked</Property>
+            <Property name="property">accountNonLocked</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">credentialsNonExpired</Property>
+            <Property name="property">credentialsNonExpired</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">enabled</Property>
+            <Property name="property">enabled</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

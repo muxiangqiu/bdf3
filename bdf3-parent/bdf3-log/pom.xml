@@ -6,19 +6,15 @@
 		<artifactId>bdf3-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>bdf3-importer</artifactId>
+	<artifactId>bdf3-log</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.bstek.bdf3</groupId>
 			<artifactId>bdf3-dorado-jpa</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.bstek.dorado</groupId>
-			<artifactId>dorado-uploader</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
 		</dependency>
 	</dependencies>
 </project>
