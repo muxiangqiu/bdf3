@@ -229,17 +229,13 @@ public interface Linq extends Lin<Linq, CriteriaQuery<?>> {
 	Linq collectSelect(Class<?> entityClass, String... projections);
 
 	/**
-	 * 设置收集entityClass对应的数据的投影
-	 * @param entityClass 实体类
-	 * @param projections 投影
+	 * 禁用智能自查询条件生成
 	 * @return 本身
 	 */
 	Linq setDisableSmartSubQueryCriterion();
 
 	/**
-	 * 设置收集entityClass对应的数据的投影
-	 * @param entityClass 实体类
-	 * @param projections 投影
+	 *	禁用收集数据回填
 	 * @return 本身
 	 */
 	Linq setDisableBackFillFilter();

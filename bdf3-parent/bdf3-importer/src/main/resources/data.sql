@@ -1,0 +1,1 @@
+INSERT INTO BDF3_URL (DESCRIPTION_, NAME_, ICON_, PATH_, NAVIGABLE_, ORDER_, PARENT_ID_, ID_) VALUES(NULL,'导入管理','fa fa-file-excel-o orange-text','bdf3.importer.view.ImporterSolutionMaintain.d',1,7,NULL,'e9db79a1-571a-4804-9111-ae9b17680b95')

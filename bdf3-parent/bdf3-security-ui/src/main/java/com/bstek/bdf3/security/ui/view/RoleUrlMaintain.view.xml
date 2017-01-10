@@ -182,11 +182,6 @@ function doPermission(url, checked) {
     <Panel layout="padding:5;regionPadding:10" layoutConstraint="left">
       <Property name="caption">角色</Property>
       <Property name="width">50%</Property>
-      <Property name="style">
-        <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-        <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-        <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-      </Property>
       <Buttons/>
       <Children>
         <ToolBar>

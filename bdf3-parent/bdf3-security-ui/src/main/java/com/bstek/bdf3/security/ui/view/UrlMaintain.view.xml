@@ -332,11 +332,6 @@ dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;backgroun
     <Panel layoutConstraint="left ">
       <Property name="caption">菜单</Property>
       <Property name="width">35%</Property>
-      <Property name="style">
-        <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-        <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-        <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-      </Property>
       <Buttons/>
       <Children>
         <DataTree id="dtUrl" layoutConstraint="padding:15">
@@ -436,11 +431,6 @@ $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
     </Panel>
     <Panel>
       <Property name="caption">详情</Property>
-      <Property name="style">
-        <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-        <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-        <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-      </Property>
       <Buttons/>
       <Children>
         <AutoForm>

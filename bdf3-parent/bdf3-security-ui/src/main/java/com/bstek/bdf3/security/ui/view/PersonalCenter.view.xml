@@ -222,11 +222,6 @@ if (attribute) {
         </Children>
       </FieldSet>
       <Panel layout="padding:5;regionPadding:10" layoutConstraint="left">
-        <Property name="style">
-          <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-          <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-          <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-        </Property>
         <Property name="showCaptionBar">false</Property>
         <Property name="width">33%</Property>
         <Buttons/>
@@ -255,11 +250,6 @@ if (attribute) {
         <Tools/>
       </Panel>
       <Panel layout="padding:5;regionPadding:10">
-        <Property name="style">
-          <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-          <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-          <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-        </Property>
         <Property name="showCaptionBar">false</Property>
         <Buttons/>
         <Children>
@@ -357,11 +347,6 @@ $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
         <Tools/>
       </Panel>
       <Panel layout="padding:5;regionPadding:10" layoutConstraint="right">
-        <Property name="style">
-          <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-          <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-          <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-        </Property>
         <Property name="showCaptionBar">false</Property>
         <Property name="width">33%</Property>
         <Buttons/>

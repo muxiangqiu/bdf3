@@ -24,8 +24,8 @@
     <module>bdf3-activiti-cola-ui</module>
     <module>bdf3-message</module>
     <module>bdf3-message-cola-ui</module>
-    <module>dorado-jpa</module>
     <module>bdf3-saas-ui</module>
+    <module>bdf3-importer</module>
   </modules>
   <properties>
   </properties>

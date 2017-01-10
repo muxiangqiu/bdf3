@@ -12,6 +12,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.bstek.bdf3.autoconfigure.dorado.DoradoAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.jpa.JpaAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.dorado.jpa.JpaAutoConfiguration,\
+com.bstek.bdf3.autoconfigure.importer.ImporterAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.security.SecurityAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.cola.ColaAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.jdbc.DataSourceAutoConfiguration,\

@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="ImporterSolution">
+      <Property name="creationType">com.bstek.bdf3.importer.model.ImporterSolution</Property>
+      <Reference name="mappingRules">
+        <Property name="dataType">[MappingRule]</Property>
+        <Property name="dataProvider">importer.importerSolutionMaintain#loadMappingRules</Property>
+        <Property name="parameter">$${this.id}</Property>
+        <Property name="pageSize">20</Property>
+      </Reference>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">方案编码</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">方案名称</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="sessionFactoryName">
+        <Property></Property>
+        <Property name="label">会话工厂</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="entityClassName">
+        <Property></Property>
+        <Property name="label">实体类</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="excelSheetName">
+        <Property></Property>
+        <Property name="label">Sheet页名称</Property>
+      </PropertyDef>
+      <PropertyDef name="createDate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">创建时间</Property>
+      </PropertyDef>
+      <PropertyDef name="desc">
+        <Property></Property>
+        <Property name="label">描述</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="MappingRule">
+      <Property name="creationType">com.bstek.bdf3.importer.model.MappingRule</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
+      <PropertyDef name="importerSolutionId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="excelColumn">
+        <Property name="dataType">int</Property>
+        <Property name="label">Excel列号</Property>
+      </PropertyDef>
+      <PropertyDef name="propertyName">
+        <Property></Property>
+        <Property name="label">实体属性</Property>
+      </PropertyDef>
+      <PropertyDef name="cellPostParserBean">
+        <Property></Property>
+        <Property name="label">单元格后置解析器</Property>
+        <Property name="mapping">
+          <Property name="mapValues">${dorado.getDataProvider(&quot;importer.importerSolutionMaintain#loadCellPostParsers&quot;).getResult()}</Property>
+          <Property name="keyProperty">beanId</Property>
+          <Property name="valueProperty">parserName</Property>
+        </Property>
+        <Property name="defaultValue">importer.defaultCellPostParser</Property>
+      </PropertyDef>
+      <PropertyDef name="cellPostParserParam">
+        <Property></Property>
+        <Property name="label">单元格后置解析器参数</Property>
+      </PropertyDef>
+      <PropertyDef name="cellPreParserBean">
+        <Property></Property>
+        <Property name="label">单元格前置解析器</Property>
+        <Property name="mapping">
+          <Property name="mapValues">${dorado.getDataProvider(&quot;importer.importerSolutionMaintain#loadCellPreParsers&quot;).getResult()}</Property>
+          <Property name="keyProperty">beanId</Property>
+          <Property name="valueProperty">parserName</Property>
+        </Property>
+        <Property name="defaultValue">importer.defaultCellPreParser</Property>
+      </PropertyDef>
+      <PropertyDef name="cellPreParserParam">
+        <Property></Property>
+        <Property name="label">单元格前置解析器参数</Property>
+      </PropertyDef>
+      <PropertyDef name="entries">
+        <Property name="dataType">[Entry]</Property>
+      </PropertyDef>
+      <PropertyDef name="ignoreErrorFormatData">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">忽略错误格式数据</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Entry">
+      <ClientEvent name="onInsert">arg.entity.set(&quot;mappingRuleId&quot;, arg.entity.parent.parent.get(&quot;id&quot;));
+</ClientEvent>
+      <Property name="creationType">com.bstek.bdf3.importer.model.Entry</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="key">
+        <Property></Property>
+        <Property name="label">关键字</Property>
+      </PropertyDef>
+      <PropertyDef name="value">
+        <Property></Property>
+        <Property name="label">值</Property>
+      </PropertyDef>
+      <PropertyDef name="mappingRuleId">
+        <Property></Property>
+        <Property name="label">映射规则ID</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome</Property>
+    <SplitPanel>
+      <Property name="position">50%</Property>
+      <MainControl>
+        <Container>
+          <Panel layout="padding:5;regionPadding:10" layoutConstraint="padding:15">
+            <Property name="caption">映射规则</Property>
+            <Property name="iconClass">fa fa-random</Property>
+            <Buttons/>
+            <Children>
+              <ToolBar>
+                <DataPilot>
+                  <ClientEvent name="onSubControlAction" signature="self,arg,dgMappingRule,updateActionImporterSolution,dialogMappingRule,dsImporterSolution">if (arg.code == &quot;+&quot;) {
+	var importerSolution = dsImporterSolution.getData(&quot;#&quot;);
+	if (importerSolution) {
+		importerSolution.createChild(&quot;mappingRules&quot;, {importerSolutionId : importerSolution.get(&quot;id&quot;)});
+		dialogMappingRule.show();
+	} else {
+		dorado.MessageBox.alert(&quot;请先添加映Excel导入方案！&quot;);
+	}
+	arg.processDefault = false;
+} else if (arg.code == &quot;-&quot;) {
+	var mappingRule = dsImporterSolution.getData(&quot;#.#mappingRules&quot;);
+	dorado.MessageBox.confirm(&quot;确认要删除所选映射规则吗？&quot;, function () {
+		var selection = dgMappingRule.get(&quot;selection&quot;);
+		if (selection &amp;&amp; selection.length > 0) {
+			selection.each(function (item) {
+				item.remove();
+			});
+		} else {
+			mappingRule.remove();
+		}
+		updateActionImporterSolution.execute();
+	});
+	arg.processDefault = false;
+}
+
+</ClientEvent>
+                  <Property name="itemCodes">+,-</Property>
+                  <Property name="dataSet">dsImporterSolution</Property>
+                  <Property name="dataPath">#.mappingRules</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick" signature="self,arg,dialogMappingRule">dialogMappingRule.show();
+</ClientEvent>
+                  <Property name="caption">修改</Property>
+                  <Property name="iconClass">fa fa-pencil</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgMappingRule">
+                <ClientEvent name="onDraggingSourceDrop" signature="self,arg,updateActionImporterSolution">var rules = self.get(&quot;dataSet&quot;).getData(self.get(&quot;dataPath&quot;));
+var obj = arg.draggingInfo.get(&quot;object&quot;);
+var insertMode =  arg.draggingInfo.get(&quot;insertMode&quot;);
+var refObject = arg.draggingInfo.get(&quot;refObject&quot;);
+var start = obj.get(&quot;excelColumn&quot;);
+var end = refObject.get(&quot;excelColumn&quot;);
+var gt = start > end;
+
+rules.each(function (rule) {
+	var excelColumn = rule.get(&quot;excelColumn&quot;)
+	if ((excelColumn - start) * (excelColumn - end) &lt; 0) {
+		rule.set(&quot;excelColumn&quot;, excelColumn + (gt ? 1 : -1));
+	}
+});
+
+if (insertMode == &quot;before&quot;) {
+	obj.set(&quot;excelColumn&quot;, gt ? (end == 0 ? 0 : end) : end - 1);
+	var start = obj.get(&quot;excelColumn&quot;);
+	refObject.set(&quot;excelColumn&quot;, start + 1);
+} else {
+	obj.set(&quot;excelColumn&quot;, gt ? end + 1 : end);
+	var start = obj.get(&quot;excelColumn&quot;);
+	refObject.set(&quot;excelColumn&quot;, start - 1);
+}
+
+updateActionImporterSolution.execute();
+</ClientEvent>
+                <Property name="dataSet">dsImporterSolution</Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="dataPath">#.mappingRules</Property>
+                <Property name="selectionMode">multiRows</Property>
+                <Property name="dragTags">rule</Property>
+                <Property name="droppable">true</Property>
+                <Property name="droppableTags">rule</Property>
+                <Property name="draggable">true</Property>
+                <RowSelectorColumn/>
+                <RowNumColumn/>
+                <DataColumn name="name">
+                  <Property name="property">name</Property>
+                </DataColumn>
+                <DataColumn name="excelColumn">
+                  <Property name="property">excelColumn</Property>
+                  <Property name="width">60</Property>
+                </DataColumn>
+                <DataColumn name="propertyName">
+                  <Property name="property">propertyName</Property>
+                </DataColumn>
+                <ColumnGroup>
+                  <Property name="caption">单元格前置</Property>
+                  <DataColumn name="cellPreParserBean">
+                    <Property name="property">cellPreParserBean</Property>
+                    <Property name="caption">解析器</Property>
+                  </DataColumn>
+                  <DataColumn name="cellPreParserParam">
+                    <Property name="property">cellPreParserParam</Property>
+                    <Property name="caption">参数</Property>
+                  </DataColumn>
+                </ColumnGroup>
+                <ColumnGroup>
+                  <Property name="caption">单元格后置</Property>
+                  <DataColumn name="cellPostParserBean">
+                    <Property name="property">cellPostParserBean</Property>
+                    <Property name="caption">解析器</Property>
+                  </DataColumn>
+                  <DataColumn name="cellPostParserParam">
+                    <Property name="property">cellPostParserParam</Property>
+                    <Property name="caption">参数</Property>
+                  </DataColumn>
+                </ColumnGroup>
+              </DataGrid>
+              <ToolBar layoutConstraint="bottom">
+                <DataPilot>
+                  <Property name="dataSet">dsImporterSolution</Property>
+                  <Property name="dataPath">#.mappingRules</Property>
+                  <Property name="itemCodes">pages,pageSize</Property>
+                </DataPilot>
+              </ToolBar>
+            </Children>
+            <Tools/>
+          </Panel>
+        </Container>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <Panel layout="padding:5;regionPadding:10" layoutConstraint="padding:15">
+            <Property name="caption">Excel导入方案</Property>
+            <Property name="iconClass">fa fa-file-excel-o</Property>
+            <Buttons/>
+            <Children>
+              <ToolBar>
+                <DataPilot>
+                  <ClientEvent name="onSubControlAction" signature="self,arg,id,updateActionImporterSolution,dialogImporterSolution,dsImporterSolution">if (arg.code == &quot;+&quot;) {
+	dialogImporterSolution.show();
+	id.set(&quot;readOnly&quot;, false);
+} else if (arg.code == &quot;-&quot;) {
+	var importerSolution = dsImporterSolution.getData(&quot;#&quot;);
+	if (importerSolution.get(&quot;mappingRules&quot;).entityCount > 0) {
+		dorado.MessageBox.alert(&quot;请先删除相关映射规则！&quot;);
+	} else {
+		dorado.MassageBox.conform(&quot;确认要删除所选方案吗？&quot;, function () {
+			importerSolution.remove();
+			updateActionImporterSolution.execute();
+		});
+	}
+	arg.processDefault = false;
+}
+</ClientEvent>
+                  <Property name="itemCodes">+,-</Property>
+                  <Property name="dataSet">dsImporterSolution</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick" signature="self,arg,id,dialogImporterSolution">dialogImporterSolution.show();
+id.set(&quot;readOnly&quot;, true);
+</ClientEvent>
+                  <Property name="caption">修改</Property>
+                  <Property name="iconClass">fa fa-pencil</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <Property name="iconClass">fa fa-wrench</Property>
+                  <Property name="caption">创建映射规则</Property>
+                  <Property name="tip">不会覆盖已有的映射规则</Property>
+                  <Property name="action">ajaxActionAutoCreateMappingRule</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid>
+                <Property name="dataSet">dsImporterSolution</Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="draggable">false</Property>
+                <Property name="droppable">false</Property>
+                <RowNumColumn/>
+                <DataColumn name="id">
+                  <Property name="property">id</Property>
+                </DataColumn>
+                <DataColumn name="name">
+                  <Property name="property">name</Property>
+                </DataColumn>
+                <DataColumn name="sessionFactoryName">
+                  <Property name="property">sessionFactoryName</Property>
+                </DataColumn>
+                <DataColumn name="entityClass">
+                  <Property name="property">entityClassName</Property>
+                </DataColumn>
+                <DataColumn name="excelSheetName">
+                  <Property name="property">excelSheetName</Property>
+                </DataColumn>
+                <DataColumn name="desc">
+                  <Property name="property">desc</Property>
+                </DataColumn>
+              </DataGrid>
+              <ToolBar layoutConstraint="bottom">
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataSet">dsImporterSolution</Property>
+                </DataPilot>
+              </ToolBar>
+            </Children>
+            <Tools/>
+          </Panel>
+        </Container>
+      </SideControl>
+    </SplitPanel>
+    <UpdateAction id="updateActionImporterSolution">
+      <ClientEvent name="onSuccess" signature="self,arg,dialogImporterSolution,dialogMappingRule">dialogImporterSolution.hide();
+dialogMappingRule.hide()
+</ClientEvent>
+      <Property name="dataResolver">importer.importerSolutionMaintain#saveImporterSolutions</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsImporterSolution</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <DataSet id="dsImporterSolution">
+      <Property name="dataProvider">importer.importerSolutionMaintain#loadImporterSolutions</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="dataType">[ImporterSolution]</Property>
+    </DataSet>
+    <Dialog id="dialogImporterSolution">
+      <ClientEvent name="onHide" signature="self,arg,dsImporterSolution">var entity = dsImporterSolution.getData(&quot;#&quot;);
+if (entity) {
+	entity.cancel();
+}
+
+</ClientEvent>
+      <Property name="width">500</Property>
+      <Property name="caption">Excel导入方案维护</Property>
+      <Property name="iconClass">fa fa-file-excel-o</Property>
+      <Buttons>
+        <Button>
+          <Property name="caption">保存</Property>
+          <Property name="iconClass">fa fa-floppy-o</Property>
+          <Property name="action">updateActionImporterSolution</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick" signature="self,arg,dialogImporterSolution">dialogImporterSolution.hide();
+</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-times</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsImporterSolution</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelWidth">100</Property>
+          <AutoFormElement id="id">
+            <Property name="name">id</Property>
+            <Property name="property">id</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">sessionFactoryName</Property>
+            <Property name="property">sessionFactoryName</Property>
+            <Property name="trigger">ddSessionFactoryName</Property>
+            <Property name="editable">false</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">entityClassName</Property>
+            <Property name="property">entityClassName</Property>
+            <Property name="trigger">ddEntityClassName</Property>
+            <Property name="editable">false</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">excelSheetName</Property>
+            <Property name="property">excelSheetName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">desc</Property>
+            <Property name="property">desc</Property>
+            <Property name="editorType">TextArea</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogMappingRule">
+      <ClientEvent name="onHide" signature="self,arg,dsImporterSolution">var entity = dsImporterSolution.getData(&quot;#.#mappingRules&quot;);
+if (entity) {
+	entity.cancel();
+}
+
+</ClientEvent>
+      <Property name="width">600</Property>
+      <Property name="caption">映射规则维护</Property>
+      <Property name="height">550</Property>
+      <Property name="maximizeable">true</Property>
+      <Buttons>
+        <Button>
+          <Property name="caption">保存</Property>
+          <Property name="iconClass">fa fa-floppy-o</Property>
+          <Property name="action">updateActionImporterSolution</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick" signature="self,arg,dialogMappingRule">dialogMappingRule.hide();
+</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-times</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <TabControl>
+          <ControlTab>
+            <Property name="caption">基本信息</Property>
+            <Container layout="vbox padding:15">
+              <AutoForm>
+                <Property name="dataSet">dsImporterSolution</Property>
+                <Property name="dataPath">#.#mappingRules</Property>
+                <Property name="cols">*</Property>
+                <Property name="labelWidth">130</Property>
+                <AutoFormElement>
+                  <Property name="name">name</Property>
+                  <Property name="property">name</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">excelColumn</Property>
+                  <Property name="property">excelColumn</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">propertyName</Property>
+                  <Property name="property">propertyName</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">ignoreErrorFormatData</Property>
+                  <Property name="property">ignoreErrorFormatData</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+              <GroupBox>
+                <Property name="caption">单元格前置</Property>
+                <Buttons/>
+                <Children>
+                  <AutoForm>
+                    <Property name="dataSet">dsImporterSolution</Property>
+                    <Property name="dataPath">#.#mappingRules</Property>
+                    <Property name="cols">*</Property>
+                    <AutoFormElement>
+                      <Property name="name">cellPreParserBean</Property>
+                      <Property name="property">cellPreParserBean</Property>
+                      <Property name="editable">false</Property>
+                      <Property name="trigger">autoOpenMappingDropDown1</Property>
+                      <Property name="label">解析器</Property>
+                      <Editor/>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">cellPreParserParam</Property>
+                      <Property name="property">cellPreParserParam</Property>
+                      <Property name="editorType">TextArea</Property>
+                      <Property name="label">参数</Property>
+                      <Editor/>
+                    </AutoFormElement>
+                  </AutoForm>
+                </Children>
+              </GroupBox>
+              <GroupBox>
+                <Property name="caption">单元格后置</Property>
+                <Buttons/>
+                <Children>
+                  <AutoForm>
+                    <Property name="dataSet">dsImporterSolution</Property>
+                    <Property name="dataPath">#.#mappingRules</Property>
+                    <Property name="cols">*</Property>
+                    <AutoFormElement>
+                      <Property name="name">cellPostParserBean</Property>
+                      <Property name="property">cellPostParserBean</Property>
+                      <Property name="editable">false</Property>
+                      <Property name="trigger">autoOpenMappingDropDown1</Property>
+                      <Property name="label">解析器</Property>
+                      <Editor/>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">cellPostParserParam</Property>
+                      <Property name="property">cellPostParserParam</Property>
+                      <Property name="editorType">TextArea</Property>
+                      <Property name="label">参数</Property>
+                      <Editor/>
+                    </AutoFormElement>
+                  </AutoForm>
+                </Children>
+              </GroupBox>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">数据映射</Property>
+            <Container>
+              <Panel layout="padding:5;regionPadding:10" layoutConstraint="padding:15">
+                <Buttons/>
+                <Children>
+                  <ToolBar>
+                    <DataPilot>
+                      <Property name="itemCodes">+,-</Property>
+                      <Property name="dataSet">dsImporterSolution</Property>
+                      <Property name="dataPath">#.#mappingRules.entries</Property>
+                    </DataPilot>
+                  </ToolBar>
+                  <DataGrid>
+                    <Property name="dataSet">dsImporterSolution</Property>
+                    <Property name="filterMode">clientSide</Property>
+                    <Property name="readOnly">false</Property>
+                    <Property name="dataPath">#.#mappingRules.entries</Property>
+                    <Property name="selectionMode">none</Property>
+                    <RowNumColumn/>
+                    <DataColumn name="key">
+                      <Property name="property">key</Property>
+                    </DataColumn>
+                    <DataColumn name="value">
+                      <Property name="property">value</Property>
+                    </DataColumn>
+                  </DataGrid>
+                </Children>
+                <Tools/>
+              </Panel>
+            </Container>
+          </ControlTab>
+        </TabControl>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <DataSet id="dsSessionFactoryName">
+      <Property name="dataProvider">importer.importerSolutionMaintain#loadSessionFactoryNames</Property>
+      <Property name="dataType">[String]</Property>
+    </DataSet>
+    <DataSet id="dsEntityClassName">
+      <ClientEvent name="beforeLoadData" signature="self,arg,dsImporterSolution">var entity = dsImporterSolution.getData(&quot;#&quot;);
+if (entity &amp;&amp; entity.get(&quot;sessionFactoryName&quot;)) {
+	self.set(&quot;parameter&quot;, entity.get(&quot;sessionFactoryName&quot;))
+} else {
+	arg.processDefault = false;
+}
+</ClientEvent>
+      <Property name="dataProvider">importer.importerSolutionMaintain#loadEntityClassNames</Property>
+      <Property name="dataType">[String]</Property>
+    </DataSet>
+    <DataSetDropDown id="ddSessionFactoryName">
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsSessionFactoryName</Property>
+      <Property name="useDataBinding">false</Property>
+    </DataSetDropDown>
+    <DataSetDropDown id="ddEntityClassName">
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsEntityClassName</Property>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="filterOnOpen">false</Property>
+      <Property name="filterOnTyping">false</Property>
+      <Property name="useDataBinding">false</Property>
+    </DataSetDropDown>
+    <AjaxAction id="ajaxActionAutoCreateMappingRule">
+      <ClientEvent name="beforeExecute" signature="self,arg,dsImporterSolution">var importerSolution = dsImporterSolution.getData(&quot;#&quot;);
+if (importerSolution) {
+	self.set(&quot;parameter&quot;, importerSolution);
+} else {
+	dorado.MessageBox.alert(&quot;请先添加Excel导入方案。&quot;);
+}
+</ClientEvent>
+      <ClientEvent name="onSuccess" signature="self,arg,dsImporterSolution">var importerSolution = dsImporterSolution.getData(&quot;#&quot;);
+importerSolution.reset(&quot;mappingRules&quot;);
+</ClientEvent>
+      <Property name="service">importer.importerSolutionMaintain#autoCreateMappingRules</Property>
+      <Property name="executingMessage">正在创建映射规则……</Property>
+      <Property name="successMessage">映射规则创建成功</Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>

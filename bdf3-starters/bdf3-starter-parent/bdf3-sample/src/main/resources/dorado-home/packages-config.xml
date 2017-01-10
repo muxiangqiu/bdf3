@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<Patterns>
+		<Pattern name="js" contentType="text/javascript" charset="UTF-8"
+			mergeRequests='${configure["view.mergeJavaScript"]}' resourceSuffix=".js" />
+		<Pattern name="css" contentType="text/css" charset="UTF-8"
+			mergeRequests='${configure["view.mergeStyleSheet"]}' resourceSuffix=".css" />
+	</Patterns>
+
+	<Packages>
+		<Package name="common" pattern="js">
+		</Package>
+	</Packages>
+</config>

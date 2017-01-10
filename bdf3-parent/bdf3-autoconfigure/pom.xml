@@ -52,6 +52,11 @@
 			<artifactId>bdf3-activiti</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>com.bstek.bdf3</groupId>
+			<artifactId>bdf3-importer</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	<pluginRepositories>
 		<pluginRepository>

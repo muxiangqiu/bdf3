@@ -386,11 +386,6 @@ if (attribute) {
         <Container layout="padding:15">
           <Panel>
             <Property name="caption">权限分配</Property>
-            <Property name="style">
-              <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-              <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-              <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-            </Property>
             <Buttons/>
             <Children>
               <SplitPanel>
@@ -653,11 +648,6 @@ $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
         <Container>
           <Panel layout="padding:5;regionPadding:10" layoutConstraint="padding:15">
             <Property name="caption">角色</Property>
-            <Property name="style">
-              <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-              <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-              <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-            </Property>
             <Buttons/>
             <Children>
               <ToolBar>
