@@ -55,9 +55,9 @@ public final class LogUtils {
 			logDefinition.setOperationUser(log.operationUser());
 		}
 		if (StringUtils.isEmpty(log.operationUserNickname())) {
-			logDefinition.setOperationUser("${" + Configure.getString(Constants.DEFAULT_OPERATION_USER_NICKNAME_ATTR) + "}");
+			logDefinition.setOperationUserNickname("${" + Configure.getString(Constants.DEFAULT_OPERATION_USER_NICKNAME_ATTR) + "}");
 		} else {
-			logDefinition.setOperationUser(log.operationUserNickname());
+			logDefinition.setOperationUserNickname(log.operationUserNickname());
 		}
 		if (StringUtils.isEmpty(log.var())) {
 			logDefinition.setVar(Configure.getString(Constants.DEFAULT_VAR_ATTR));

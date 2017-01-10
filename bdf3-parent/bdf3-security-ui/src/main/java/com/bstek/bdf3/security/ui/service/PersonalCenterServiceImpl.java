@@ -16,6 +16,7 @@ import com.bstek.bdf3.security.domain.RoleGrantedAuthority;
 import com.bstek.bdf3.security.domain.Url;
 import com.bstek.bdf3.security.domain.User;
 import com.bstek.bdf3.security.service.UrlService;
+import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
 
 /**
@@ -38,7 +39,7 @@ public class PersonalCenterServiceImpl implements PersonalCenterService {
 			EntityUtils.setValue(user, "roles", getRoles(username));
 			EntityUtils.setValue(user, "urls", getUrls(username));
 			EntityUtils.setValue(user, "permissions", getPermissions(username));
-
+			EntityUtils.setState(user, EntityState.NONE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

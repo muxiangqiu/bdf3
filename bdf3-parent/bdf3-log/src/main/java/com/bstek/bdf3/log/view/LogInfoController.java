@@ -23,7 +23,7 @@ public class LogInfoController {
 	@DataProvider
 	@Transactional(readOnly = true)
 	public void load(Page<LogInfo> page, Criteria criteria) {
-		JpaUtil.linq(LogInfo.class).where(criteria).paging(page);
+		JpaUtil.linq(LogInfo.class).where(criteria).desc("operationDate").paging(page);
 	}
 	
 

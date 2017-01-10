@@ -93,6 +93,7 @@ public class DefaultLogger implements Logger {
 		logInfo.setOperation((String) contextHandler.compile(log.getOperation()));
 		logInfo.setOperationDate(new Date());
 		logInfo.setOperationUser((String) contextHandler.compile(log.getOperationUser()));
+		logInfo.setOperationUserNickname((String) contextHandler.compile(log.getOperationUserNickname()));
 		logInfo.setSource(DoradoContext.getCurrent().getRequest().getHeader("Referer"));
 		logInfo.setTitle((String) contextHandler.compile(log.getTitle()));
 		
