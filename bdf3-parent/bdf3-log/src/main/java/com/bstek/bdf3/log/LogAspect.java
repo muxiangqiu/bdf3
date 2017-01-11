@@ -82,7 +82,6 @@ public class LogAspect implements ApplicationContextAware{
 				}
 			}
 		}
-		
 		return returnValue;
 	}
 

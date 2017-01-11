@@ -36,6 +36,7 @@
       <PropertyDef name="operationDate">
         <Property name="dataType">Date</Property>
         <Property name="label">操作时间</Property>
+        <Property name="displayFormat">Y-m-d H:i:s</Property>
       </PropertyDef>
       <PropertyDef name="category">
         <Property/>
@@ -57,6 +58,7 @@
       <Property name="dataType">[LogInfo]</Property>
       <Property name="dataProvider">logInfoController#load</Property>
       <Property name="pageSize">20</Property>
+      <Property name="readOnly">true</Property>
     </DataSet>
     <Panel layout="padding:5;regionPadding:10">
       <Property name="showCaptionBar">false</Property>
@@ -64,14 +66,7 @@
       <Children>
         <ToolBar>
           <ToolBarButton>
-            <ClientEvent name="onClick" signature="self,arg,ajaxActionResetPassword,dsUser">var user = dsUser.getData(&quot;#&quot;);
-if (user) {
-	if (parent.openTab) {
-		parent.openTab(user.get(&quot;nickname&quot;) + &quot;详情&quot;, &quot;fa fa-tachometer red-text&quot;, &quot;${configure['bdf3.personCenter']}&quot; + &quot;?username=&quot; + user.get(&quot;username&quot;));
-	}
-} else {
-	dorado.MessageBox.alert(&quot;请先选择用户。&quot;);
-}
+            <ClientEvent name="onClick" signature="self,arg,dialogLogInfo">dialogLogInfo.show();
 </ClientEvent>
             <Property name="caption">查看详情</Property>
             <Property name="iconClass">fa fa-file-text blue-text</Property>
@@ -130,6 +125,8 @@ self.urlQueryTimeout = window.setTimeout(function() {
           </TextEditor>
         </ToolBar>
         <DataGrid id="dgLogInfo">
+          <ClientEvent name="onDataRowDoubleClick" signature="self,arg,dialogLogInfo">dialogLogInfo.show();
+</ClientEvent>
           <Property name="dataSet">dsLogInfo</Property>
           <Property name="readOnly">true</Property>
           <Property name="showFilterBar">false</Property>
@@ -137,8 +134,21 @@ self.urlQueryTimeout = window.setTimeout(function() {
           <Property name="filterMode">serverSide</Property>
           <Property name="allowNoCurrent">false</Property>
           <RowNumColumn/>
+          <DataColumn name="operationDate">
+            <Property name="property">operationDate</Property>
+            <Property name="width">130</Property>
+          </DataColumn>
+          <DataColumn name="operationUser">
+            <Property name="property">operationUser</Property>
+          </DataColumn>
+          <DataColumn name="operationUserNickname">
+            <Property name="property">operationUserNickname</Property>
+          </DataColumn>
           <DataColumn name="module">
             <Property name="property">module</Property>
+          </DataColumn>
+          <DataColumn name="category">
+            <Property name="property">category</Property>
           </DataColumn>
           <DataColumn name="title">
             <Property name="property">title</Property>
@@ -149,23 +159,11 @@ self.urlQueryTimeout = window.setTimeout(function() {
           <DataColumn name="operation">
             <Property name="property">operation</Property>
           </DataColumn>
-          <DataColumn name="operationUser">
-            <Property name="property">operationUser</Property>
-          </DataColumn>
-          <DataColumn name="operationUserNickname">
-            <Property name="property">operationUserNickname</Property>
-          </DataColumn>
-          <DataColumn name="operationDate">
-            <Property name="property">operationDate</Property>
-          </DataColumn>
-          <DataColumn name="category">
-            <Property name="property">category</Property>
+          <DataColumn name="source">
+            <Property name="property">source</Property>
           </DataColumn>
           <DataColumn name="IP">
             <Property name="property">IP</Property>
-          </DataColumn>
-          <DataColumn name="source">
-            <Property name="property">source</Property>
           </DataColumn>
         </DataGrid>
         <ToolBar layoutConstraint="bottom">
@@ -177,68 +175,107 @@ self.urlQueryTimeout = window.setTimeout(function() {
       </Children>
       <Tools/>
     </Panel>
-    <Dialog id="dialogUser">
-      <ClientEvent name="onHide" signature="self,arg,dsUser">dsUser.getData().cancel();
+    <Dialog id="dialogLogInfo" layout="vbox padding:15">
+      <ClientEvent name="onShow" signature="self,arg,dsLogInfo,descPart">var logInfo = dsLogInfo.getData(&quot;#&quot;);
+if (logInfo) {
+	if (logInfo.get(&quot;desc&quot;)) {
+		descPart.set({
+			caption: &quot;日志描述&quot;,
+			collapsed: false
+		});
+	} else {
+		descPart.set({
+			caption: &quot;无日志描述&quot;,
+			collapsed: true
+		});
+	}
+}
 </ClientEvent>
-      <Property name="caption">用户维护</Property>
+      <Property name="caption">日志详情</Property>
       <Property name="width">500</Property>
-      <Property name="height">400</Property>
+      <Property name="height">500</Property>
       <Property name="maximizeable">true</Property>
       <Property name="minimizeable">false</Property>
-      <Buttons>
-        <Button>
-          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide()
-</ClientEvent>
-          <Property name="caption">取消</Property>
-        </Button>
-        <Button>
-          <Property name="caption">保存</Property>
-          <Property name="action">updateAction</Property>
-        </Button>
-      </Buttons>
+      <Buttons/>
       <Children>
-        <AutoForm>
-          <Property name="dataSet">dsUser</Property>
-          <Property name="cols">*</Property>
-          <Property name="labelPosition">left</Property>
-          <Property name="labelAlign">right</Property>
-          <AutoFormElement>
-            <Property name="name">username</Property>
-            <Property name="property">username</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">nickname</Property>
-            <Property name="property">nickname</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">password</Property>
-            <Property name="property">password</Property>
-            <Property name="editorType">PasswordEditor</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">accountNonExpired</Property>
-            <Property name="property">accountNonExpired</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">accountNonLocked</Property>
-            <Property name="property">accountNonLocked</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">credentialsNonExpired</Property>
-            <Property name="property">credentialsNonExpired</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">enabled</Property>
-            <Property name="property">enabled</Property>
-            <Editor/>
-          </AutoFormElement>
-        </AutoForm>
+        <GroupBox id="descPart">
+          <Property name="caption">日志描述</Property>
+          <Buttons/>
+          <Children>
+            <AutoForm>
+              <Property name="dataSet">dsLogInfo</Property>
+              <Property name="cols">*</Property>
+              <Property name="labelPosition">left</Property>
+              <Property name="labelAlign">right</Property>
+              <AutoFormElement>
+                <Property name="name">desc</Property>
+                <Property name="property">desc</Property>
+                <Property name="editorType">TextArea</Property>
+                <Property name="height">200</Property>
+                <Property name="showLabel">false</Property>
+                <Property name="showHint">false</Property>
+                <Editor/>
+              </AutoFormElement>
+            </AutoForm>
+          </Children>
+        </GroupBox>
+        <GroupBox>
+          <Property name="caption">其他信息</Property>
+          <Buttons/>
+          <Children>
+            <AutoForm>
+              <Property name="dataSet">dsLogInfo</Property>
+              <Property name="cols">*</Property>
+              <Property name="labelPosition">left</Property>
+              <Property name="labelAlign">right</Property>
+              <AutoFormElement>
+                <Property name="name">module</Property>
+                <Property name="property">module</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">title</Property>
+                <Property name="property">title</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">operation</Property>
+                <Property name="property">operation</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">operationUser</Property>
+                <Property name="property">operationUser</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">operationUserNickname</Property>
+                <Property name="property">operationUserNickname</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">operationDate</Property>
+                <Property name="property">operationDate</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">category</Property>
+                <Property name="property">category</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">IP</Property>
+                <Property name="property">IP</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">source</Property>
+                <Property name="property">source</Property>
+                <Editor/>
+              </AutoFormElement>
+            </AutoForm>
+          </Children>
+        </GroupBox>
       </Children>
       <Tools/>
     </Dialog>

@@ -77,7 +77,8 @@ public class DefaultLogger implements Logger {
 		boolean disabled = contextHandler.compile(log.getDisabled());
 		if (!disabled) {
 			Object logInfo = getLogInfo(log);
-			JpaUtil.getEntityManager(LogInfo.class).persist(logInfo);
+			JpaUtil.persist(logInfo);
+			
 			
 		}
 		

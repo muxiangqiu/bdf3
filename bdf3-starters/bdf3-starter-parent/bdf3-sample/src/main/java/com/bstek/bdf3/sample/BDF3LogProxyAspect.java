@@ -15,7 +15,7 @@ import com.bstek.bdf3.log.AbstractLogProxyAspect;
 public class BDF3LogProxyAspect extends AbstractLogProxyAspect {
 
 	@Override
-	@Pointcut("execution(public * com.bstek.bdf3..*Controller.*(..))")
+	@Pointcut("@annotation(com.bstek.dorado.annotation.DataResolver)")
 	protected void logPointcut() {
 
 	}

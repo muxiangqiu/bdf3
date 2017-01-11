@@ -44,8 +44,6 @@ public class ContextVariablesInitializer implements ContextVarsInitializer{
 					Object newValue = EntityUtils.getValue(entity, p);
 					buildDesc(retVal, dataType, p, null, newValue);
 				}
-			} else {
-				retVal.append("无");
 			}
 			
 		}

@@ -18,10 +18,10 @@ import com.bstek.dorado.data.provider.Page;
  * @since 2016年3月6日
  */
 @Controller
+@Transactional(readOnly = true)
 public class LogInfoController {
 	
 	@DataProvider
-	@Transactional(readOnly = true)
 	public void load(Page<LogInfo> page, Criteria criteria) {
 		JpaUtil.linq(LogInfo.class).where(criteria).desc("operationDate").paging(page);
 	}
