@@ -199,18 +199,38 @@ dialogPassword.show();
       <Property name="position">200</Property>
       <Property name="exClassName">workarea</Property>
       <MainControl>
-        <TabControl id="tabControl">
-          <Property name="showMenuButton">true</Property>
-          <Property name="tabPlacement">top</Property>
-          <ControlTab>
-            <Property name="iconClass">${configure['bdf3.welcomeIcon']}</Property>
-            <Property name="caption">${configure['bdf3.welcomeTitle']}</Property>
-            <Property name="ignored">${empty configure['bdf3.welcomePath']}</Property>
-            <SubViewHolder>
-              <Property name="subView">${configure['bdf3.welcomePath']}</Property>
-            </SubViewHolder>
-          </ControlTab>
-        </TabControl>
+        <Panel id="workspace">
+          <Property name="border">none</Property>
+          <Property name="maximizeable">true</Property>
+          <Buttons/>
+          <Children>
+            <TabControl id="tabControl">
+              <ClientEvent name="onTabContextMenu" signature="self,arg,menu">menu.show({
+	event: arg.event
+});
+</ClientEvent>
+              <ClientEvent name="onCreateDom" signature="self,arg,workspace">$(arg.dom).delegate(&quot;.tab&quot;, &quot;dblclick&quot;, function() {
+	if (workspace.get(&quot;maximized&quot;)) {
+		workspace.maximizeRestore();
+	} else {
+		workspace.maximize();
+	}
+});
+</ClientEvent>
+              <Property name="showMenuButton">true</Property>
+              <Property name="tabPlacement">top</Property>
+              <ControlTab>
+                <Property name="iconClass">${configure['bdf3.welcomeIcon']}</Property>
+                <Property name="caption">${configure['bdf3.welcomeTitle']}</Property>
+                <Property name="ignored">${empty configure['bdf3.welcomePath']}</Property>
+                <SubViewHolder>
+                  <Property name="subView">${configure['bdf3.welcomePath']}</Property>
+                </SubViewHolder>
+              </ControlTab>
+            </TabControl>
+          </Children>
+          <Tools/>
+        </Panel>
       </MainControl>
       <SideControl>
         <Panel layout="padding:5;regionPadding:10">
@@ -378,5 +398,20 @@ if (autoFormPassword.validate()) {
       </Children>
       <Tools/>
     </Dialog>
+    <Menu id="menu">
+      <Property name="iconPosition">left</Property>
+      <MenuItem>
+        <ClientEvent name="onClick" signature="self,arg,tabControl">tabControl.closeOtherTabs(tabControl.get(&quot;currentTab&quot;));
+</ClientEvent>
+        <Property name="caption">关闭其他标签页</Property>
+        <Property name="iconClass">fa fa-times-circle red-text</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick" signature="self,arg,tabControl">tabControl.closeAllTabs();
+</ClientEvent>
+        <Property name="caption">关闭所有标签页</Property>
+        <Property name="iconClass">fa fa-times-circle red-text</Property>
+      </MenuItem>
+    </Menu>
   </View>
 </ViewConfig>
