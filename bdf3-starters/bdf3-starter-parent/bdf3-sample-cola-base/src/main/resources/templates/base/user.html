@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" type="text/css" href="static/nprogress/nprogress.css">
+    <script src="static/nprogress/nprogress.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/cola-ui/semantic.css">
+    <link rel="stylesheet" type="text/css" href="static/common/common.css">
+    <link rel="stylesheet" type="text/css" href="static/base/user.css">
+</head>
+<body>
+<script type="text/javascript">
+    NProgress.configure({showSpinner: false, minimum: 0.3})
+    NProgress.start();
+</script>
+<div style="margin-bottom: 20px">
+    <div id="search" class="ui search">
+        <div class="ui icon input">
+            <input c-bind="searchKey" class="prompt" type="text" placeholder="搜索" c-onchange="search()">
+            <i class="search icon"></i>
+        </div>
+        <div id="createUserBtn" class="ui primary circular button" style="margin-left: 10px" c-onclick="showAddModal()"><i class="plus icon"></i> <span> 创建新用户 </span> </div>
+        <div class="ui compact right floated  menu">
+            <a class="ui icon item" data-inverted="" data-position="left center" c-data-tooltip="showStyleTip" c-onclick="toggleStyle()">
+                <i class="icon" c-class="showStyleIcon"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="userCards" class="ui six doubling cards">
+    <div class="ui card" c-repeat="users" c-id="'user_' + item.username" c-onclick="clickUserCard(item)">
+        <div class="content"  style="min-height: 76px">
+            <div class="header link" c-bind="item.nickname"></div>
+            <div class="meta" c-bind="item.username"></div>
+            <div class="description">
+                <a c-repeat="role in item.roles" c-bind="role.name" c-onclick="showRoleModal(item)"></a>
+            </div>
+        </div>
+            <div class="extra content">
+                <span class="write left floated" c-onclick="showEditModal(item)"><i class="write icon"></i> 修改 </span>
+                <span class="trash right floated" c-onclick="confirmRemove(item)"><i class="trash icon"></i> 删除 </span>
+            </div>
+    </div>
+</div>
+<table id="userTable" style="display: none;" class="ui celled table">
+    <thead>
+    <tr>
+        <th>用户名</th>
+        <th>昵称</th>
+        <th>角色</th>
+        <th>凭证未过期</th>
+        <th>账户未锁定</th>
+        <th>凭证未过期</th>
+        <th>可用</th>
+        <th class="center aligned">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr c-repeat="users">
+        <td c-bind="item.username"></td>
+        <td c-bind="item.nickname"></td>
+        <td>
+            <a class="ui green circular label" c-repeat="role in item.roles" c-bind="role.name" c-onclick="showRoleModal(item)"></a>
+        </td>
+                <td>
+            <div class="ui checkbox read-only"><input c-bind="item.accountNonExpired" type="checkbox" class="hidden"><label></label></div>
+        </td>
+        <td>
+            <div class="ui checkbox read-only"><input c-bind="item.accountNonLocked" type="checkbox" class="hidden"><label></label></div>
+        </td>
+        <td>
+            <div class="ui checkbox read-only"><input c-bind="item.credentialsNonExpired" type="checkbox"  class="hidden"><label></label></div>
+        </td>
+        <td>
+            <div class="ui checkbox read-only"><input c-bind="item.enabled" type="checkbox"  class="hidden"><label></label></div>
+        </td>
+
+        <td class="center aligned">
+            <div>
+                <span data-inverted="" data-tooltip="修改">
+                    <i class="icon link write large" c-onclick="showEditModal(item)"></i>
+                </span>
+                <span data-inverted="" data-tooltip="删除">
+                    <i class="icon link trash large red" c-onclick="confirmRemove(item)"></i>
+                </span>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<div id="removeConfirmModal" class="ui basic modal">
+    <div class="ui icon header">
+        <h2>确定要删除吗？</h2>
+    </div>
+    <div class="content">
+        <p></p>
+    </div>
+    <div class="actions">
+        <div class="ui red basic cancel inverted button"><i class="remove icon"></i> 取消 </div>
+        <div class="ui green ok inverted button" c-onclick="remove()"><i class="checkmark icon"></i> 确定 </div>
+    </div>
+</div>
+    <div class="edit-modal ui page dimmer">
+        <div class="content">
+            <div class="center">
+                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" style="width: 100%; height:100%;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div id="editModal" class="ui basic small modal">
+        <div class="ui icon header">
+            <h2>修改用户信息</h2>
+        </div>
+        <div class="content">
+            <form id="editUserForm" class="ui large form">
+                <div class="field">
+                    <div class="ui large input">
+                        <label>用户名</label>
+                        <label c-bind="editUser.username"></label>
+                    </div>
+                    <div class="ui divider"></div>
+                </div>
+                <div class="field">
+                    <div class="ui large transparent left inverted input">
+                        <label>昵称</label>
+                        <input data-validate="nickname" type="text" c-bind="editUser.nickname" 
+                               placeholder="昵称...">
+                    </div>
+                    <div class="ui divider"></div>
+                </div>
+                <div class="fields">
+                    <div class="ui large input">
+                        <label>状态</label>
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" c-bind="editUser.accountNonExpired" c-onchange="keyup()">
+                            <label>账户未过期</label>
+                        </div>
+                    </div>                
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" c-bind="editUser.accountNonLocked" c-onchange="keyup()">
+                            <label>账户未锁定</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" c-bind="editUser.credentialsNonExpired" c-onchange="keyup()">
+                            <label>凭证未过期</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" c-bind="editUser.enabled" c-onchange="keyup()">
+                            <label>可用</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui error inverted message"></div>
+            </form>
+
+        </div>
+        <div class="actions">
+            <div class="ui red basic cancel inverted button"><i class="remove icon"></i> 取消 </div>
+            <div id="editSaveBtn" class="ui green inverted button" c-onclick="edit()"><i class="checkmark icon"></i> 提交修改 </div>
+        </div>
+
+    </div>
+
+<div id="addModal" class="ui basic small modal">
+    <div class="ui icon header">
+        <h2>创建新用户</h2>
+    </div>
+    <div class="content">
+        <form id="addUserForm" class="ui large form">
+            <div class="field">
+                <div class="ui large transparent left inverted input">
+                    <label>用户名</label>
+                    <input data-validate="username" type="text" c-bind="addUser.username" 
+                           placeholder="用户名...">
+                </div>
+                <div class="ui divider"></div>
+            </div>
+            <div class="field">
+                <div class="ui large transparent left inverted input">
+                    <label>昵称</label>
+                    <input data-validate="nickname" type="text" c-bind="addUser.nickname" 
+                           placeholder="昵称...">
+                </div>
+                <div class="ui divider"></div>
+            </div>
+            <div class="field">
+                <div class="ui large transparent left inverted input">
+                    <label>密码</label>
+                    <input data-validate="password" type="password" c-bind="addUser.password"
+                           placeholder="密码...">
+                </div>
+                <div class="ui divider"></div>
+            </div>
+            <div class="fields">
+                <div class="ui large input">
+                    <label>状态</label>
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" c-bind="addUser.accountNonExpired" c-onchange="keyup()">
+                        <label>账户未过期</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" c-bind="addUser.accountNonLocked" c-onchange="keyup()">
+                        <label>账户未锁定</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" c-bind="addUser.credentialsNonExpired" c-onchange="keyup()">
+                        <label>凭证未过期</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" c-bind="addUser.enabled" c-onchange="keyup()">
+                        <label>可用</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui error inverted message"></div>
+        </form>
+
+    </div>
+    <div class="actions">
+        <div class="ui red basic cancel inverted button"><i class="remove icon"></i> 取消 </div>
+        <div id="addSaveBtn" class="ui green inverted button" c-onclick="add()"><i class="checkmark icon"></i> 提交 </div>
+    </div>
+
+</div>
+
+
+</body>
+<script src="static/jquery-2.1.3.js"></script>
+<script src="static/jquery.cookie.js"></script>
+<script src="static/cola-ui/3rd.js"></script>
+<script src="static/cola-ui/semantic.js"></script>
+<script src="static/cola-ui/cola-core.js" charset="UTF-8"></script>
+<script src="static/common/common.js"></script>
+<script src="static/base/user.js"></script>
+<script type="text/javascript">
+</script>
+</html>
