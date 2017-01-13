@@ -117,8 +117,7 @@ self.urlQueryTimeout = window.setTimeout(function() {
     <Dialog id="dialogOrg">
       <ClientEvent name="onHide" signature="self,arg,dsOrg">dsOrg.getData().cancel();
 </ClientEvent>
-      <Property name="caption">角色维护</Property>
-      <Property name="iconClass">fa fa-users</Property>
+      <Property name="caption">公司信息修改</Property>
       <Property name="width">500</Property>
       <Property name="height">300</Property>
       <Property name="maximizeable">true</Property>

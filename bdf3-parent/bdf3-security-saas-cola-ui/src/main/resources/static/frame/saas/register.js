@@ -184,7 +184,7 @@
                     data: JSON.stringify(data),
                     type: "POST",
                     url: service.registerUser,
-                    successMessage: "用户组册成功。"
+                    successMessage: "用户注册成功。"
                 };
                 $.ajax(options).done(function () {
                     setTimeout(function() {
@@ -205,7 +205,7 @@
                     data: JSON.stringify(data),
                     type: "POST",
                     url: service.registerOrganization,
-                    successMessage: "公司组册成功。"
+                    successMessage: "公司注册成功。"
                 };
                 $.ajax(options).done(function () {
                     setTimeout(function() {

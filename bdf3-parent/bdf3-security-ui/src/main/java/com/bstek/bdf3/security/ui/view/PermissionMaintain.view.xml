@@ -778,7 +778,6 @@ self.urlQueryTimeout = window.setTimeout(function() {
       <ClientEvent name="onHide" signature="self,arg,dsRole">dsRole.getData().cancel();
 </ClientEvent>
       <Property name="caption">角色维护</Property>
-      <Property name="iconClass">fa fa-users</Property>
       <Property name="width">500</Property>
       <Property name="height">300</Property>
       <Property name="maximizeable">true</Property>
