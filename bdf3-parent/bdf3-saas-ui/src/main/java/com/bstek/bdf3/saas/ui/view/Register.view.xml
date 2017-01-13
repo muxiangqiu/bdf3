@@ -166,15 +166,16 @@ if (organizationId &amp;&amp; username) {
                   </Editor>
                 </AutoFormElement>
                 <Button>
-                  <ClientEvent name="onClick" signature="self,arg,autoFormRegisterOrg">var options = {
+                  <ClientEvent name="onClick" signature="self,arg,tip,autoFormRegisterOrg">var options = {
     contentType: &quot;application/json&quot;,
     data: JSON.stringify(autoFormRegisterOrg.get(&quot;entity&quot;).toJSON()),
     type: &quot;POST&quot;,
     url: &quot;api/register/organization&quot;,
 	success: function() {
+		tip.set(&quot;text&quot;, &quot;公司注册成功。&quot;).show();
 		 setTimeout(function() {
 			window.location.href = &quot;${configure['bdf3.loginPath']}&quot;;
-	    }, 1500);
+	    }, 1000);
 	}
 };
 if (autoFormRegisterOrg.get(&quot;entity&quot;).validate() === &quot;ok&quot;) {
@@ -314,13 +315,14 @@ if (organizationId &amp;&amp; username) {
                   </Editor>
                 </AutoFormElement>
                 <Button>
-                  <ClientEvent name="onClick" signature="self,arg,autoFormRegisterUser">var options = {
+                  <ClientEvent name="onClick" signature="self,arg,tip,autoFormRegisterUser">var options = {
     contentType: &quot;application/json&quot;,
     data: JSON.stringify(autoFormRegisterUser.get(&quot;entity&quot;).toJSON()),
     type: &quot;POST&quot;,
     url: &quot;api/register/user&quot;,
 	success: function() {
-		 setTimeout(function() {
+		tip.set(&quot;text&quot;, &quot;用户注册成功。&quot;).show();
+		setTimeout(function() {
 			window.location.href = &quot;${configure['bdf3.loginPath']}&quot;;
 	    }, 1000);
 	}
@@ -344,5 +346,10 @@ if (autoFormRegisterUser.get(&quot;entity&quot;).validate()) {
         </FloatPanel>
       </Container>
     </Container>
+    <Tip id="tip">
+      <Property name="caption">系统消息</Property>
+      <Property name="center">true</Property>
+      <Property name="width">300</Property>
+    </Tip>
   </View>
 </ViewConfig>

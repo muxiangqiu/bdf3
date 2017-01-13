@@ -83,6 +83,6 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void save(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		JpaUtil.persist(user);
+		JpaUtil.persistAndFlush(user);
 	}
 }

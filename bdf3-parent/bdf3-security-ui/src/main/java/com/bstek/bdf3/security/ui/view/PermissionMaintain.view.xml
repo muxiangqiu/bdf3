@@ -105,7 +105,12 @@ arg.newCurrent.getAsync(&quot;permissions&quot;, function(permissions) {
         <Property name="label">描述</Property>
       </PropertyDef>
       <PropertyDef name="checked">
-        <ClientEvent name="onSet" signature="self,arg,dsRole,updateActionUP">var role = dsRole.getData(&quot;#&quot;);
+        <ClientEvent name="onSet" signature="self,arg,dsRole,dsUrl,updateActionUP">if (dsUrl.cacheMap &amp;&amp; arg.entity !== dsUrl.cacheMap[arg.entity.get(&quot;id&quot;)]) {
+	dsUrl.cacheMap[arg.entity.get(&quot;id&quot;)].set(&quot;checked&quot;, arg.value);
+	return;
+}
+
+var role = dsRole.getData(&quot;#&quot;);
 if (!role) return;
 var permissions = role.get(&quot;permissions&quot;);
 if (view.autoCheckChildren) {
@@ -121,8 +126,7 @@ updateActionUP.execute();
 function doPermission(url, checked) {
 	if (url.get(&quot;checked&quot;) == checked) return;
 	if (checked) {
-		var p = permissions.insert();
-		p.set({
+		permissions.insert({
 			resourceId: url.get(&quot;id&quot;),
 			roleId: role.get(&quot;id&quot;),
 			attribute: &quot;ROLE_&quot; + role.get(&quot;id&quot;),
@@ -258,8 +262,16 @@ if (role) {
         <Property name="dataType">[SELF]</Property>
       </PropertyDef>
       <PropertyDef name="checked">
-        <ClientEvent name="onSet" signature="self,arg,dsUrl,dsRole,updateActionCP">var url = dsUrl.getData(&quot;!currentNode&quot;);
+        <ClientEvent name="onSet" signature="self,arg,dsUrl,dtUrl,dtVC,dsRole,updateActionCP">var url = dtUrl.get(&quot;currentEntity&quot;);
 var permissions = url.get(&quot;permissions&quot;);
+if (dtVC.cacheMap &amp;&amp; dtVC.cacheMap[arg.entity.get(&quot;id&quot;)] != arg.entity) {
+	url.reset(&quot;viewComponents&quot;);
+	dtVC.cacheMap[arg.entity.get(&quot;id&quot;)].set(&quot;checked&quot;, arg.value);
+	return;
+}
+if (dsUrl.cacheMap) {
+	permissions = dsUrl.cacheMap[url.get(&quot;id&quot;)].get(&quot;permissions&quot;);
+}
 var role = dsRole.getData(&quot;#&quot;);
 
 doPermission(arg.entity, arg.value);
@@ -268,12 +280,10 @@ var pd = view.get(&quot;@ViewComponent&quot;).getPropertyDef(&quot;componentType
 pd.disableListeners()
 arg.entity.set(&quot;componentType&quot;, &quot;ReadWrite&quot;);
 pd.enableListeners()
-
 function doPermission(c, checked) {
 	if (c.get(&quot;checked&quot;) == checked) return;
 	if (checked) {
-		var p = permissions.insert();
-		p.set({
+		var p = permissions.insert({
 			attribute: &quot;ROLE_&quot; + role.get(&quot;id&quot;) + &quot;_ReadWrite&quot;,
 			roleId: role.get(&quot;id&quot;),
 			resourceType: &quot;COMPONENT&quot;,
@@ -286,13 +296,16 @@ function doPermission(c, checked) {
 				componentType: &quot;ReadWrite&quot;
 			}
 		});
+		p.setCurrent();
 		updateActionCP.execute();
 		
 	} else {
 		permissions.each(function(p) {
 			if (p.get(&quot;component.componentId&quot;) == c.get(&quot;id&quot;)) {
 				p.setCurrent();
-				updateActionCP.execute();
+				updateActionCP.execute(function() {
+					p.remove();
+				});
 				return false;
 			}
 		});
@@ -303,7 +316,11 @@ function doPermission(c, checked) {
         <Property name="dataType">boolean</Property>
       </PropertyDef>
       <PropertyDef name="componentType">
-        <ClientEvent name="onSet" signature="self,arg,dsUrl,updateActionCP">var permissions = dsUrl.getData(&quot;!currentNode.permissions&quot;);
+        <ClientEvent name="onSet" signature="self,arg,dsUrl,dtUrl,updateActionCP">var url = dtUrl.get(&quot;currentEntity&quot;);
+var permissions = url.get(&quot;permissions&quot;);
+if (dsUrl.cacheMap) {
+	permissions = dsUrl.cacheMap[url.get(&quot;id&quot;)].get(&quot;permissions&quot;);
+}
 permissions.each(function(p){
 	if (p.get(&quot;component.componentId&quot;) == arg.entity.get(&quot;id&quot;)) {
 		p.set(&quot;attribute&quot;, &quot;ROLE_&quot; + p.get(&quot;roleId&quot;) + &quot;_&quot; + arg.value);
@@ -398,14 +415,19 @@ if (attribute) {
                       <ToolBar>
                         <Fill/>
                         <TextEditor>
-                          <ClientEvent name="onKeyDown" signature="self,arg,dsUrl,dsQueryC,dtVC">if (arg.keyCode === 13) {
+                          <ClientEvent name="onKeyDown" signature="self,arg,dsUrl,dsQueryC,dtUrl,dtVC">if (arg.keyCode === 13) {
 	return;
 }
 window.clearTimeout(self.CQueryTimeout);
 self.CQueryTimeout = window.setTimeout(function() {
 	var key = self.get(&quot;value&quot;);
-	var cs = dsUrl.getData(&quot;!currentNode.viewComponents&quot;);
+	var url = dtUrl.get(&quot;currentEntity&quot;);
+	var cs = url.get(&quot;viewComponents&quot;);
+	if (dsUrl.cacheMap) {
+		cs = dsUrl.cacheMap[url.get(&quot;id&quot;)].get(&quot;viewComponents&quot;);
+	}
 	var result = [];
+	dtVC.cacheMap = {};
 	var parse = function(cs, result) {
 		if (cs.entityCount &lt;= 0) {
 			return;
@@ -417,14 +439,18 @@ self.CQueryTimeout = window.setTimeout(function() {
 			if (id.indexOf(key) != -1 || name.indexOf(key) != -1 || desc.indexOf(key) != -1) {
 				result.push(c.toJSON());
 			}
+			if (id) {
+				dtVC.cacheMap[id] = c;
+			}
 			parse(c.get(&quot;children&quot;), result);
 		});
 	};
 	if (!key) {
 		dtVC.set({
-			dataSet: dsUrl,
+			dataSet: dtUrl.get(&quot;dataSet&quot;),
 			dataPath: &quot;!currentNode.viewComponents&quot;
 		});
+		dtVC.cacheMap = null;
 		return;
 	}
 	parse(cs, result);
@@ -461,8 +487,12 @@ if(id){
 }else{
 	$(arg.dom).text(name);
 }</ClientEvent>
-                        <ClientEvent name="onDataNodeCreate" signature="self,arg,dsUrl">var data = arg.data;
-var permissions = dsUrl.getData(&quot;!currentNode.permissions&quot;);
+                        <ClientEvent name="onDataNodeCreate" signature="self,arg,dsUrl,dtUrl">var data = arg.data;
+var url = dtUrl.get(&quot;currentEntity&quot;);
+var permissions = url.get(&quot;permissions&quot;);
+if (dsUrl.cacheMap) {
+	permissions = dsUrl.cacheMap[url.get(&quot;id&quot;)].get(&quot;permissions&quot;);
+}
 var enabled = data.get(&quot;enabled&quot;);
 if (enabled &amp;&amp; permissions) {
 	arg.node.set(&quot;checkable&quot;, true);
@@ -555,7 +585,7 @@ if (enabled &amp;&amp; permissions) {
                         </ToolBarButton>
                         <Fill/>
                         <TextEditor>
-                          <ClientEvent name="onKeyDown" signature="self,arg,dsUrl,dsQuery,dtUrl">if (arg.keyCode === 13) {
+                          <ClientEvent name="onKeyDown" signature="self,arg,dsUrl,dsQuery,dtUrl,dtVC">if (arg.keyCode === 13) {
 	return;
 }
 window.clearTimeout(self.urlQueryTimeout);
@@ -563,6 +593,7 @@ self.urlQueryTimeout = window.setTimeout(function() {
 	var key = self.get(&quot;value&quot;);
 	var urls = dsUrl.getData();
 	var result = [];
+	dsUrl.cacheMap = {};
 	var parseUrls = function(urls, result) {
 		if (urls.entityCount &lt;= 0) {
 			return;
@@ -573,16 +604,27 @@ self.urlQueryTimeout = window.setTimeout(function() {
 			if (name.indexOf(key) != -1 || description.indexOf(key) != -1) {
 				result.push(url.toJSON());
 			}
+			dsUrl.cacheMap[url.get(&quot;id&quot;)] = url;
 			parseUrls(url.get(&quot;children&quot;), result);
 		});
 	};
 	if (!key) {
 		dtUrl.set(&quot;dataSet&quot;, dsUrl);
+		dtVC.set({
+			dataSet: dsUrl,
+			dataPath: &quot;!currentNode.viewComponents&quot;
+		});
+		dsUrl.cacheMap = null;
 		return;
 	}
 	parseUrls(urls, result);
 	dsQuery.setData(result);
 	dtUrl.set(&quot;dataSet&quot;, dsQuery);
+	dtVC.set(&quot;dataSet&quot;, dsQuery);
+	dtVC.set({
+		dataSet: dsQuery,
+		dataPath: &quot;!currentNode.viewComponents&quot;
+	});
 }, 150);</ClientEvent>
                           <Property name="trigger">triggerClear</Property>
                           <Property name="blankText">搜索</Property>
@@ -615,6 +657,12 @@ if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot
 }
 $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
 </ClientEvent>
+                        <ClientEvent name="onCurrentChange" signature="self,arg,dtVC">if (self.get(&quot;dataSet&quot;) != dtVC.get(&quot;dataSet&quot;)) {
+	dtVC.set({
+		dataSet: self.get(&quot;dataSet&quot;),
+		dataPath: &quot;!currentNode.viewComponents&quot;
+	});
+}</ClientEvent>
                         <Property name="dataSet">dsUrl</Property>
                         <Property name="currentNodeDataPath">currentNode</Property>
                         <Property name="draggable">false</Property>
@@ -680,7 +728,7 @@ window.clearTimeout(self.urlQueryTimeout);
 self.urlQueryTimeout = window.setTimeout(function() {
 	var key = self.get(&quot;value&quot;);
 	if (!key) {
-		dgUser.filter();
+		dgRole.filter();
 	} else {
 		dgRole.filter([{
 			junction: &quot;or&quot;,
@@ -779,10 +827,17 @@ self.urlQueryTimeout = window.setTimeout(function() {
       </UpdateItem>
     </UpdateAction>
     <UpdateAction id="updateActionCP">
+      <ClientEvent name="onGetUpdateData" signature="self,arg,dtUrl,dsUrl">var url = dtUrl.get(&quot;currentEntity&quot;);
+if (dsUrl.cacheMap &amp;&amp; url !== dsUrl.cacheMap[url.get(&quot;id&quot;)]) {
+	url = dsUrl.cacheMap[url.get(&quot;id&quot;)];
+}
+arg.data = url.get(&quot;permissions&quot;).current;
+</ClientEvent>
       <Property name="dataResolver">permissionController#save</Property>
       <Property name="successMessage">组件权限保存成功。</Property>
       <Property name="executingMessage">正在保存……</Property>
       <Property name="async">false</Property>
+      <Property name="alwaysExecute">false</Property>
       <UpdateItem>
         <Property name="dataSet">dsUrl</Property>
         <Property name="dataPath">!currentNode.#permissions</Property>

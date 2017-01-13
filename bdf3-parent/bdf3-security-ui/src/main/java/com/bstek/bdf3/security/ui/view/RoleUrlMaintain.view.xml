@@ -177,6 +177,7 @@ function doPermission(url, checked) {
       <Property name="successMessage">保存成功。</Property>
       <UpdateItem>
         <Property name="dataSet">dsRole</Property>
+        <Property name="dataPath">#.permissions[#dirty]</Property>
       </UpdateItem>
     </UpdateAction>
     <Panel layout="padding:5;regionPadding:10" layoutConstraint="left">
@@ -212,7 +213,7 @@ window.clearTimeout(self.urlQueryTimeout);
 self.urlQueryTimeout = window.setTimeout(function() {
 	var key = self.get(&quot;value&quot;);
 	if (!key) {
-		dgUser.filter();
+		dgRole.filter();
 	} else {
 		dgRole.filter([{
 			junction: &quot;or&quot;,
@@ -466,7 +467,7 @@ $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
 </ClientEvent>
       <Property name="dataResolver">roleController#save</Property>
       <Property name="executingMessage">正在执行……</Property>
-      <Property name="successMessage">菜单分配修改成功。</Property>
+      <Property name="successMessage">角色保存成功。</Property>
       <UpdateItem>
         <Property name="dataSet">dsRole</Property>
       </UpdateItem>

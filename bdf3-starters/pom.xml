@@ -13,5 +13,6 @@
   	<module>bdf3-starter-cola</module>
   	<module>bdf3-starter-cola-jetty</module>
   	<module>bdf3-starter-saas-cola</module>
+  	<module>bdf3-starter-saas</module>
   </modules>
 </project>

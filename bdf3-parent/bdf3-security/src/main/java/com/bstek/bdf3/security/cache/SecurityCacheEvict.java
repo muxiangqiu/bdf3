@@ -24,11 +24,7 @@ import com.bstek.bdf3.security.Constants;
 				Constants.REQUEST_MAP_CACHE_KEY,
 				Constants.COMPONENT_MAP_CACHE_KEY,
 				Constants.COMPONENT_ATTRIBUTE_MAP_CACHE_KEY,
-		}, keyGenerator = Constants.KEY_GENERATOR_BEAN_NAME),
-		@CacheEvict(cacheNames = {
-				Constants.URL_TREE_BY_USRNAME_CACHE_KEY,
-				Constants.COMPONENT_ATTRIBUTE_BY_TARGET_CACHE_KEY
-		}, allEntries = true)
+		}, keyGenerator = Constants.KEY_GENERATOR_BEAN_NAME)
 })
 public @interface SecurityCacheEvict {
 

@@ -114,6 +114,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
+				<artifactId>bdf3-starter-saas</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-starter-cola</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
@@ -154,6 +159,28 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+	</build>
 	<distributionManagement>
 		<repository>
 			<id>releases</id>

@@ -5,7 +5,7 @@
     <artifactId>bdf3-starters</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>bdf3-starter</artifactId>
+  <artifactId>bdf3-starter-saas</artifactId>
   <dependencies>
   	<dependency>
   		<groupId>com.bstek.bdf3</groupId>
@@ -13,7 +13,7 @@
   	</dependency>
   	<dependency>
   		<groupId>com.bstek.bdf3</groupId>
-  		<artifactId>bdf3-security-ui</artifactId>
+  		<artifactId>bdf3-saas-ui</artifactId>
   	</dependency>
   	<dependency>
   		<groupId>com.bstek.bdf3</groupId>
