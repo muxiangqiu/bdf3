@@ -39,6 +39,9 @@
 	background-image: url(dorado/res/static/images/search.svg);
 }
 
+.main .banner .icon.refresh {
+	background-image: url(dorado/res/static/images/refresh.svg);
+}
 
 .personal-center .avatar {
 	background-image: url(dorado/res/static/images/avatar.svg);

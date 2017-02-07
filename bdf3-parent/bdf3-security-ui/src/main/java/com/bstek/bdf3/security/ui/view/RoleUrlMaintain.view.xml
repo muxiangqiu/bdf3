@@ -258,12 +258,6 @@ self.urlQueryTimeout = window.setTimeout(function() {
     </Panel>
     <CardBook id="cardBook">
       <Property name="ignored">false</Property>
-      <Property name="style">
-        <Property name="background-color">transparent</Property>
-        <Property name="-webkit-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-        <Property name="-moz-box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-        <Property name="box-shadow">0 1px 3px 0 rgba(0, 0, 0, 0.2)</Property>
-      </Property>
       <Panel layout="padding:5;regionPadding:10">
         <Property name="caption">菜单分配</Property>
         <Buttons/>

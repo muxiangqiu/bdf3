@@ -13,7 +13,13 @@ arg.entity.parent.each(function(u) {
 	i++;
 });
 </ClientEvent>
-      <ClientEvent name="onInsert">arg.entity.set(&quot;order&quot;, arg.entity.parent.entityCount);
+      <ClientEvent name="onInsert">var order = 0
+arg.entity.parent.each(function(item) {
+	if (item.get(&quot;order&quot;) > order) {
+		order = item.get(&quot;order&quot;);
+	}
+})
+arg.entity.set(&quot;order&quot;, order);
 </ClientEvent>
       <Property name="creationType">com.bstek.bdf3.security.domain.Url</Property>
       <PropertyDef name="id">

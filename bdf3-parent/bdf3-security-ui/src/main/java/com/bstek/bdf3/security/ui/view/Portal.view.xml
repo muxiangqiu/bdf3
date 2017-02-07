@@ -39,6 +39,11 @@
       <PropertyDef name="children">
         <Property name="dataType">[SELF]</Property>
       </PropertyDef>
+      <PropertyDef name="hasChild">
+        <ClientEvent name="onGet">arg.value = !arg.entity.get(&quot;children&quot;).isEmpty()
+</ClientEvent>
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
     </DataType>
     <DataType name="PasswordChange">
       <PropertyDef name="oldPassword">
@@ -76,7 +81,8 @@
     </DataType>
   </Model>
   <View>
-    <ClientEvent name="onReady" signature="self,arg,tabControl,cardBook,dsPart,dialogPart,historyContainer">$.cookie.json = true;
+    <ClientEvent name="onReady" signature="self,arg,portal,historyContainer,cardBook,dsPart,dialogPart">$.cookie.json = true;
+var pathMap = {};
 window.openTab = function (caption, icon, path) {
 	var url;
 	if (caption instanceof dorado.Entity) {
@@ -92,27 +98,19 @@ window.openTab = function (caption, icon, path) {
 		}
 		return;
 	} else {
-		var tab = tabControl.getTab(path);
+		var tab = pathMap[path];
 		if (!tab) {
-			tab = {
-				$type: &quot;IFrame&quot;,
-				name: path,
-				caption: caption,
-				path: path,
-				closeable: true
-			}
-			if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
-				tab.iconClass = icon;
-			}
-			else {
-				tab.icon = icon;
-			}
-			tab = tabControl.addTab(tab);
+			tab = new dorado.widget.IFrame({
+				path: path
+			});
+			cardBook.addControl(tab);
+			pathMap[path] = tab;
 		}
 		recordVisit(caption, icon, path);
-		tabControl.set(&quot;currentTab&quot;, tab);
-		cardBook.set(&quot;currentIndex&quot;, 1);
+		cardBook.set(&quot;currentControl&quot;, tab);
 	}
+	
+	
 };
 
 window.refreshTab = function (caption, icon, path) {
@@ -123,7 +121,7 @@ window.refreshTab = function (caption, icon, path) {
 		icon = url.get(&quot;icon&quot;);
 		path = url.get(&quot;path&quot;);
 	}
-	var tab = tabControl.getTab(path);
+	var tab = pathMap[path];
 	if (tab) {
 		tab.refresh();
 	}
@@ -187,7 +185,8 @@ var refreshVisit = function() {
 	historyContainer.set(&quot;children&quot;, children);
 };
 
-refreshVisit();</ClientEvent>
+refreshVisit();
+</ClientEvent>
     <ClientEvent name="onClick" signature="self,arg,personalCenter">personalCenter.hide();
 </ClientEvent>
     <Property name="packages">jquery-cookie,font-awesome,entypo,colors</Property>
@@ -222,7 +221,7 @@ setTimeout(function() {
 </ClientEvent>
       <Property name="dataType">[Url]</Property>
       <Property name="dataProvider">frameworkController#loadUrlForLoginUser</Property>
-      <Property name="cacheable">true</Property>
+      <Property name="cacheable">false</Property>
     </DataSet>
     <Container layoutConstraint="top">
       <Property name="height">64</Property>
@@ -243,14 +242,21 @@ arg.returnValue = false;</ClientEvent>
           <Property name="exClassName">icon personal-center</Property>
         </Control>
         <Control>
-          <ClientEvent name="onClick" signature="self,arg,cardBook,portal">if (cardBook.get(&quot;currentIndex&quot;) === 1) {
-	cardBook.set(&quot;currentIndex&quot;, 0);
-} else {
-	cardBook.set(&quot;currentIndex&quot;, 1);
-}
+          <ClientEvent name="onClick" signature="self,arg,cardBook,portal">cardBook.set(&quot;currentControl&quot;, portal);
 
 </ClientEvent>
           <Property name="exClassName">icon search</Property>
+        </Control>
+        <Control>
+          <ClientEvent name="onClick" signature="self,arg,cardBook,portal,dsUrl">var c = cardBook.get(&quot;currentControl&quot;);
+if (c instanceof dorado.widget.IFrame) {
+	c.reload();
+} else if (c == portal) {
+	dsUrl.flushAsync();
+}
+
+</ClientEvent>
+          <Property name="exClassName">icon refresh</Property>
         </Control>
         <FloatPanel id="personalCenter">
           <Property name="width">320</Property>
@@ -307,43 +313,46 @@ dialogPassword.show();
         </FloatPanel>
       </Container>
     </Container>
-    <CardBook id="cardBook">
-      <ClientEvent name="onCreate">var openUrlTree = $.cookie(&quot;openUrlTree&quot;);
-var hasWelcomePage = !!&quot;${configure['bdf3.welcomePath']}&quot;;
-if (openUrlTree != &quot;false&quot; || hasWelcomePage) {
-	self.set(&quot;currentIndex&quot;, 1);
-}
-
-</ClientEvent>
-      <Container id="portal" layout="padding:10">
-        <Control id="colorLine" layoutConstraint="top">
-          <Property name="width">0</Property>
-          <Property name="visible">false</Property>
-        </Control>
-        <Container layout="hbox align:center;pack:center" layoutConstraint="top">
-          <TextEditor>
-            <Property name="width">200</Property>
-            <Property name="style">
-              <Property name="height">30px</Property>
-              <Property name="line-height">30px</Property>
-              <Property name="font-size">1.1em</Property>
-              <Property name="-webkit-border-radius">30px</Property>
-              <Property name="-moz-border-radius">30px</Property>
-              <Property name="border-radius">30px</Property>
-              <Property name="padding-left">12px</Property>
-            </Property>
-            <Property name="trigger">ddUrl</Property>
-            <Property name="blankText">搜索</Property>
-          </TextEditor>
-        </Container>
-        <Container id="historyContainer" layout="hbox pack:center;align:center;padding:0;stretch:false;regionPadding:10" layoutConstraint="top">
-          <Property name="height">35</Property>
-          <Property name="contentOverflow">hidden</Property>
-          <Property name="exClassName">history-container</Property>
-          <Property name="hideMode">visibility</Property>
-        </Container>
-        <DataBlockView>
-          <ClientEvent name="onRenderBlock" signature="self,arg,colorLine">var icon = arg.data.get(&quot;icon&quot;) || &quot;&quot;;
+    <Panel id="workspace">
+      <Property name="border">none</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="showCaptionBar">false</Property>
+      <Buttons/>
+      <Children>
+        <CardBook id="cardBook">
+          <SubViewHolder>
+            <Property name="subView">${configure['bdf3.welcomePath']}</Property>
+            <Property name="ignored">${empty configure['bdf3.welcomePath']}</Property>
+          </SubViewHolder>
+          <Container id="portal" layout="padding:10">
+            <Control id="colorLine" layoutConstraint="top">
+              <Property name="width">0</Property>
+              <Property name="visible">false</Property>
+            </Control>
+            <Container layout="hbox align:center;pack:center" layoutConstraint="top">
+              <TextEditor>
+                <Property name="width">200</Property>
+                <Property name="style">
+                  <Property name="height">30px</Property>
+                  <Property name="line-height">30px</Property>
+                  <Property name="font-size">1.1em</Property>
+                  <Property name="-webkit-border-radius">30px</Property>
+                  <Property name="-moz-border-radius">30px</Property>
+                  <Property name="border-radius">30px</Property>
+                  <Property name="padding-left">12px</Property>
+                </Property>
+                <Property name="trigger">ddUrl</Property>
+                <Property name="blankText">搜索</Property>
+              </TextEditor>
+            </Container>
+            <Container id="historyContainer" layout="hbox pack:center;align:center;padding:0;stretch:false;regionPadding:10" layoutConstraint="top">
+              <Property name="height">35</Property>
+              <Property name="contentOverflow">hidden</Property>
+              <Property name="exClassName">history-container</Property>
+              <Property name="hideMode">visibility</Property>
+            </Container>
+            <DataBlockView>
+              <ClientEvent name="onRenderBlock" signature="self,arg,colorLine">var icon = arg.data.get(&quot;icon&quot;) || &quot;&quot;;
 arg.data._dom = arg.dom;
 var blockBg = &quot;#000&quot;;
 if (icon.indexOf(&quot;.png&quot;) != -1 || icon.indexOf(&quot;.svg&quot;) != -1) {
@@ -378,233 +387,21 @@ $(arg.dom).xCreate({
 
 
 </ClientEvent>
-          <ClientEvent name="onBlockClick" signature="self,arg,dsPart,dialogPart">window.openTab(arg.data);
+              <ClientEvent name="onBlockClick" signature="self,arg,dsPart,dialogPart">window.openTab(arg.data);
 </ClientEvent>
-          <Property name="dataSet">dsUrl</Property>
-          <Property name="fillLine">true</Property>
-          <Property name="blockLayout">vertical</Property>
-          <Property name="lineSize">8</Property>
-          <Property name="blockHeight">110</Property>
-          <Property name="vertSpacing">12</Property>
-          <Property name="horiSpacing">12</Property>
-        </DataBlockView>
-      </Container>
-      <Container>
-        <Control layoutConstraint="top">
-          <Property name="height">10</Property>
-          <Property name="exClassName">d-tabbar</Property>
-        </Control>
-        <SplitPanel>
-          <ClientEvent name="onCollapsedChange">$.cookie(&quot;openUrlTree&quot;, !self.get(&quot;collapsed&quot;), { expires: 1000 });</ClientEvent>
-          <ClientEvent name="onCreate">self.set(&quot;collapsed&quot;, $.cookie(&quot;openUrlTree&quot;) == &quot;false&quot;);
-</ClientEvent>
-          <Property name="position">200</Property>
-          <Property name="exClassName">workarea</Property>
-          <Property name="collapsed">false</Property>
-          <MainControl>
-            <Panel id="workspace">
-              <Property name="border">none</Property>
-              <Property name="maximizeable">true</Property>
-              <Buttons/>
-              <Children>
-                <TabControl id="tabControl">
-                  <ClientEvent name="onTabContextMenu" signature="self,arg,menu">menu.show({
-	event: arg.event
-});
-</ClientEvent>
-                  <ClientEvent name="onCreateDom" signature="self,arg,workspace">$(arg.dom).delegate(&quot;.tab&quot;, &quot;dblclick&quot;, function() {
-	if (workspace.get(&quot;maximized&quot;)) {
-		workspace.maximizeRestore();
-	} else {
-		workspace.maximize();
-	}
-});
-</ClientEvent>
-                  <Property name="showMenuButton">true</Property>
-                  <Property name="tabPlacement">top</Property>
-                  <ControlTab>
-                    <Property name="iconClass">${configure['bdf3.welcomeIcon']}</Property>
-                    <Property name="caption">${configure['bdf3.welcomeTitle']}</Property>
-                    <Property name="ignored">${empty configure['bdf3.welcomePath']}</Property>
-                    <SubViewHolder>
-                      <Property name="subView">${configure['bdf3.welcomePath']}</Property>
-                    </SubViewHolder>
-                  </ControlTab>
-                </TabControl>
-              </Children>
-              <Tools/>
-            </Panel>
-          </MainControl>
-          <SideControl>
-            <Container>
-              <Panel layout="padding:5;regionPadding:10">
-                <ClientEvent name="onCreateDom">$(arg.dom)
-	.find(&quot;.d-caption-bar&quot;)
-	.css(&quot;height&quot;, &quot;30px&quot;)
-	.find(&quot;.caption&quot;)
-	.css({
-		&quot;height&quot;: &quot;30px&quot;,
-		&quot;line-height&quot;: &quot;30px&quot;
-	});
-</ClientEvent>
-                <Property name="height">100%</Property>
-                <Buttons/>
-                <Children>
-                  <TextEditor layoutConstraint="top">
-                    <ClientEvent name="onKeyDown" signature="self,arg,dsUrl,dsQuery,dtUrl">if (arg.keyCode === 13) {
-	return;
-}
-window.clearTimeout(self.urlQueryTimeout);
-self.urlQueryTimeout = window.setTimeout(function() {
-	var key = self.get(&quot;value&quot;);
-	var urls = dsUrl.getData();
-	var result = [];
-	var parseUrls = function(urls, result) {
-		if (urls.entityCount &lt;= 0) {
-			return;
-		}
-		urls.each(function(url) {
-			var name = url.get(&quot;name&quot;) || &quot;&quot;;
-			var description = url.get(&quot;description&quot;) || &quot;&quot;;
-			if (name.indexOf(key) != -1 || description.indexOf(key) != -1) {
-				result.push(url.toJSON());
-			}
-			parseUrls(url.get(&quot;children&quot;), result);
-		});
-	};
-	if (!key) {
-		dtUrl.set(&quot;dataSet&quot;, dsUrl);
-		return;
-	}
-	parseUrls(urls, result);
-	dsQuery.setData(result);
-	dtUrl.set(&quot;dataSet&quot;, dsQuery);
-}, 150);</ClientEvent>
-                    <Property name="trigger">triggerQuery</Property>
-                    <Property name="blankText">搜索</Property>
-                  </TextEditor>
-                  <DataTree id="dtUrl">
-                    <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
-var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
-if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
-	if (icon != arg.node.get(&quot;iconClass&quot;)) {
-		arg.node.set(&quot;iconClass&quot;, icon);
-	}
-} else {
-	if (icon != arg.node.get(&quot;icon&quot;)) {
-		arg.node.set(&quot;icon&quot;, icon);
-	}
-}
-$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
-</ClientEvent>
-                    <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
-var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
-if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
-	if (icon != arg.node.get(&quot;iconClass&quot;)) {
-		arg.node.set(&quot;iconClass&quot;, icon);
-	}
-} else {
-	if (icon != arg.node.get(&quot;icon&quot;)) {
-		arg.node.set(&quot;icon&quot;, icon);
-	}
-}
-$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
-</ClientEvent>
-                    <ClientEvent name="onDataRowClick">var url = self.get(&quot;currentEntity&quot;);
-window.openTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
-</ClientEvent>
-                    <ClientEvent name="onDataRowDoubleClick">var url = self.get(&quot;currentEntity&quot;);
-window.refreshTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
-</ClientEvent>
-                    <Property name="dataSet">dsUrl</Property>
-                    <Property name="currentNodeDataPath">currentNode</Property>
-                    <Property name="draggable">false</Property>
-                    <Property name="showLines">true</Property>
-                    <BindingConfigs>
-                      <BindingConfig>
-                        <Property name="childrenProperty">children</Property>
-                        <Property name="labelProperty">name</Property>
-                        <Property name="recursive">true</Property>
-                        <Property name="tipProperty">description</Property>
-                        <Property name="name">name</Property>
-                      </BindingConfig>
-                    </BindingConfigs>
-                  </DataTree>
-                </Children>
-                <Tools/>
-              </Panel>
-            </Container>
-          </SideControl>
-        </SplitPanel>
-        <Trigger id="triggerQuery">
-          <ClientEvent name="onExecute">console.log(1)
-</ClientEvent>
-          <Property name="iconClass">d-trigger-icon-search</Property>
-        </Trigger>
-        <Menu id="menu">
-          <Property name="iconPosition">left</Property>
-          <MenuItem>
-            <ClientEvent name="onClick" signature="self,arg,tabControl">tabControl.closeOtherTabs(tabControl.get(&quot;currentTab&quot;));
-</ClientEvent>
-            <Property name="caption">关闭其他标签页</Property>
-            <Property name="iconClass">fa fa-times-circle red-text</Property>
-          </MenuItem>
-          <MenuItem>
-            <ClientEvent name="onClick" signature="self,arg,tabControl">tabControl.closeAllTabs();
-</ClientEvent>
-            <Property name="caption">关闭所有标签页</Property>
-            <Property name="iconClass">fa fa-times-circle red-text</Property>
-          </MenuItem>
-          <Separator/>
-          <MenuItem>
-            <Property name="caption">刷新（Ctrl + R）</Property>
-            <Property name="iconClass">fa fa-refresh blue-text</Property>
-            <Property name="action">actionRefreshTab</Property>
-          </MenuItem>
-          <MenuItem>
-            <Property name="caption">最大最小化（Ctrl + X）</Property>
-            <Property name="iconClass">fa fa-arrows-alt blue-text</Property>
-            <Property name="action">actionMax</Property>
-          </MenuItem>
-        </Menu>
-      </Container>
-    </CardBook>
-    <Action id="actionRefreshTab">
-      <ClientEvent name="onSuccess" signature="self,arg,tabControl">var tab = tabControl.get(&quot;currentTab&quot;);
-if (tab) {
-	if (tab instanceof dorado.widget.tab.IFrameTab) {
-		tab.get(&quot;control&quot;).reload();
-	} else {
-		tab.refresh();
-	}
-}
-
-</ClientEvent>
-      <Property name="hotkey">ctrl+r</Property>
-    </Action>
-    <Action id="actionMax">
-      <ClientEvent name="onSuccess" signature="self,arg,workspace">if (workspace.get(&quot;maximized&quot;)) {
-		workspace.maximizeRestore();
-	} else {
-		workspace.maximize();
-	}
-</ClientEvent>
-      <Property name="hotkey">ctrl+x</Property>
-    </Action>
-    <Action id="actionUrlSearch">
-      <ClientEvent name="onSuccess" signature="self,arg,urlSearch">urlSearch.show();
-</ClientEvent>
-      <ClientEvent name="beforeExecute" signature="self,arg,urlSearch">if (urlSearch.get(&quot;visible&quot;)) {
-	arg.processDefault = false;
-} else if (!self.count) {
-	self.count = 1;
-	setTimeout(function() {
-		self.count = 0;
-	}, 200);
-	arg.processDefault = false;
-}</ClientEvent>
-      <Property name="hotkey">space</Property>
-    </Action>
+              <Property name="dataSet">dsUrl</Property>
+              <Property name="fillLine">true</Property>
+              <Property name="blockLayout">vertical</Property>
+              <Property name="lineSize">8</Property>
+              <Property name="blockHeight">110</Property>
+              <Property name="vertSpacing">12</Property>
+              <Property name="horiSpacing">12</Property>
+            </DataBlockView>
+          </Container>
+        </CardBook>
+      </Children>
+      <Tools/>
+    </Panel>
     <FloatPanel id="dialogPassword">
       <Property name="caption">密码修改</Property>
       <Property name="center">true</Property>
@@ -704,7 +501,7 @@ self.done = false;
       <Buttons/>
       <Children>
         <Container/>
-        <DataTree>
+        <DataTree id="dtUrl">
           <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
 var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
 if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
