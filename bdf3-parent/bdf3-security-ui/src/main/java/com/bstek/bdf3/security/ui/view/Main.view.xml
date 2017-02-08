@@ -148,7 +148,7 @@ var recordVisit = function(caption, icon, path) {
 	if (vh.length > 10) {
 		vh.pop();
 	}
-	$.cookie('visitHistory', vh, { expires: 1000 });
+	$.cookie('visitHistory', vh, { expires: 1000, path: window.location.pathname});
 	refreshVisit();
 };
 
