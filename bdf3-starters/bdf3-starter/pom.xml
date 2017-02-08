@@ -25,6 +25,10 @@
   	</dependency>
   	<dependency>
   		<groupId>com.bstek.bdf3</groupId>
+  		<artifactId>bdf3-dictionary-ui</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.bstek.bdf3</groupId>
   		<artifactId>bdf3-autoconfigure</artifactId>
   	</dependency>
   </dependencies>

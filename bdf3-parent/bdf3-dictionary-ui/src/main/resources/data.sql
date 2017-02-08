@@ -1,0 +1,1 @@
+INSERT INTO BDF3_URL (DESCRIPTION_, NAME_, ICON_, PATH_, NAVIGABLE_, ORDER_, PARENT_ID_, ID_) VALUES(NULL,'字典管理','fa fa-book yellow-text','bdf3.dictionary.ui.view.DictionaryMaintain.d',1,8,NULL,'c7cb63b4-eb12-4d72-b943-aac6acbd4f6c')

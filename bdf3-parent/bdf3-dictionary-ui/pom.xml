@@ -10,6 +10,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.bstek.bdf3</groupId>
+			<artifactId>bdf3-dorado-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.bstek.bdf3</groupId>
 			<artifactId>bdf3-dictionary</artifactId>
 		</dependency>
 	</dependencies>

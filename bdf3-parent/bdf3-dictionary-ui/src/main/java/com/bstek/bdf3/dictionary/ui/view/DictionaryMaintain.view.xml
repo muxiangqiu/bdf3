@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Dictionary">
+      <Property name="creationType">com.bstek.bdf3.dictionary.domain.Dictionary</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="code">
+        <Property></Property>
+        <Property name="label">编码</Property>
+        <Property name="required">true</Property>
+        <Validator name="validator1" type="ajax">
+          <Property name="service">dictionaryController#isExists</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="defaultValue">
+        <Property></Property>
+        <Property name="label">默认值</Property>
+      </PropertyDef>
+      <PropertyDef name="parentId">
+        <Property></Property>
+      </PropertyDef>
+      <Reference name="children">
+        <Property name="dataType">[SELF]</Property>
+        <Property name="parameter">$${this.id}</Property>
+        <Property name="dataProvider">dictionaryController#loadChildren</Property>
+      </Reference>
+      <Reference name="dictionaryItems">
+        <Property name="dataType">[DictionaryItem]</Property>
+        <Property name="parameter">$${this.id}</Property>
+        <Property name="dataProvider">dictionaryController#loadDictionaryItems</Property>
+      </Reference>
+    </DataType>
+    <DataType name="DictionaryItem">
+      <Property name="creationType">com.bstek.bdf3.dictionary.domain.DictionaryItem</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="key">
+        <Property></Property>
+        <Property name="label">关键字（Key）</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="value">
+        <Property></Property>
+        <Property name="label">值（Value）</Property>
+        <Property name="readOnly">false</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="enabled">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可用</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="order">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">排序号</Property>
+      </PropertyDef>
+      <PropertyDef name="dictionaryId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="parentId">
+        <Property></Property>
+      </PropertyDef>
+      <Reference name="children">
+        <Property name="dataType">[SELF]</Property>
+        <Property name="parameter">$${this.id}</Property>
+        <Property name="dataProvider">dictionaryController#loadDictionaryItemChildren</Property>
+      </Reference>
+      <PropertyDef name="keyValue">
+        <ClientEvent name="onGetText">arg.text = arg.entity.get(&quot;value&quot;) + &quot;(&quot; + arg.entity.get(&quot;key&quot;) + &quot;)&quot;;
+</ClientEvent>
+        <Property name="submittable">false</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome,colors</Property>
+    <DataSet id="dsDictionary">
+      <Property name="dataProvider">dictionaryController#load</Property>
+      <Property name="dataType">[Dictionary]</Property>
+      <Property name="pageSize">30</Property>
+    </DataSet>
+    <SplitPanel>
+      <Property name="position">50%</Property>
+      <MainControl>
+        <Container>
+          <Panel layout="padding:5;regionPadding:10" layoutConstraint="padding:15">
+            <Property name="caption">字典项</Property>
+            <Buttons/>
+            <Children>
+              <DataTreeGrid id="dataTreeItem">
+                <ClientEvent name="onContextMenu" signature="self,arg,menuItem">menuItem.show({
+	event: arg.event
+});
+</ClientEvent>
+                <Property name="dataSet">dsDictionary</Property>
+                <Property name="dataPath">!currentNode.dictionaryItems</Property>
+                <Property name="currentNodeDataPath">currentNodeItem</Property>
+                <Property name="dataType">DictionaryItem</Property>
+                <Property name="treeColumn">key</Property>
+                <Property name="readOnly">true</Property>
+                <BindingConfigs>
+                  <BindingConfig>
+                    <Property name="childrenProperty">children</Property>
+                    <Property name="recursive">true</Property>
+                    <Property name="labelProperty">key</Property>
+                    <Property name="iconClass">fa fa-bars yellow-text</Property>
+                  </BindingConfig>
+                </BindingConfigs>
+                <Columns>
+                  <RowNumColumn/>
+                  <DataColumn>
+                    <Property name="name">key</Property>
+                    <Property name="property">key</Property>
+                    <Editor/>
+                  </DataColumn>
+                  <DataColumn>
+                    <Property name="name">value</Property>
+                    <Property name="property">value</Property>
+                    <Editor/>
+                  </DataColumn>
+                  <DataColumn>
+                    <Property name="name">enabled</Property>
+                    <Property name="property">enabled</Property>
+                    <Editor/>
+                  </DataColumn>
+                </Columns>
+              </DataTreeGrid>
+            </Children>
+            <Tools/>
+          </Panel>
+        </Container>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <Panel layout="padding:5;regionPadding:10" layoutConstraint="padding:15">
+            <Property name="caption">字典</Property>
+            <Buttons/>
+            <Children>
+              <DataTreeGrid id="dataTree">
+                <ClientEvent name="onContextMenu" signature="self,arg,menu">menu.show({
+	event: arg.event
+});
+</ClientEvent>
+                <Property name="dataSet">dsDictionary</Property>
+                <Property name="currentNodeDataPath">currentNode</Property>
+                <Property name="treeColumn">code</Property>
+                <Property name="dataType">Dictionary</Property>
+                <Property name="readOnly">true</Property>
+                <BindingConfigs>
+                  <BindingConfig>
+                    <Property name="childrenProperty">children</Property>
+                    <Property name="recursive">true</Property>
+                    <Property name="labelProperty">code</Property>
+                    <Property name="iconClass">fa fa-file-text yellow-text</Property>
+                  </BindingConfig>
+                </BindingConfigs>
+                <Columns>
+                  <RowNumColumn/>
+                  <DataColumn>
+                    <Property name="name">code</Property>
+                    <Property name="property">code</Property>
+                    <Editor/>
+                  </DataColumn>
+                  <DataColumn>
+                    <Property name="name">name</Property>
+                    <Property name="property">name</Property>
+                    <Editor/>
+                  </DataColumn>
+                  <DataColumn>
+                    <Property name="name">defaultValue</Property>
+                    <Property name="property">defaultValue</Property>
+                    <Editor/>
+                  </DataColumn>
+                </Columns>
+              </DataTreeGrid>
+              <ToolBar layoutConstraint="bottom">
+                <DataPilot>
+                  <Property name="itemCodes">pages,pageSize</Property>
+                  <Property name="dataSet">dsDictionary</Property>
+                </DataPilot>
+              </ToolBar>
+            </Children>
+            <Tools/>
+          </Panel>
+        </Container>
+      </SideControl>
+    </SplitPanel>
+    <UpdateAction id="updateAction">
+      <ClientEvent name="onSuccess" signature="self,arg,dialogDictionary,dialogDictionaryItem">dialogDictionary.hide();
+dialogDictionaryItem.hide();
+</ClientEvent>
+      <Property name="dataResolver">dictionaryController#save</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsDictionary</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <Menu id="menu">
+      <ClientEvent name="onShow" signature="self,arg,dsDictionary">var isEmpty = dsDictionary.getData().isEmpty();
+if (isEmpty) {
+	view.get(&quot;^notEmpty&quot;).set(&quot;disabled&quot;, true);
+} else {
+	view.get(&quot;^notEmpty&quot;).set(&quot;disabled&quot;, false);
+}
+</ClientEvent>
+      <MenuItem>
+        <ClientEvent name="onClick" signature="self,arg,dsDictionary,dataTree,dialogDictionary">var dictionary = dsDictionary.insert();
+dataTree.set(&quot;currentEntity&quot;, dictionary);
+dialogDictionary.show();
+</ClientEvent>
+        <Property name="iconClass">fa fa-plus</Property>
+        <Property name="caption">添加顶级字典</Property>
+      </MenuItem>
+      <Separator/>
+      <MenuItem>
+        <ClientEvent name="onClick" signature="self,arg,dataTree,dialogDictionary">var currentNode = dataTree.get(&quot;currentNode&quot;);
+var dictionary = currentNode.get(&quot;data&quot;);
+if (dictionary) {
+	currentNode.expand();
+	var child = dictionary.createChild(&quot;children&quot;, {parentId : dictionary.get(&quot;id&quot;)});
+	dataTree.set(&quot;currentEntity&quot;, child);
+	dialogDictionary.show();
+}
+
+</ClientEvent>
+        <Property name="iconClass">fa fa-plus</Property>
+        <Property name="caption">添加子级字典</Property>
+        <Property name="tags">notEmpty</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick" signature="self,arg,dialogDictionary">dialogDictionary.show();
+
+</ClientEvent>
+        <Property name="caption">修改字典</Property>
+        <Property name="iconClass">fa fa-pencil</Property>
+        <Property name="tags">notEmpty</Property>
+      </MenuItem>
+      <Separator/>
+      <MenuItem>
+        <ClientEvent name="onClick" signature="self,arg,dataTree,updateAction">var dictionary = dataTree.get(&quot;currentEntity&quot;);
+if (dictionary) {
+	var hasChild = !dictionary.get(&quot;children&quot;).isEmpty();
+	var hasItem = !dictionary.get(&quot;dictionaryItems&quot;).isEmpty();
+	if (hasItem &amp;&amp; hasChild) {
+		dorado.MessageBox.alert(&quot;请先删除当前字典下的子级字典和字典项。&quot;);
+	} else if (hasItem) {
+		dorado.MessageBox.alert(&quot;请先删除当前字典下的字典项。&quot;);
+	} else if (hasChild) {
+		dorado.MessageBox.alert(&quot;请先删除当前字典下的子级字典。&quot;);
+	} else {
+		dorado.MessageBox.confirm(&quot;确定要删除当前字典吗？&quot;, function () {
+			dictionary.remove();
+			updateAction.execute();
+		});
+	}
+}
+</ClientEvent>
+        <Property name="caption">删除字典</Property>
+        <Property name="iconClass">fa fa-minus</Property>
+        <Property name="tags">notEmpty</Property>
+      </MenuItem>
+    </Menu>
+    <Menu id="menuItem">
+      <ClientEvent name="onShow" signature="self,arg,dsDictionary">var isEmpty = dsDictionary.getData().isEmpty();
+if (isEmpty) {
+	view.get(&quot;^notEmpty&quot;).set(&quot;disabled&quot;, true);
+} else {
+	view.get(&quot;^notEmpty&quot;).set(&quot;disabled&quot;, false);
+}
+isEmpty = isEmpty || dsDictionary.getData(&quot;!currentNode.dictionaryItems&quot;).isEmpty();
+if (isEmpty) {
+	view.get(&quot;^notEmptyB&quot;).set(&quot;disabled&quot;, true);
+} else {
+	view.get(&quot;^notEmptyB&quot;).set(&quot;disabled&quot;, false);
+}
+
+
+</ClientEvent>
+      <MenuItem>
+        <ClientEvent name="onClick" signature="self,arg,dsDictionary,dataTreeItem,dialogDictionaryItem">var dictionary = dsDictionary.getData(&quot;!currentNode&quot;);
+var item = dictionary.get(&quot;dictionaryItems&quot;).insert({dictionaryId: dictionary.get(&quot;id&quot;)});
+dataTreeItem.set(&quot;currentEntity&quot;, item);
+dialogDictionaryItem.show();
+</ClientEvent>
+        <Property name="iconClass">fa fa-plus</Property>
+        <Property name="caption">添加顶级字典项</Property>
+        <Property name="tags">notEmpty</Property>
+      </MenuItem>
+      <Separator/>
+      <MenuItem>
+        <ClientEvent name="onClick" signature="self,arg,dataTreeItem,dialogDictionaryItem">var currentNode = dataTreeItem.get(&quot;currentNode&quot;);
+var item = currentNode.get(&quot;data&quot;);
+if (item) {
+	currentNode.expand();
+	var child = item.createChild(&quot;children&quot;, {
+		parentId : item.get(&quot;id&quot;),
+		dictionaryId: item.get(&quot;dictionaryId&quot;)
+	});
+	dataTreeItem.set(&quot;currentEntity&quot;, child);
+	dialogDictionaryItem.show();
+}
+
+</ClientEvent>
+        <Property name="iconClass">fa fa-plus</Property>
+        <Property name="caption">添加子级字典项</Property>
+        <Property name="tags">notEmpty,notEmptyB</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick" signature="self,arg,dialogDictionaryItem">dialogDictionaryItem.show();
+
+</ClientEvent>
+        <Property name="caption">修改字典项</Property>
+        <Property name="iconClass">fa fa-pencil</Property>
+        <Property name="tags">notEmpty,notEmptyB</Property>
+      </MenuItem>
+      <Separator/>
+      <MenuItem>
+        <ClientEvent name="onClick" signature="self,arg,dataTreeItem,updateAction">var item = dataTreeItem.get(&quot;currentEntity&quot;);
+if (item) {
+	var hasChild = !item.get(&quot;children&quot;).isEmpty();
+	if (hasChild) {
+		dorado.MessageBox.alert(&quot;请先删除当前字典项下的子级字典项。&quot;);
+	} else {
+		dorado.MessageBox.confirm(&quot;确定要删除当前字典项吗？&quot;, function () {
+			item.remove();
+			updateAction.execute();
+		});
+	}
+}
+</ClientEvent>
+        <Property name="caption">删除字典项</Property>
+        <Property name="iconClass">fa fa-minus</Property>
+        <Property name="tags">notEmpty,notEmptyB</Property>
+      </MenuItem>
+    </Menu>
+    <Dialog id="dialogDictionary">
+      <ClientEvent name="onHide" signature="self,arg,dsDictionary">var dictionary = dsDictionary.getData(&quot;!currentNode&quot;);
+if (dictionary) {
+	dictionary.cancel();
+}
+</ClientEvent>
+      <Property name="width">400</Property>
+      <Property name="height">280</Property>
+      <Property name="caption">字典维护</Property>
+      <Buttons>
+        <Button>
+          <Property name="iconClass">fa fa-floppy-o</Property>
+          <Property name="caption">保存</Property>
+          <Property name="action">updateAction</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide();
+</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-times</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsDictionary</Property>
+          <Property name="dataPath">!currentNode</Property>
+          <Property name="cols">*</Property>
+          <AutoFormElement>
+            <Property name="name">code</Property>
+            <Property name="property">code</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">defaultValue</Property>
+            <Property name="property">defaultValue</Property>
+            <Property name="trigger">ddItem</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogDictionaryItem">
+      <ClientEvent name="onHide" signature="self,arg,dsDictionary">var item = dsDictionary.getData(&quot;!currentNodeItem&quot;);
+if (item) {
+	item.cancel();
+}
+</ClientEvent>
+      <Property name="width">420</Property>
+      <Property name="height">300</Property>
+      <Property name="caption">字典项维护</Property>
+      <Buttons>
+        <Button>
+          <Property name="iconClass">fa fa-floppy-o</Property>
+          <Property name="caption">保存</Property>
+          <Property name="action">updateAction</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide();
+</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-times</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsDictionary</Property>
+          <Property name="dataPath">!currentNodeItem</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelWidth">100</Property>
+          <AutoFormElement>
+            <Property name="name">key</Property>
+            <Property name="property">key</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">value</Property>
+            <Property name="property">value</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">enabled</Property>
+            <Property name="property">enabled</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">order</Property>
+            <Property name="property">order</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <DataSetDropDown id="ddItem">
+      <Property name="dataSet">dsDictionary</Property>
+      <Property name="dataPath">!currentNode.dictionaryItems</Property>
+      <Property name="property">key</Property>
+      <Property name="displayProperty">keyValue</Property>
+    </DataSetDropDown>
+  </View>
+</ViewConfig>
