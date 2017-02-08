@@ -195,7 +195,7 @@ self.refreshIconRefresh = function() {
 			iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh-black&quot;);
 		} else if (now - c.refreshTime > 7200000) { // 大于2小时
 			iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh-red&quot;);
-		} else if (now - c.refreshTime > 1800) { // 大于30分钟
+		} else if (now - c.refreshTime > 1800000) { // 大于30分钟
 			iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh-yellow&quot;);
 		} else {
 			iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh&quot;);
