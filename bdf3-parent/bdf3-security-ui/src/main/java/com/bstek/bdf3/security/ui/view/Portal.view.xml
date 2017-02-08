@@ -187,9 +187,7 @@ var refreshVisit = function() {
 	historyContainer.set(&quot;children&quot;, children);
 };
 
-refreshVisit();
-
-setInterval(function() {
+self.refreshIconRefresh = function() {
 	var c = cardBook.get(&quot;currentControl&quot;);
 	if (c.refreshTime) {
 		var now = new Date();
@@ -197,7 +195,7 @@ setInterval(function() {
 			iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh-black&quot;);
 		} else if (now - c.refreshTime > 7200000) { // 大于2小时
 			iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh-red&quot;);
-		} else if (now - c.refreshTime > 1800000) { // 大于30分钟
+		} else if (now - c.refreshTime > 1800) { // 大于30分钟
 			iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh-yellow&quot;);
 		} else {
 			iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh&quot;);
@@ -205,7 +203,11 @@ setInterval(function() {
 	} else {
 		iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh&quot;);
 	}
-}, 2000);
+};
+
+refreshVisit();
+
+setInterval(self.refreshIconRefresh, 5000);
 
 </ClientEvent>
     <ClientEvent name="onClick" signature="self,arg,personalCenter">personalCenter.hide();
@@ -343,6 +345,10 @@ dialogPassword.show();
       <Buttons/>
       <Children>
         <CardBook id="cardBook">
+          <ClientEvent name="onCurrentChange">if (view.refreshIconRefresh) {
+	view.refreshIconRefresh();
+}
+</ClientEvent>
           <SubViewHolder>
             <Property name="subView">${configure['bdf3.welcomePath']}</Property>
             <Property name="ignored">${empty configure['bdf3.welcomePath']}</Property>
