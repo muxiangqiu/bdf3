@@ -81,7 +81,7 @@
     </DataType>
   </Model>
   <View>
-    <ClientEvent name="onReady" signature="self,arg,portal,historyContainer,cardBook,dsPart,dialogPart">$.cookie.json = true;
+    <ClientEvent name="onReady" signature="self,arg,iconRefresh,portal,historyContainer,cardBook,dsPart,dialogPart">$.cookie.json = true;
 var pathMap = {};
 window.openTab = function (caption, icon, path) {
 	var url;
@@ -105,6 +105,8 @@ window.openTab = function (caption, icon, path) {
 			});
 			cardBook.addControl(tab);
 			pathMap[path] = tab;
+			tab.refreshTime = new Date();
+
 		}
 		recordVisit(caption, icon, path);
 		cardBook.set(&quot;currentControl&quot;, tab);
@@ -186,6 +188,25 @@ var refreshVisit = function() {
 };
 
 refreshVisit();
+
+setInterval(function() {
+	var c = cardBook.get(&quot;currentControl&quot;);
+	if (c.refreshTime) {
+		var now = new Date();
+		if (now - c.refreshTime > 18000000) { // 大于5小时
+			iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh-black&quot;);
+		} else if (now - c.refreshTime > 7200000) { // 大于2小时
+			iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh-red&quot;);
+		} else if (now - c.refreshTime > 1800000) { // 大于30分钟
+			iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh-yellow&quot;);
+		} else {
+			iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh&quot;);
+		}
+	} else {
+		iconRefresh.set(&quot;exClassName&quot;, &quot;icon refresh&quot;);
+	}
+}, 2000);
+
 </ClientEvent>
     <ClientEvent name="onClick" signature="self,arg,personalCenter">personalCenter.hide();
 </ClientEvent>
@@ -247,16 +268,18 @@ arg.returnValue = false;</ClientEvent>
 </ClientEvent>
           <Property name="exClassName">icon search</Property>
         </Control>
-        <Control>
+        <Control id="iconRefresh">
           <ClientEvent name="onClick" signature="self,arg,cardBook,portal,dsUrl">var c = cardBook.get(&quot;currentControl&quot;);
 if (c instanceof dorado.widget.IFrame) {
 	c.reload();
+	c.refreshTime = new Date();
 } else if (c == portal) {
 	dsUrl.flushAsync();
 }
 
 </ClientEvent>
           <Property name="exClassName">icon refresh</Property>
+          <Property name="tip">黄色：过期30分钟 红色：过期2小时 黑色：过期5小时</Property>
         </Control>
         <FloatPanel id="personalCenter">
           <Property name="width">320</Property>

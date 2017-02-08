@@ -43,6 +43,18 @@
 	background-image: url(dorado/res/static/images/refresh.svg);
 }
 
+.main .banner .icon.refresh-yellow {
+	background-image: url(dorado/res/static/images/refresh-yellow.svg);
+}
+
+.main .banner .icon.refresh-red {
+	background-image: url(dorado/res/static/images/refresh-red.svg);
+}
+
+.main .banner .icon.refresh-black {
+	background-image: url(dorado/res/static/images/refresh-black.svg);
+}
+
 .personal-center .avatar {
 	background-image: url(dorado/res/static/images/avatar.svg);
 	background-repeat: no-repeat;
