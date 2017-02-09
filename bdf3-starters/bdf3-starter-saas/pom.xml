@@ -30,6 +30,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.bstek.bdf3</groupId>
+			<artifactId>bdf3-export</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.bstek.bdf3</groupId>
 			<artifactId>bdf3-autoconfigure</artifactId>
 		</dependency>
 	</dependencies>

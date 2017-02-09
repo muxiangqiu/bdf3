@@ -94,6 +94,16 @@
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
+				<artifactId>bdf3-swfviewer</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.bstek.bdf3</groupId>
+				<artifactId>bdf3-export</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-message</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
@@ -166,6 +176,31 @@
 				<groupId>commons-lang</groupId>
 				<artifactId>commons-lang</artifactId>
 				<version>2.6</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>3.9</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-excelant</artifactId>
+				<version>3.9</version>
+			</dependency>
+			<dependency>
+				<groupId>com.itextpdf</groupId>
+				<artifactId>itextpdf</artifactId>
+				<version>5.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.itextpdf</groupId>
+				<artifactId>itext-asian</artifactId>
+				<version>5.2.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

@@ -29,6 +29,8 @@
     <module>bdf3-log</module>
     <module>bdf3-dictionary</module>
     <module>bdf3-dictionary-ui</module>
+    <module>bdf3-swfviewer</module>
+    <module>bdf3-export</module>
   </modules>
   <properties>
   </properties>
