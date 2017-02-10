@@ -322,6 +322,21 @@ dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;backgroun
 })
 $(self.getDom()).addClass(&quot;fa fa-check&quot;);
 dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
+            <Property name="exClassName">green-background</Property>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+            <Property name="tags">color</Property>
+            <Property name="style">
+              <Property name="line-height">20px</Property>
+              <Property name="color">#fff</Property>
+            </Property>
+          </Control>
+          <Control>
+            <ClientEvent name="onClick" signature="self,arg,dialogIcon">view.get(&quot;^color&quot;).each(function(item) {
+	$(item.getDom()).removeClass(&quot;fa fa-check&quot;);
+})
+$(self.getDom()).addClass(&quot;fa fa-check&quot;);
+dialogIcon.iconColor = self.get(&quot;exClassName&quot;).replace(&quot;background&quot;, &quot;text&quot;);</ClientEvent>
             <Property name="exClassName">black-background</Property>
             <Property name="height">20</Property>
             <Property name="width">20</Property>
