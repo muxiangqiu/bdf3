@@ -6,4 +6,16 @@
 		<Pattern name="css" contentType="text/css" charset="UTF-8"
 			mergeRequests='${configure["view.mergeStyleSheet"]}' resourceSuffix=".css" />
 	</Patterns>
+
+	<Packages>
+		<Package name="colors" pattern="css" depends="colors-support">
+			static/css/colors
+		</Package>
+		<Package name="colors-support" pattern="css">
+			static/css/colors-support
+		</Package>
+		<Package name="jquery-cookie" pattern="js" depends="jquery">
+			static/js/jquery.cookie
+		</Package>
+	</Packages>
 </config>
