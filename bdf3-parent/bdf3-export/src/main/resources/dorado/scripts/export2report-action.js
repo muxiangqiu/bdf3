@@ -673,7 +673,7 @@
 			var parameter = this._generateReportParameter();
 			var jsonData = {
 				action : "remote-service",
-				service : "bdf2.Export2ReportController#generateReportFile",
+				service : "bdf3.Export2ReportController#generateReportFile",
 				parameter : dorado.JSON.evaluate(parameter),
 				context : (this._view ? this._view.get("context") : null)
 			};
@@ -687,7 +687,7 @@
 			var id = data.id;
 			var name = data.name;
 			if (id && name) {
-				var url = "dorado/bdf2/export/doDownloadFile?id=" + encodeURIComponent(id) + "&name=" + encodeURIComponent(name);
+				var url = "dorado/bdf3/export/doDownloadFile?id=" + encodeURIComponent(id) + "&name=" + encodeURIComponent(name);
 				window.location.href = url;
 			}
 		},

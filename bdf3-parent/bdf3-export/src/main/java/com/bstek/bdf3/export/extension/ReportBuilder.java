@@ -15,7 +15,7 @@ public interface ReportBuilder {
 	 * 
 	 * @param out
 	 *            输出流
-	 * @param report
+	 * @param reportGrid
 	 *            grid数据模型
 	 * @throws Exception
 	 */
