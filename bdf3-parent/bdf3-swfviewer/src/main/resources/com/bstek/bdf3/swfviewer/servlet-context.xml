@@ -8,7 +8,7 @@ http://www.bstek.com/dorado/schema http://www.bstek.com/dorado/schema/spring-dor
 	<bean parent="dorado.resolverRegister">
 		<property name="url" value="dorado/bdf2/swfviewer/swfFile.do" />
 		<property name="resolver">
-			<bean class="com.bstek.bdf2.swfviewer.controller.SwfFileResolver" />
+			<bean class="com.bstek.bdf3.swfviewer.controller.SwfFileResolver" />
 		</property>
 	</bean>
 
