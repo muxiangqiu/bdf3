@@ -30,7 +30,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.bstek.bdf3</groupId>
-			<artifactId>bdf3-export</artifactId>
+			<artifactId>bdf3-dbconsole</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.bstek.bdf3</groupId>

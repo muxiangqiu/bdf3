@@ -1,0 +1,1291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">DB.Console</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="dataTypeDb">
+      <Property name="creationType">com.bstek.bdf3.dbconsole.model.DbInfo</Property>
+      <Reference name="tableInfos">
+        <Property name="dataType">[dataTypeTable]</Property>
+        <Property name="dataProvider">dbConsoleController#loadTableInfos</Property>
+        <Property name="parameter">$${this.id}</Property>
+      </Reference>
+      <PropertyDef name="name">
+        <Property name="dataType"></Property>
+        <Property name="readOnly">false</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="url">
+        <Property name="dataType">String</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="username">
+        <Property name="dataType">String</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="password">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="dbType">
+        <Property name="dataType">String</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="driverClass">
+        <Property name="dataType">String</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="id">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="productName">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="productVersion">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="dataTypeTable">
+      <Property name="creationType">com.bstek.bdf3.dbconsole.model.TableInfo</Property>
+      <PropertyDef name="dbInfo">
+        <Property name="dataType"></Property>
+      </PropertyDef>
+      <Reference name="columnInfos">
+        <Property name="dataType">[dataTypeColumn]</Property>
+        <Property name="dataProvider">dbConsoleController#loadColumnInfos</Property>
+        <Property name="parameter">
+          <Entity>
+            <Property name="tableName">$${this.tableName}</Property>
+            <Property name="dbInfoId">$${this.dbInfoId}</Property>
+          </Entity>
+        </Property>
+      </Reference>
+      <PropertyDef name="tableName">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="dbInfoId">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="dataTypeColumn">
+      <ClientEvent name="onDataChange">&#xD;
+if (arg.property == &quot;isprimaryKey&quot;) {&#xD;
+    var form = this.id(&quot;autoFormColumn&quot;);&#xD;
+    var defaultValue = form.getElement(&quot;defaultValue&quot;);&#xD;
+    &#xD;
+    var tree = this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+    var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
+    &#xD;
+    &#xD;
+    if (arg.newValue) {&#xD;
+        if (currentNode) {&#xD;
+            var level = currentNode.get(&quot;level&quot;);&#xD;
+            if (level == 2) {&#xD;
+                var parentNode = currentNode.get(&quot;parent&quot;);&#xD;
+                var parentEntity = parentNode.get(&quot;data&quot;);&#xD;
+                if (parentEntity.get(&quot;dbType&quot;) == &quot;DB2&quot;) {&#xD;
+					arg.entity.set(&quot;isprimaryKey&quot;, false);&#xD;
+                    return dorado.MessageBox.alert(&quot;${res[&quot;dataTypeColumn.onDataChange.db2AlertMessage&quot;]}&quot;);&#xD;
+                }else{&#xD;
+					// defaultValue.set(&quot;readOnly&quot;, true);&#xD;
+                     arg.entity.set(&quot;isnullAble&quot;, false);&#xD;
+				}&#xD;
+            }&#xD;
+        }&#xD;
+        &#xD;
+       &#xD;
+    }&#xD;
+    else {&#xD;
+        //defaultValue.set(&quot;readOnly&quot;, false);&#xD;
+        &#xD;
+    }&#xD;
+}&#xD;
+else &#xD;
+    if (arg.property == &quot;isnullAble&quot;) {&#xD;
+        if (arg.newValue) {&#xD;
+            arg.entity.set(&quot;isprimaryKey&quot;, false);&#xD;
+        }&#xD;
+    }&#xD;
+&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+      <ClientEvent name="onStateChange">&#xD;
+</ClientEvent>
+      <Property name="creationType">com.bstek.bdf3.dbconsole.model.ColumnInfo</Property>
+      <PropertyDef name="tableName">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="columnName">
+        <Property name="dataType">String</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="columnType">
+        <Property name="dataType">String</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="columnSize">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="isnullAble">
+        <Property name="dataType">boolean</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="defaultValue">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="remarks">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="isprimaryKey">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <ClientEvent name="onReady" signature="self,arg,dataSetDbInfo,dialogDbInfo,dataSetColumn,tabControlContext,dataTreeDbInfo,sourceEditor">this.expandNode = function(){&#xD;
+    var tree = this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+    var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
+	if(!currentNode.get(&quot;expanded&quot;)){&#xD;
+	    currentNode.expand();&#xD;
+	}&#xD;
+}&#xD;
+self.createConnection = function(){&#xD;
+    var dialog = this.id(&quot;dialogDbInfo&quot;);&#xD;
+    var data = dataSetDbInfo.getData();&#xD;
+    dialogDbInfo.show();&#xD;
+    var current = data.insert({&#xD;
+        name: &quot;[Connection Name] &quot;&#xD;
+   	});&#xD;
+    dataTreeDbInfo.set(&quot;currentEntity&quot;, current);&#xD;
+}&#xD;
+&#xD;
+self.$setCurrentNode = function(node){&#xD;
+    dataTreeDbInfo.set(&quot;currentNode&quot;, node);&#xD;
+	&#xD;
+}&#xD;
+&#xD;
+self.flushTabData = function(){&#xD;
+    var currentNode = dataTreeDbInfo.get(&quot;currentNode&quot;);&#xD;
+    var level = currentNode.get(&quot;level&quot;);&#xD;
+    var tab = tabControlContext.get(&quot;currentTab&quot;);&#xD;
+    var name = tab.get(&quot;name&quot;);	&#xD;
+    if (2 == level) {&#xD;
+        var entity = currentNode.get(&quot;data&quot;);&#xD;
+        var dbInfoId = entity.get(&quot;dbInfoId&quot;);&#xD;
+        var tableName = entity.get(&quot;tableName&quot;);&#xD;
+		&#xD;
+        if (name == &quot;dataTab&quot;) {&#xD;
+            var path = &quot;bdf3.dbconsole.view.datatab.DataTabMaintain.d?type=1&amp;dbInfoId=&quot; + dbInfoId + &quot;&amp;tableName=&quot; + tableName + &quot;&quot;;&#xD;
+            tab.set(&quot;path&quot;, path);&#xD;
+        } else if (name == &quot;columnTab&quot;) {&#xD;
+            dataSetColumn.set(&quot;parameter&quot;, {&#xD;
+                dbInfoId: dbInfoId,&#xD;
+                tableName: tableName&#xD;
+            });&#xD;
+            dataSetColumn.flushAsync();&#xD;
+       }&#xD;
+    } else if (1 == level) {&#xD;
+        var entity = currentNode.get(&quot;data&quot;);&#xD;
+        var dbInfoId = entity.get(&quot;id&quot;);&#xD;
+        if (dbInfoId) {&#xD;
+            if (name == &quot;dataTab&quot;) {&#xD;
+                tab.set(&quot;path&quot;, &quot;bdf3.dbconsole.view.messagetab.MessageTabMaintain.d&quot;);&#xD;
+            } else if (name == &quot;columnTab&quot;) {&#xD;
+                dataSetColumn.set(&quot;parameter&quot;, {&#xD;
+                    dbInfoId: dbInfoId,&#xD;
+                    tableName: ''&#xD;
+                });&#xD;
+                dataSetColumn.flushAsync();&#xD;
+            }&#xD;
+        }&#xD;
+	} else {&#xD;
+		 if (name == &quot;dataTab&quot;) {&#xD;
+		 	tab.set(&quot;path&quot;, &quot;bdf3.dbconsole.view.messagetab.MessageTabMaintain.d&quot;);&#xD;
+		 }&#xD;
+	}&#xD;
+    &#xD;
+}&#xD;
+self.$createSql = function(){&#xD;
+	var oldSql= sourceEditor.getCodeMirror().getValue();&#xD;
+    var currentNode = dataTreeDbInfo.get(&quot;currentNode&quot;);&#xD;
+    var level = currentNode.get(&quot;level&quot;);&#xD;
+    if (2 == level) {&#xD;
+        var entity = currentNode.get(&quot;data&quot;);&#xD;
+        var tableName = entity.get(&quot;tableName&quot;);&#xD;
+        var s=&quot;select * from &quot; + tableName;&#xD;
+		if (oldSql) {&#xD;
+			sourceEditor.getCodeMirror().setValue(oldSql + &quot;\n&quot;+s);&#xD;
+		} else {&#xD;
+			sourceEditor.getCodeMirror().setValue(s);&#xD;
+		}&#xD;
+    }&#xD;
+}&#xD;
+&#xD;
+&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+    <Property name="packages">font-awesome,colors</Property>
+    <DataSet id="dataSetDbInfo">
+      <Property name="dataType">[dataTypeDb]</Property>
+      <Property name="dataProvider">dbConsoleController#loadDbInfos</Property>
+    </DataSet>
+    <DataSet id="dataSetColumn">
+      <Property name="dataType">[dataTypeColumn]</Property>
+      <Property name="dataProvider">dbConsoleController#loadColumnInfos</Property>
+      <Property name="loadMode">manual</Property>
+    </DataSet>
+    <DataSet id="dataSetDbType">
+      <Property name="dataType">[dataTypeDb]</Property>
+      <Property name="dataProvider">dbConsoleController#loadDbTypes</Property>
+    </DataSet>
+    <DataSet id="dataSetColumnType">
+      <Property name="dataType">[dataTypeColumn]</Property>
+      <Property name="dataProvider">dbConsoleController#findColumnType</Property>
+      <Property name="loadMode">onReady</Property>
+    </DataSet>
+    <DataSetDropDown id="dataSetDropDownDbType">
+      <ClientEvent name="onClose">var selectedValue=arg.selectedValue;&#xD;
+var data=this.id(&quot;dataSetDbInfo&quot;).getData(&quot;#&quot;);&#xD;
+var tablePrimaryKey=data.get(&quot;url&quot;);&#xD;
+var primaryKeyType=data.get(&quot;dbType&quot;);&#xD;
+if(&quot;Oracle&quot;==selectedValue){&#xD;
+	data.set(&quot;driverClass&quot;,&quot;oracle.jdbc.driver.OracleDriver&quot;);&#xD;
+	data.set(&quot;url&quot;,&quot;jdbc:oracle:thin:@localhost:1521:tempdb&quot;);&#xD;
+	data.set(&quot;username&quot;,&quot;orcl&quot;);&#xD;
+}else if(&quot;SqlServer&quot;==selectedValue){&#xD;
+	data.set(&quot;driverClass&quot;,&quot;net.sourceforge.jtds.jdbc.Driver&quot;);&#xD;
+	data.set(&quot;url&quot;,&quot;jdbc:jtds:sqlserver://localhost:1433/master&quot;);&#xD;
+	data.set(&quot;username&quot;,&quot;sa&quot;);&#xD;
+}else if(&quot;MySQL&quot;==selectedValue){&#xD;
+	data.set(&quot;driverClass&quot;,&quot;com.mysql.jdbc.Driver&quot;);&#xD;
+	data.set(&quot;url&quot;,&quot;jdbc:mysql://localhost:3306/tempdb?useUnicode=true&amp;amp;characterEncoding=UTF-8&quot;);&#xD;
+	data.set(&quot;username&quot;,&quot;root&quot;);&#xD;
+}else if(&quot;DB2&quot;==selectedValue){&#xD;
+	data.set(&quot;driverClass&quot;,&quot;com.ibm.db2.jcc.DB2Driver&quot;);&#xD;
+	data.set(&quot;url&quot;,&quot;jdbc:db2://localhost:50000/tempdb&quot;);&#xD;
+}else if(&quot;H2&quot;==selectedValue){&#xD;
+	data.set(&quot;driverClass&quot;,&quot;org.h2.Driver&quot;);&#xD;
+	data.set(&quot;url&quot;,&quot;jdbc:h2:~/test&quot;);&#xD;
+	data.set(&quot;username&quot;,&quot;sa&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+      <Property name="dataSet">dataSetDbType</Property>
+      <Property name="property">dbType</Property>
+      <Property name="height">200</Property>
+    </DataSetDropDown>
+    <DataSetDropDown id="dataSetDropDownColumnType">
+      <ClientEvent name="onClose">var selectValue = arg.selectedValue;&#xD;
+if (selectValue) {&#xD;
+    var form = this.id(&quot;autoFormColumn&quot;);&#xD;
+    var columnSize = form.getElement(&quot;columnSize&quot;);&#xD;
+    var entity = this.id(&quot;dataSetColumn&quot;).getData(&quot;#&quot;);&#xD;
+    if (selectValue.indexOf(&quot;DATE&quot;) != -1 || selectValue.indexOf(&quot;TIME&quot;) != -1) {&#xD;
+        columnSize.set(&quot;readOnly&quot;, true);&#xD;
+        entity.set(&quot;columnSize&quot;, null);&#xD;
+    }&#xD;
+    else {&#xD;
+        columnSize.set(&quot;readOnly&quot;, false);&#xD;
+    }&#xD;
+}&#xD;
+</ClientEvent>
+      <Property name="property">columnType</Property>
+      <Property name="dataSet">dataSetColumnType</Property>
+    </DataSetDropDown>
+    <SplitPanel id="splitPanel" layoutConstraint="center">
+      <Property name="position">270</Property>
+      <Property name="collapsed">false</Property>
+      <Property name="previewable">true</Property>
+      <MainControl>
+        <Container>
+          <Panel layout="padding:10;regionPadding:5" layoutConstraint="padding:15">
+            <Children>
+              <TabControl id="tabControlContext" layoutConstraint="center">
+                <ClientEvent name="onTabChange" signature="self,arg,dataSetColumn,dataTreeDbInfo">var tree = dataTreeDbInfo;&#xD;
+var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
+&#xD;
+if (currentNode) {&#xD;
+	var level = currentNode.get(&quot;level&quot;);	&#xD;
+	var tab = self.get(&quot;currentTab&quot;);&#xD;
+	var name = tab.get(&quot;name&quot;);&#xD;
+	if (2 == level) {&#xD;
+		var entity = currentNode.get(&quot;data&quot;);&#xD;
+		var dbInfoId = entity.get(&quot;dbInfoId&quot;);&#xD;
+		var tableName = entity.get(&quot;tableName&quot;);&#xD;
+		if (name == &quot;dataTab&quot;) {&#xD;
+			var path = &quot;bdf3.dbconsole.view.datatab.DataTabMaintain.d?type=1&amp;dbInfoId=&quot; + dbInfoId + &quot;&amp;tableName=&quot; + tableName + &quot;&quot;;&#xD;
+			tab.set(&quot;path&quot;, path);&#xD;
+		} else if (name == &quot;columnTab&quot;) {&#xD;
+			dataSetColumn.set(&quot;parameter&quot;, {&#xD;
+				dbInfoId: dbInfoId,&#xD;
+				tableName: tableName&#xD;
+			});&#xD;
+			dataSetColumn.flushAsync();&#xD;
+		}&#xD;
+	} else if (1 == level) {	&#xD;
+		var entity = currentNode.get(&quot;data&quot;);&#xD;
+		var dbInfoId = entity.get(&quot;id&quot;);&#xD;
+		if (dbInfoId) {&#xD;
+			if (name == &quot;dataTab&quot;) {&#xD;
+				var path = &quot;bdf3.dbconsole.view.messagetab.MessageTabMaintain.d&quot;;&#xD;
+				tab.set(&quot;path&quot;, path);&#xD;
+			} else if (name == &quot;columnTab&quot;) {&#xD;
+				dataSetColumn.set(&quot;parameter&quot;, {&#xD;
+					dbInfoId: dbInfoId,&#xD;
+					tableName: ''&#xD;
+				});&#xD;
+				dataSetColumn.flushAsync();&#xD;
+			}&#xD;
+		}&#xD;
+	} else {&#xD;
+		var path = &quot;bdf3.dbconsole.view.messagetab.MessageTabMaintain.d&quot;;&#xD;
+		tab.set(&quot;path&quot;, path);&#xD;
+	}&#xD;
+}</ClientEvent>
+                <ControlTab>
+                  <Property name="name">columnTab</Property>
+                  <Panel>
+                    <Children>
+                      <Control layoutConstraint="top">
+                        <Property name="height">5</Property>
+                      </Control>
+                      <ToolBar layoutConstraint="top">
+                        <ToolBarButton id="toolBarButtonAdd">
+                          <ClientEvent name="onClick">var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+var currentEntity=tree.get(&quot;currentNode&quot;);&#xD;
+if (currentNode) {&#xD;
+	var level = currentNode.get(&quot;level&quot;);&#xD;
+	if(level==2){&#xD;
+		var entity = currentNode.get(&quot;data&quot;);&#xD;
+		var dbInfoId = entity.get(&quot;dbInfoId&quot;);&#xD;
+		var tableName=entity.get(&quot;tableName&quot;);	&#xD;
+	}else {&#xD;
+		return dorado.MessageBox.alert(&quot;${res[&quot;toolBarButtonAdd.onClick.selectTableAlertMessage&quot;]}&quot;);&#xD;
+	}&#xD;
+	var dialog=this.id(&quot;dialogColumn&quot;);&#xD;
+	var dataSetColumn=this.id(&quot;dataSetColumn&quot;);&#xD;
+	var data=dataSetColumn.getData();&#xD;
+	if (data) {&#xD;
+	data.insert();&#xD;
+	dialog.set(&quot;caption&quot;, &quot;${res[&quot;toolBarButtonAdd.onClick.setCaption&quot;]}&quot;);&#xD;
+	dialog.show();&#xD;
+	}&#xD;
+}else {&#xD;
+ 	return dorado.MessageBox.alert(&quot;${res[&quot;toolBarButtonAdd.onClick.selectDbConnAlertMessage&quot;]}&quot;);&#xD;
+}&#xD;
+&#xD;
+</ClientEvent>
+                          <Property name="iconClass">fa fa-plus blue-text</Property>
+                        </ToolBarButton>
+                        <ToolBarButton id="toolBarButtonDelete">
+                          <ClientEvent name="onClick">var dataSetColumn = this.id(&quot;dataSetColumn&quot;);&#xD;
+&#xD;
+var tree = this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
+var currentEntity = tree.get(&quot;currentNode&quot;);&#xD;
+if (currentNode) {&#xD;
+    var level = currentNode.get(&quot;level&quot;);&#xD;
+    if (level == 2) {&#xD;
+        var parentNode = currentNode.get(&quot;parent&quot;);&#xD;
+        var parentEntity = parentNode.get(&quot;data&quot;);&#xD;
+        if (parentEntity.get(&quot;dbType&quot;) == &quot;DB2&quot;) {&#xD;
+           return dorado.MessageBox.alert(&quot;${res[&quot;toolBarButtonDelete.onClick.db2AlertMessage&quot;]}&quot;);&#xD;
+         }&#xD;
+        var entity = currentNode.get(&quot;data&quot;);&#xD;
+        var dbInfoId = entity.get(&quot;dbInfoId&quot;);&#xD;
+        var tableName = entity.get(&quot;tableName&quot;);&#xD;
+    }&#xD;
+    else {&#xD;
+        return dorado.MessageBox.alert(&quot;${res[&quot;toolBarButtonDelete.onClick.selectTableAlertMessage&quot;]}&quot;);&#xD;
+    }&#xD;
+}&#xD;
+else {&#xD;
+    return dorado.MessageBox.alert(&quot;${res[&quot;toolBarButtonDelete.onClick.selectDbConnAlertMessage&quot;]}&quot;);&#xD;
+}&#xD;
+var action = this.id(&quot;updateActionColumn&quot;);&#xD;
+var data = dataSetColumn.getData(&quot;#&quot;);&#xD;
+if (data) {&#xD;
+    var columnName = data.get(&quot;columnName&quot;);&#xD;
+    dorado.MessageBox.show({&#xD;
+        title: &quot;${res[&quot;toolBarButtonDelete.onClick.confirmTitle&quot;]}&quot;,&#xD;
+        icon: dorado.MessageBox.INFO_ICON,&#xD;
+        message: &quot;${res[&quot;toolBarButtonDelete.onClick.confirmInfoPrefix&quot;]}&quot; + columnName + &quot;${res[&quot;toolBarButtonDelete.onClick.confirmInfoSuffix&quot;]}&quot;,&#xD;
+        buttons: [&quot;yes&quot;, &quot;no&quot;],&#xD;
+        detailCallback: function(buttonId){&#xD;
+            if (buttonId == &quot;yes&quot;) {&#xD;
+                data.remove();&#xD;
+                action.set(&quot;parameter&quot;, {&#xD;
+                    dbInfoId: dbInfoId,&#xD;
+                    tableName: tableName&#xD;
+                });&#xD;
+                action.execute(function(){&#xD;
+                    dataSetColumn.set(&quot;parameter&quot;, {&#xD;
+                        dbInfoId: dbInfoId,&#xD;
+                        tableName: tableName&#xD;
+                    });&#xD;
+                    dataSetColumn.flush();&#xD;
+                    dorado.MessageBox.alert(&quot;${res[&quot;toolBarButtonDelete.onClick.delSuccessAlertMessagePrefix&quot;]}&quot; + columnName + &quot;${res[&quot;toolBarButtonDelete.onClick.delSuccessAlertMessageSuffix&quot;]}&quot;);&#xD;
+                });&#xD;
+            }&#xD;
+        }&#xD;
+    });&#xD;
+}&#xD;
+else {&#xD;
+    dorado.MessageBox.alert(&quot;${res[&quot;toolBarButtonDelete.onClick.selectTableAlertMessage&quot;]}&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+                          <Property name="iconClass">fa fa-trash-o red-text</Property>
+                        </ToolBarButton>
+                        <ToolBarButton id="toolBarButtonUpdate">
+                          <ClientEvent name="onClick">var tree = this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
+var dataSetColumn = this.id(&quot;dataSetColumn&quot;);&#xD;
+var data = dataSetColumn.getData(&quot;#&quot;);&#xD;
+if (data) {&#xD;
+    var parentNode = currentNode.get(&quot;parent&quot;);&#xD;
+    var parentEntity = parentNode.get(&quot;data&quot;);&#xD;
+    if (parentEntity.get(&quot;dbType&quot;) == &quot;DB2&quot;) {&#xD;
+        return dorado.MessageBox.alert(&quot;${res[&quot;toolBarButtonUpdate.onClick.db2AlertMessage&quot;]}&quot;);&#xD;
+    }&#xD;
+    var columnName = data.get(&quot;columnName&quot;);&#xD;
+    this.id(&quot;dialogColumn&quot;).set(&quot;caption&quot;, &quot;${res[&quot;toolBarButtonUpdate.onClick.setCaption&quot;]}&quot;);&#xD;
+    this.id(&quot;dialogColumn&quot;).show();&#xD;
+    var form = this.id(&quot;autoFormColumn&quot;);&#xD;
+    var columnSize = form.getElement(&quot;columnSize&quot;);&#xD;
+    var entity = this.id(&quot;dataSetColumn&quot;).getData(&quot;#&quot;);&#xD;
+    if (columnName.indexOf(&quot;DATE&quot;) != -1 || columnName.indexOf(&quot;TIME&quot;) != -1) {&#xD;
+        columnSize.set(&quot;readOnly&quot;, true);&#xD;
+    }&#xD;
+    else {&#xD;
+        columnSize.set(&quot;readOnly&quot;, false);&#xD;
+    }&#xD;
+}&#xD;
+else {&#xD;
+    dorado.MessageBox.alert(&quot;${res[&quot;toolBarButtonUpdate.onClick.selectTableAlertMessage&quot;]}&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+                          <Property name="iconClass">fa fa-pencil yellow-text</Property>
+                        </ToolBarButton>
+                        <ToolBarButton id="toolBarButtonExport">
+                          <Property name="action">export2ReportAction</Property>
+                          <Property name="iconClass">fa fa-file-excel-o blue-text</Property>
+                        </ToolBarButton>
+                      </ToolBar>
+                      <Control layoutConstraint="top">
+                        <Property name="height">5</Property>
+                      </Control>
+                      <DataGrid id="dataGridColumnInfos">
+                        <Property name="stretchColumnsMode">allColumns</Property>
+                        <Property name="dataSet">dataSetColumn</Property>
+                        <Property name="readOnly">true</Property>
+                        <RowNumColumn/>
+                        <DataColumn name="columnName">
+                          <Property name="property">columnName</Property>
+                        </DataColumn>
+                        <DataColumn name="columnType">
+                          <Property name="property">columnType</Property>
+                          <Property name="width">80</Property>
+                        </DataColumn>
+                        <DataColumn name="columnSize">
+                          <Property name="property">columnSize</Property>
+                          <Property name="width">50</Property>
+                        </DataColumn>
+                        <DataColumn name="isprimaryKey">
+                          <Property name="property">isprimaryKey</Property>
+                        </DataColumn>
+                        <DataColumn name="isnullAble">
+                          <Property name="property">isnullAble</Property>
+                          <Property name="width">50</Property>
+                        </DataColumn>
+                      </DataGrid>
+                      <Export2ReportAction id="export2ReportAction">
+                        <Property name="template">dataGridColumnInfos</Property>
+                      </Export2ReportAction>
+                    </Children>
+                  </Panel>
+                </ControlTab>
+                <IFrameTab>
+                  <Property name="name">dataTab</Property>
+                </IFrameTab>
+                <ControlTab>
+                  <Property name="name">sqlTab</Property>
+                  <SplitPanel id="splitPanelSql">
+                    <Property name="position">75%</Property>
+                    <Property name="hideMode">visibility</Property>
+                    <Property name="direction">bottom</Property>
+                    <Property name="collapseable">true</Property>
+                    <Property name="collapsed">true</Property>
+                    <MainControl>
+                      <Panel>
+                        <Buttons/>
+                        <Children>
+                          <Control layoutConstraint="top">
+                            <Property name="height">5</Property>
+                          </Control>
+                          <ToolBar layoutConstraint="top">
+                            <ToolBarButton id="toolBarButtonExecuteAllSQL">
+                              <ClientEvent name="onClick" signature="self,arg,splitPanelSql,iFrameTable,sourceEditor,dataTreeDbInfo,ajaxActionUpdateSql">var sql= sourceEditor.getCodeMirror().getValue();&#xD;
+var tree = dataTreeDbInfo;&#xD;
+var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
+var dbInfoId;&#xD;
+if (!currentNode) {&#xD;
+    return dorado.MessageBox.alert(&quot;${res['toolBarButtonExecuteAllSQL.onClick.connAlertMessage']}&quot;);&#xD;
+}&#xD;
+if($.trim(sql).length==0){&#xD;
+	return dorado.MessageBox.alert(&quot;${res['toolBarButtonExecuteAllSQL.onClick.sqlAlertMessage']}&quot;);&#xD;
+}&#xD;
+var entity = currentNode.get(&quot;data&quot;);&#xD;
+var level = currentNode.get(&quot;level&quot;);&#xD;
+if (level == 1) {&#xD;
+    dbInfoId = entity.get(&quot;id&quot;);&#xD;
+} else if (level == 2) {&#xD;
+    dbInfoId = entity.get(&quot;dbInfoId&quot;);&#xD;
+} else {&#xD;
+	dbInfoId = entity.parent.parent.get(&quot;dbInfoId&quot;);&#xD;
+}&#xD;
+if (sql &amp;&amp; dbInfoId) {&#xD;
+    if (sql.toLowerCase().indexOf(&quot;select&quot;) == -1) {&#xD;
+        var path = &quot;bdf3.dbconsole.view.messagetab.MessageTabMaintain.d?sql=&quot; + sql + &quot;&amp;dbInfoId=&quot; + dbInfoId;&#xD;
+        iFrameTable.set(&quot;path&quot;, path);&#xD;
+    } else if (sql.toLowerCase().indexOf(&quot;select&quot;) != -1) {&#xD;
+        var path = &quot;bdf3.dbconsole.view.datatab.DataTabMaintain.d?type=2&amp;sql=&quot; + sql + &quot;&amp;dbInfoId=&quot; + dbInfoId;&#xD;
+        iFrameTable.set(&quot;path&quot;, path);&#xD;
+    } else {&#xD;
+        iFrameTable.set(&quot;path&quot;, &quot;bdf3.dbconsole.view.messagetab.MessageTabMaintain.d&quot;);&#xD;
+    }&#xD;
+} else {&#xD;
+	iFrameTable.set(&quot;path&quot;, &quot;bdf3.dbconsole.view.messagetab.MessageTabMaintain.d&quot;);&#xD;
+}&#xD;
+&#xD;
+if (splitPanelSql.get(&quot;collapsed&quot;)) {&#xD;
+	splitPanelSql.set(&quot;collapsed&quot;, false);&#xD;
+}&#xD;
+&#xD;
+</ClientEvent>
+                              <Property name="iconClass">fa fa-play blue-text</Property>
+                            </ToolBarButton>
+                            <ToolBarButton id="toolBarButtonExecuteSelectedSQL">
+                              <ClientEvent name="onClick" signature="self,arg,splitPanelSql,iFrameTable,dataTreeDbInfo,sourceEditor">var sql = sourceEditor.getCodeMirror().getSelection();&#xD;
+var currentNode = dataTreeDbInfo.get(&quot;currentNode&quot;);&#xD;
+var dbInfoId;&#xD;
+if (!currentNode) {&#xD;
+    return dorado.MessageBox.alert(&quot;${res['toolBarButtonExecuteSelectedSQL.onClick.connAlertMessage']}&quot;);&#xD;
+}&#xD;
+if ($.trim(sql).length==0) {&#xD;
+	return dorado.MessageBox.alert(&quot;${res['toolBarButtonExecuteSelectedSQL.onClick.selectAlertMessage']}&quot;)&#xD;
+}&#xD;
+var entity = currentNode.get(&quot;data&quot;);&#xD;
+var level = currentNode.get(&quot;level&quot;);&#xD;
+if (level == 1) {&#xD;
+    dbInfoId = entity.get(&quot;id&quot;);&#xD;
+} else if (level == 2) {&#xD;
+    dbInfoId = entity.get(&quot;dbInfoId&quot;);&#xD;
+} else {&#xD;
+	dbInfoId = entity.parent.parent.get(&quot;dbInfoId&quot;);&#xD;
+}&#xD;
+if (sql &amp;&amp; dbInfoId) {&#xD;
+    if (sql.toLowerCase().indexOf(&quot;select&quot;) == -1) {&#xD;
+       var path=&quot;bdf3.dbconsole.view.messagetab.MessageTabMaintain.d?sql=&quot;+sql+&quot;&amp;dbInfoId=&quot;+dbInfoId;&#xD;
+	   iFrameTable.set(&quot;path&quot;,path);&#xD;
+    } else if(sql.toLowerCase().indexOf(&quot;select&quot;) != -1) {&#xD;
+			var path=&quot;bdf3.dbconsole.view.datatab.DataTabMaintain.d?type=2&amp;sql=&quot;+sql+&quot;&amp;dbInfoId=&quot;+dbInfoId;&#xD;
+			iFrameTable.set(&quot;path&quot;,path);&#xD;
+&#xD;
+	 } else {&#xD;
+        iFrameTable.set(&quot;path&quot;, &quot;bdf3.dbconsole.view.messagetab.MessageTabMaintain.d&quot;);&#xD;
+    }&#xD;
+} else {&#xD;
+	iFrameTable.set(&quot;path&quot;, &quot;bdf3.dbconsole.view.messagetab.MessageTabMaintain.d&quot;);&#xD;
+}&#xD;
+if (splitPanelSql.get(&quot;collapsed&quot;)) {&#xD;
+	splitPanelSql.set(&quot;collapsed&quot;, false);&#xD;
+}&#xD;
+&#xD;
+</ClientEvent>
+                              <Property name="iconClass">fa fa-crosshairs blue-text</Property>
+                            </ToolBarButton>
+                            <ToolBarButton id="toolBarButtonClearSQL">
+                              <ClientEvent name="onClick" signature="self,arg,sourceEditor">sourceEditor.getCodeMirror().setValue(&quot;&quot;);&#xD;
+</ClientEvent>
+                              <Property name="iconClass">fa fa-eraser red-text</Property>
+                            </ToolBarButton>
+                          </ToolBar>
+                          <Control layoutConstraint="top">
+                            <Property name="height">5</Property>
+                          </Control>
+                          <SourceEditor id="sourceEditor">
+                            <Property name="language">mysql</Property>
+                            <Property name="theme">ambiance</Property>
+                          </SourceEditor>
+                        </Children>
+                        <Tools/>
+                      </Panel>
+                    </MainControl>
+                    <SideControl>
+                      <Container>
+                        <IFrame id="iFrameTable">
+                          <Property name="path">bdf3.dbconsole.view.messagetab.MessageTabMaintain.d</Property>
+                          <Property name="ignored">false</Property>
+                        </IFrame>
+                      </Container>
+                    </SideControl>
+                  </SplitPanel>
+                </ControlTab>
+              </TabControl>
+            </Children>
+          </Panel>
+        </Container>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <Panel id="panelConnection" layout="padding:10;regionPadding:5" layoutConstraint="padding:15">
+            <Property name="collapseable">false</Property>
+            <Buttons/>
+            <Children>
+              <DataTree id="dataTreeDbInfo">
+                <ClientEvent name="onExpand">&#xD;
+this.$setCurrentNode(arg.node);&#xD;
+this.flushTabData();&#xD;
+</ClientEvent>
+                <ClientEvent name="onClick">view.flushTabData();&#xD;
+</ClientEvent>
+                <ClientEvent name="onCollapse">&#xD;
+this.$setCurrentNode(arg.node);&#xD;
+this.flushTabData();</ClientEvent>
+                <ClientEvent name="onContextMenu">this.flushTabData();&#xD;
+var tree = this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
+&#xD;
+var level = currentNode.get(&quot;level&quot;);&#xD;
+if (1 == level) {&#xD;
+    var entity = currentNode.get(&quot;data&quot;);&#xD;
+    var dbInfoId = entity.get(&quot;id&quot;);&#xD;
+    var menu = this.id(&quot;menuDbInfo&quot;);&#xD;
+    if (dbInfoId == &quot;db_console_default_datasource&quot;) {&#xD;
+        menu.getItem(&quot;deleteDbInfoItem&quot;).set(&quot;visible&quot;, false);&#xD;
+        menu.getItem(&quot;updateDbInfoItem&quot;).set(&quot;visible&quot;, false);&#xD;
+    }&#xD;
+    else {&#xD;
+        menu.getItem(&quot;deleteDbInfoItem&quot;).set(&quot;visible&quot;, true);&#xD;
+        menu.getItem(&quot;updateDbInfoItem&quot;).set(&quot;visible&quot;, true);&#xD;
+    }&#xD;
+    menu.show({&#xD;
+        position: {&#xD;
+            left: arg.event.pageX,&#xD;
+            top: arg.event.pageY&#xD;
+        }&#xD;
+    });&#xD;
+}&#xD;
+else {&#xD;
+    if (2 == level) {&#xD;
+        this.id(&quot;menuTableInfo&quot;).show({&#xD;
+            position: {&#xD;
+                left: arg.event.pageX,&#xD;
+                top: arg.event.pageY&#xD;
+            }&#xD;
+        });&#xD;
+    }&#xD;
+}&#xD;
+&#xD;
+</ClientEvent>
+                <ClientEvent name="onDoubleClick">view.$createSql();&#xD;
+</ClientEvent>
+                <ClientEvent name="onDataNodeCreate">var data = arg.data;&#xD;
+if (&quot;dataTypeColumn&quot; == arg.data.dataType.get(&quot;name&quot;)) {&#xD;
+    var isprimaryKey = data.get(&quot;isprimaryKey&quot;);&#xD;
+    if (isprimaryKey) {&#xD;
+        arg.node.set(&quot;iconClass&quot;,&quot;fa fa-key yellow-text&quot;)&#xD;
+    }&#xD;
+}    &#xD;
+</ClientEvent>
+                <Property name="dataSet">dataSetDbInfo</Property>
+                <Property name="draggable">false</Property>
+                <Property name="droppable">false</Property>
+                <BindingConfigs>
+                  <BindingConfig>
+                    <Property name="name">dbInfo</Property>
+                    <Property name="labelProperty">name</Property>
+                    <Property name="hasChild">true</Property>
+                    <Property name="tipProperty">name</Property>
+                    <Property name="iconClass">fa fa-database blue-text</Property>
+                    <BindingConfig>
+                      <Property name="labelProperty">tableName</Property>
+                      <Property name="name">tableInfo</Property>
+                      <Property name="childrenProperty">tableInfos</Property>
+                      <Property name="hasChild">true</Property>
+                      <Property name="tipProperty">tableName</Property>
+                      <Property name="iconClass">fa fa-table blue-text</Property>
+                      <BindingConfig>
+                        <Property name="labelProperty">columnName</Property>
+                        <Property name="name">columnInfo</Property>
+                        <Property name="childrenProperty">columnInfos</Property>
+                        <Property name="tipProperty">columnName</Property>
+                        <Property name="iconClass">fa fa-bars blue-text</Property>
+                      </BindingConfig>
+                    </BindingConfig>
+                  </BindingConfig>
+                </BindingConfigs>
+              </DataTree>
+            </Children>
+            <Tools>
+              <SimpleIconButton id="simpleIconButtonRefresh">
+                <ClientEvent name="onClick" signature="self,arg,dataTreeDbInfo,dataSetDbInfo,dataSetColumn">dataSetDbInfo.flushAsync();
+dataSetColumn.getData().clear();
+</ClientEvent>
+                <Property name="iconClass">fa fa-refresh blue-text</Property>
+              </SimpleIconButton>
+              <SimpleIconButton id="simpleIconButtonNew">
+                <ClientEvent name="onClick">view.createConnection();
+</ClientEvent>
+                <Property name="iconClass">fa fa-database blue-text</Property>
+              </SimpleIconButton>
+            </Tools>
+          </Panel>
+        </Container>
+      </SideControl>
+    </SplitPanel>
+    <Menu id="menuTableInfo">
+      <MenuItem>
+        <ClientEvent name="onClick">&#xD;
+var action=this.id(&quot;ajaxActionDeleteTable&quot;);&#xD;
+var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+var currentEntity=tree.get(&quot;currentEntity&quot;);&#xD;
+var entity=currentNode.get(&quot;data&quot;);&#xD;
+var level=currentNode.get(&quot;level&quot;);&#xD;
+if(level==2){&#xD;
+	var tableName=entity.get(&quot;tableName&quot;);&#xD;
+	var dbInfoId=entity.get(&quot;dbInfoId&quot;);&#xD;
+}&#xD;
+if (tableName&amp;&amp;dbInfoId) {&#xD;
+		dorado.MessageBox.show({&#xD;
+		title:&quot;${res[&quot;menuItemDeleteCurrentTable.onClick.comfirmTitle&quot;]}&quot;,&#xD;
+		icon:dorado.MessageBox.INFO_ICON,&#xD;
+		message:&quot;${res[&quot;menuItemDeleteCurrentTable.onClick.comfirmInfoPrefix&quot;]}&quot;+tableName+&quot;${res[&quot;menuItemDeleteCurrentTable.onClick.comfirmInfoSuffix&quot;]}&quot;,&#xD;
+		buttons:[&quot;yes&quot;,&quot;no&quot;],&#xD;
+		detailCallback:function(buttonId){&#xD;
+			if(buttonId==&quot;yes&quot;){&#xD;
+				currentEntity.remove();&#xD;
+				action.set(&quot;parameter&quot;,{&#xD;
+					dbInfoId:dbInfoId,&#xD;
+					tableName:tableName&#xD;
+				}).execute();&#xD;
+			}&#xD;
+		}&#xD;
+		&#xD;
+});	&#xD;
+}&#xD;
+</ClientEvent>
+        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/table_delete.png</Property>
+        <Property name="name">menuItemDeleteCurrentTable</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick">&#xD;
+var action=this.id(&quot;ajaxActionAlertTableName&quot;);&#xD;
+var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+&#xD;
+var entity=currentNode.get(&quot;data&quot;);&#xD;
+var level=currentNode.get(&quot;level&quot;);&#xD;
+if(level==2){&#xD;
+	var tableName=entity.get(&quot;tableName&quot;);&#xD;
+	var dbInfoId=entity.get(&quot;dbInfoId&quot;);&#xD;
+}&#xD;
+if (tableName&amp;&amp;dbInfoId) {	&#xD;
+				 dorado.MessageBox.prompt(&quot;${res[&quot;menuItemRename.onClick.promptInfo&quot;]}&quot;,{&#xD;
+	   			 defaultText:tableName,&#xD;
+				 callback:function(text){				 	&#xD;
+					if(!text){&#xD;
+						dorado.MessageBox.alert(&quot;${res[&quot;menuItemRename.onClick.nullAlertMessage&quot;]}&quot;);&#xD;
+						return;&#xD;
+					}&#xD;
+					if(text.toLowerCase()==tableName.toLowerCase()){&#xD;
+						dorado.MessageBox.alert(&quot;${res[&quot;menuItemRename.onClick.duplicatelAlertMessage&quot;]}&quot;);&#xD;
+						return ;&#xD;
+					}&#xD;
+					entity.set(&quot;tableName&quot;,text);&#xD;
+		 			action.set(&quot;parameter&quot;,{&#xD;
+						dbInfoId:dbInfoId,&#xD;
+						tableName:tableName,&#xD;
+						newTableName:text&#xD;
+					}).execute();&#xD;
+				 }&#xD;
+	  		 });&#xD;
+}		&#xD;
+&#xD;
+</ClientEvent>
+        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/table_edit.png</Property>
+        <Property name="name">menuItemRename</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick">var action=this.id(&quot;ajaxActionDeleteTableData&quot;);&#xD;
+var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+&#xD;
+var entity=currentNode.get(&quot;data&quot;);&#xD;
+var level=currentNode.get(&quot;level&quot;);&#xD;
+if(level==2){&#xD;
+	var tableName=entity.get(&quot;tableName&quot;);&#xD;
+	var dbInfoId=entity.get(&quot;dbInfoId&quot;);&#xD;
+}&#xD;
+if (tableName&amp;&amp;dbInfoId) {&#xD;
+		dorado.MessageBox.show({&#xD;
+		title:&quot;${res[&quot;menuItemClearTable.onClick.confirmTitle&quot;]}&quot;,&#xD;
+		icon:dorado.MessageBox.INFO_ICON,&#xD;
+		message:&quot;${res[&quot;menuItemClearTable.onClick.confirmInfoPrefix&quot;]}&quot;+tableName+&quot;${res[&quot;menuItemClearTable.onClick.confirmInfoSuffix&quot;]}&quot;,&#xD;
+		buttons:[&quot;yes&quot;,&quot;no&quot;],&#xD;
+		detailCallback:function(buttonId){&#xD;
+			if(buttonId==&quot;yes&quot;){&#xD;
+				&#xD;
+				action.set(&quot;parameter&quot;,{&#xD;
+					dbInfoId:dbInfoId,&#xD;
+					tableName:tableName&#xD;
+				}).execute();&#xD;
+			}&#xD;
+		}&#xD;
+		&#xD;
+});&#xD;
+}&#xD;
+</ClientEvent>
+        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/table_go.png</Property>
+        <Property name="name">menuItemClearTable</Property>
+      </MenuItem>
+    </Menu>
+    <Menu id="menuDbInfo">
+      <MenuItem>
+        <ClientEvent name="onClick">this.expandNode();&#xD;
+</ClientEvent>
+        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/chart_organisation.png</Property>
+        <Property name="name">menuItemExpand</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick">this.createConnection();&#xD;
+</ClientEvent>
+        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/database_add.png</Property>
+        <Property name="name">menuItemCreateNewConnection</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick">var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+var entity=tree.get(&quot;currentEntity&quot;);&#xD;
+var action=this.id(&quot;updateActionDbInfo&quot;);&#xD;
+dorado.MessageBox.show({&#xD;
+	title:&quot;${res[&quot;deleteDbInfoItem.onClick.comfirmTitle&quot;]}&quot;,&#xD;
+	icon:dorado.MessageBox.INFO_ICON,&#xD;
+	message:&quot;${res[&quot;deleteDbInfoItem.onClick.comfirmInfo&quot;]}&quot;,&#xD;
+	buttons:[&quot;yes&quot;,&quot;no&quot;],&#xD;
+	detailCallback:function(buttonId){&#xD;
+		if(buttonId==&quot;yes&quot;){&#xD;
+			entity.remove();&#xD;
+			action.execute();&#xD;
+		}&#xD;
+	}&#xD;
+});&#xD;
+</ClientEvent>
+        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/database_delete.png</Property>
+        <Property name="name">deleteDbInfoItem</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick">var dialog=this.id(&quot;dialogDbInfo&quot;);&#xD;
+var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+var entity=currentNode.get(&quot;data&quot;);&#xD;
+var dataSet=this.id(&quot;dataSetDbInfo&quot;);&#xD;
+dataSet.getData().setCurrent(entity)&#xD;
+//tree.set(&quot;currentEntity&quot;,entity);&#xD;
+&#xD;
+dialog.set(&quot;caption&quot;,&quot;${res[&quot;updateDbInfoItem.onClick.setCaption&quot;]}&quot;);&#xD;
+dialog.show();&#xD;
+</ClientEvent>
+        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/database_edit.png</Property>
+        <Property name="name">updateDbInfoItem</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick">&#xD;
+var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+var entity=currentNode.get(&quot;data&quot;);&#xD;
+var dataSet=this.id(&quot;dataSetDbInfo&quot;);&#xD;
+dataSet.getData().setCurrent(entity)&#xD;
+var dialog=this.id(&quot;dialogDbInfoRead&quot;);&#xD;
+dialog.show();&#xD;
+</ClientEvent>
+        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/table_gear.png</Property>
+        <Property name="name">menuItemShowProperty</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick">this.expandNode();&#xD;
+var action = this.id(&quot;ajaxActionCreateTable&quot;);&#xD;
+var dataSet = this.id(&quot;dataSetColumn&quot;);&#xD;
+var tree = this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
+var entity = currentNode.get(&quot;data&quot;);&#xD;
+var level = currentNode.get(&quot;level&quot;);&#xD;
+if (level == 1) {&#xD;
+    var dbInfoId = entity.get(&quot;id&quot;);&#xD;
+}&#xD;
+if (dbInfoId) {&#xD;
+    dorado.MessageBox.prompt(&quot;${res[&quot;menuItemCreateTable.onClick.promptInfo&quot;]}&quot;, {&#xD;
+        defaultText: &quot;&quot;,&#xD;
+        callback: function(text){&#xD;
+            if (!text) {&#xD;
+                dorado.MessageBox.alert(&quot;${res[&quot;menuItemCreateTable.onClick.nullTableNameAlertMessage&quot;]}&quot;);&#xD;
+                return;&#xD;
+            }&#xD;
+            action.set(&quot;parameter&quot;, {&#xD;
+                dbInfoId: dbInfoId,&#xD;
+                tableName: text&#xD;
+            }).execute(function(){     &#xD;
+                var currentEntity = currentNode.get(&quot;data&quot;);&#xD;
+                var newEntity = currentEntity.createChild(&quot;tableInfos&quot;, {&#xD;
+                    tableName: text,&#xD;
+                    dbInfoId: dbInfoId&#xD;
+                })&#xD;
+                tree.set(&quot;currentEntity&quot;, newEntity);&#xD;
+                dataSet.set(&quot;parameter&quot;, {&#xD;
+                    dbInfoId: dbInfoId,&#xD;
+                    tableName: text&#xD;
+                });&#xD;
+                dataSet.flush();&#xD;
+            });&#xD;
+        }&#xD;
+    });&#xD;
+}&#xD;
+</ClientEvent>
+        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/table_add.png</Property>
+        <Property name="name">menuItemCreateTable</Property>
+      </MenuItem>
+    </Menu>
+    <Dialog id="dialogDbInfoRead">
+      <Property name="center">true</Property>
+      <Property name="width">600</Property>
+      <Property name="height">300</Property>
+      <Property name="modal">true</Property>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dataSetDbInfo</Property>
+          <Property name="dataType">dataTypeDb</Property>
+          <Property name="cols">*</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="labelWidth">120</Property>
+          <Property name="labelAlign">right</Property>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">dbType</Property>
+            <Property name="property">dbType</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">url</Property>
+            <Property name="property">url</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">driverClass</Property>
+            <Property name="property">driverClass</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">username</Property>
+            <Property name="property">username</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement id="autoFormElementProductName">
+            <Property name="name">productName</Property>
+            <Property name="property">productName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement id="autoFormElementProductVersion">
+            <Property name="name">productVersion</Property>
+            <Property name="property">productVersion</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+    </Dialog>
+    <Dialog id="dialogDbInfo">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">600</Property>
+      <Property name="height">370</Property>
+      <Property name="closeable">false</Property>
+      <Buttons>
+        <Button id="buttonDbInfoOk">
+          <ClientEvent name="onClick" signature="self,arg,dataSetDbInfo,dialogDbInfo,updateActionDbInfo,ajaxActionTestConn">var dialog = dialogDbInfo;&#xD;
+var updateActionDbInfo = updateActionDbInfo;&#xD;
+&#xD;
+var action = ajaxActionTestConn;&#xD;
+var data = dataSetDbInfo.getData(&quot;#&quot;);&#xD;
+var url = data.get(&quot;url&quot;);&#xD;
+var driverClassName = data.get(&quot;driverClass&quot;);&#xD;
+var username = data.get(&quot;username&quot;);&#xD;
+var password = data.get(&quot;password&quot;);&#xD;
+&#xD;
+action.set(&quot;parameter&quot;, {&#xD;
+    url: url,&#xD;
+    driverClassName: driverClassName,&#xD;
+    username: username,&#xD;
+    password: password&#xD;
+});&#xD;
+action.execute(function(result){&#xD;
+    if (result != null) {&#xD;
+        dorado.MessageBox.alert(result);&#xD;
+    } else {&#xD;
+        dorado.MessageBox.show({&#xD;
+            title: &quot;${res['buttonDbInfoOk.onClick.confirmTitle']}&quot;,&#xD;
+            icon: dorado.MessageBox.INFO_ICON,&#xD;
+            message: &quot;${res['buttonDbInfoOk.onClick.confirmInfo']}&quot;,&#xD;
+            buttons: [&quot;yes&quot;, &quot;no&quot;],&#xD;
+            detailCallback: function(buttonId){&#xD;
+                if (buttonId == &quot;yes&quot;) {&#xD;
+                    updateActionDbInfo.execute(function(){&#xD;
+                        dialog.hide();&#xD;
+                    });&#xD;
+                }&#xD;
+            }&#xD;
+            &#xD;
+        });&#xD;
+    }&#xD;
+});&#xD;
+&#xD;
+</ClientEvent>
+          <Property name="iconClass">fa fa-floppy-o</Property>
+        </Button>
+        <Button id="buttonDbInfoCancel">
+          <ClientEvent name="onClick" signature="self,arg,dataSetDbInfo,dialogDbInfo">var data = dataSetDbInfo.getData();&#xD;
+var dialog = dialogDbInfo;&#xD;
+&#xD;
+dorado.MessageBox.show({&#xD;
+	title:&quot;${res['buttonDbInfoCancel.onClick.confirmTitle']}&quot;,&#xD;
+	icon:dorado.MessageBox.INFO_ICON,&#xD;
+	message:&quot;${res['buttonDbInfoCancel.onClick.confirmInfo']}&quot;,&#xD;
+	buttons:[&quot;yes&quot;,&quot;no&quot;],&#xD;
+	detailCallback:function(buttonId){&#xD;
+		if(buttonId==&quot;yes&quot;){&#xD;
+			data.cancel();&#xD;
+			dialog.hide();&#xD;
+		}&#xD;
+	}&#xD;
+	&#xD;
+});&#xD;
+</ClientEvent>
+          <Property name="iconClass">fa fa-times</Property>
+        </Button>
+        <Button id="buttonDbInfoTest">
+          <ClientEvent name="onClick" signature="self,arg,dataSetDbInfo,ajaxActionTestConn">var action = ajaxActionTestConn;&#xD;
+var data= dataSetDbInfo.getData(&quot;#&quot;);&#xD;
+var url=data.get(&quot;url&quot;);&#xD;
+var driverClassName=data.get(&quot;driverClass&quot;);&#xD;
+var username=data.get(&quot;username&quot;);&#xD;
+var password=data.get(&quot;password&quot;);&#xD;
+&#xD;
+action.set(&quot;parameter&quot;,{&#xD;
+	url:url,&#xD;
+	driverClassName:driverClassName,&#xD;
+	username:username,&#xD;
+	password:password&#xD;
+});&#xD;
+action.execute(function(result){&#xD;
+     if(result!=null){&#xD;
+	 	dorado.MessageBox.alert(result);&#xD;
+	 }else {&#xD;
+	 	dorado.MessageBox.alert(&quot;${res['buttonDbInfoTest.onClick.testSuccessAlertMessage']}&quot;);&#xD;
+	 }&#xD;
+});</ClientEvent>
+          <Property name="iconClass">fa fa-bug green-text</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="autoFormDbInfo">
+          <Property name="dataSet">dataSetDbInfo</Property>
+          <Property name="cols">*</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="labelAlign">right</Property>
+          <Property name="labelWidth">120</Property>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">dbType</Property>
+            <Property name="property">dbType</Property>
+            <Property name="trigger">dataSetDropDownDbType</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">driverClass</Property>
+            <Property name="property">driverClass</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">url</Property>
+            <Property name="property">url</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">username</Property>
+            <Property name="property">username</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">password</Property>
+            <Property name="property">password</Property>
+            <Property name="type">password</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+    </Dialog>
+    <Dialog id="dialogColumn">
+      <ClientEvent name="beforeShow" signature="self,arg,dataTreeDbInfo,dataSetColumnType">&#xD;
+var tree = dataTreeDbInfo;&#xD;
+var dataSet = dataSetColumnType;&#xD;
+var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+var level=currentNode.get(&quot;level&quot;);	&#xD;
+if (2 == level) {&#xD;
+	var entity=currentNode.get(&quot;data&quot;);&#xD;
+	var dbInfoId=entity.get(&quot;dbInfoId&quot;);&#xD;
+	dataSet.set(&quot;parameter&quot;,{&#xD;
+		dbInfoId:dbInfoId&#xD;
+	});&#xD;
+	dataSet.flush();&#xD;
+}&#xD;
+</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="closeable">false</Property>
+      <Property name="width">500</Property>
+      <Property name="modal">true</Property>
+      <Property name="height">260</Property>
+      <Buttons>
+        <Button id="buttonColumnOk">
+          <ClientEvent name="onClick">var dialog=this.id(&quot;dialogColumn&quot;);&#xD;
+var dataSetColumn=this.id(&quot;dataSetColumn&quot;);&#xD;
+var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+var currentEntity=tree.get(&quot;currentNode&quot;);&#xD;
+if (currentNode) {&#xD;
+	var level = currentNode.get(&quot;level&quot;);&#xD;
+	if(level==2){&#xD;
+		var entity = currentNode.get(&quot;data&quot;);&#xD;
+		var dbInfoId = entity.get(&quot;dbInfoId&quot;);&#xD;
+		var tableName=entity.get(&quot;tableName&quot;);	&#xD;
+	}else {&#xD;
+		dorado.MessageBox.alert(&quot;${res[&quot;buttonColumnOk.onClick.selectTableAlertMessage&quot;]}&quot;);&#xD;
+	}&#xD;
+}&#xD;
+var action=this.id(&quot;updateActionColumn&quot;);&#xD;
+var data=dataSetColumn.getData();&#xD;
+if(data.current){&#xD;
+	&#xD;
+			action.set(&quot;parameter&quot;,{&#xD;
+				dbInfoId:dbInfoId,&#xD;
+				tableName:tableName&#xD;
+			});&#xD;
+			action.execute(function(){&#xD;
+				dorado.MessageBox.alert(&quot;${res[&quot;buttonColumnOk.onClick.successAlertMessage&quot;]}&quot;);&#xD;
+				dialog.hide();&#xD;
+			});&#xD;
+		&#xD;
+}&#xD;
+&#xD;
+</ClientEvent>
+          <Property name="iconClass">fa fa-floppy-o</Property>
+        </Button>
+        <Button id="buttonColumnCancel">
+          <ClientEvent name="onClick">var data=this.id(&quot;dataSetColumn&quot;).getData();&#xD;
+var dialog=this.id(&quot;dialogColumn&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;${res[&quot;buttonColumnCancel.onClick.confirmInfo&quot;]}&quot;,function(){&#xD;
+	data.cancel();&#xD;
+	dialog.hide();&#xD;
+});&#xD;
+</ClientEvent>
+          <Property name="iconClass">fa fa-times</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="autoFormColumn">
+          <Property name="dataSet">dataSetColumn</Property>
+          <Property name="cols">*,*</Property>
+          <Property name="labelAlign">right</Property>
+          <Property name="labelWidth">120</Property>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">columnName</Property>
+            <Property name="property">columnName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">columnType</Property>
+            <Property name="property">columnType</Property>
+            <Property name="trigger">dataSetDropDownColumnType</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">columnSize</Property>
+            <Property name="property">columnSize</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">isprimaryKey</Property>
+            <Property name="property">isprimaryKey</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">isnullAble</Property>
+            <Property name="property">isnullAble</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+    </Dialog>
+    <UpdateAction id="updateActionDbInfo">
+      <ClientEvent name="onSuccess">//var dataSet=this.id(&quot;dataSetDbInfo&quot;);&#xD;
+//dataSet.flush();&#xD;
+</ClientEvent>
+      <Property name="dataResolver">dbConsoleController#saveDbInfos</Property>
+      <UpdateItem>
+        <Property name="dataSet">dataSetDbInfo</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <UpdateAction id="updateActionColumn">
+      <Property name="dataResolver">dbConsoleController#saveTableColumn</Property>
+      <UpdateItem>
+        <Property name="dataSet">dataSetColumn</Property>
+        <Property name="dataPath">!DIRTY_TREE</Property>
+        <Property name="submitOldData">true</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <AjaxAction id="ajaxActionTestConn">
+      <Property name="service">dbConsoleController#testConnection</Property>
+    </AjaxAction>
+    <AjaxAction id="ajaxActionUpdateSql">
+      <Property name="service">dbConsoleController#executeUpdateSql</Property>
+    </AjaxAction>
+    <AjaxAction id="ajaxActionDeleteTable">
+      <ClientEvent name="onSuccess">this.flushTabData();&#xD;
+</ClientEvent>
+      <Property name="service">dbConsoleController#deleteTable</Property>
+    </AjaxAction>
+    <AjaxAction id="ajaxActionAlertTableName">
+      <Property name="service">dbConsoleController#alertTableName</Property>
+    </AjaxAction>
+    <AjaxAction id="ajaxActionDeleteTableData">
+      <ClientEvent name="onSuccess">this.flushTabData();</ClientEvent>
+      <Property name="service">dbConsoleController#deleteTableData</Property>
+    </AjaxAction>
+    <AjaxAction id="ajaxActionCreateTable">
+      <ClientEvent name="onSuccess">this.flushTabData();</ClientEvent>
+      <Property name="service">dbConsoleController#createTable</Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>

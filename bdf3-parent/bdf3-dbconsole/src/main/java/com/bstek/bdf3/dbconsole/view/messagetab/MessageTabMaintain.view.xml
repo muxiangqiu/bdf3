@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View listener="spring:messageTabInterceptor#onInit">
+    <HtmlContainer id="htmlContainerMessage"/>
+  </View>
+</ViewConfig>

@@ -13,6 +13,7 @@ com.bstek.bdf3.autoconfigure.dorado.DoradoAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.jpa.JpaAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.dorado.jpa.JpaAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.log.LogAutoConfiguration,\
+com.bstek.bdf3.autoconfigure.dbconsole.DbConsoleAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.dictionary.DictionaryAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.importer.ImporterAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.security.SecurityAutoConfiguration,\

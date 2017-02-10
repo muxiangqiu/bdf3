@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context>
+    <Attribute name="dbInfoId">
+      <Property name="value">${request.getParameter(&quot;dbInfoId&quot;)}</Property>
+    </Attribute>
+    <Attribute name="tableName">
+      <Property name="value">${request.getParameter(&quot;tableName&quot;)}</Property>
+    </Attribute>
+    <Attribute name="sql">
+      <Property name="value">${request.getParameter(&quot;sql&quot;)}</Property>
+    </Attribute>
+    <Attribute name="type">
+      <Property name="value">${request.getParameter(&quot;type&quot;)}</Property>
+    </Attribute>
+  </Context>
+  <Model>
+    <DataType listener="spring:dataTabInterceptor#onInit" name="dataTypeData">
+      <ClientEvent name="onStateChange">this.$checkSaveButton();&#xD;
+</ClientEvent>
+      <Property name="autoCreatePropertyDefs">true</Property>
+    </DataType>
+  </Model>
+  <View listener="spring:dataTabInterceptor#onInit">
+    <ClientEvent name="onReady">view.$checkSaveButton = function(){&#xD;
+    var toolBarButtonSave = this.id(&quot;toolBarButtonSave&quot;);&#xD;
+    var dataSet = this.id(&quot;dataSetData&quot;);&#xD;
+    var data = dataSet.queryData(&quot;[#dirty]&quot;);&#xD;
+    if (data!=&quot;&quot;) {&#xD;
+        toolBarButtonSave.set(&quot;disabled&quot;, false);&#xD;
+    }&#xD;
+    else {&#xD;
+        toolBarButtonSave.set(&quot;disabled&quot;, true);&#xD;
+    }&#xD;
+    &#xD;
+}&#xD;
+</ClientEvent>
+    <Property name="packages">font-awesome,colors</Property>
+    <DataSet id="dataSetData">
+      <Property name="dataProvider">dbConsoleController#loadQueryTableData</Property>
+      <Property name="dataType">[dataTypeData]</Property>
+      <Property name="pageSize">100</Property>
+      <Property name="loadMode">onReady</Property>
+    </DataSet>
+    <Panel>
+      <Buttons/>
+      <Children>
+        <Control layoutConstraint="top">
+          <Property name="height">5</Property>
+        </Control>
+        <ToolBar id="toolBarData" layoutConstraint="top">
+          <DataPilot id="dataPilotData">
+            <ClientEvent name="onSubControlAction">var code = arg.code;&#xD;
+switch (code) {&#xD;
+    case &quot;-&quot;:&#xD;
+        var datas = this.id(&quot;dataGridData&quot;).get(&quot;selection&quot;);&#xD;
+        var dataSetData = this.id(&quot;dataSetData&quot;).getData();&#xD;
+        if (!datas || datas.length == 0) {&#xD;
+            dorado.MessageBox.alert(&quot;请勾选要删除的记录！&quot;);&#xD;
+        }        else {&#xD;
+            dorado.MessageBox.confirm(&quot;真的要删除当前所选的记录吗？&quot;,function(){&#xD;
+                $.each(datas,function(i,item){&#xD;
+                    dataSetData.remove(item);&#xD;
+                });&#xD;
+            });&#xD;
+        }        arg.processDefault = false;&#xD;
+        break;&#xD;
+        &#xD;
+}&#xD;
+</ClientEvent>
+            <Property name="dataSet">dataSetData</Property>
+            <Property name="itemCodes">+,-</Property>
+          </DataPilot>
+          <ToolBarButton id="toolBarButtonSave">
+            <ClientEvent name="onClick">var action=this.id(&quot;updateActionData&quot;);&#xD;
+var dataSetData=this.id(&quot;dataSetData&quot;);&#xD;
+var parameter=dataSetData.get(&quot;parameter&quot;);&#xD;
+if(parameter){&#xD;
+	dorado.MessageBox.confirm(&quot;您真的要保存操作吗 ？&quot;,function(){&#xD;
+		action.set(&quot;parameter&quot;,parameter);&#xD;
+		action.execute();&#xD;
+	});&#xD;
+	&#xD;
+}&#xD;
+</ClientEvent>
+            <Property name="caption">保存操作</Property>
+            <Property name="iconClass">fa fa-floppy-o blue-text</Property>
+          </ToolBarButton>
+          <ToolBarButton id="toolBarButtonExportExcel">
+            <Property name="menu">menuButton</Property>
+            <Property name="caption">导出Excel文件</Property>
+            <Property name="iconClass">fa fa-file-excel-o blue-text</Property>
+          </ToolBarButton>
+        </ToolBar>
+        <Control layoutConstraint="top">
+          <Property name="height">5</Property>
+        </Control>
+        <DataGrid id="dataGridData" layoutConstraint="center">
+          <Property name="dataSet">dataSetData</Property>
+          <Property name="stretchColumnsMode">off</Property>
+          <Property name="readOnly">false</Property>
+          <Property name="selectionMode">multiRows</Property>
+        </DataGrid>
+        <Control layoutConstraint="bottom">
+          <Property name="height">5</Property>
+        </Control>
+        <ToolBar layoutConstraint="bottom">
+          <DataPilot>
+            <Property name="dataSet">dataSetData</Property>
+            <Property name="itemCodes">pages,pageSize</Property>
+          </DataPilot>
+        </ToolBar>
+        <Control layoutConstraint="bottom">
+          <Property name="height">5</Property>
+        </Control>
+      </Children>
+      <Tools/>
+    </Panel>
+    <UpdateAction id="updateActionData">
+      <ClientEvent name="onSuccess"> var toolBarButtonSave = this.id(&quot;toolBarButtonSave&quot;);&#xD;
+ toolBarButtonSave.set(&quot;disabled&quot;, true);&#xD;
+</ClientEvent>
+      <Property name="dataResolver">dbConsoleController#saveTableData</Property>
+      <Property name="successMessage">保存记录成功！</Property>
+      <UpdateItem>
+        <Property name="dataSet">dataSetData</Property>
+        <Property name="submitOldData">true</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <Menu id="menuButton">
+      <MenuItem>
+        <ClientEvent name="onClick">view.get(&quot;#export2ReportAction&quot;).set(&quot;dataScope&quot;,&quot;currentPage&quot;).execute();&#xD;
+</ClientEvent>
+        <Property name="name">menuItemExportCurrentPageRecords</Property>
+        <Property name="caption">导出当前页记录</Property>
+        <Property name="iconClass">fa fa-file-o yellow-text</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick">view.get(&quot;#export2ReportAction&quot;).set(&quot;dataScope&quot;,&quot;serverAll&quot;).execute();&#xD;
+</ClientEvent>
+        <Property name="name">menuItemExportAllRecords</Property>
+        <Property name="caption">导出所有记录</Property>
+        <Property name="iconClass">fa fa-files-o yellow-text</Property>
+      </MenuItem>
+    </Menu>
+    <Export2ReportAction id="export2ReportAction">
+      <Property name="executingMessage">正在导出...</Property>
+      <Property name="successMessage">导出成功！</Property>
+      <Property name="template">dataGridData</Property>
+      <Property name="maxSize">200000</Property>
+      <Property name="extension">xlsx</Property>
+    </Export2ReportAction>
+  </View>
+</ViewConfig>

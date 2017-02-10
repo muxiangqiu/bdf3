@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>bdf3-parent</artifactId>
-  <packaging>pom</packaging>
-  <parent>
-    <groupId>com.bstek.bdf3</groupId>
-    <artifactId>bdf3-dependencies</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <relativePath>../bdf3-dependencies/pom.xml</relativePath>
-  </parent>
-  <modules>
-  	<module>bdf3-security</module>
-    <module>bdf3-cola</module>
-    <module>bdf3-jpa</module>
-    <module>bdf3-security-ui</module>
-    <module>bdf3-dorado</module>
-    <module>bdf3-autoconfigure</module>
-    <module>bdf3-dorado-jpa</module>
-    <module>bdf3-security-cola-ui</module>
-    <module>bdf3-saas</module>
-    <module>bdf3-security-saas-cola-ui</module>
-    <module>bdf3-activiti</module>
-    <module>bdf3-activiti-cola-ui</module>
-    <module>bdf3-message</module>
-    <module>bdf3-message-cola-ui</module>
-    <module>bdf3-saas-ui</module>
-    <module>bdf3-importer</module>
-    <module>bdf3-log</module>
-    <module>bdf3-dictionary</module>
-    <module>bdf3-dictionary-ui</module>
-    <module>bdf3-swfviewer</module>
-    <module>bdf3-export</module>
-  </modules>
-  <properties>
-  </properties>
-  <repositories>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>bdf3-parent</artifactId>
+	<packaging>pom</packaging>
+	<parent>
+		<groupId>com.bstek.bdf3</groupId>
+		<artifactId>bdf3-dependencies</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../bdf3-dependencies/pom.xml</relativePath>
+	</parent>
+	<modules>
+		<module>bdf3-security</module>
+		<module>bdf3-cola</module>
+		<module>bdf3-jpa</module>
+		<module>bdf3-security-ui</module>
+		<module>bdf3-dorado</module>
+		<module>bdf3-autoconfigure</module>
+		<module>bdf3-dorado-jpa</module>
+		<module>bdf3-security-cola-ui</module>
+		<module>bdf3-saas</module>
+		<module>bdf3-security-saas-cola-ui</module>
+		<module>bdf3-activiti</module>
+		<module>bdf3-activiti-cola-ui</module>
+		<module>bdf3-message</module>
+		<module>bdf3-message-cola-ui</module>
+		<module>bdf3-saas-ui</module>
+		<module>bdf3-importer</module>
+		<module>bdf3-log</module>
+		<module>bdf3-dictionary</module>
+		<module>bdf3-dictionary-ui</module>
+		<module>bdf3-swfviewer</module>
+		<module>bdf3-export</module>
+		<module>bdf3-dbconsole</module>
+	</modules>
+	<properties>
+	</properties>
+	<repositories>
 		<repository>
 			<id>spring-snapshots</id>
 			<name>Spring Snapshots</name>
@@ -91,40 +93,44 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<build>
-	<plugins>
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-source-plugin</artifactId>
-			<configuration>
-				<attach>true</attach>
-			</configuration>
-			<executions>
-				<execution>
-					<phase>compile</phase>
-					<!-- 在compile阶段中执行 -->
-					<goals>
-						<goal>jar</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-javadoc-plugin</artifactId>
-			<configuration>
-				<attach>true</attach>
-			</configuration>
-			<executions>
-				<execution>
-					<phase>package</phase>
-					<!-- 在compile阶段中执行 -->
-					<goals>
-						<goal>jar</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-	</plugins>
-	
-</build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<!-- 在compile阶段中执行 -->
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<attach>true</attach>
+					<aggregate>true</aggregate>
+					<charset>UTF-8</charset>
+					<encoding>UTF-8</encoding>
+					<docencoding>UTF-8</docencoding>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						在compile阶段中执行
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin> -->
+		</plugins>
+
+	</build>
 </project>
