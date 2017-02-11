@@ -131,7 +131,6 @@
         <Container>
           <Panel layout="padding:5;regionPadding:10" layoutConstraint="padding:15">
             <Property name="caption">映射规则</Property>
-            <Property name="iconClass">fa fa-random</Property>
             <Buttons/>
             <Children>
               <ToolBar>
@@ -261,7 +260,6 @@ updateActionImporterSolution.execute();
         <Container>
           <Panel layout="padding:5;regionPadding:10" layoutConstraint="padding:15">
             <Property name="caption">Excel导入方案</Property>
-            <Property name="iconClass">fa fa-file-excel-o</Property>
             <Buttons/>
             <Children>
               <ToolBar>
@@ -360,7 +358,6 @@ if (entity) {
 </ClientEvent>
       <Property name="width">500</Property>
       <Property name="caption">Excel导入方案维护</Property>
-      <Property name="iconClass">fa fa-file-excel-o</Property>
       <Buttons>
         <Button>
           <Property name="caption">保存</Property>
