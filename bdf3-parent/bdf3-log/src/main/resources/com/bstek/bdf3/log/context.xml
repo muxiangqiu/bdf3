@@ -5,8 +5,8 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	">
-	<aop:aspectj-autoproxy/>
-	<bean class="com.bstek.bdf3.log.LogAspect">
+<!-- 	<aop:aspectj-autoproxy/>
+ -->	<bean class="com.bstek.bdf3.log.LogAspect">
 		<property name="disabled" value="${bdf3.log.disabled}"></property>
 		<property name="contextHandler" ref="log.contextHandler"></property>
 	</bean>
