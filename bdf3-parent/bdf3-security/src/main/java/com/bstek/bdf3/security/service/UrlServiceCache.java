@@ -10,7 +10,7 @@ import com.bstek.bdf3.security.domain.Url;
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2016年1月30日
  */
-interface UrlServiceCache {
+public interface UrlServiceCache {
 	/**
 	 * 获取所有菜单，以树形结构返回
 	 * @return 所有菜单
