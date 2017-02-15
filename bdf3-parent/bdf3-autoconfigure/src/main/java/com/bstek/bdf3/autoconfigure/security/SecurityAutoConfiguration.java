@@ -1,6 +1,5 @@
 package com.bstek.bdf3.autoconfigure.security;
 
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -21,7 +20,6 @@ import com.bstek.bdf3.security.SecurityConfiguration;
  */
 @Configuration
 @AutoConfigureBefore({JpaRepositoriesAutoConfiguration.class})
-@AutoConfigureAfter
 @ConditionalOnClass(SecurityConfiguration.class)
 @ConditionalOnProperty(prefix = "security.basic", name = "enabled", matchIfMissing = true)
 @Order(SecurityProperties.BASIC_AUTH_ORDER - 100)
