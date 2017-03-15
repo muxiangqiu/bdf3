@@ -25,7 +25,7 @@ public class FrameworkController {
 	@Autowired
 	private FrameworkService frameworkService;
 	
-	@Value("${bdf3.security.loginSuccessPage:bdf3.security.ui.view.Main.d}")
+	@Value("${bdf3.loginSuccessPage:bdf3.security.ui.view.Main.d}")
 	private String loginSuccessPage;
 	
 	@RequestMapping("/") 

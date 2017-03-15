@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccessDecisionManagerImpl extends AbstractAccessDecisionManager {
 
-	@Value("${bdf3.security.allowIfAllAbstainDecisions:true}")
+	@Value("${bdf3.allowIfAllAbstainDecisions:true}")
 	private boolean allowIfAllAbstainDecisions;
 	
 	private List<AccessDecisionVoter<? extends Object>> decisionVoters;
