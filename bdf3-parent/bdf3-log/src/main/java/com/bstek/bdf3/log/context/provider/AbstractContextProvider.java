@@ -1,6 +1,7 @@
 package com.bstek.bdf3.log.context.provider;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanMap;
 
 import com.bstek.bdf3.log.context.ContextHandler;
@@ -11,6 +12,7 @@ import com.bstek.bdf3.log.context.ContextHandler;
  */
 public abstract class AbstractContextProvider implements ContextProvider{
 	
+	@Autowired
 	protected ContextHandler contextHandler;
 	
 	protected Object getRealContext(Object obj, String dataPath) {

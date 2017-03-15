@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.dorado.jpa.BeanUtils;
@@ -24,8 +26,10 @@ import com.bstek.dorado.web.DoradoContext;
  *@author Kevin.yang
  *@since 2015年7月20日
  */
+@Component
 public class DefaultLogger implements Logger {
 
+	@Autowired
 	protected ContextHandler contextHandler;
 	
 	@SuppressWarnings("rawtypes")

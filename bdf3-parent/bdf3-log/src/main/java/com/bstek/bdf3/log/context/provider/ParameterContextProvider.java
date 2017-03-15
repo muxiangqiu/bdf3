@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.aspectj.lang.JoinPoint;
+import org.springframework.stereotype.Component;
 
 import com.bstek.bdf3.log.annotation.LogDefinition;
 
@@ -11,6 +12,7 @@ import com.bstek.bdf3.log.annotation.LogDefinition;
  *@author Kevin.yang
  *@since 2015年7月20日
  */
+@Component
 public class ParameterContextProvider extends AbstractContextProvider {
 
 	private static final Pattern PATTERN = Pattern.compile("^arg\\(([ha0-9]|[1-9][0-9]+)\\)$");

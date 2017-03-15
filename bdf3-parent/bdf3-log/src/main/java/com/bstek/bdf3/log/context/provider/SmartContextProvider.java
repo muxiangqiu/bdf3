@@ -3,6 +3,8 @@ package com.bstek.bdf3.log.context.provider;
 import java.util.Collection;
 
 import org.aspectj.lang.JoinPoint;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.bstek.bdf3.log.annotation.LogDefinition;
 import com.bstek.bdf3.log.context.ContextHandler;
@@ -12,8 +14,10 @@ import com.bstek.dorado.data.provider.Page;
  *@author Kevin.yang
  *@since 2015年7月20日
  */
+@Component
 public class SmartContextProvider implements ContextProvider {
 
+	@Autowired
 	protected ContextHandler contextHandler;
 
 	@Override

@@ -1,5 +1,9 @@
 package com.bstek.bdf3.log.context;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 import com.bstek.dorado.core.el.Expression;
 import com.bstek.dorado.core.el.ExpressionHandler;
 
@@ -8,8 +12,11 @@ import com.bstek.dorado.core.el.ExpressionHandler;
  *@author Kevin.yang
  *@since 2015年7月20日
  */
+@Component
 public class ContextHandlerImpl implements ContextHandler{
 
+	@Autowired
+	@Qualifier("dorado.expressionHandler")
 	private ExpressionHandler expressionHandler;
 	
 	@SuppressWarnings("unchecked")

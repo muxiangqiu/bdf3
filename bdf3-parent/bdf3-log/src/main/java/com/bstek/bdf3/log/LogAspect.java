@@ -7,8 +7,11 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 import com.bstek.bdf3.log.annotation.Log;
 import com.bstek.bdf3.log.annotation.LogDefinition;
@@ -20,11 +23,19 @@ import com.bstek.bdf3.log.logger.Logger;
  *@author Kevin.yang
  *@since 2015年7月19日
  */
+@Component
 @Aspect
-public class LogAspect implements ApplicationContextAware{
+public class LogAspect implements ApplicationContextAware {
+	
+	@Autowired
 	protected ContextHandler contextHandler;
+	
+	@Autowired
 	protected Collection<ContextProvider> providers;
+	
 	protected ApplicationContext applicationContext;
+	
+	@Value("${bdf3.log.disabled}")
 	private boolean disabled;
 	
 	@Pointcut("@annotation(com.bstek.bdf3.log.annotation.NotLog)")
@@ -85,26 +96,11 @@ public class LogAspect implements ApplicationContextAware{
 		return returnValue;
 	}
 
-	public void setContextHandler(ContextHandler contextHandler) {
-		this.contextHandler = contextHandler;
-	}
-
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
 		this.applicationContext = applicationContext;
-		providers = applicationContext.getBeansOfType(ContextProvider.class).values();
 		
 	}
-
-	public boolean isDisabled() {
-		return disabled;
-	}
-
-	public void setDisabled(boolean disabled) {
-		this.disabled = disabled;
-	}
-
-	
 
 }

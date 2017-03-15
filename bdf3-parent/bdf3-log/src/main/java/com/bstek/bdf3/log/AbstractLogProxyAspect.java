@@ -3,12 +3,12 @@ package com.bstek.bdf3.log;
 import java.lang.reflect.Method;
 import java.util.Collection;
 
-import javax.annotation.Resource;
-
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -22,32 +22,38 @@ import com.bstek.bdf3.log.proxy.LogProxy;
 public abstract class AbstractLogProxyAspect implements ApplicationContextAware{
 
 	protected Collection<LogProxy> proxies;
-	@Resource
+	
+	@Autowired
 	protected LogAspect logAspect;
 	
+	@Value("${bdf3.log.disabled}")
+	private boolean disabled;
+
 	abstract protected void logPointcut();
 	
 	@Around("logPointcut()")
 	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-		for (LogProxy proxy : proxies) {
-			if (proxy.support(joinPoint.getTarget())) {
-				Class<?> targetCalss = AopUtils.getTargetClass(proxy);
-				Log methodLog = null;
-				Log typeLog = targetCalss.getAnnotation(Log.class);
-				Method[] methods = targetCalss.getDeclaredMethods();
-				for (Method method : methods) {
-					if (method.getName().equals(joinPoint.getSignature().getName())) {
-						methodLog = method.getAnnotation(Log.class);
-						break;
+		if (!disabled) {
+			for (LogProxy proxy : proxies) {
+				if (proxy.support(joinPoint.getTarget())) {
+					Class<?> targetCalss = AopUtils.getTargetClass(proxy);
+					Log methodLog = null;
+					Log typeLog = targetCalss.getAnnotation(Log.class);
+					Method[] methods = targetCalss.getDeclaredMethods();
+					for (Method method : methods) {
+						if (method.getName().equals(joinPoint.getSignature().getName())) {
+							methodLog = method.getAnnotation(Log.class);
+							break;
+						}
 					}
-				}
-				
-				if (methodLog != null && typeLog != null) {
-					return logAspect.logTypeMethodAround(joinPoint, typeLog, methodLog);
-				} else if (methodLog != null) {
-					return logAspect.logOnlyMethodAround(joinPoint, methodLog);
-				} else if (typeLog != null) {
-					return logAspect.logOnlyTypeAround(joinPoint, typeLog);
+					
+					if (methodLog != null && typeLog != null) {
+						return logAspect.logTypeMethodAround(joinPoint, typeLog, methodLog);
+					} else if (methodLog != null) {
+						return logAspect.logOnlyMethodAround(joinPoint, methodLog);
+					} else if (typeLog != null) {
+						return logAspect.logOnlyTypeAround(joinPoint, typeLog);
+					}
 				}
 			}
 		}
