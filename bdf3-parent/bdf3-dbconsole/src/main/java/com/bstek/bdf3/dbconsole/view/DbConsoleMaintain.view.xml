@@ -658,37 +658,30 @@ this.flushTabData();&#xD;
                 <ClientEvent name="onCollapse">&#xD;
 this.$setCurrentNode(arg.node);&#xD;
 this.flushTabData();</ClientEvent>
-                <ClientEvent name="onContextMenu">this.flushTabData();&#xD;
-var tree = this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+                <ClientEvent name="onContextMenu" signature="self,arg,menuTableInfo,dataTreeDbInfo,menuDbInfo">view.flushTabData();&#xD;
+var tree = dataTreeDbInfo;&#xD;
 var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
 &#xD;
 var level = currentNode.get(&quot;level&quot;);&#xD;
 if (1 == level) {&#xD;
     var entity = currentNode.get(&quot;data&quot;);&#xD;
     var dbInfoId = entity.get(&quot;id&quot;);&#xD;
-    var menu = this.id(&quot;menuDbInfo&quot;);&#xD;
+    var menu = menuDbInfo;&#xD;
     if (dbInfoId == &quot;db_console_default_datasource&quot;) {&#xD;
         menu.getItem(&quot;deleteDbInfoItem&quot;).set(&quot;visible&quot;, false);&#xD;
         menu.getItem(&quot;updateDbInfoItem&quot;).set(&quot;visible&quot;, false);&#xD;
-    }&#xD;
-    else {&#xD;
+    } else {&#xD;
         menu.getItem(&quot;deleteDbInfoItem&quot;).set(&quot;visible&quot;, true);&#xD;
         menu.getItem(&quot;updateDbInfoItem&quot;).set(&quot;visible&quot;, true);&#xD;
     }&#xD;
     menu.show({&#xD;
-        position: {&#xD;
-            left: arg.event.pageX,&#xD;
-            top: arg.event.pageY&#xD;
-        }&#xD;
+        event: arg.event&#xD;
     });&#xD;
 }&#xD;
 else {&#xD;
     if (2 == level) {&#xD;
-        this.id(&quot;menuTableInfo&quot;).show({&#xD;
-            position: {&#xD;
-                left: arg.event.pageX,&#xD;
-                top: arg.event.pageY&#xD;
-            }&#xD;
+        menuTableInfo.show({&#xD;
+           event: arg.event&#xD;
         });&#xD;
     }&#xD;
 }&#xD;
@@ -752,177 +745,172 @@ dataSetColumn.getData().clear();
     </SplitPanel>
     <Menu id="menuTableInfo">
       <MenuItem>
-        <ClientEvent name="onClick">&#xD;
-var action=this.id(&quot;ajaxActionDeleteTable&quot;);&#xD;
-var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
-var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
-var currentEntity=tree.get(&quot;currentEntity&quot;);&#xD;
-var entity=currentNode.get(&quot;data&quot;);&#xD;
-var level=currentNode.get(&quot;level&quot;);&#xD;
-if(level==2){&#xD;
-	var tableName=entity.get(&quot;tableName&quot;);&#xD;
-	var dbInfoId=entity.get(&quot;dbInfoId&quot;);&#xD;
+        <ClientEvent name="onClick" signature="self,arg,dataTreeDbInfo,ajaxActionDeleteTable">var action = ajaxActionDeleteTable;&#xD;
+var tree = dataTreeDbInfo;&#xD;
+var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
+var currentEntity = tree.get(&quot;currentEntity&quot;);&#xD;
+var entity = currentNode.get(&quot;data&quot;);&#xD;
+var level = currentNode.get(&quot;level&quot;);&#xD;
+if (level == 2) {&#xD;
+	var tableName = entity.get(&quot;tableName&quot;);&#xD;
+	var dbInfoId = entity.get(&quot;dbInfoId&quot;);&#xD;
 }&#xD;
-if (tableName&amp;&amp;dbInfoId) {&#xD;
-		dorado.MessageBox.show({&#xD;
-		title:&quot;${res[&quot;menuItemDeleteCurrentTable.onClick.comfirmTitle&quot;]}&quot;,&#xD;
-		icon:dorado.MessageBox.INFO_ICON,&#xD;
-		message:&quot;${res[&quot;menuItemDeleteCurrentTable.onClick.comfirmInfoPrefix&quot;]}&quot;+tableName+&quot;${res[&quot;menuItemDeleteCurrentTable.onClick.comfirmInfoSuffix&quot;]}&quot;,&#xD;
-		buttons:[&quot;yes&quot;,&quot;no&quot;],&#xD;
-		detailCallback:function(buttonId){&#xD;
-			if(buttonId==&quot;yes&quot;){&#xD;
+if (tableName &amp;&amp; dbInfoId) {&#xD;
+	dorado.MessageBox.show({&#xD;
+		title: &quot;${res['menuItemDeleteCurrentTable.onClick.comfirmTitle']}&quot;,&#xD;
+		icon: dorado.MessageBox.INFO_ICON,&#xD;
+		message: &quot;${res['menuItemDeleteCurrentTable.onClick.comfirmInfoPrefix']}&quot; + tableName + &quot;${res['menuItemDeleteCurrentTable.onClick.comfirmInfoSuffix']}&quot;,&#xD;
+		buttons: [&quot;yes&quot;,&quot;no&quot;],&#xD;
+		detailCallback: function(buttonId) {&#xD;
+			if (buttonId == &quot;yes&quot;){&#xD;
 				currentEntity.remove();&#xD;
-				action.set(&quot;parameter&quot;,{&#xD;
-					dbInfoId:dbInfoId,&#xD;
-					tableName:tableName&#xD;
+				action.set(&quot;parameter&quot;, {&#xD;
+					dbInfoId: dbInfoId,&#xD;
+					tableName: tableName&#xD;
 				}).execute();&#xD;
 			}&#xD;
-		}&#xD;
-		&#xD;
-});	&#xD;
+		}	&#xD;
+	});	&#xD;
 }&#xD;
 </ClientEvent>
-        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/table_delete.png</Property>
         <Property name="name">menuItemDeleteCurrentTable</Property>
+        <Property name="iconClass">fa fa-trash-o red-text</Property>
       </MenuItem>
       <MenuItem>
-        <ClientEvent name="onClick">&#xD;
-var action=this.id(&quot;ajaxActionAlertTableName&quot;);&#xD;
-var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
-var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+        <ClientEvent name="onClick" signature="self,arg,dataTreeDbInfo,ajaxActionAlertTableName">&#xD;
+var action = ajaxActionAlertTableName;&#xD;
+var tree = dataTreeDbInfo;&#xD;
+var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
 &#xD;
-var entity=currentNode.get(&quot;data&quot;);&#xD;
-var level=currentNode.get(&quot;level&quot;);&#xD;
-if(level==2){&#xD;
-	var tableName=entity.get(&quot;tableName&quot;);&#xD;
-	var dbInfoId=entity.get(&quot;dbInfoId&quot;);&#xD;
+var entity = currentNode.get(&quot;data&quot;);&#xD;
+var level = currentNode.get(&quot;level&quot;);&#xD;
+if (level == 2) {&#xD;
+	var tableName = entity.get(&quot;tableName&quot;);&#xD;
+	var dbInfoId = entity.get(&quot;dbInfoId&quot;);&#xD;
 }&#xD;
-if (tableName&amp;&amp;dbInfoId) {	&#xD;
-				 dorado.MessageBox.prompt(&quot;${res[&quot;menuItemRename.onClick.promptInfo&quot;]}&quot;,{&#xD;
-	   			 defaultText:tableName,&#xD;
-				 callback:function(text){				 	&#xD;
-					if(!text){&#xD;
-						dorado.MessageBox.alert(&quot;${res[&quot;menuItemRename.onClick.nullAlertMessage&quot;]}&quot;);&#xD;
-						return;&#xD;
-					}&#xD;
-					if(text.toLowerCase()==tableName.toLowerCase()){&#xD;
-						dorado.MessageBox.alert(&quot;${res[&quot;menuItemRename.onClick.duplicatelAlertMessage&quot;]}&quot;);&#xD;
-						return ;&#xD;
-					}&#xD;
-					entity.set(&quot;tableName&quot;,text);&#xD;
-		 			action.set(&quot;parameter&quot;,{&#xD;
-						dbInfoId:dbInfoId,&#xD;
-						tableName:tableName,&#xD;
-						newTableName:text&#xD;
-					}).execute();&#xD;
-				 }&#xD;
-	  		 });&#xD;
+if (tableName &amp;&amp; dbInfoId) {	&#xD;
+	dorado.MessageBox.prompt(&quot;${res['menuItemRename.onClick.promptInfo']}&quot;, {&#xD;
+		defaultText: tableName,&#xD;
+	 	callback: function(text){				 	&#xD;
+			if (!text) {&#xD;
+				dorado.MessageBox.alert(&quot;${res['menuItemRename.onClick.nullAlertMessage']}&quot;);&#xD;
+				return;&#xD;
+			}&#xD;
+			if (text.toLowerCase() == tableName.toLowerCase()) {&#xD;
+				dorado.MessageBox.alert(&quot;${res['menuItemRename.onClick.duplicatelAlertMessage']}&quot;);&#xD;
+				return ;&#xD;
+			}&#xD;
+			entity.set(&quot;tableName&quot;, text);&#xD;
+				action.set(&quot;parameter&quot;, {&#xD;
+				dbInfoId: dbInfoId,&#xD;
+				tableName: tableName,&#xD;
+				newTableName: text&#xD;
+			}).execute();&#xD;
+		 }&#xD;
+	});&#xD;
 }		&#xD;
 &#xD;
 </ClientEvent>
-        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/table_edit.png</Property>
         <Property name="name">menuItemRename</Property>
+        <Property name="iconClass">fa fa-wrench blue-text</Property>
       </MenuItem>
       <MenuItem>
-        <ClientEvent name="onClick">var action=this.id(&quot;ajaxActionDeleteTableData&quot;);&#xD;
-var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
-var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+        <ClientEvent name="onClick" signature="self,arg,dataTreeDbInfo,ajaxActionDeleteTableData">var action = ajaxActionDeleteTableData;&#xD;
+var tree = dataTreeDbInfo;&#xD;
+var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
 &#xD;
-var entity=currentNode.get(&quot;data&quot;);&#xD;
-var level=currentNode.get(&quot;level&quot;);&#xD;
-if(level==2){&#xD;
-	var tableName=entity.get(&quot;tableName&quot;);&#xD;
-	var dbInfoId=entity.get(&quot;dbInfoId&quot;);&#xD;
+var entity = currentNode.get(&quot;data&quot;);&#xD;
+var level = currentNode.get(&quot;level&quot;);&#xD;
+if(level == 2){&#xD;
+	var tableName = entity.get(&quot;tableName&quot;);&#xD;
+	var dbInfoId = entity.get(&quot;dbInfoId&quot;);&#xD;
 }&#xD;
-if (tableName&amp;&amp;dbInfoId) {&#xD;
-		dorado.MessageBox.show({&#xD;
-		title:&quot;${res[&quot;menuItemClearTable.onClick.confirmTitle&quot;]}&quot;,&#xD;
-		icon:dorado.MessageBox.INFO_ICON,&#xD;
-		message:&quot;${res[&quot;menuItemClearTable.onClick.confirmInfoPrefix&quot;]}&quot;+tableName+&quot;${res[&quot;menuItemClearTable.onClick.confirmInfoSuffix&quot;]}&quot;,&#xD;
-		buttons:[&quot;yes&quot;,&quot;no&quot;],&#xD;
-		detailCallback:function(buttonId){&#xD;
-			if(buttonId==&quot;yes&quot;){&#xD;
-				&#xD;
-				action.set(&quot;parameter&quot;,{&#xD;
-					dbInfoId:dbInfoId,&#xD;
-					tableName:tableName&#xD;
+if (tableName &amp;&amp; dbInfoId) {&#xD;
+	dorado.MessageBox.show({&#xD;
+		title: &quot;${res['menuItemClearTable.onClick.confirmTitle']}&quot;,&#xD;
+		icon: dorado.MessageBox.INFO_ICON,&#xD;
+		message: &quot;${res['menuItemClearTable.onClick.confirmInfoPrefix']}&quot;+tableName + &quot;${res['menuItemClearTable.onClick.confirmInfoSuffix']}&quot;,&#xD;
+		buttons: [&quot;yes&quot;,&quot;no&quot;],&#xD;
+		detailCallback: function(buttonId) {&#xD;
+			if (buttonId == &quot;yes&quot;) {&#xD;
+				action.set(&quot;parameter&quot;, {&#xD;
+					dbInfoId: dbInfoId,&#xD;
+					tableName: tableName&#xD;
 				}).execute();&#xD;
 			}&#xD;
 		}&#xD;
-		&#xD;
-});&#xD;
+	});&#xD;
 }&#xD;
 </ClientEvent>
-        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/table_go.png</Property>
         <Property name="name">menuItemClearTable</Property>
+        <Property name="iconClass">fa fa-eraser blue-text</Property>
       </MenuItem>
     </Menu>
     <Menu id="menuDbInfo">
       <MenuItem>
-        <ClientEvent name="onClick">this.expandNode();&#xD;
+        <ClientEvent name="onClick">view.expandNode();&#xD;
 </ClientEvent>
-        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/chart_organisation.png</Property>
         <Property name="name">menuItemExpand</Property>
+        <Property name="iconClass">fa fa-expand blue-text</Property>
       </MenuItem>
       <MenuItem>
-        <ClientEvent name="onClick">this.createConnection();&#xD;
+        <ClientEvent name="onClick">view.createConnection();&#xD;
 </ClientEvent>
-        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/database_add.png</Property>
         <Property name="name">menuItemCreateNewConnection</Property>
+        <Property name="iconClass">fa fa-database blue-text</Property>
       </MenuItem>
       <MenuItem>
-        <ClientEvent name="onClick">var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
-var entity=tree.get(&quot;currentEntity&quot;);&#xD;
-var action=this.id(&quot;updateActionDbInfo&quot;);&#xD;
+        <ClientEvent name="onClick" signature="self,arg,dataTreeDbInfo,updateActionDbInfo">var tree = dataTreeDbInfo;&#xD;
+var entity = tree.get(&quot;currentEntity&quot;);&#xD;
+var action = updateActionDbInfo;&#xD;
 dorado.MessageBox.show({&#xD;
-	title:&quot;${res[&quot;deleteDbInfoItem.onClick.comfirmTitle&quot;]}&quot;,&#xD;
-	icon:dorado.MessageBox.INFO_ICON,&#xD;
-	message:&quot;${res[&quot;deleteDbInfoItem.onClick.comfirmInfo&quot;]}&quot;,&#xD;
-	buttons:[&quot;yes&quot;,&quot;no&quot;],&#xD;
-	detailCallback:function(buttonId){&#xD;
-		if(buttonId==&quot;yes&quot;){&#xD;
+	title: &quot;${res['deleteDbInfoItem.onClick.comfirmTitle']}&quot;,&#xD;
+	icon: dorado.MessageBox.INFO_ICON,&#xD;
+	message: &quot;${res['deleteDbInfoItem.onClick.comfirmInfo']}&quot;,&#xD;
+	buttons: [&quot;yes&quot;,&quot;no&quot;],&#xD;
+	detailCallback: function(buttonId) {&#xD;
+		if (buttonId==&quot;yes&quot;) {&#xD;
 			entity.remove();&#xD;
 			action.execute();&#xD;
 		}&#xD;
 	}&#xD;
 });&#xD;
 </ClientEvent>
-        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/database_delete.png</Property>
         <Property name="name">deleteDbInfoItem</Property>
+        <Property name="iconClass">fa fa-trash-o red-text</Property>
       </MenuItem>
       <MenuItem>
-        <ClientEvent name="onClick">var dialog=this.id(&quot;dialogDbInfo&quot;);&#xD;
-var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
-var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
-var entity=currentNode.get(&quot;data&quot;);&#xD;
-var dataSet=this.id(&quot;dataSetDbInfo&quot;);&#xD;
+        <ClientEvent name="onClick" signature="self,arg,dataSetDbInfo,dialogDbInfo,dataTreeDbInfo">var dialog = dialogDbInfo;&#xD;
+var tree = dataTreeDbInfo;&#xD;
+var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
+var entity = currentNode.get(&quot;data&quot;);&#xD;
+var dataSet = dataSetDbInfo;&#xD;
 dataSet.getData().setCurrent(entity)&#xD;
-//tree.set(&quot;currentEntity&quot;,entity);&#xD;
 &#xD;
-dialog.set(&quot;caption&quot;,&quot;${res[&quot;updateDbInfoItem.onClick.setCaption&quot;]}&quot;);&#xD;
+dialog.set(&quot;caption&quot;, &quot;${res['updateDbInfoItem.onClick.setCaption']}&quot;);&#xD;
 dialog.show();&#xD;
 </ClientEvent>
-        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/database_edit.png</Property>
         <Property name="name">updateDbInfoItem</Property>
+        <Property name="iconClass">fa fa-pencil blue-text</Property>
       </MenuItem>
       <MenuItem>
-        <ClientEvent name="onClick">&#xD;
-var tree=this.id(&quot;dataTreeDbInfo&quot;);&#xD;
-var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
-var entity=currentNode.get(&quot;data&quot;);&#xD;
-var dataSet=this.id(&quot;dataSetDbInfo&quot;);&#xD;
+        <ClientEvent name="onClick" signature="self,arg,dialogDbInfoRead,dataTreeDbInfo,dataSetDbInfo">&#xD;
+var tree = dataTreeDbInfo;&#xD;
+var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
+var entity = currentNode.get(&quot;data&quot;);&#xD;
+var dataSet = dataSetDbInfo;&#xD;
 dataSet.getData().setCurrent(entity)&#xD;
-var dialog=this.id(&quot;dialogDbInfoRead&quot;);&#xD;
+var dialog = dialogDbInfoRead;&#xD;
 dialog.show();&#xD;
 </ClientEvent>
-        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/table_gear.png</Property>
         <Property name="name">menuItemShowProperty</Property>
+        <Property name="iconClass">fa fa-file-text blue-text</Property>
       </MenuItem>
       <MenuItem>
-        <ClientEvent name="onClick">this.expandNode();&#xD;
-var action = this.id(&quot;ajaxActionCreateTable&quot;);&#xD;
-var dataSet = this.id(&quot;dataSetColumn&quot;);&#xD;
-var tree = this.id(&quot;dataTreeDbInfo&quot;);&#xD;
+        <ClientEvent name="onClick" signature="self,arg,dataTreeDbInfo,dataSetColumn,ajaxActionCreateTable">view.expandNode();&#xD;
+var action = ajaxActionCreateTable;&#xD;
+var dataSet = dataSetColumn;&#xD;
+var tree = dataTreeDbInfo;&#xD;
 var currentNode = tree.get(&quot;currentNode&quot;);&#xD;
 var entity = currentNode.get(&quot;data&quot;);&#xD;
 var level = currentNode.get(&quot;level&quot;);&#xD;
@@ -930,17 +918,17 @@ if (level == 1) {&#xD;
     var dbInfoId = entity.get(&quot;id&quot;);&#xD;
 }&#xD;
 if (dbInfoId) {&#xD;
-    dorado.MessageBox.prompt(&quot;${res[&quot;menuItemCreateTable.onClick.promptInfo&quot;]}&quot;, {&#xD;
+    dorado.MessageBox.prompt(&quot;${res['menuItemCreateTable.onClick.promptInfo']}&quot;, {&#xD;
         defaultText: &quot;&quot;,&#xD;
         callback: function(text){&#xD;
             if (!text) {&#xD;
-                dorado.MessageBox.alert(&quot;${res[&quot;menuItemCreateTable.onClick.nullTableNameAlertMessage&quot;]}&quot;);&#xD;
+                dorado.MessageBox.alert(&quot;${res['menuItemCreateTable.onClick.nullTableNameAlertMessage']}&quot;);&#xD;
                 return;&#xD;
             }&#xD;
             action.set(&quot;parameter&quot;, {&#xD;
                 dbInfoId: dbInfoId,&#xD;
                 tableName: text&#xD;
-            }).execute(function(){     &#xD;
+            }).execute(function() {     &#xD;
                 var currentEntity = currentNode.get(&quot;data&quot;);&#xD;
                 var newEntity = currentEntity.createChild(&quot;tableInfos&quot;, {&#xD;
                     tableName: text,&#xD;
@@ -957,14 +945,14 @@ if (dbInfoId) {&#xD;
     });&#xD;
 }&#xD;
 </ClientEvent>
-        <Property name="icon">${request.getContextPath()}/dorado/res/com/bstek/bdf3/dbconsole/view/icons/table_add.png</Property>
         <Property name="name">menuItemCreateTable</Property>
+        <Property name="iconClass">fa fa-table blue-text</Property>
       </MenuItem>
     </Menu>
     <Dialog id="dialogDbInfoRead">
       <Property name="center">true</Property>
       <Property name="width">600</Property>
-      <Property name="height">300</Property>
+      <Property name="height">320</Property>
       <Property name="modal">true</Property>
       <Children>
         <AutoForm>
@@ -1016,7 +1004,7 @@ if (dbInfoId) {&#xD;
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">600</Property>
-      <Property name="height">370</Property>
+      <Property name="height">390</Property>
       <Property name="closeable">false</Property>
       <Buttons>
         <Button id="buttonDbInfoOk">
