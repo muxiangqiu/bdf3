@@ -81,7 +81,7 @@
     </DataType>
   </Model>
   <View>
-    <ClientEvent name="onReady" signature="self,arg,iconRefresh,portal,historyContainer,cardBook,dsPart,dialogPart">$.cookie.json = true;
+    <ClientEvent name="onReady" signature="self,arg,appName,iconRefresh,portal,historyContainer,cardBook,dsPart,dialogPart">$.cookie.json = true;
 var pathMap = {};
 window.openTab = function (caption, icon, path) {
 	var url;
@@ -110,6 +110,7 @@ window.openTab = function (caption, icon, path) {
 		}
 		recordVisit(caption, icon, path);
 		cardBook.set(&quot;currentControl&quot;, tab);
+		appName.set(&quot;text&quot;, caption);
 	}
 	
 	
@@ -251,9 +252,10 @@ setTimeout(function() {
       <Property name="exClassName">top</Property>
       <Container layout="native">
         <Property name="exClassName">banner</Property>
-        <Label>
+        <Label id="appName">
           <Property name="text">${empty loginUser.organization.name ? configure['bdf3.appName'] : loginUser.organization.name}</Property>
           <Property name="exClassName">app-name</Property>
+          <Property name="userData">${empty loginUser.organization.name ? configure['bdf3.appName'] : loginUser.organization.name}</Property>
         </Label>
         <Control>
           <ClientEvent name="onClick" signature="self,arg,personalCenter">personalCenter.show({
@@ -265,8 +267,8 @@ arg.returnValue = false;</ClientEvent>
           <Property name="exClassName">icon personal-center</Property>
         </Control>
         <Control>
-          <ClientEvent name="onClick" signature="self,arg,cardBook,portal">cardBook.set(&quot;currentControl&quot;, portal);
-
+          <ClientEvent name="onClick" signature="self,arg,appName,cardBook,portal">cardBook.set(&quot;currentControl&quot;, portal);
+appName.set(&quot;text&quot;, appName.get(&quot;userData&quot;));
 </ClientEvent>
           <Property name="exClassName">icon search</Property>
         </Control>
