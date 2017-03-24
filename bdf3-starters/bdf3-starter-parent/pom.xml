@@ -44,48 +44,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*.xml</include>
-					<include>**/*.xsd</include>
-					<include>**/*.schemas</include>
-					<include>**/*.handlers</include>
-					<include>**/*.properties</include>
-					<include>**/*.png</include>
-					<include>**/*.jpg</include>
-					<include>**/*.gif</include>
-					<include>**/*.css</include>
-					<include>**/*.js</include>
-					<include>**/*.bpmn</include>
-					<include>**/*.bpmn2</include>
-					<include>**/*.swf</include>
-					<include>**/*.swz</include>
-					<include>**/*.html</include>
-					<include>**/*.jsp</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*.xml</include>
-					<include>**/*.xsd</include>
-					<include>**/*.schemas</include>
-					<include>**/*.handlers</include>
-					<include>**/*.properties</include>
-					<include>**/*.png</include>
-					<include>**/*.jpg</include>
-					<include>**/*.gif</include>
-					<include>**/*.css</include>
-					<include>**/*.js</include>
-					<include>**/*.bpmn</include>
-					<include>**/*.bpmn2</include>
-					<include>**/*.html</include>
-					<include>**/*.jsp</include>
-				</includes>
-			</resource>
-		</resources>
 	</build>
 	<modules>
 		<module>bdf3-sample-cola</module>
