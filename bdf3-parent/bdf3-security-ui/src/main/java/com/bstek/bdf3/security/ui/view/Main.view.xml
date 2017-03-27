@@ -422,10 +422,11 @@ $(arg.dom).xCreate({
 </ClientEvent>
                   <Property name="showMenuButton">true</Property>
                   <Property name="tabPlacement">top</Property>
-                  <ControlTab>
+                  <ControlTab id="${configure['bdf3.welcomePath'] + &quot;.d&quot;}">
                     <Property name="iconClass">${configure['bdf3.welcomeIcon']}</Property>
                     <Property name="caption">${configure['bdf3.welcomeTitle']}</Property>
                     <Property name="ignored">${empty configure['bdf3.welcomePath']}</Property>
+                    <Property name="closeable">true</Property>
                     <SubViewHolder>
                       <Property name="subView">${configure['bdf3.welcomePath']}</Property>
                     </SubViewHolder>
