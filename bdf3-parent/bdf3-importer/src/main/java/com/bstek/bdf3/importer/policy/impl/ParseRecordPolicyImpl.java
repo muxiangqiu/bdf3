@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.dorado.jpa.BeanUtils;
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
@@ -33,7 +32,6 @@ public class ParseRecordPolicyImpl implements ParseRecordPolicy, ApplicationCont
 	private Collection<CellPostprocessor> cellPostprocessors;
 	
 	@Override
-	@Transactional
 	public void apply(Context context) throws ClassNotFoundException {
 		List<Record> records = context.getRecords();
 		

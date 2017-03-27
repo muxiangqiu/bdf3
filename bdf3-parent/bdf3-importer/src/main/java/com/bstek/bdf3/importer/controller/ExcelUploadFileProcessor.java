@@ -8,6 +8,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ public class ExcelUploadFileProcessor implements ApplicationContextAware{
 	private Collection<ExcelPolicy> excelPolicies;
 	
 	@FileResolver
+	@Transactional
 	public String upload(UploadFile file, Map<String, Object> parameter) throws Exception {
 		MultipartFile multipartFile = file.getMultipartFile();
 		String name = multipartFile.getOriginalFilename();
