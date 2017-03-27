@@ -180,7 +180,7 @@ var refreshVisit = function() {
 		$type: &quot;Label&quot;,
 		exClassName: &quot;clear-history fa fa-times-circle&quot;,
 		onClick: function() {
-			$.removeCookie(&quot;visitHistory&quot;);
+			$.removeCookie(&quot;visitHistory&quot;, {path: window.location.pathname});
 			historyContainer.removeAllChildren();
 		    historyContainer.set(&quot;height&quot;, 0);
 		}

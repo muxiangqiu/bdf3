@@ -179,7 +179,7 @@ var refreshVisit = function() {
 		$type: &quot;Label&quot;,
 		exClassName: &quot;clear-history fa fa-times-circle&quot;,
 		onClick: function() {
-			$.removeCookie(&quot;visitHistory&quot;);
+			$.removeCookie(&quot;visitHistory&quot;, {path: window.location.pathname});
 			historyContainer.removeAllChildren();
 		    historyContainer.set(&quot;height&quot;, 0);
 		}
@@ -422,7 +422,7 @@ $(arg.dom).xCreate({
 </ClientEvent>
                   <Property name="showMenuButton">true</Property>
                   <Property name="tabPlacement">top</Property>
-                  <ControlTab id="${configure['bdf3.welcomePath'] + &quot;.d&quot;}">
+                  <ControlTab>
                     <Property name="iconClass">${configure['bdf3.welcomeIcon']}</Property>
                     <Property name="caption">${configure['bdf3.welcomeTitle']}</Property>
                     <Property name="ignored">${empty configure['bdf3.welcomePath']}</Property>
