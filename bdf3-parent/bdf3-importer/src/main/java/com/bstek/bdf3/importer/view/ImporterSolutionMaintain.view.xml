@@ -272,7 +272,7 @@ updateActionImporterSolution.execute();
 	if (importerSolution.get(&quot;mappingRules&quot;).entityCount > 0) {
 		dorado.MessageBox.alert(&quot;请先删除相关映射规则！&quot;);
 	} else {
-		dorado.MassageBox.conform(&quot;确认要删除所选方案吗？&quot;, function () {
+		dorado.MessageBox.confirm(&quot;确认要删除所选方案吗？&quot;, function () {
 			importerSolution.remove();
 			updateActionImporterSolution.execute();
 		});
