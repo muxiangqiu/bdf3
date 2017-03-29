@@ -290,21 +290,21 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 		return em.createQuery(criteria);
 	}
 	
-	protected void applyPredicateToCriteria(AbstractQuery<?> criteria) {
+	protected void applyPredicateToCriteria(AbstractQuery<?> query) {
 
 		Predicate predicate = parsePredicate(junction);
 		if (predicate != null) {
-			((AbstractQuery<?>) criteria).where(predicate);
+			query.where(predicate);
 		}
 		
 		predicate = parsePredicate(having);
 		if (predicate != null) {
-			((AbstractQuery<?>) criteria).having(predicate);
+			query.having(predicate);
 		}
 		
-		if (criteria instanceof CriteriaQuery) {
+		if (query instanceof CriteriaQuery) {
 			if (!CollectionUtils.isEmpty(orders)) {
-				((CriteriaQuery<?>) criteria).orderBy(orders);
+				((CriteriaQuery<?>) query).orderBy(orders);
 			}
 		}
 	}

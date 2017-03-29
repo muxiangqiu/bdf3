@@ -3,6 +3,7 @@ package com.bstek.bdf3.jpa.lin.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 import javax.persistence.EntityManager;
@@ -117,6 +118,11 @@ public abstract class LinImpl<T extends Lin<T, Q>, Q extends CommonAbstractCrite
 		}
 		return true;
 	}
+	
+	@Override
+	public T selectId() {
+		return select(JpaUtil.getIdName(domainClass));
+	}
 
 	@Override
 	public T select(String... selections) {
@@ -224,6 +230,11 @@ public abstract class LinImpl<T extends Lin<T, Q>, Q extends CommonAbstractCrite
 		}
 		add(cb.between(v, x, y));
 		return (T) this;
+	}
+	
+	@Override
+	public T idEqual(Object id) {
+		return equal(JpaUtil.getIdName(domainClass), id);
 	}
 	
 	@Override
@@ -495,6 +506,11 @@ public abstract class LinImpl<T extends Lin<T, Q>, Q extends CommonAbstractCrite
 	}
 	
 	@Override
+	public T in(String property, Set<?> values) {
+		return in(property, values.toArray());
+	}
+	
+	@Override
 	public T in(String property, Object... values) {
 		if (!beforeMethodInvoke()) {
 			return (T) this;
@@ -549,6 +565,11 @@ public abstract class LinImpl<T extends Lin<T, Q>, Q extends CommonAbstractCrite
 		}
 		add(expression.in(values));
 		return (T) this;
+	}
+	
+	@Override
+	public T notIn(String property, Set<?> values) {
+		return notIn(property, values.toArray());
 	}
 	
 	@Override

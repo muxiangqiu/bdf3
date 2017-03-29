@@ -1,6 +1,7 @@
 package com.bstek.bdf3.jpa.lin;
 
 import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CommonAbstractCriteria;
@@ -87,6 +88,14 @@ public interface Lin<T extends Lin<T, Q>, Q extends CommonAbstractCriteria> {
 	<E> Subquery<E> getSubquery();
 	
 	/**
+	 * 查询结果投影为主键设置<br>
+	 * 例如：<br>
+	 * 领域类的主键属性是id，selectId()相当于select("id")
+	 * @return 自身
+	 */
+	T selectId();
+	
+	/**
 	 * 查询结果投影设置<br>
 	 * 例如：<br>
 	 * ...select("id", "name", ...) 等价于 select id, name, ... from ...<br>
@@ -124,6 +133,8 @@ public interface Lin<T extends Lin<T, Q>, Q extends CommonAbstractCriteria> {
 
     <Y extends Comparable<? super Y>> T between(Expression<? extends Y> v, Y x, Y y);
 
+    T idEqual(Object id);
+    
 	T equal(String x, Object y);
 
 	T equal(Expression<?> x, Object y);
@@ -328,4 +339,9 @@ public interface Lin<T extends Lin<T, Q>, Q extends CommonAbstractCriteria> {
 	T in(String property, Class<?> domainClass);
 
 	T in(Class<?> domainClass);
+
+	T in(String property, Set<?> values);
+
+	T notIn(String property, Set<?> values);
+
 }
