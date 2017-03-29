@@ -44,7 +44,7 @@ public class PermissionServiceImpl implements PermissionService {
 		if(StringUtils.isEmpty(viewName)){
 			return Collections.EMPTY_LIST;
 		}
-		viewName = StringUtils.substringBefore(viewName, ".d");
+		viewName = StringUtils.substringBeforeLast(viewName, ".d");
 
 		String VIEWSTATE_KEY = ViewState.class.getName();
 		DoradoContext context = DoradoContext.getCurrent();
