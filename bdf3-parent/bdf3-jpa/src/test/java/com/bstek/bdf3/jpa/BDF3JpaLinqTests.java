@@ -630,6 +630,9 @@ public class BDF3JpaLinqTests {
 		linq.in("age", 33, 66);
 		Assert.isTrue(linq.list().size() == 2);
 		
+		JpaUtil.linq(User.class).in(Dept.class).select("id").equal("name", "dept1").paging(null);
+		Assert.isTrue(JpaUtil.linq(User.class).in(Dept.class).select("id").equal("name", "dept1").list().size() == 0);
+		
 		//notIn
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
@@ -732,6 +735,8 @@ public class BDF3JpaLinqTests {
 		linq = JpaUtil.linq(User.class);
 		linq.exists(Dept.class).equalProperty("id", "deptId").equal("name", "dept1").end();
 		Assert.isTrue(linq.list().size() == 2);
+		
+		Assert.isTrue(JpaUtil.linq(User.class).exists(Dept.class).equalProperty("id", "deptId").equal("name", "dept1").list().size() == 2);
 		
 		//and
 		linq = JpaUtil.linq(User.class);
