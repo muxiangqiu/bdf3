@@ -211,6 +211,21 @@ public interface Linq extends Lin<Linq, CriteriaQuery<?>> {
 	 * @return 本身
 	 */
 	Linq collect(String... properties);
+	
+	/**
+	 * 根据主键收集entityClass对应的数据，
+	 * @param entityClass 实体类
+	 * @return 本身
+	 */
+	Linq collect(Class<?> entityClass);
+
+	/**
+	 * 根据主键收集entityClass对应的数据
+	 * @param otherProperty entityClass的某个属性，与properties属性存在关联
+	 * @param entityClass 实体类
+	 * @return 本身
+	 */
+	Linq collect(String otherProperty, Class<?> entityClass);
 
 	/**
 	 * 根据属性收集entityClass对应的数据
@@ -219,6 +234,58 @@ public interface Linq extends Lin<Linq, CriteriaQuery<?>> {
 	 * @return 本身
 	 */
 	Linq collect(Class<?> entityClass, String... properties);
+	
+	/**
+	 * 根据属性收集entityClass对应的数据
+	 * @param otherProperty entityClass的某个属性，与properties属性存在关联
+	 * @param entityClass 实体类
+	 * @param properties 属性
+	 * @return 本身
+	 */
+	Linq collect(String otherProperty, Class<?> entityClass, String... properties);
+	
+	/**
+	 * 根据主键收集entityClass对应的数据
+	 * @param entityClass 实体类
+	 * @param relationClass 多对多关系中的中间表对应的实体类
+	 * @return 本身
+	 */
+	Linq collect(Class<?> relationClass, Class<?> entityClass);
+	
+	/**
+	 * 根据主键收集entityClass对应的数据
+	 * @param entityClass 实体类
+	 * @param relationClass 多对多关系中的中间表对应的实体类
+	 * @param relationProperty 查询主实体类在中间表对应的实体类中的关联属性
+	 * @param relationOtherProperty 收集实体类在中间表对应的实体类中的关联属性
+	 * @return 本身
+	 */
+	Linq collect(Class<?> relationClass, String relationProperty, String relationOtherProperty, Class<?> entityClass);
+	
+	/**
+	 * 根据主键收集entityClass对应的数据
+	 * @param entityClass 实体类
+	 * @param relationClass 多对多关系中的中间表对应的实体类
+	 * @param relationProperty 查询主实体类在中间表对应的实体类中的关联属性
+	 * @param relationOtherProperty 收集实体类在中间表对应的实体类中的关联属性
+	 * @param otherProperty entityClass的某个属性，与properties属性存在关联
+	 * @return 本身
+	 */
+	Linq collect(Class<?> relationClass, String relationProperty, String relationOtherProperty, String otherProperty,
+			Class<?> entityClass);
+	
+	/**
+	 * 根据属性收集entityClass对应的数据
+	 * @param entityClass 实体类
+	 * @param relationClass 多对多关系中的中间表对应的实体类
+	 * @param relationProperty 查询主实体类在中间表对应的实体类中的关联属性
+	 * @param relationOtherProperty 收集实体类在中间表对应的实体类中的关联属性
+	 * @param otherProperty entityClass的某个属性，与properties属性存在关联
+	 * @param properties 属性
+	 * @return 本身
+	 */
+	Linq collect(Class<?> relationClass, String relationProperty, String relationOtherProperty, String otherProperty,
+			Class<?> entityClass, String... properties);
 
 	/**
 	 * 设置收集entityClass对应的数据的投影
@@ -239,9 +306,6 @@ public interface Linq extends Lin<Linq, CriteriaQuery<?>> {
 	 * @return 本身
 	 */
 	Linq setDisableBackFillFilter();
-
-
-
 
 
 }

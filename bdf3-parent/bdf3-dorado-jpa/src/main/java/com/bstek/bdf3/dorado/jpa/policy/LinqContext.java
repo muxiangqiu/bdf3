@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+
 /**
  *@author Kevin.yang
  *@since 2015年9月9日
@@ -34,22 +36,38 @@ public class LinqContext {
 		return (T) metadata.get(key);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public <T> T get(Class<T> entityClass, Object id) {
-		Map<Object, Object> map = (Map<Object, Object>) metadata.get(entityClass);
-		if (map == null) {
+		List<T> list = getList(entityClass, id);
+		if (CollectionUtils.isEmpty(list)) {
 			return null;
 		}
-		return (T) map.get(id);
+		return list.get(0);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> T get(String property, Object id) {
-		Map<Object, Object> map = (Map<Object, Object>) metadata.get(property);
+	public <T> List<T> getList(Class<T> entityClass, Object value) {
+		Map<Object, List<T>> map = (Map<Object, List<T>>) metadata.get(entityClass);
 		if (map == null) {
 			return null;
 		}
-		return (T) map.get(id);
+		return map.get(value);
+	}
+	
+	public <T> T get(String property, Object id) {
+		List<T> list = getList(property, id);
+		if (CollectionUtils.isEmpty(list)) {
+			return null;
+		}
+		return list.get(0);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> List<T> getList(String property, Object value) {
+		Map<Object, List<T>> map = (Map<Object, List<T>>) metadata.get(property);
+		if (map == null) {
+			return null;
+		}
+		return map.get(value);
 	}
 	
 	@SuppressWarnings("unchecked")

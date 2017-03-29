@@ -1,5 +1,6 @@
  package com.bstek.bdf3.dorado.jpa.lin.impl;
 
+import java.beans.Introspector;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
@@ -17,8 +19,6 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 
-import net.sf.cglib.beans.BeanMap;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +27,7 @@ import org.springframework.data.jpa.repository.query.QueryUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import com.bstek.bdf3.dorado.jpa.BeanUtils;
 import com.bstek.bdf3.dorado.jpa.CollectInfo;
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.bdf3.dorado.jpa.filter.Filter;
@@ -43,6 +44,8 @@ import com.bstek.bdf3.jpa.transform.impl.Transformers;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
+
+import net.sf.cglib.beans.BeanMap;
 
 /**
  *@author Kevin.yang
@@ -203,17 +206,64 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 	}
 	
 	@Override
+	public Linq collect(Class<?> entityClass) {
+		return collect(null, null, null, JpaUtil.getIdName(entityClass), entityClass, JpaUtil.getIdName(domainClass));
+	}
+	
+	@Override
 	public Linq collect(Class<?> entityClass, String ...properties) {
+		return collect(null, null, null, JpaUtil.getIdName(entityClass), entityClass, properties);
+	}
+	
+	@Override
+	public Linq collect(String otherProperty, Class<?> entityClass) {
+		return collect(null, null, null, otherProperty, entityClass, JpaUtil.getIdName(domainClass));
+	}
+	
+	@Override
+	public Linq collect(String otherProperty, Class<?> entityClass, String ...properties) {
+		return collect(null, null, null, otherProperty, entityClass, properties);
+	}
+	
+	@Override
+	public Linq collect(Class<?> relationClass, Class<?> entityClass) {
+		return collect(relationClass, Introspector.decapitalize(domainClass.getSimpleName()) + "Id",
+				Introspector.decapitalize(entityClass.getSimpleName()) + "Id", JpaUtil.getIdName(entityClass),
+				entityClass, JpaUtil.getIdName(domainClass));
+	}
+
+
+	@Override
+	public Linq collect(Class<?> relationClass, String relationProperty, String relationOtherProperty,
+			Class<?> entityClass) {
+		return collect(relationClass, relationProperty, relationOtherProperty, JpaUtil.getIdName(entityClass),
+				entityClass, JpaUtil.getIdName(domainClass));
+	}
+
+
+	@Override
+	public Linq collect(Class<?> relationClass, String relationProperty, String relationOtherProperty,
+			String otherProperty, Class<?> entityClass) {
+		return collect(relationClass, relationProperty, relationOtherProperty, otherProperty, entityClass,
+				JpaUtil.getIdName(domainClass));
+	}
+	
+	@Override
+	public Linq collect(Class<?> relationClass, String relationProperty, String relationOtherProperty,
+			String otherProperty, Class<?> entityClass, String... properties) {
 		if (!beforeMethodInvoke()) {
 			return this;
 		}
 		CollectInfo collectInfo = new CollectInfo();
 		collectInfo.setEntityClass(entityClass);
+		collectInfo.setRelationClass(relationClass);
+		collectInfo.setRelationProperty(relationProperty);
+		collectInfo.setRelationOtherProperty(relationOtherProperty);
+		collectInfo.setOtherProperty(otherProperty);
 		collectInfo.setProperties(properties);
 		collectInfos.add(collectInfo);
 		return this;
 	}
-	
 	
 	@Override
 	public Linq collectSelect(Class<?> entityClass, String ...projections) {
@@ -233,11 +283,23 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 		doBackfill();
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void buildMetadata() {
 		Map<Object, Object> metadata = linqContext.getMetadata();
 		for (CollectInfo collectInfo : collectInfos) {
-			if (!CollectionUtils.isEmpty(collectInfo.getList())) {
+			Set collectSet = collectInfo.getSet();
+			Map<Object, Object> relationMap = null;
+			if (collectInfo.getRelationClass() != null) {
+				List collectList = JpaUtil
+					.linq(collectInfo.getRelationClass())
+					.aliasToBean()
+					.select(collectInfo.getRelationProperty(), collectInfo.getRelationOtherProperty())
+					.in(collectInfo.getRelationProperty(), collectSet)
+					.list();
+				relationMap = JpaUtil.index(collectList, collectInfo.getRelationOtherProperty());
+				collectSet = relationMap.keySet();
+			}
+			if (!CollectionUtils.isEmpty(collectSet)) {
 				for (String property : collectInfo.getProperties()) {
 					if (!metadata.containsKey(property)) {
 						Class<?> entityClass = collectInfo.getEntityClass();
@@ -245,25 +307,34 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 							if (metadata.containsKey(entityClass)) {
 								metadata.put(property, metadata.get(entityClass));
 							} else {
-								String idProperty = JpaUtil.getIdName(entityClass);
+								String otherProperty = collectInfo.getOtherProperty();
+								
 								Linq linq = JpaUtil.linq(entityClass);
 								if (ArrayUtils.isNotEmpty(projectionMap.get(entityClass))) {
 									linq.aliasToBean();
 									linq.select(projectionMap.get(entityClass));
 								}
-								linq.in(idProperty, collectInfo.getList());
+								linq.in(otherProperty, collectSet);
 								List result = linq.list();
-								Map<Object, Object> map = new HashMap<Object, Object>();
+								Map<Object, List<Object>> map = new HashMap<Object, List<Object>>();
 								for (Object obj : result) {
-									BeanMap beanMap = BeanMap.create(obj);
-									map.put(beanMap.get(idProperty), obj);
+									Object key = BeanUtils.getFieldValue(obj, otherProperty);
+									if (relationMap != null) {
+										key = BeanUtils.getFieldValue(relationMap.get(key), collectInfo.getRelationProperty());
+									}
+									List<Object> list = map.get(key);
+									if (list == null) {
+										list = new ArrayList<Object>(5);
+										map.put(key, list);
+									}
+									list.add(obj);
 								}
 								metadata.put(property, map);
 								metadata.put(entityClass, map);
 							}
 							
 						} else {
-							metadata.put(property, collectInfo.getList());
+							metadata.put(property, collectInfo.getSet());
 						}
 					}
 				}
@@ -417,6 +488,7 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 		if (parent != null) {
 			beforeExecute(sq);
 			parent.paging(page);
+			return;
 		}
 		List<T> list = Collections.<T> emptyList();
 		Long total = 0L;
@@ -519,12 +591,12 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 
 		Predicate predicate = parsePredicate(junction);
 		if (predicate != null) {
-			((AbstractQuery<?>) query).where(predicate);
+			query.where(predicate);
 		}
 		
 		predicate = parsePredicate(having);
 		if (predicate != null) {
-			((AbstractQuery<?>) query).having(predicate);
+			query.having(predicate);
 		}
 		
 		if (query instanceof CriteriaQuery) {
@@ -662,8 +734,6 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 	public <T> List<T> list(Page<T> page) {
 		return list(page.getPageNo() - 1, page.getPageSize());
 	}
-
-
 
 
 }

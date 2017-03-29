@@ -2,12 +2,13 @@ package com.bstek.bdf3.dorado.jpa.filter.impl;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.sf.cglib.beans.BeanMap;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -19,6 +20,8 @@ import com.bstek.bdf3.dorado.jpa.filter.Filter;
 import com.bstek.bdf3.dorado.jpa.policy.LinqContext;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.util.proxy.ProxyBeanUtils;
+
+import net.sf.cglib.beans.BeanMap;
 
 public class BackfillFilter implements Filter {
 
@@ -69,7 +72,12 @@ public class BackfillFilter implements Filter {
 
 	private void doFill(LinqContext linqContext, Object entity, Class<?> cls,
 			String property, PropertyDescriptor pd) {
-		Object value = linqContext.get(cls, BeanMap.create(entity).get(property));
+		Object value;
+		if (Collection.class.isAssignableFrom(pd.getPropertyType())) {
+			value = linqContext.getList(cls, BeanMap.create(entity).get(property));
+		} else {
+			value = linqContext.get(cls, BeanMap.create(entity).get(property));
+		}
 		if (value != null) {
 			try {
 				pd.getWriteMethod().invoke(entity, value);
@@ -91,12 +99,15 @@ public class BackfillFilter implements Filter {
 							continue;
 						}
 						if (pd.getPropertyType().isAssignableFrom(cls)) {
-							List<PropertyDescriptor> list = propertyMap.get(cls);
-							if (list == null) {
-								list = new ArrayList<PropertyDescriptor>(4);
-								propertyMap.put(cls, list);
+							addPd2PropertyMap(cls, pd);
+						} else if (Collection.class.isAssignableFrom(pd.getPropertyType())) {
+							Type[] pts = ((ParameterizedType)pd.getReadMethod().getGenericReturnType()).getActualTypeArguments();
+							if (pts != null && pts.length > 0) {
+								Type pt = pts[0];
+								if (pt instanceof Class && ((Class<?>) pt).isAssignableFrom(cls)) {
+									addPd2PropertyMap(cls, pd);
+								}
 							}
-							list.add(pd);
 						}
 					}
 				}
@@ -104,6 +115,15 @@ public class BackfillFilter implements Filter {
 		}
 		
 		return propertyMap;
+	}
+
+	private void addPd2PropertyMap(Class<?> cls, PropertyDescriptor pd) {
+		List<PropertyDescriptor> list = propertyMap.get(cls);
+		if (list == null) {
+			list = new ArrayList<PropertyDescriptor>(4);
+			propertyMap.put(cls, list);
+		}
+		list.add(pd);
 	}
 
 }

@@ -1,24 +1,46 @@
 package com.bstek.bdf3.dorado.jpa;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @SuppressWarnings("rawtypes")
 public class CollectInfo {
 	private Class<?> entityClass;
+	private Class<?> relationClass;
+	private String relationProperty;
+	private String relationOtherProperty;
+	private String otherProperty;
 	private String[] properties;
-	private List list;
+	private Set set;
 	public Class<?> getEntityClass() {
 		return entityClass;
 	}
 	public void setEntityClass(Class<?> entityClass) {
 		this.entityClass = entityClass;
 	}
-	public List getList() {
-		return list;
+	public Set getSet() {
+		return set;
 	}
-	public void setList(List list) {
-		this.list = list;
+	public void setSet(Set set) {
+		this.set = set;
+	}
+	public Class<?> getRelationClass() {
+		return relationClass;
+	}
+	public void setRelationClass(Class<?> relationClass) {
+		this.relationClass = relationClass;
+	}
+	public String getRelationProperty() {
+		return relationProperty;
+	}
+	public void setRelationProperty(String relationProperty) {
+		this.relationProperty = relationProperty;
+	}
+	public String getRelationOtherProperty() {
+		return relationOtherProperty;
+	}
+	public void setRelationOtherProperty(String relationOtherProperty) {
+		this.relationOtherProperty = relationOtherProperty;
 	}
 	public String[] getProperties() {
 		return properties;
@@ -29,10 +51,16 @@ public class CollectInfo {
 	
 	@SuppressWarnings("unchecked")
 	public void add(Object obj) {
-		if (list == null) {
-			list = new ArrayList();
+		if (set == null) {
+			set = new HashSet();
 		}
-		list.add(obj);
+		set.add(obj);
+	}
+	public String getOtherProperty() {
+		return otherProperty;
+	}
+	public void setOtherProperty(String otherProperty) {
+		this.otherProperty = otherProperty;
 	}
 	
 	
