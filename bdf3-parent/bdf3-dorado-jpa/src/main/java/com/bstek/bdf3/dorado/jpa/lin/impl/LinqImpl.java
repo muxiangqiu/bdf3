@@ -201,7 +201,7 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 		if (!beforeMethodInvoke()) {
 			return this;
 		}
-		collect(null, properties);
+		collect(null, null, null, null, null, properties);
 		return this;
 	}
 	
