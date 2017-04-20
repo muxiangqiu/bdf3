@@ -16,30 +16,30 @@
   </parent>
   <artifactId>bdf3-sample</artifactId>
   <dependencies>
-  		<!-- bdf3预定义依赖，简化依赖的复杂度 -->
-		<dependency>
-			<groupId>com.bstek.bdf3</groupId>
-			<artifactId>bdf3-starter</artifactId>
-		</dependency>
-		<!-- 开发测试工具 -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<!-- 数据库驱动 -->
-		<dependency> 
-			<groupId>com.h2database</groupId>
-			 <artifactId>h2</artifactId> 
-		</dependency>
-	</dependencies>
-	<!-- bdf3项目jar存放的maven私服 -->
-	<repositories>
-		<repository>
-			<id>bsdn-maven-repository</id>
-			<url>http://nexus.bsdn.org/content/groups/public/</url>
-		</repository>
-	</repositories>
+    <!-- bdf3预定义依赖，简化依赖的复杂度 -->
+    <dependency>
+      <groupId>com.bstek.bdf3</groupId>
+      <artifactId>bdf3-starter</artifactId>
+    </dependency>
+    <!-- 开发测试工具 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- 数据库驱动 -->
+    <dependency> 
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId> 
+    </dependency>
+  </dependencies>
+  <!-- bdf3项目jar存放的maven私服 -->
+  <repositories>
+    <repository>
+      <id>bsdn-maven-repository</id>
+      <url>http://nexus.bsdn.org/content/groups/public/</url>
+    </repository>
+  </repositories>
 </project>
 ```
 2. 启动类
@@ -49,7 +49,6 @@ package com.bstek.bdf3.sample;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -67,6 +66,7 @@ public class SampleApplication {
 >通过以上两个步骤，一个基本的bdf3项目就搭建好了。
 
 ## Spirng-Boot文档教程
+
 [spring-boot文档教程](https://projects.spring.io/spring-boot/#quick-start)
 
 ## 界面截图
