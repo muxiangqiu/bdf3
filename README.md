@@ -63,7 +63,7 @@ public class SampleApplication {
 }
 
 ```
->通过以上两个步骤，一个基本的bdf3项目就搭建好了。
+>通过以上两个步骤，一个基本的bdf3项目就搭建好了。[示例下载](http://onipkjzjl.bkt.clouddn.com/bdf3-sample.zip)
 
 ## Spirng-Boot文档教程
 
