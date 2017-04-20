@@ -4,7 +4,7 @@
   <Context/>
   <Model>
     <DataType name="Role">
-      <Property name="creationType">com.bstek.bdf3.security.domain.Role</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Role</Property>
       <PropertyDef name="id">
         <Property></Property>
         <Property name="label">ID</Property>

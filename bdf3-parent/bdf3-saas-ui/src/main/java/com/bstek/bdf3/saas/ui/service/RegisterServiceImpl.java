@@ -8,7 +8,7 @@ import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.saas.SaasUtils;
 import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.saas.service.OrganizationService;
-import com.bstek.bdf3.security.domain.User;
+import com.bstek.bdf3.security.orm.User;
 import com.bstek.bdf3.security.ui.service.UserService;
 
 /**

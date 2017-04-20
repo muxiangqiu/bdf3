@@ -24,7 +24,7 @@ import org.springframework.util.StringUtils;
 import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.saas.service.DataSourceService;
 import com.bstek.bdf3.saas.service.EntityManagerFactoryService;
-import com.bstek.bdf3.security.domain.Url;
+import com.bstek.bdf3.security.orm.Url;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

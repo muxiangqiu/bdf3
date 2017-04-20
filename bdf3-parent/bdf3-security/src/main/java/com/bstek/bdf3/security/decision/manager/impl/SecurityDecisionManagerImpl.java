@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.bstek.bdf3.security.decision.manager.SecurityDecisionManager;
-import com.bstek.bdf3.security.domain.Resource;
-import com.bstek.bdf3.security.domain.User;
+import com.bstek.bdf3.security.orm.Resource;
+import com.bstek.bdf3.security.orm.User;
 import com.bstek.bdf3.security.service.GrantedAuthorityService;
 
 /**

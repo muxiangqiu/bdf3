@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.bstek.bdf3.security.domain.Permission;
+import com.bstek.bdf3.security.orm.Permission;
 import com.bstek.bdf3.security.ui.builder.ViewComponent;
 import com.bstek.bdf3.security.ui.service.PermissionService;
 import com.bstek.dorado.annotation.DataProvider;

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.security.cache.SecurityCacheEvict;
-import com.bstek.bdf3.security.domain.Permission;
+import com.bstek.bdf3.security.orm.Permission;
 
 
 /**

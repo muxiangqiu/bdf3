@@ -14,7 +14,7 @@ import org.springframework.util.Assert;
 import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.saas.SaasUtils;
 import com.bstek.bdf3.saas.domain.Organization;
-import com.bstek.bdf3.security.domain.OrganizationSupport;
+import com.bstek.bdf3.security.orm.OrganizationSupport;
 import com.bstek.bdf3.security.service.GrantedAuthorityService;
 import com.bstek.bdf3.security.user.SecurityUserUtil;
 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import com.bstek.bdf3.jpa.strategy.GetEntityManagerFactoryStrategy;
 import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.saas.service.EntityManagerFactoryService;
-import com.bstek.bdf3.security.domain.OrganizationSupport;
+import com.bstek.bdf3.security.orm.OrganizationSupport;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

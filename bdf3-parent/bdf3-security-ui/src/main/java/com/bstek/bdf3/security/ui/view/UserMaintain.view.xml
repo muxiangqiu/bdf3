@@ -4,7 +4,7 @@
   <Context/>
   <Model>
     <DataType name="User">
-      <Property name="creationType">com.bstek.bdf3.security.domain.User</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.User</Property>
       <PropertyDef name="username">
         <Property></Property>
         <Property name="label">用户名</Property>

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bstek.bdf3.security.domain.Url;
+import com.bstek.bdf3.security.orm.Url;
 import com.bstek.bdf3.security.ui.service.FrameworkService;
 import com.bstek.dorado.annotation.DataProvider;
 

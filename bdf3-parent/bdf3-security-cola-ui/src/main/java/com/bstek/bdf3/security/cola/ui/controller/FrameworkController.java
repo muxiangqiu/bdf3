@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bstek.bdf3.message.domain.Notify;
 import com.bstek.bdf3.security.cola.ui.service.FrameworkService;
-import com.bstek.bdf3.security.domain.Url;
+import com.bstek.bdf3.security.orm.Url;
 import com.bstek.bdf3.security.service.UrlService;
 import com.bstek.bdf3.security.user.SecurityUserUtil;
 

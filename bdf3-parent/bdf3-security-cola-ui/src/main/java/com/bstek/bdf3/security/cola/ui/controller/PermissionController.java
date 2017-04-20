@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bstek.bdf3.security.cola.ui.service.PermissionService;
-import com.bstek.bdf3.security.domain.Permission;
+import com.bstek.bdf3.security.orm.Permission;
 
 
 /**

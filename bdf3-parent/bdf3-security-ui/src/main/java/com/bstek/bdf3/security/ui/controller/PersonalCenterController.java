@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.bstek.bdf3.security.domain.User;
+import com.bstek.bdf3.security.orm.User;
 import com.bstek.bdf3.security.ui.service.PersonalCenterService;
 import com.bstek.dorado.annotation.DataProvider;
 

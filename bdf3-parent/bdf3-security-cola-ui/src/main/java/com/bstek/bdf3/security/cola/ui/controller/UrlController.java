@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bstek.bdf3.security.cola.ui.service.UrlService;
-import com.bstek.bdf3.security.domain.Url;
+import com.bstek.bdf3.security.orm.Url;
 
 
 /**

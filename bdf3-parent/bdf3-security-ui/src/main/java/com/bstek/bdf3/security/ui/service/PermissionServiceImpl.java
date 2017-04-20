@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.bdf3.security.cache.SecurityCacheEvict;
-import com.bstek.bdf3.security.domain.Component;
-import com.bstek.bdf3.security.domain.Permission;
+import com.bstek.bdf3.security.orm.Component;
+import com.bstek.bdf3.security.orm.Permission;
 import com.bstek.bdf3.security.ui.builder.ViewBuilder;
 import com.bstek.bdf3.security.ui.builder.ViewComponent;
 import com.bstek.dorado.data.entity.EntityState;

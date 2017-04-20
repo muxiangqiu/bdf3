@@ -6,7 +6,7 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.bstek.bdf3.saas.domain.Organization;
-import com.bstek.bdf3.security.domain.OrganizationSupport;
+import com.bstek.bdf3.security.orm.OrganizationSupport;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

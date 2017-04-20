@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.security.access.ConfigAttribute;
 
-import com.bstek.bdf3.security.domain.Resource;
+import com.bstek.bdf3.security.orm.Resource;
 
 /**
  * 权限决策管理器。<br>

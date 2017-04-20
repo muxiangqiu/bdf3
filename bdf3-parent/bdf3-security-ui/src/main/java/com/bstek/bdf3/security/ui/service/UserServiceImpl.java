@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.bdf3.dorado.jpa.policy.SaveContext;
 import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicyAdapter;
-import com.bstek.bdf3.security.domain.RoleGrantedAuthority;
-import com.bstek.bdf3.security.domain.User;
+import com.bstek.bdf3.security.orm.RoleGrantedAuthority;
+import com.bstek.bdf3.security.orm.User;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 

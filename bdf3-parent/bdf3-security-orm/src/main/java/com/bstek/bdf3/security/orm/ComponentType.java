@@ -1,4 +1,4 @@
-package com.bstek.bdf3.security.domain;
+package com.bstek.bdf3.security.orm;
 
 /**
  * 组件类型。<br>

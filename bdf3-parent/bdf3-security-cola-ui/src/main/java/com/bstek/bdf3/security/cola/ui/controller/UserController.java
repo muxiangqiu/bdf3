@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bstek.bdf3.security.cola.ui.service.UserService;
-import com.bstek.bdf3.security.domain.RoleGrantedAuthority;
+import com.bstek.bdf3.security.orm.RoleGrantedAuthority;
 
 
 /**

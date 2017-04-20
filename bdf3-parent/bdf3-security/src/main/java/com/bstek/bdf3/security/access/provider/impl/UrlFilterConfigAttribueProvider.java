@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
 import com.bstek.bdf3.jpa.JpaUtilAble;
 import com.bstek.bdf3.security.Constants;
 import com.bstek.bdf3.security.access.provider.FilterConfigAttributeProvider;
-import com.bstek.bdf3.security.domain.Url;
+import com.bstek.bdf3.security.orm.Url;
 import com.bstek.bdf3.security.service.UrlService;
 /**
  * 默认菜单权限信息提供者

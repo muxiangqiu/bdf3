@@ -1,6 +1,6 @@
 package com.bstek.bdf3.security.cola.ui.service;
 
-import com.bstek.bdf3.security.domain.Permission;
+import com.bstek.bdf3.security.orm.Permission;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

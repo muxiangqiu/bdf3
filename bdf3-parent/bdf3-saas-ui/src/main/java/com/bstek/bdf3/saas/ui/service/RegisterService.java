@@ -1,7 +1,7 @@
 package com.bstek.bdf3.saas.ui.service;
 
 import com.bstek.bdf3.saas.domain.Organization;
-import com.bstek.bdf3.security.domain.User;
+import com.bstek.bdf3.security.orm.User;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

@@ -1,4 +1,4 @@
-package com.bstek.bdf3.security.domain;
+package com.bstek.bdf3.security.orm;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

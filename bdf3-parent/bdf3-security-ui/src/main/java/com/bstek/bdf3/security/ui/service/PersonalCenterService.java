@@ -2,10 +2,10 @@ package com.bstek.bdf3.security.ui.service;
 
 import java.util.List;
 
-import com.bstek.bdf3.security.domain.Permission;
-import com.bstek.bdf3.security.domain.Role;
-import com.bstek.bdf3.security.domain.Url;
-import com.bstek.bdf3.security.domain.User;
+import com.bstek.bdf3.security.orm.Permission;
+import com.bstek.bdf3.security.orm.Role;
+import com.bstek.bdf3.security.orm.Url;
+import com.bstek.bdf3.security.orm.User;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

@@ -21,7 +21,7 @@ arg.entity.parent.each(function(item) {
 })
 arg.entity.set(&quot;order&quot;, order);
 </ClientEvent>
-      <Property name="creationType">com.bstek.bdf3.security.domain.Url</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Url</Property>
       <PropertyDef name="id">
         <Property></Property>
       </PropertyDef>

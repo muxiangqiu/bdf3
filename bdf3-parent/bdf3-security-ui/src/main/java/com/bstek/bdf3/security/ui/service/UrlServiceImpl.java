@@ -12,8 +12,8 @@ import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.bdf3.dorado.jpa.policy.SaveContext;
 import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicyAdapter;
 import com.bstek.bdf3.security.cache.SecurityCacheEvict;
-import com.bstek.bdf3.security.domain.Permission;
-import com.bstek.bdf3.security.domain.Url;
+import com.bstek.bdf3.security.orm.Permission;
+import com.bstek.bdf3.security.orm.Url;
 
 
 

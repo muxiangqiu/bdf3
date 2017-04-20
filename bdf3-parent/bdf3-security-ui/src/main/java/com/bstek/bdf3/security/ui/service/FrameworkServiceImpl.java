@@ -8,9 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bstek.bdf3.security.orm.Url;
 import com.bstek.bdf3.security.service.UrlService;
-
-import com.bstek.bdf3.security.domain.Url;
 
 
 /**

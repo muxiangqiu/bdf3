@@ -3,7 +3,7 @@ package com.bstek.bdf3.security.access.provider;
 import java.util.Collection;
 import java.util.Map;
 
-import com.bstek.bdf3.security.domain.Component;
+import com.bstek.bdf3.security.orm.Component;
 
 /**
  * 组件提供者

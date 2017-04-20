@@ -24,7 +24,7 @@
 	dtRole.getPropertyDef(&quot;checked&quot;).enableListeners();
 });
 </ClientEvent>
-      <Property name="creationType">com.bstek.bdf3.security.domain.User</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.User</Property>
       <PropertyDef name="username">
         <Property></Property>
         <Property name="label">用户名</Property>
@@ -78,7 +78,7 @@
       </Reference>
     </DataType>
     <DataType name="RoleGrantedAuthority">
-      <Property name="creationType">com.bstek.bdf3.security.domain.RoleGrantedAuthority</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.RoleGrantedAuthority</Property>
       <PropertyDef name="id">
         <Property></Property>
       </PropertyDef>
@@ -93,7 +93,7 @@
       </PropertyDef>
     </DataType>
     <DataType name="Role">
-      <Property name="creationType">com.bstek.bdf3.security.domain.Role</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Role</Property>
       <PropertyDef name="id">
         <Property></Property>
         <Property name="label">ID</Property>
@@ -145,7 +145,7 @@ arg.entity.resetState();
       </PropertyDef>
     </DataType>
     <DataType name="Url">
-      <Property name="creationType">com.bstek.bdf3.security.domain.Url</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Url</Property>
       <PropertyDef name="id">
         <Property></Property>
       </PropertyDef>

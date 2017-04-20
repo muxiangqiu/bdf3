@@ -2,7 +2,7 @@ package com.bstek.bdf3.security.ui.service;
 
 import java.util.List;
 
-import com.bstek.bdf3.security.domain.User;
+import com.bstek.bdf3.security.orm.User;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 

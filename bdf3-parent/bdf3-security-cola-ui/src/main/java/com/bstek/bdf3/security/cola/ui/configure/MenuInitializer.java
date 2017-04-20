@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.jpa.JpaUtilAble;
-import com.bstek.bdf3.security.domain.Url;
+import com.bstek.bdf3.security.orm.Url;
 
 /**
  * 菜单初始化器。<br>

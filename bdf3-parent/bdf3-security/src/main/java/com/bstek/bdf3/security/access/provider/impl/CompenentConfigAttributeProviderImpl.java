@@ -13,7 +13,7 @@ import org.springframework.security.access.ConfigAttribute;
 
 import com.bstek.bdf3.security.Constants;
 import com.bstek.bdf3.security.access.provider.ComponentConfigAttributeProvider;
-import com.bstek.bdf3.security.domain.Component;
+import com.bstek.bdf3.security.orm.Component;
 import com.bstek.bdf3.security.service.ComponentService;
 
 /**

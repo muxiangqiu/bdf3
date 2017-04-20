@@ -4,8 +4,8 @@ package com.bstek.bdf3.security.ui.filter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bstek.bdf3.security.decision.manager.SecurityDecisionManager;
-import com.bstek.bdf3.security.domain.Component;
-import com.bstek.bdf3.security.domain.ComponentType;
+import com.bstek.bdf3.security.orm.Component;
+import com.bstek.bdf3.security.orm.ComponentType;
 import com.bstek.bdf3.security.ui.utils.UrlUtils;
 import com.bstek.dorado.view.widget.Control;
 

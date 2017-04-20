@@ -24,7 +24,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 
-import com.bstek.bdf3.security.domain.Component;
+import com.bstek.bdf3.security.orm.Component;
 
 /**
  * 组件角色投票器

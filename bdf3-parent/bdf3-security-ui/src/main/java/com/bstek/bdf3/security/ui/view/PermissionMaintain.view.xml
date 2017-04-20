@@ -50,7 +50,7 @@ arg.newCurrent.getAsync(&quot;permissions&quot;, function(permissions) {
 
 
 </ClientEvent>
-      <Property name="creationType">com.bstek.bdf3.security.domain.Role</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Role</Property>
       <PropertyDef name="id">
         <Property></Property>
         <Property name="label">ID</Property>
@@ -73,7 +73,7 @@ arg.newCurrent.getAsync(&quot;permissions&quot;, function(permissions) {
       </Reference>
     </DataType>
     <DataType name="Url">
-      <Property name="creationType">com.bstek.bdf3.security.domain.Url</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Url</Property>
       <PropertyDef name="id">
         <Property></Property>
       </PropertyDef>
@@ -175,7 +175,7 @@ if (role) {
       </Reference>
     </DataType>
     <DataType name="Permission">
-      <Property name="creationType">com.bstek.bdf3.security.domain.Permission</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Permission</Property>
       <PropertyDef name="id">
         <Property></Property>
       </PropertyDef>
@@ -200,7 +200,7 @@ if (role) {
       </PropertyDef>
     </DataType>
     <DataType name="OwnedUrl">
-      <Property name="creationType">com.bstek.bdf3.security.domain.Url</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Url</Property>
       <PropertyDef name="id">
         <Property></Property>
       </PropertyDef>
@@ -353,7 +353,7 @@ if (attribute) {
       </PropertyDef>
     </DataType>
     <DataType name="Component">
-      <Property name="creationType">com.bstek.bdf3.security.domain.Component</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Component</Property>
       <PropertyDef name="id">
         <Property></Property>
       </PropertyDef>

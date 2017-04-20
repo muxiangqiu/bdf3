@@ -2,7 +2,7 @@ package com.bstek.bdf3.security.cola.ui.service;
 
 import java.util.List;
 
-import com.bstek.bdf3.security.domain.Component;
+import com.bstek.bdf3.security.orm.Component;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

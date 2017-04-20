@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 
-import com.bstek.bdf3.security.domain.RoleGrantedAuthority;
+import com.bstek.bdf3.security.orm.RoleGrantedAuthority;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

@@ -3,7 +3,7 @@ package com.bstek.bdf3.security.ui.service;
 import java.util.Collection;
 import java.util.List;
 
-import com.bstek.bdf3.security.domain.Permission;
+import com.bstek.bdf3.security.orm.Permission;
 import com.bstek.bdf3.security.ui.builder.ViewComponent;
 
 

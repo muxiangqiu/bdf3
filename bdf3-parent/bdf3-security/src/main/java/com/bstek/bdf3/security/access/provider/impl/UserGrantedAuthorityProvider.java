@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.security.access.provider.GrantedAuthorityProvider;
-import com.bstek.bdf3.security.domain.RoleGrantedAuthority;
+import com.bstek.bdf3.security.orm.RoleGrantedAuthority;
 
 /**
  * 默认用户授权信息提供者

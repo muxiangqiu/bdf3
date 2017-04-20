@@ -1,4 +1,4 @@
-package com.bstek.bdf3.security.domain;
+package com.bstek.bdf3.security.orm;
 
 import java.util.ArrayList;
 import java.util.List;

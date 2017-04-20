@@ -29,7 +29,7 @@
 });
 
 </ClientEvent>
-      <Property name="creationType">com.bstek.bdf3.security.domain.Role</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Role</Property>
       <PropertyDef name="id">
         <Property></Property>
         <Property name="label">ID</Property>
@@ -51,7 +51,7 @@
       </Reference>
     </DataType>
     <DataType name="Url">
-      <Property name="creationType">com.bstek.bdf3.security.domain.Url</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Url</Property>
       <PropertyDef name="id">
         <Property></Property>
       </PropertyDef>
@@ -133,7 +133,7 @@ function doPermission(url, checked) {
       </PropertyDef>
     </DataType>
     <DataType name="Permission">
-      <Property name="creationType">com.bstek.bdf3.security.domain.Permission</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Permission</Property>
       <PropertyDef name="id">
         <Property></Property>
       </PropertyDef>

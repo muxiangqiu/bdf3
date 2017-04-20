@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.saas.ui.service.RegisterService;
-import com.bstek.bdf3.security.domain.User;
+import com.bstek.bdf3.security.orm.User;
 
 
 /**

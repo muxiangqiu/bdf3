@@ -12,7 +12,7 @@ import org.springframework.core.annotation.Order;
 
 import com.bstek.bdf3.security.Constants;
 import com.bstek.bdf3.security.access.provider.ComponentProvider;
-import com.bstek.bdf3.security.domain.Component;
+import com.bstek.bdf3.security.orm.Component;
 import com.bstek.bdf3.security.service.ComponentService;
 
 /**

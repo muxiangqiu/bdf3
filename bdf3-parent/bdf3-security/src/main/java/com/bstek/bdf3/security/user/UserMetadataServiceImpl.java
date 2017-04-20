@@ -10,7 +10,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
 import org.springframework.util.StringUtils;
 
-import com.bstek.bdf3.security.domain.User;
+import com.bstek.bdf3.security.orm.User;
 import com.bstek.bdf3.security.user.annotation.AccountNonExpired;
 import com.bstek.bdf3.security.user.annotation.AccountNonLocked;
 import com.bstek.bdf3.security.user.annotation.Authorities;

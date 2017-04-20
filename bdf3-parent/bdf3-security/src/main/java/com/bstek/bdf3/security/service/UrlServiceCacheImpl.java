@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.security.Constants;
-import com.bstek.bdf3.security.domain.Permission;
-import com.bstek.bdf3.security.domain.Url;
+import com.bstek.bdf3.security.orm.Permission;
+import com.bstek.bdf3.security.orm.Url;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

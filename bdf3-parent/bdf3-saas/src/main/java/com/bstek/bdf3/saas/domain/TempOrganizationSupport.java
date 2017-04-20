@@ -1,6 +1,6 @@
 package com.bstek.bdf3.saas.domain;
 
-import com.bstek.bdf3.security.domain.OrganizationSupport;
+import com.bstek.bdf3.security.orm.OrganizationSupport;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

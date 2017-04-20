@@ -15,9 +15,9 @@ import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.security.access.provider.ComponentProvider;
 import com.bstek.bdf3.security.cache.SecurityCacheEvict;
 import com.bstek.bdf3.security.decision.manager.SecurityDecisionManager;
-import com.bstek.bdf3.security.domain.Component;
-import com.bstek.bdf3.security.domain.ComponentType;
-import com.bstek.bdf3.security.domain.Permission;
+import com.bstek.bdf3.security.orm.Component;
+import com.bstek.bdf3.security.orm.ComponentType;
+import com.bstek.bdf3.security.orm.Permission;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

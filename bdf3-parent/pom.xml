@@ -33,6 +33,7 @@
 		<module>bdf3-swfviewer</module>
 		<module>bdf3-export</module>
 		<module>bdf3-dbconsole</module>
+		<module>bdf3-security-orm</module>
 	</modules>
 	<properties>
 	</properties>

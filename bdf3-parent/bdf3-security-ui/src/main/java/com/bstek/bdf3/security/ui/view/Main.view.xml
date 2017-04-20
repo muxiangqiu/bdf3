@@ -4,7 +4,7 @@
   <Context/>
   <Model>
     <DataType name="Url">
-      <Property name="creationType">com.bstek.bdf3.security.domain.Url</Property>
+      <Property name="creationType">com.bstek.bdf3.security.orm.Url</Property>
       <Property name="defaultDisplayProperty">name</Property>
       <PropertyDef name="id">
         <Property></Property>

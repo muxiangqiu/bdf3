@@ -12,7 +12,7 @@ public class ViewFilter extends AbstractFilter<View> {
 	@Override
 	public void invoke(View view) {
 		String path = UrlUtils.getRequestPath();
-		com.bstek.bdf3.security.domain.Component component = new com.bstek.bdf3.security.domain.Component();
+		com.bstek.bdf3.security.orm.Component component = new com.bstek.bdf3.security.orm.Component();
 		component.setPath(path);
 		if (securityDecisionManager.findConfigAttributes(component) == null) {
 			return;

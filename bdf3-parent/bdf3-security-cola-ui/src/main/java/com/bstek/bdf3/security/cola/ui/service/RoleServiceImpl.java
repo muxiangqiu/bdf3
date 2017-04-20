@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.security.cache.SecurityCacheEvict;
-import com.bstek.bdf3.security.domain.Permission;
-import com.bstek.bdf3.security.domain.Role;
-import com.bstek.bdf3.security.domain.RoleGrantedAuthority;
-import com.bstek.bdf3.security.domain.Url;
+import com.bstek.bdf3.security.orm.Permission;
+import com.bstek.bdf3.security.orm.Role;
+import com.bstek.bdf3.security.orm.RoleGrantedAuthority;
+import com.bstek.bdf3.security.orm.Url;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

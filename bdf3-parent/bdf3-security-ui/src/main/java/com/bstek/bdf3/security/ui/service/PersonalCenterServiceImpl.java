@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
-import com.bstek.bdf3.security.domain.Component;
-import com.bstek.bdf3.security.domain.Permission;
-import com.bstek.bdf3.security.domain.Role;
-import com.bstek.bdf3.security.domain.RoleGrantedAuthority;
-import com.bstek.bdf3.security.domain.Url;
-import com.bstek.bdf3.security.domain.User;
+import com.bstek.bdf3.security.orm.Component;
+import com.bstek.bdf3.security.orm.Permission;
+import com.bstek.bdf3.security.orm.Role;
+import com.bstek.bdf3.security.orm.RoleGrantedAuthority;
+import com.bstek.bdf3.security.orm.Url;
+import com.bstek.bdf3.security.orm.User;
 import com.bstek.bdf3.security.service.UrlService;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;

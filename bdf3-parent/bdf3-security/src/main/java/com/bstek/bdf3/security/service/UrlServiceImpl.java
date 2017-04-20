@@ -14,8 +14,8 @@ import org.springframework.util.CollectionUtils;
 
 import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.security.decision.manager.SecurityDecisionManager;
-import com.bstek.bdf3.security.domain.Permission;
-import com.bstek.bdf3.security.domain.Url;
+import com.bstek.bdf3.security.orm.Permission;
+import com.bstek.bdf3.security.orm.Url;
 import com.bstek.bdf3.security.user.SecurityUserUtil;
 
 /**

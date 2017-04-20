@@ -5,8 +5,8 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.bstek.bdf3.security.domain.Component;
-import com.bstek.bdf3.security.domain.ComponentType;
+import com.bstek.bdf3.security.orm.Component;
+import com.bstek.bdf3.security.orm.ComponentType;
 import com.bstek.bdf3.security.ui.utils.UrlUtils;
 import com.bstek.dorado.view.widget.Control;
 import com.bstek.dorado.view.widget.base.accordion.Section;
