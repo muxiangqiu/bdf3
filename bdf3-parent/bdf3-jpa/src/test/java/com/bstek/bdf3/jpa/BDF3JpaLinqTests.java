@@ -16,8 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +34,7 @@ import com.bstek.bdf3.jpa.lin.Linq;
 
 @SpringBootApplication
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(BDF3JpaLinqTests.class)
+@SpringBootConfiguration
 public class BDF3JpaLinqTests {
 
 
@@ -59,7 +59,7 @@ public class BDF3JpaLinqTests {
 		User user = new User();
 		user.setId(UUID.randomUUID().toString());
 		JpaUtil.persist(user);
-		Assert.notEmpty(JpaUtil.linq(User.class).list());
+		Assert.notEmpty(JpaUtil.linq(User.class).list(), "Not Success.");
 		JpaUtil.removeAll(User.class);
 	}
 	
@@ -81,7 +81,7 @@ public class BDF3JpaLinqTests {
 					.equal("name", "Bob")
 				.endIf()
 				.list();
-		Assert.notEmpty(users);
+		Assert.notEmpty(users, "Not Success.");
 		
 		users =JpaUtil
 			.linq(User.class)
@@ -89,7 +89,7 @@ public class BDF3JpaLinqTests {
 				.equal("name", "Bob")
 			.endIf()
 			.list();
-		Assert.notEmpty(users);
+		Assert.notEmpty(users, "Not Success.");
 		
 		users =JpaUtil
 			.linq(User.class)
@@ -97,7 +97,7 @@ public class BDF3JpaLinqTests {
 				.equal("name", "Bob")
 			.endIf()
 			.list();
-		Assert.notEmpty(users);
+		Assert.notEmpty(users, "Not Success.");
 		
 		users =JpaUtil
 			.linq(User.class)
@@ -105,7 +105,7 @@ public class BDF3JpaLinqTests {
 				.equal("name", "Bob")
 			.endIf()
 			.list();
-		Assert.state(users.isEmpty());
+		Assert.state(users.isEmpty(), "Not Success.");
 		
 		users =JpaUtil
 			.linq(User.class)
@@ -113,7 +113,7 @@ public class BDF3JpaLinqTests {
 				.equal("name", "Bob")
 			.endIf()
 			.list();
-		Assert.state(users.isEmpty());
+		Assert.state(users.isEmpty(), "Not Success." );
 		
 		users =JpaUtil
 			.linq(User.class)
@@ -121,7 +121,7 @@ public class BDF3JpaLinqTests {
 				.equal("name", "Bob")
 			.endIf()
 			.list();
-		Assert.notEmpty(users);
+		Assert.notEmpty(users, "Not Success.");
 		
 		List<String> list = new ArrayList<String>();
 		list.add("test");
@@ -131,7 +131,7 @@ public class BDF3JpaLinqTests {
 				.equal("name", "Bob")
 			.endIf()
 			.list();
-		Assert.state(users.isEmpty());
+		Assert.state(users.isEmpty(), "Not Success.");
 		
 		JpaUtil.removeAll(User.class);
 	}
@@ -154,7 +154,7 @@ public class BDF3JpaLinqTests {
 					.equal("name", "Bob")
 				.endIf()
 				.list();
-		Assert.state(users.isEmpty());
+		Assert.state(users.isEmpty(), "Not Success.");
 		
 		users =JpaUtil
 			.linq(User.class)
@@ -162,7 +162,7 @@ public class BDF3JpaLinqTests {
 				.equal("name", "Bob")
 			.endIf()
 			.list();
-		Assert.state(users.isEmpty());
+		Assert.state(users.isEmpty(), "Not Success.");
 		
 		users =JpaUtil
 			.linq(User.class)
@@ -170,7 +170,7 @@ public class BDF3JpaLinqTests {
 				.equal("name", "Bob")
 			.endIf()
 			.list();
-		Assert.state(users.isEmpty());
+		Assert.state(users.isEmpty(), "Not Success.");
 		
 		users =JpaUtil
 			.linq(User.class)
@@ -178,7 +178,7 @@ public class BDF3JpaLinqTests {
 				.equal("name", "Bob")
 			.endIf()
 			.list();
-		Assert.notEmpty(users);
+		Assert.notEmpty(users, "Not Success.");
 		
 		List<String> list = new ArrayList<String>();
 		list.add("test");
@@ -188,7 +188,7 @@ public class BDF3JpaLinqTests {
 				.equal("name", "Bob")
 			.endIf()
 			.list();
-		Assert.notEmpty(users);
+		Assert.notEmpty(users, "Not Success.");
 		
 		JpaUtil.removeAll(User.class);
 	}
@@ -200,7 +200,7 @@ public class BDF3JpaLinqTests {
 		user.setId(UUID.randomUUID().toString());
 		User user2 = new User();
 		JpaUtil.persist(user);
-		Assert.notNull(JpaUtil.linq(User.class).findOne());
+		Assert.notNull(JpaUtil.linq(User.class).findOne(), "Not Success.");
 
 		user2.setId(UUID.randomUUID().toString());
 		JpaUtil.persist(user2);
@@ -212,13 +212,13 @@ public class BDF3JpaLinqTests {
 		} finally {
 			JpaUtil.removeAllInBatch(User.class);
 		}
-		Assert.isTrue(error);
+		Assert.isTrue(error, "Not Success.");
 	}
 	
 	@Test
 	@Transactional
 	public void testFindAll() {
-		Assert.notNull(JpaUtil.linq(User.class).list());
+		Assert.notNull(JpaUtil.linq(User.class).list(), "Not Success.");
 		User user = new User();
 		user.setId(UUID.randomUUID().toString());
 		user.setName("tom");
@@ -229,55 +229,55 @@ public class BDF3JpaLinqTests {
 		JpaUtil.persist(user);
 		JpaUtil.persist(user2);
 		
-		Assert.notEmpty(JpaUtil.linq(User.class).list());
+		Assert.notEmpty(JpaUtil.linq(User.class).list(), "Not Success.");
 		
-		Assert.isTrue(JpaUtil.linq(User.class).equal("name", "tom").list().size() == 1);
+		Assert.isTrue(JpaUtil.linq(User.class).equal("name", "tom").list().size() == 1, "Not Success.");
 		
 		Pageable pageable = new PageRequest(0, 1);
 		Page<User> page = JpaUtil.linq(User.class).paging(pageable);
-		Assert.isTrue(page.getSize() == 1);
-		Assert.isTrue(page.getTotalElements() == 2);
-		Assert.isTrue(page.getTotalPages() == 2);
+		Assert.isTrue(page.getSize() == 1, "Not Success.");
+		Assert.isTrue(page.getTotalElements() == 2, "Not Success.");
+		Assert.isTrue(page.getTotalPages() == 2, "Not Success.");
 		
 		Pageable pageable2 = new PageRequest(0, 1, Direction.DESC, "name");
 		Page<User> page2 = JpaUtil.linq(User.class).paging(pageable2);
-		Assert.isTrue(page2.getContent().get(0).getName() == "tom");
-		Assert.isTrue(page2.getSize() == 1);
-		Assert.isTrue(page2.getTotalElements() == 2);
-		Assert.isTrue(page2.getTotalPages() == 2);
+		Assert.isTrue(page2.getContent().get(0).getName() == "tom", "Not Success.");
+		Assert.isTrue(page2.getSize() == 1, "Not Success.");
+		Assert.isTrue(page2.getTotalElements() == 2, "Not Success.");
+		Assert.isTrue(page2.getTotalPages() == 2, "Not Success.");
 		
 		Pageable pageable3 = new PageRequest(0, 1, Direction.ASC, "name");
 		Page<User> page3 = JpaUtil.linq(User.class).paging(pageable3);
-		Assert.isTrue(page3.getContent().get(0).getName() == "kevin");
-		Assert.isTrue(page3.getSize() == 1);
-		Assert.isTrue(page3.getTotalElements() == 2);
-		Assert.isTrue(page3.getTotalPages() == 2);
+		Assert.isTrue(page3.getContent().get(0).getName() == "kevin", "Not Success.");
+		Assert.isTrue(page3.getSize() == 1, "Not Success.");
+		Assert.isTrue(page3.getTotalElements() == 2, "Not Success.");
+		Assert.isTrue(page3.getTotalPages() == 2, "Not Success.");
 		
 		Pageable pageable4 = new PageRequest(0, 1);
 		Page<User> page4 = JpaUtil.linq(User.class).equal("name", "tom").paging(pageable4);
-		Assert.isTrue(page4.getSize() == 1);
-		Assert.isTrue(page4.getTotalElements() == 1);
-		Assert.isTrue(page4.getTotalPages() == 1);
+		Assert.isTrue(page4.getSize() == 1, "Not Success.");
+		Assert.isTrue(page4.getTotalElements() == 1, "Not Success.");
+		Assert.isTrue(page4.getTotalPages() == 1, "Not Success.");
 		
 		Pageable pageable5 = new PageRequest(0, 1, Direction.DESC, "name");
 		Page<User> page5 = JpaUtil.linq(User.class).equal("name", "tom").paging(pageable5);
-		Assert.isTrue(page5.getContent().get(0).getName() == "tom");
-		Assert.isTrue(page5.getSize() == 1);
-		Assert.isTrue(page5.getTotalElements() == 1);
-		Assert.isTrue(page5.getTotalPages() == 1);
+		Assert.isTrue(page5.getContent().get(0).getName() == "tom", "Not Success.");
+		Assert.isTrue(page5.getSize() == 1, "Not Success.");
+		Assert.isTrue(page5.getTotalElements() == 1, "Not Success.");
+		Assert.isTrue(page5.getTotalPages() == 1, "Not Success.");
 		
 		Pageable pageable6 = new PageRequest(0, 1, Direction.DESC, "name");
 		Page<User> page6 = JpaUtil.linq(User.class).equal("name", "tom").paging(pageable6);
-		Assert.isTrue(page6.getContent().get(0).getName() == "tom");
-		Assert.isTrue(page6.getSize() == 1);
-		Assert.isTrue(page6.getTotalElements() == 1);
-		Assert.isTrue(page6.getTotalPages() == 1);
+		Assert.isTrue(page6.getContent().get(0).getName() == "tom", "Not Success.");
+		Assert.isTrue(page6.getSize() == 1, "Not Success.");
+		Assert.isTrue(page6.getTotalElements() == 1, "Not Success.");
+		Assert.isTrue(page6.getTotalPages() == 1, "Not Success.");
 		
 		Page<User> page7 = JpaUtil.linq(User.class).equal("name", "tom").paging(null);
-		Assert.isTrue(page7.getContent().get(0).getName() == "tom");
-		Assert.isTrue(page7.getSize() == 0);
-		Assert.isTrue(page7.getTotalElements() == 1);
-		Assert.isTrue(page7.getTotalPages() == 1);
+		Assert.isTrue(page7.getContent().get(0).getName() == "tom", "Not Success.");
+		Assert.isTrue(page7.getSize() == 0, "Not Success.");
+		Assert.isTrue(page7.getTotalElements() == 1, "Not Success.");
+		Assert.isTrue(page7.getTotalPages() == 1, "Not Success.");
 		
 		JpaUtil.removeAllInBatch(User.class);
 		
@@ -286,7 +286,7 @@ public class BDF3JpaLinqTests {
 	@Test
 	@Transactional
 	public void testCount() {
-		Assert.isTrue(JpaUtil.linq(User.class).count() == 0);
+		Assert.isTrue(JpaUtil.linq(User.class).count() == 0, "Not Success.");
 		User user = new User();
 		user.setId(UUID.randomUUID().toString());
 		user.setName("tom");
@@ -301,10 +301,10 @@ public class BDF3JpaLinqTests {
 		JpaUtil.persist(user2);
 		JpaUtil.persist(user3);
 		
-		Assert.isTrue(JpaUtil.linq(User.class).count() == 3);
+		Assert.isTrue(JpaUtil.linq(User.class).count() == 3, "Not Success.");
 		
 		
-		Assert.isTrue(JpaUtil.linq(User.class).equal("name", "tom").count() == 1);
+		Assert.isTrue(JpaUtil.linq(User.class).equal("name", "tom").count() == 1, "Not Success.");
 		
 		
 		JpaUtil.removeAllInBatch(User.class);
@@ -314,7 +314,7 @@ public class BDF3JpaLinqTests {
 	@Test
 	@Transactional
 	public void testExists() {
-		Assert.isTrue(!JpaUtil.linq(User.class).exists());
+		Assert.isTrue(!JpaUtil.linq(User.class).exists(), "Not Success.");
 		User user = new User();
 		user.setId(UUID.randomUUID().toString());
 		user.setName("tom");
@@ -329,9 +329,9 @@ public class BDF3JpaLinqTests {
 		JpaUtil.persist(user2);
 		JpaUtil.persist(user3);
 		
-		Assert.isTrue(JpaUtil.linq(User.class).exists());
+		Assert.isTrue(JpaUtil.linq(User.class).exists(), "Not Success.");
 		
-		Assert.isTrue(JpaUtil.linq(User.class).equal("name", "tom").exists());
+		Assert.isTrue(JpaUtil.linq(User.class).equal("name", "tom").exists(), "Not Success.");
 		
 		JpaUtil.removeAllInBatch(User.class);
 	}
@@ -419,108 +419,108 @@ public class BDF3JpaLinqTests {
 		Linq linq = JpaUtil.linq(User.class);
 		Root<User> root = linq.root();
 		linq.between("age", 20, 32);
-		Assert.isTrue(linq.list().size() == 5);
+		Assert.isTrue(linq.list().size() == 5, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		Expression<Integer> age = root.get("age");
 		linq.between(age, age, age);
-		Assert.isTrue(linq.list().size() == 8);
+		Assert.isTrue(linq.list().size() == 8, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.between(age, 20, 32);
-		Assert.isTrue(linq.list().size() == 5);
+		Assert.isTrue(linq.list().size() == 5, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.between(age, "age", "age");
-		Assert.isTrue(linq.list().size() == 8);
+		Assert.isTrue(linq.list().size() == 8, "Not Success.");
 		
 		//equal
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.equal(age, age);
-		Assert.isTrue(linq.list().size() == 8);
+		Assert.isTrue(linq.list().size() == 8, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.equal(age, 66);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.equal("age", 66);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		//notEqual
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.notEqual(age, age);
-		Assert.isTrue(linq.list().size() == 0);
+		Assert.isTrue(linq.list().size() == 0, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.notEqual(age, 66);
-		Assert.isTrue(linq.list().size() == 7);
+		Assert.isTrue(linq.list().size() == 7, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.notEqual("age", 66);
-		Assert.isTrue(linq.list().size() == 7);
+		Assert.isTrue(linq.list().size() == 7, "Not Success.");
 		
 		//ge
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.ge(age,33);
-		Assert.isTrue(linq.list().size() == 2);
+		Assert.isTrue(linq.list().size() == 2, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.ge("age", 33);
-		Assert.isTrue(linq.list().size() == 2);
+		Assert.isTrue(linq.list().size() == 2, "Not Success.");
 		
 		//gt
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.gt(age, age);
-		Assert.isTrue(linq.list().size() == 0);
+		Assert.isTrue(linq.list().size() == 0, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.gt(age, 33);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.gt("age", 33);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		//greaterThan
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.greaterThan(age, age);
-		Assert.isTrue(linq.list().size() == 0);
+		Assert.isTrue(linq.list().size() == 0, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.greaterThan(age, 33);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.greaterThan("age", 33);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 
 		//greaterThanOrEqualTo
@@ -528,72 +528,72 @@ public class BDF3JpaLinqTests {
 		root = linq.root();
 		age = root.get("age");
 		linq.greaterThanOrEqualTo(age, age);
-		Assert.isTrue(linq.list().size() == 8);
+		Assert.isTrue(linq.list().size() == 8, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.greaterThanOrEqualTo(age, 33);
-		Assert.isTrue(linq.list().size() == 2);
+		Assert.isTrue(linq.list().size() == 2, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.greaterThanOrEqualTo("age", 33);
-		Assert.isTrue(linq.list().size() == 2);
+		Assert.isTrue(linq.list().size() == 2, "Not Success.");
 		
 		//le
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.le(age, 10);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.le(age, age);
-		Assert.isTrue(linq.list().size() == 8);
+		Assert.isTrue(linq.list().size() == 8, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.le("age", "age");
-		Assert.isTrue(linq.list().size() == 8);
+		Assert.isTrue(linq.list().size() == 8, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.le("age", 10);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		//lt
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.lt(age, age);
-		Assert.isTrue(linq.list().size() == 0);
+		Assert.isTrue(linq.list().size() == 0, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.lt(age, 10);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.lt("age", 10);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		//lessThan
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.lessThan(age, age);
-		Assert.isTrue(linq.list().size() == 0);
+		Assert.isTrue(linq.list().size() == 0, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.lessThan(age, 10);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.lessThan("age", 10);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 
 		//lessThanOrEqualTo
@@ -601,149 +601,149 @@ public class BDF3JpaLinqTests {
 		root = linq.root();
 		age = root.get("age");
 		linq.lessThanOrEqualTo(age, age);
-		Assert.isTrue(linq.list().size() == 8);
+		Assert.isTrue(linq.list().size() == 8, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.lessThanOrEqualTo(age, 3);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.lessThanOrEqualTo("age", 3);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 
 		//in
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.in(age, age, age);
-		Assert.isTrue(linq.list().size() == 8);
+		Assert.isTrue(linq.list().size() == 8, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.in(root.get("name"), "kevin", "tom");
-		Assert.isTrue(linq.list().size() == 2);
+		Assert.isTrue(linq.list().size() == 2, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.in("age", 33, 66);
-		Assert.isTrue(linq.list().size() == 2);
+		Assert.isTrue(linq.list().size() == 2, "Not Success.");
 		
 		JpaUtil.linq(User.class).in(Dept.class).select("id").equal("name", "dept1").paging(null);
-		Assert.isTrue(JpaUtil.linq(User.class).in(Dept.class).select("id").equal("name", "dept1").list().size() == 0);
+		Assert.isTrue(JpaUtil.linq(User.class).in(Dept.class).select("id").equal("name", "dept1").list().size() == 0, "Not Success.");
 		
 		//notIn
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		age = root.get("age");
 		linq.notIn(age, age, age);
-		Assert.isTrue(linq.list().size() == 0);
+		Assert.isTrue(linq.list().size() == 0, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		linq.notIn(root.get("name"), "kevin", "tom");
-		Assert.isTrue(linq.list().size() == 6);
+		Assert.isTrue(linq.list().size() == 6, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.notIn("age", 33, 66);
-		Assert.isTrue(linq.list().size() == 6);
+		Assert.isTrue(linq.list().size() == 6, "Not Success.");
 		
 		//isFalse
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		Expression<Boolean> enbled = root.get("enabled");
 		linq.isFalse(enbled);
-		Assert.isTrue(linq.list().size() == 2);
+		Assert.isTrue(linq.list().size() == 2, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.isFalse("enabled");
-		Assert.isTrue(linq.list().size() == 2);
+		Assert.isTrue(linq.list().size() == 2, "Not Success.");
 		
 		//isTrue
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		enbled = root.get("enabled");
 		linq.isTrue(enbled);
-		Assert.isTrue(linq.list().size() == 6);
+		Assert.isTrue(linq.list().size() == 6, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.isTrue("enabled");
-		Assert.isTrue(linq.list().size() == 6);
+		Assert.isTrue(linq.list().size() == 6, "Not Success.");
 	
 		//like
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		Expression<String> name = root.get("name");
 		linq.like(name, "li%");
-		Assert.isTrue(linq.list().size() == 5);
+		Assert.isTrue(linq.list().size() == 5, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		name = root.get("name");
 		linq.like(name, name);
-		Assert.isTrue(linq.list().size() == 8);
+		Assert.isTrue(linq.list().size() == 8, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.like("name", "li%");
-		Assert.isTrue(linq.list().size() == 5);
+		Assert.isTrue(linq.list().size() == 5, "Not Success.");
 		
 		//notLike
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		name = root.get("name");
 		linq.notLike(name, "li%");
-		Assert.isTrue(linq.list().size() == 3);
+		Assert.isTrue(linq.list().size() == 3, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		name = root.get("name");
 		linq.notLike(name, name);
-		Assert.isTrue(linq.list().size() == 0);
+		Assert.isTrue(linq.list().size() == 0, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.notLike("name", "li%");
-		Assert.isTrue(linq.list().size() == 3);
+		Assert.isTrue(linq.list().size() == 3, "Not Success.");
 		
 		//isNull
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		name = root.get("name");
 		linq.isNull(name);
-		Assert.isTrue(linq.list().size() == 0);
+		Assert.isTrue(linq.list().size() == 0, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.isNull("name");
-		Assert.isTrue(linq.list().size() == 0);
+		Assert.isTrue(linq.list().size() == 0, "Not Success.");
 		
 		//isNotNull
 		linq = JpaUtil.linq(User.class);
 		root = linq.root();
 		name = root.get("name");
 		linq.isNotNull(name);
-		Assert.isTrue(linq.list().size() == 8);
+		Assert.isTrue(linq.list().size() == 8, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.isNotNull("name");
-		Assert.isTrue(linq.list().size() == 8);
+		Assert.isTrue(linq.list().size() == 8, "Not Success.");
 		
 		//exists
 		linq = JpaUtil.linq(User.class);
 		linq.exists(Dept.class).equalProperty("id", "deptId").end();
-		Assert.isTrue(linq.list().size() == 2);
+		Assert.isTrue(linq.list().size() == 2, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.exists(Dept.class).equalProperty("id", "deptId").equal("name", "dept1").end();
-		Assert.isTrue(linq.list().size() == 2);
+		Assert.isTrue(linq.list().size() == 2, "Not Success.");
 		
-		Assert.isTrue(JpaUtil.linq(User.class).exists(Dept.class).equalProperty("id", "deptId").equal("name", "dept1").list().size() == 2);
+		Assert.isTrue(JpaUtil.linq(User.class).exists(Dept.class).equalProperty("id", "deptId").equal("name", "dept1").list().size() == 2, "Not Success.");
 		
 		//and
 		linq = JpaUtil.linq(User.class);
 		linq.and()
 			.equal("name", "kevin")
 			.equal("age", 25);
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.and()
@@ -755,14 +755,14 @@ public class BDF3JpaLinqTests {
 			.end()
 			.equal("name", "kevin");
 			
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		//and
 		linq = JpaUtil.linq(User.class);
 		linq.or()
 			.equal("name", "kevin")
 			.equal("age", 33);
-		Assert.isTrue(linq.list().size() == 2);
+		Assert.isTrue(linq.list().size() == 2, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.or()
@@ -774,7 +774,7 @@ public class BDF3JpaLinqTests {
 			.end()
 			.equal("name", "kevin");
 			
-		Assert.isTrue(linq.list().size() == 1);
+		Assert.isTrue(linq.list().size() == 1, "Not Success.");
 		
 		
 		//and or or
@@ -787,7 +787,7 @@ public class BDF3JpaLinqTests {
 				.end()
 			.end();
 			
-		Assert.isTrue(linq.list().size() == 2);
+		Assert.isTrue(linq.list().size() == 2, "Not Success.");
 
 				
 		
@@ -906,22 +906,22 @@ public class BDF3JpaLinqTests {
 		linq = JpaUtil.linq(User.class);
 		linq.aliasToBean().select("name", "id");
 		user = (User) linq.list().iterator().next();
-		Assert.isTrue(user.getName() != null);
+		Assert.isTrue(user.getName() != null, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.aliasToMap().select("name", "id");
 		Map<String, Object> map = (Map<String, Object>) linq.list().iterator().next();
-		Assert.isTrue(map.get("name") != null);
+		Assert.isTrue(map.get("name") != null, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.aliasToMap().select("name").groupBy("name");
 		List<Map<String, Object>> list =  linq.list();
-		Assert.isTrue(list.size() == 5);
+		Assert.isTrue(list.size() == 5, "Not Success.");
 		
 		linq = JpaUtil.linq(User.class);
 		linq.aliasToMap().select("name").groupBy("name").having().equal("name", "kevin");
 		list =  linq.list();
-		Assert.isTrue(list.size() == 1);
+		Assert.isTrue(list.size() == 1, "Not Success.");
 		
 		JpaUtil.removeAllInBatch(User.class);
 		JpaUtil.removeAllInBatch(Dept.class);

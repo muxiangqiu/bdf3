@@ -13,8 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +28,7 @@ import com.bstek.bdf3.jpa.domain.User;
 
 @SpringBootApplication
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(BDF3JpaUtilTests.class)
+@SpringBootConfiguration
 public class BDF3JpaUtilTests {
 
 
@@ -53,7 +53,7 @@ public class BDF3JpaUtilTests {
 		User user = new User();
 		user.setId(UUID.randomUUID().toString());
 		JpaUtil.persist(user);
-		Assert.notEmpty(JpaUtil.findAll(User.class));
+		Assert.notEmpty(JpaUtil.findAll(User.class), "Not Success.");
 		JpaUtil.removeAll(User.class);
 	}
 	
@@ -63,12 +63,12 @@ public class BDF3JpaUtilTests {
 		User user = new User();
 		user.setId(UUID.randomUUID().toString());
 		JpaUtil.persist(user);
-		Assert.notEmpty(JpaUtil.findAll(User.class));
+		Assert.notEmpty(JpaUtil.findAll(User.class), "Not Success.");
 		User u = new User();
 		u.setId(user.getId());
 		u.setAge(1);
 		JpaUtil.merge(u);
-		Assert.isTrue(JpaUtil.findOne(User.class).getAge() == 1);
+		Assert.isTrue(JpaUtil.findOne(User.class).getAge() == 1, "Not Success.");
 		JpaUtil.removeAll(User.class);
 	}
 	
@@ -84,7 +84,7 @@ public class BDF3JpaUtilTests {
 		user2.setId(UUID.randomUUID().toString());
 		JpaUtil.persistAndFlush(user2);
 		JpaUtil.remove(Arrays.asList(user2));
-		Assert.isTrue(JpaUtil.findAll(User.class).isEmpty());
+		Assert.isTrue(JpaUtil.findAll(User.class).isEmpty(), "Not Success.");
 	}
 	
 	@Test
@@ -94,7 +94,7 @@ public class BDF3JpaUtilTests {
 		user.setId(UUID.randomUUID().toString());
 		JpaUtil.persistAndFlush(user);
 		JpaUtil.removeAll(User.class);
-		Assert.isTrue(JpaUtil.findAll(User.class).isEmpty());
+		Assert.isTrue(JpaUtil.findAll(User.class).isEmpty(), "Not Success.");
 	}
 	
 	@Test
@@ -104,7 +104,7 @@ public class BDF3JpaUtilTests {
 		user.setId(UUID.randomUUID().toString());
 		JpaUtil.persistAndFlush(user);
 		JpaUtil.removeAllInBatch(User.class);
-		Assert.isTrue(JpaUtil.findAll(User.class).isEmpty());
+		Assert.isTrue(JpaUtil.findAll(User.class).isEmpty(), "Not Success.");
 	}
 	
 	@Test
@@ -114,7 +114,7 @@ public class BDF3JpaUtilTests {
 		user.setId(UUID.randomUUID().toString());
 		User user2 = new User();
 		JpaUtil.persist(user);
-		Assert.notNull(JpaUtil.findOne(User.class));
+		Assert.notNull(JpaUtil.findOne(User.class), "Not Success.");
 
 		user2.setId(UUID.randomUUID().toString());
 		JpaUtil.persist(user2);
@@ -126,13 +126,13 @@ public class BDF3JpaUtilTests {
 		} finally {
 			JpaUtil.removeAllInBatch(User.class);
 		}
-		Assert.isTrue(error);
+		Assert.isTrue(error, "Not Success.");
 	}
 	
 	@Test
 	@Transactional
 	public void testFindAll() {
-		Assert.notNull(JpaUtil.findAll(User.class));
+		Assert.notNull(JpaUtil.findAll(User.class), "Not Success.");
 		User user = new User();
 		user.setId(UUID.randomUUID().toString());
 		user.setName("tom");
@@ -143,65 +143,65 @@ public class BDF3JpaUtilTests {
 		JpaUtil.persist(user);
 		JpaUtil.persist(user2);
 		
-		Assert.notEmpty(JpaUtil.findAll(User.class));
+		Assert.notEmpty(JpaUtil.findAll(User.class), "Not Success.");
 		
 		EntityManager em = JpaUtil.getEntityManager(User.class);
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<User> cq = cb.createQuery(User.class);
-		Assert.isTrue(JpaUtil.findAll(cq).size() == 2);
+		Assert.isTrue(JpaUtil.findAll(cq).size() == 2, "Not Success.");
 		
 		cq.getRoots().clear();
 		Root<User> root = cq.from(User.class);
-		Assert.isTrue(JpaUtil.findAll(cq).size() == 2);
+		Assert.isTrue(JpaUtil.findAll(cq).size() == 2, "Not Success.");
 		
 		cq.where(cb.equal(root.get("name"), "tom"));
-		Assert.isTrue(JpaUtil.findAll(cq).size() == 1);
+		Assert.isTrue(JpaUtil.findAll(cq).size() == 1, "Not Success.");
 		
 		Pageable pageable = new PageRequest(0, 1);
 		Page<User> page = JpaUtil.findAll(User.class, pageable);
-		Assert.isTrue(page.getSize() == 1);
-		Assert.isTrue(page.getTotalElements() == 2);
-		Assert.isTrue(page.getTotalPages() == 2);
+		Assert.isTrue(page.getSize() == 1, "Not Success.");
+		Assert.isTrue(page.getTotalElements() == 2, "Not Success.");
+		Assert.isTrue(page.getTotalPages() == 2, "Not Success.");
 		
 		Pageable pageable2 = new PageRequest(0, 1, Direction.DESC, "name");
 		Page<User> page2 = JpaUtil.findAll(User.class, pageable2);
-		Assert.isTrue(page2.getContent().get(0).getName() == "tom");
-		Assert.isTrue(page2.getSize() == 1);
-		Assert.isTrue(page2.getTotalElements() == 2);
-		Assert.isTrue(page2.getTotalPages() == 2);
+		Assert.isTrue(page2.getContent().get(0).getName() == "tom", "Not Success.");
+		Assert.isTrue(page2.getSize() == 1, "Not Success.");
+		Assert.isTrue(page2.getTotalElements() == 2, "Not Success.");
+		Assert.isTrue(page2.getTotalPages() == 2, "Not Success.");
 		
 		Pageable pageable3 = new PageRequest(0, 1, Direction.ASC, "name");
 		Page<User> page3 = JpaUtil.findAll(User.class, pageable3);
-		Assert.isTrue(page3.getContent().get(0).getName() == "kevin");
-		Assert.isTrue(page3.getSize() == 1);
-		Assert.isTrue(page3.getTotalElements() == 2);
-		Assert.isTrue(page3.getTotalPages() == 2);
+		Assert.isTrue(page3.getContent().get(0).getName() == "kevin", "Not Success.");
+		Assert.isTrue(page3.getSize() == 1, "Not Success.");
+		Assert.isTrue(page3.getTotalElements() == 2, "Not Success.");
+		Assert.isTrue(page3.getTotalPages() == 2, "Not Success.");
 		
 		Pageable pageable4 = new PageRequest(0, 1);
 		Page<User> page4 = JpaUtil.findAll(cq, pageable4);
-		Assert.isTrue(page4.getSize() == 1);
-		Assert.isTrue(page4.getTotalElements() == 1);
-		Assert.isTrue(page4.getTotalPages() == 1);
+		Assert.isTrue(page4.getSize() == 1, "Not Success.");
+		Assert.isTrue(page4.getTotalElements() == 1, "Not Success.");
+		Assert.isTrue(page4.getTotalPages() == 1, "Not Success.");
 		
 		Pageable pageable5 = new PageRequest(0, 1, Direction.DESC, "name");
 		Page<User> page5 = JpaUtil.findAll(cq, pageable5);
-		Assert.isTrue(page5.getContent().get(0).getName() == "tom");
-		Assert.isTrue(page5.getSize() == 1);
-		Assert.isTrue(page5.getTotalElements() == 1);
-		Assert.isTrue(page5.getTotalPages() == 1);
+		Assert.isTrue(page5.getContent().get(0).getName() == "tom", "Not Success.");
+		Assert.isTrue(page5.getSize() == 1, "Not Success.");
+		Assert.isTrue(page5.getTotalElements() == 1, "Not Success.");
+		Assert.isTrue(page5.getTotalPages() == 1, "Not Success.");
 		
 		Pageable pageable6 = new PageRequest(0, 1, Direction.DESC, "name");
 		Page<User> page6 = JpaUtil.findAll(cq, pageable6);
-		Assert.isTrue(page6.getContent().get(0).getName() == "tom");
-		Assert.isTrue(page6.getSize() == 1);
-		Assert.isTrue(page6.getTotalElements() == 1);
-		Assert.isTrue(page6.getTotalPages() == 1);
+		Assert.isTrue(page6.getContent().get(0).getName() == "tom", "Not Success.");
+		Assert.isTrue(page6.getSize() == 1, "Not Success.");
+		Assert.isTrue(page6.getTotalElements() == 1, "Not Success.");
+		Assert.isTrue(page6.getTotalPages() == 1, "Not Success.");
 		
 		Page<User> page7 = JpaUtil.findAll(cq, null);
-		Assert.isTrue(page7.getContent().get(0).getName() == "tom");
-		Assert.isTrue(page7.getSize() == 0);
-		Assert.isTrue(page7.getTotalElements() == 1);
-		Assert.isTrue(page7.getTotalPages() == 1);
+		Assert.isTrue(page7.getContent().get(0).getName() == "tom", "Not Success.");
+		Assert.isTrue(page7.getSize() == 0, "Not Success.");
+		Assert.isTrue(page7.getTotalElements() == 1, "Not Success.");
+		Assert.isTrue(page7.getTotalPages() == 1, "Not Success.");
 		
 		JpaUtil.removeAllInBatch(User.class);
 		
@@ -210,7 +210,7 @@ public class BDF3JpaUtilTests {
 	@Test
 	@Transactional
 	public void testCount() {
-		Assert.isTrue(JpaUtil.count(User.class) == 0);
+		Assert.isTrue(JpaUtil.count(User.class) == 0, "Not Success.");
 		User user = new User();
 		user.setId(UUID.randomUUID().toString());
 		user.setName("tom");
@@ -225,17 +225,17 @@ public class BDF3JpaUtilTests {
 		JpaUtil.persist(user2);
 		JpaUtil.persist(user3);
 		
-		Assert.isTrue(JpaUtil.count(User.class) == 3);
+		Assert.isTrue(JpaUtil.count(User.class) == 3, "Not Success.");
 		
 		EntityManager em = JpaUtil.getEntityManager(User.class);
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<User> cq = cb.createQuery(User.class);
 		Root<User> root = cq.from(User.class);
 
-		Assert.isTrue(JpaUtil.count(User.class) == 3);
+		Assert.isTrue(JpaUtil.count(User.class) == 3, "Not Success.");
 		
 		cq.where(cb.equal(root.get("name"), "tom"));
-		Assert.isTrue(JpaUtil.count(cq) == 1);
+		Assert.isTrue(JpaUtil.count(cq) == 1, "Not Success.");
 		
 		
 		JpaUtil.removeAllInBatch(User.class);
@@ -245,7 +245,7 @@ public class BDF3JpaUtilTests {
 	@Test
 	@Transactional
 	public void testExists() {
-		Assert.isTrue(!JpaUtil.exists(User.class));
+		Assert.isTrue(!JpaUtil.exists(User.class), "Not Success.");
 		User user = new User();
 		user.setId(UUID.randomUUID().toString());
 		user.setName("tom");
@@ -260,17 +260,17 @@ public class BDF3JpaUtilTests {
 		JpaUtil.persist(user2);
 		JpaUtil.persist(user3);
 		
-		Assert.isTrue(JpaUtil.exists(User.class));
+		Assert.isTrue(JpaUtil.exists(User.class), "Not Success.");
 		
 		EntityManager em = JpaUtil.getEntityManager(User.class);
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<User> cq = cb.createQuery(User.class);
 		Root<User> root = cq.from(User.class);
 
-		Assert.isTrue(JpaUtil.exists(cq));
+		Assert.isTrue(JpaUtil.exists(cq), "Not Success.");
 		
 		cq.where(cb.equal(root.get("name"), "tom"));
-		Assert.isTrue(JpaUtil.exists(cq));
+		Assert.isTrue(JpaUtil.exists(cq), "Not Success.");
 		
 		JpaUtil.removeAllInBatch(User.class);
 	}

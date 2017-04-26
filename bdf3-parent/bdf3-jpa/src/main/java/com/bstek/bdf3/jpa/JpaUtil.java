@@ -386,7 +386,7 @@ public abstract class JpaUtil {
 	 * @return EntityManager
 	 */
 	public static <T> EntityManager getEntityManager(T entity) {
-		Assert.notNull(entity);
+		Assert.notNull(entity, "entity can not be null.");
 		return getEntityManager(entity.getClass());
 	}
 	
@@ -408,7 +408,7 @@ public abstract class JpaUtil {
 	 * @return EntityManager
 	 */
 	public static <T> EntityManager createEntityManager(T entity) {
-		Assert.notNull(entity);
+		Assert.notNull(entity, "entity can not be null.");
 		return createEntityManager(entity.getClass());
 	}
 	
@@ -498,7 +498,7 @@ public abstract class JpaUtil {
 	 * @param <T> 领域类（实体类）范型
 	 */
 	public static <T> void flush(T entity) {
-		Assert.notNull(entity);
+		Assert.notNull(entity, "entity can not be null.");
 		EntityManager em = getEntityManager(entity.getClass());
 		em.flush();
 	}
@@ -515,7 +515,7 @@ public abstract class JpaUtil {
 	
 	public static Long executeCountQuery(TypedQuery<Long> query) {
 
-		Assert.notNull(query);
+		Assert.notNull(query, "query can not be null.");
 
 		List<Long> totals = query.getResultList();
 		Long total = 0L;

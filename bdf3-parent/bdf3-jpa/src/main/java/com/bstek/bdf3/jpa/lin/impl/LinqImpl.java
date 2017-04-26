@@ -263,7 +263,7 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 	
 	protected Long executeCountQuery(TypedQuery<Long> query) {
 
-		Assert.notNull(query);
+		Assert.notNull(query, "query can not be null.");
 
 		List<Long> totals = query.getResultList();
 		Long total = 0L;

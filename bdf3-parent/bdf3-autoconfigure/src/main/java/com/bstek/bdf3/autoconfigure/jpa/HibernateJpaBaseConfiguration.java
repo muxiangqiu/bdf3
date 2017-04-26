@@ -69,8 +69,8 @@ public abstract class HibernateJpaBaseConfiguration extends JpaBaseConfiguration
 	protected Map<String, Object> getVendorProperties() {
 		Object jpaProperties = getJpaProperties();
 		Map<String, Object> vendorProperties = new LinkedHashMap<String, Object>();
-		if (jpaProperties instanceof JpaBaseProperties) {
-			vendorProperties.putAll( ((JpaBaseProperties) jpaProperties).getHibernateProperties(getDataSource()));
+		if (jpaProperties instanceof JpaProperties) {
+			vendorProperties.putAll( ((JpaProperties) jpaProperties).getHibernateProperties(getDataSource()));
 		} else {
 			vendorProperties.putAll( ((org.springframework.boot.autoconfigure.orm.jpa.JpaProperties) jpaProperties).getHibernateProperties(getDataSource()));
 

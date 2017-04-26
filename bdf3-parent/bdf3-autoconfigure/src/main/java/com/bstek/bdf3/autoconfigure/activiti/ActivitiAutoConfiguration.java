@@ -7,13 +7,14 @@ import org.springframework.context.annotation.Import;
 
 import com.bstek.bdf3.activiti.ActivitiConfiguration;
 import com.bstek.bdf3.autoconfigure.message.MessageAutoConfiguration;
+import com.bstek.bdf3.autoconfigure.security.SecurityAutoConfiguration;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2016年9月3日
  */
 @Configuration
-@AutoConfigureAfter(MessageAutoConfiguration.class)
+@AutoConfigureAfter({MessageAutoConfiguration.class, SecurityAutoConfiguration.class})
 @ConditionalOnClass(ActivitiConfiguration.class)
 @Import(ActivitiConfiguration.class)
 public class ActivitiAutoConfiguration {

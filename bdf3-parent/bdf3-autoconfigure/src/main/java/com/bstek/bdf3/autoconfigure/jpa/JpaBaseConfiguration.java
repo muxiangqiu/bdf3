@@ -31,6 +31,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,34 +61,21 @@ public abstract class JpaBaseConfiguration implements BeanFactoryAware {
 	private PersistenceUnitManager persistenceUnitManager;
 
 	public JpaVendorAdapter getJpaVendorAdapter() {
-		Object jpaProperties = getJpaProperties();
 		AbstractJpaVendorAdapter adapter = createJpaVendorAdapter();
-		if (jpaProperties instanceof JpaBaseProperties) {
-			JpaBaseProperties properties = (JpaBaseProperties) jpaProperties;
-			adapter.setShowSql(properties.isShowSql());
-			adapter.setDatabase(properties.getDatabase());
-			adapter.setDatabasePlatform(properties.getDatabasePlatform());
-			adapter.setGenerateDdl(properties.isGenerateDdl());
-		} else {
-			org.springframework.boot.autoconfigure.orm.jpa.JpaProperties properties = (org.springframework.boot.autoconfigure.orm.jpa.JpaProperties) jpaProperties;
-			adapter.setShowSql(properties.isShowSql());
-			adapter.setDatabase(properties.getDatabase());
-			adapter.setDatabasePlatform(properties.getDatabasePlatform());
-			adapter.setGenerateDdl(properties.isGenerateDdl());
-		}
+		JpaProperties properties = getJpaProperties();
+		adapter.setShowSql(properties.isShowSql());
+		adapter.setDatabase(properties.getDatabase());
+		adapter.setDatabasePlatform(properties.getDatabasePlatform());
+		adapter.setGenerateDdl(properties.isGenerateDdl());
+		
 		return adapter;
 	}
 
 	public EntityManagerFactoryBuilder getEntityManagerFactoryBuilder() {
-		Object jpaProperties = getJpaProperties();
 		JpaVendorAdapter jpaVendorAdapter = getJpaVendorAdapter();
 		Map<String, String> properties = null;
-		if (jpaProperties instanceof JpaBaseProperties) {
-			properties = ((JpaBaseProperties) jpaProperties).getProperties();
-		} else {
-			properties = ((org.springframework.boot.autoconfigure.orm.jpa.JpaProperties) jpaProperties).getProperties();
-
-		}
+		properties = getJpaProperties().getProperties();
+		
 		if (properties != null && !properties.containsKey("hibernate.ejb.interceptor") && ClassUtils.isPresent("com.bstek.bdf3.dorado.jpa.UnByteCodeProxyInterceptor", this.getClass().getClassLoader())) {
 			properties.put("hibernate.ejb.interceptor", "com.bstek.bdf3.dorado.jpa.UnByteCodeProxyInterceptor");
 		}
@@ -104,7 +92,7 @@ public abstract class JpaBaseConfiguration implements BeanFactoryAware {
 	
 	protected abstract DataSource getDataSource();
 	
-	protected abstract Object getJpaProperties();
+	public abstract JpaProperties getJpaProperties();
 
 	/**
 	 * Return the JTA transaction manager.

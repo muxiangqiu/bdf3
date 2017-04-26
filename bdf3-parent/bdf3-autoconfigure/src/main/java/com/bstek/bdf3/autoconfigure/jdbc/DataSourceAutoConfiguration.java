@@ -1,24 +1,31 @@
 package com.bstek.bdf3.autoconfigure.jdbc;
 
 import javax.sql.DataSource;
+import javax.sql.XADataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
+import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Import;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
@@ -28,253 +35,106 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
  */
 @Configuration
 @ConditionalOnClass({ DataSource.class, EmbeddedDatabaseType.class })
-@EnableConfigurationProperties({
-	org.springframework.boot.autoconfigure.jdbc.DataSourceProperties.class,
-	DataSource1Properties.class,
-	DataSource2Properties.class,
-	DataSource3Properties.class,
-	DataSource4Properties.class,
-	DataSource5Properties.class,
-	DataSource6Properties.class
-})
+@EnableConfigurationProperties(DataSourceProperties.class)
 @AutoConfigureAfter(org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class)
 public class DataSourceAutoConfiguration {
 	
-	@Configuration
-	@ConditionalOnMissingBean(DataSource1Initializer.class)
-	protected static class DataSource1InitializerConfiguration {
-
-		@Bean
-		public DataSource1Initializer dataSource1Initializer() {
-			return new DataSource1Initializer();
-		}
-
+	@Bean
+	@ConditionalOnMissingBean
+	@ConfigurationProperties(prefix = "spring.datasource1")
+	public DataSourceInitializer dataSourceInitializer1(DataSourceProperties properties,
+			ApplicationContext applicationContext) {
+		return new DataSourceInitializer(properties, applicationContext, 1);
 	}
 	
-	@Configuration
-	@ConditionalOnMissingBean(DataSource2Initializer.class)
-	protected static class DataSource2InitializerConfiguration {
-
-		@Bean
-		public DataSource2Initializer dataSource2Initializer() {
-			return new DataSource2Initializer();
-		}
-
+	@Bean
+	@ConditionalOnMissingBean
+	@ConfigurationProperties(prefix = "spring.datasource2")
+	public DataSourceInitializer dataSourceInitializer2(DataSourceProperties properties,
+			ApplicationContext applicationContext) {
+		return new DataSourceInitializer(properties, applicationContext, 2);
 	}
 	
-	@Configuration
-	@ConditionalOnMissingBean(DataSource3Initializer.class)
-	protected static class DataSource3InitializerConfiguration {
-
-		@Bean
-		public DataSource3Initializer dataSource3Initializer() {
-			return new DataSource3Initializer();
-		}
-
+	@Bean
+	@ConditionalOnMissingBean
+	@ConfigurationProperties(prefix = "spring.datasource3")
+	public DataSourceInitializer dataSourceInitializer3(DataSourceProperties properties,
+			ApplicationContext applicationContext) {
+		return new DataSourceInitializer(properties, applicationContext, 3);
 	}
 	
-	@Configuration
-	@ConditionalOnMissingBean(DataSource4Initializer.class)
-	protected static class DataSource4InitializerConfiguration {
-
-		@Bean
-		public DataSource4Initializer dataSource4Initializer() {
-			return new DataSource4Initializer();
-		}
-
+	@Bean
+	@ConditionalOnMissingBean
+	@ConfigurationProperties(prefix = "spring.datasource4")
+	public DataSourceInitializer dataSourceInitializer4(DataSourceProperties properties,
+			ApplicationContext applicationContext) {
+		return new DataSourceInitializer(properties, applicationContext, 4);
 	}
 	
-	@Configuration
-	@ConditionalOnMissingBean(DataSource5Initializer.class)
-	protected static class DataSource5InitializerConfiguration {
-
-		@Bean
-		public DataSource5Initializer dataSource5Initializer() {
-			return new DataSource5Initializer();
-		}
-
+	@Bean
+	@ConditionalOnMissingBean
+	@ConfigurationProperties(prefix = "spring.datasource5")
+	public DataSourceInitializer dataSourceInitializer5(DataSourceProperties properties,
+			ApplicationContext applicationContext) {
+		return new DataSourceInitializer(properties, applicationContext, 5);
 	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	@ConfigurationProperties(prefix = "spring.datasource6")
+	public DataSourceInitializer dataSourceInitializer6(DataSourceProperties properties,
+			ApplicationContext applicationContext) {
+		return new DataSourceInitializer(properties, applicationContext, 6);
+	}
+	
 	
 	@Configuration
-	@ConditionalOnMissingBean(DataSource6Initializer.class)
-	protected static class DataSource6InitializerConfiguration {
-
-		@Bean
-		public DataSource6Initializer dataSource6Initializer() {
-			return new DataSource6Initializer();
-		}
+	@Conditional(PooledDataSourceCondition.class)
+	@ConditionalOnMissingBean({ DataSource.class, XADataSource.class })
+	@Import({ DataSourceConfiguration.Tomcat.class, DataSourceConfiguration.Hikari.class,
+			DataSourceConfiguration.Dbcp2.class, DataSourceConfiguration.Generic.class })
+	protected static class PooledDataSourceConfiguration {
 
 	}
-	
-	@Conditional(NonEmbeddedDataSourceCondition.class)
-	protected static class NonEmbeddedConfiguration {
 
-		@Autowired
-		private org.springframework.boot.autoconfigure.jdbc.DataSourceProperties properties;
-
-		@Bean
-		@Primary
-		@ConfigurationProperties(prefix = org.springframework.boot.autoconfigure.jdbc.DataSourceProperties.PREFIX)
-		public DataSource dataSource() {
-			DataSourceBuilder factory = DataSourceBuilder
-					.create(this.properties.getClassLoader())
-					.driverClassName(this.properties.getDriverClassName())
-					.url(this.properties.getUrl()).username(this.properties.getUsername())
-					.password(this.properties.getPassword());
-			if (this.properties.getType() != null) {
-				factory.type(this.properties.getType());
-			}
-			return factory.build();
-		}
-	}
-
-	@Conditional(NonEmbeddedDataSourceCondition.class)
-	@ConditionalOnProperty(prefix = DataSource1Properties.PREFIX, name = "url")
-	protected static class NonEmbedded1Configuration {
-
-		@Autowired
-		private DataSource1Properties properties;
-
-		@Bean
-		@ConfigurationProperties(prefix = DataSource1Properties.PREFIX)
-		public DataSource dataSource1() {
-			DataSourceBuilder factory = DataSourceBuilder
-					.create(this.properties.getClassLoader())
-					.driverClassName(this.properties.getDriverClassName())
-					.url(this.properties.getUrl()).username(this.properties.getUsername())
-					.password(this.properties.getPassword());
-			if (this.properties.getType() != null) {
-				factory.type(this.properties.getType());
-			}
-			return factory.build();
-		}
-	}
-	
-	@Conditional(NonEmbeddedDataSourceCondition.class)
-	@ConditionalOnProperty(prefix = DataSource2Properties.PREFIX, name = "url")
-	protected static class NonEmbedded2Configuration {
-
-		@Autowired
-		private DataSource2Properties properties;
-
-		@Bean
-		@ConfigurationProperties(prefix = DataSource2Properties.PREFIX)
-		public DataSource dataSource2() {
-			DataSourceBuilder factory = DataSourceBuilder
-					.create(this.properties.getClassLoader())
-					.driverClassName(this.properties.getDriverClassName())
-					.url(this.properties.getUrl()).username(this.properties.getUsername())
-					.password(this.properties.getPassword());
-			if (this.properties.getType() != null) {
-				factory.type(this.properties.getType());
-			}
-			return factory.build();
-		}
-	}
-	
-	@Conditional(NonEmbeddedDataSourceCondition.class)
-	@ConditionalOnProperty(prefix = DataSource3Properties.PREFIX, name = "url")
-	protected static class NonEmbedded3Configuration {
-
-		@Autowired
-		private DataSource3Properties properties;
-
-		@Bean
-		@ConfigurationProperties(prefix = DataSource3Properties.PREFIX)
-		public DataSource dataSource3() {
-			DataSourceBuilder factory = DataSourceBuilder
-					.create(this.properties.getClassLoader())
-					.driverClassName(this.properties.getDriverClassName())
-					.url(this.properties.getUrl()).username(this.properties.getUsername())
-					.password(this.properties.getPassword());
-			if (this.properties.getType() != null) {
-				factory.type(this.properties.getType());
-			}
-			return factory.build();
-		}
-	}
-	
-	@Conditional(NonEmbeddedDataSourceCondition.class)
-	@ConditionalOnProperty(prefix = DataSource4Properties.PREFIX, name = "url")
-	protected static class NonEmbedded4Configuration {
-
-		@Autowired
-		private DataSource4Properties properties;
-
-		@Bean
-		@ConfigurationProperties(prefix = DataSource4Properties.PREFIX)
-		public DataSource dataSource4() {
-			DataSourceBuilder factory = DataSourceBuilder
-					.create(this.properties.getClassLoader())
-					.driverClassName(this.properties.getDriverClassName())
-					.url(this.properties.getUrl()).username(this.properties.getUsername())
-					.password(this.properties.getPassword());
-			if (this.properties.getType() != null) {
-				factory.type(this.properties.getType());
-			}
-			return factory.build();
-		}
-	}
-	
-	@Conditional(NonEmbeddedDataSourceCondition.class)
-	@ConditionalOnProperty(prefix = DataSource5Properties.PREFIX, name = "url")
-	protected static class NonEmbedded5Configuration {
-
-		@Autowired
-		private DataSource5Properties properties;
-
-		@Bean
-		@ConfigurationProperties(prefix = DataSource5Properties.PREFIX)
-		public DataSource dataSource5() {
-			DataSourceBuilder factory = DataSourceBuilder
-					.create(this.properties.getClassLoader())
-					.driverClassName(this.properties.getDriverClassName())
-					.url(this.properties.getUrl()).username(this.properties.getUsername())
-					.password(this.properties.getPassword());
-			if (this.properties.getType() != null) {
-				factory.type(this.properties.getType());
-			}
-			return factory.build();
-		}
-	}
-	
-	@Conditional(NonEmbeddedDataSourceCondition.class)
-	@ConditionalOnProperty(prefix = DataSource6Properties.PREFIX, name = "url")
-	protected static class NonEmbedded6Configuration {
-
-		@Autowired
-		private DataSource6Properties properties;
-
-		@Bean
-		@ConfigurationProperties(prefix = DataSource6Properties.PREFIX)
-		public DataSource dataSource6() {
-			DataSourceBuilder factory = DataSourceBuilder
-					.create(this.properties.getClassLoader())
-					.driverClassName(this.properties.getDriverClassName())
-					.url(this.properties.getUrl()).username(this.properties.getUsername())
-					.password(this.properties.getPassword());
-			if (this.properties.getType() != null) {
-				factory.type(this.properties.getType());
-			}
-			return factory.build();
-		}
-	}
-	
-	
-	
 	/**
-	 * {@link Condition} to test is a supported non-embedded {@link DataSource} type is
-	 * available.
+	 * {@link AnyNestedCondition} that checks that either {@code spring.datasource.type}
+	 * is set or {@link PooledDataSourceAvailableCondition} applies.
 	 */
-	static class NonEmbeddedDataSourceCondition extends SpringBootCondition {
+	static class PooledDataSourceCondition extends AnyNestedCondition {
+
+		PooledDataSourceCondition() {
+			super(ConfigurationPhase.PARSE_CONFIGURATION);
+		}
+
+		@ConditionalOnProperty(prefix = "spring.datasource", name = "type")
+		static class ExplicitType {
+
+		}
+
+		@Conditional(PooledDataSourceAvailableCondition.class)
+		static class PooledDataSourceAvailable {
+
+		}
+
+	}
+
+	/**
+	 * {@link Condition} to test if a supported connection pool is available.
+	 */
+	static class PooledDataSourceAvailableCondition extends SpringBootCondition {
 
 		@Override
 		public ConditionOutcome getMatchOutcome(ConditionContext context,
 				AnnotatedTypeMetadata metadata) {
+			ConditionMessage.Builder message = ConditionMessage
+					.forCondition("PooledDataSource");
 			if (getDataSourceClassLoader(context) != null) {
-				return ConditionOutcome.match("supported DataSource class found");
+				return ConditionOutcome
+						.match(message.foundExactly("supported DataSource"));
 			}
-			return ConditionOutcome.noMatch("missing supported DataSource");
+			return ConditionOutcome
+					.noMatch(message.didNotFind("supported DataSource").atAll());
 		}
 
 		/**
@@ -288,29 +148,73 @@ public class DataSourceAutoConfiguration {
 					.findType();
 			return (dataSourceClass == null ? null : dataSourceClass.getClassLoader());
 		}
+
 	}
 
 	/**
 	 * {@link Condition} to detect when an embedded {@link DataSource} type can be used.
+	 * If a pooled {@link DataSource} is available, it will always be preferred to an
+	 * {@code EmbeddedDatabase}.
 	 */
-	static class EmbeddedDataSourceCondition extends SpringBootCondition {
+	static class EmbeddedDatabaseCondition extends SpringBootCondition {
 
-		private final SpringBootCondition nonEmbedded = new NonEmbeddedDataSourceCondition();
+		private final SpringBootCondition pooledCondition = new PooledDataSourceCondition();
 
 		@Override
 		public ConditionOutcome getMatchOutcome(ConditionContext context,
 				AnnotatedTypeMetadata metadata) {
-			if (anyMatches(context, metadata, this.nonEmbedded)) {
+			ConditionMessage.Builder message = ConditionMessage
+					.forCondition("EmbeddedDataSource");
+			if (anyMatches(context, metadata, this.pooledCondition)) {
 				return ConditionOutcome
-						.noMatch("existing non-embedded database detected");
+						.noMatch(message.foundExactly("supported pooled data source"));
 			}
 			EmbeddedDatabaseType type = EmbeddedDatabaseConnection
 					.get(context.getClassLoader()).getType();
 			if (type == null) {
-				return ConditionOutcome.noMatch("no embedded database detected");
+				return ConditionOutcome
+						.noMatch(message.didNotFind("embedded database").atAll());
 			}
-			return ConditionOutcome.match("embedded database " + type + " detected");
+			return ConditionOutcome.match(message.found("embedded database").items(type));
 		}
 
 	}
+
+	/**
+	 * {@link Condition} to detect when a {@link DataSource} is available (either because
+	 * the user provided one or because one will be auto-configured).
+	 */
+	@Order(Ordered.LOWEST_PRECEDENCE - 10)
+	static class DataSourceAvailableCondition extends SpringBootCondition {
+
+		private final SpringBootCondition pooledCondition = new PooledDataSourceCondition();
+
+		private final SpringBootCondition embeddedCondition = new EmbeddedDatabaseCondition();
+
+		@Override
+		public ConditionOutcome getMatchOutcome(ConditionContext context,
+				AnnotatedTypeMetadata metadata) {
+			ConditionMessage.Builder message = ConditionMessage
+					.forCondition("DataSourceAvailable");
+			if (hasBean(context, DataSource.class)
+					|| hasBean(context, XADataSource.class)) {
+				return ConditionOutcome
+						.match(message.foundExactly("existing data source bean"));
+			}
+			if (anyMatches(context, metadata, this.pooledCondition,
+					this.embeddedCondition)) {
+				return ConditionOutcome.match(message
+						.foundExactly("existing auto-configured data source bean"));
+			}
+			return ConditionOutcome
+					.noMatch(message.didNotFind("any existing data source bean").atAll());
+		}
+
+		private boolean hasBean(ConditionContext context, Class<?> type) {
+			return BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
+					context.getBeanFactory(), type, true, false).length > 0;
+		}
+
+	}
+
 }

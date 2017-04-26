@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -64,7 +63,7 @@ public class MessageServiceImpl implements MessageService {
 				.list();
 		if (!chats.isEmpty()) {
 			for (Chat chat : chats) {
-				if (StringUtils.equals(user, chat.getSender())) {
+				if (user != null && user.equals(chat.getSender())) {
 					chat.setSender(chat.getReceiver());
 					chat.setReceiver(user);
 				}
@@ -181,7 +180,7 @@ public class MessageServiceImpl implements MessageService {
 	public Chat getChat(String chatId, UserDetails user) {
 		Chat chat = JpaUtil.getOne(Chat.class, chatId);
 		String otherUsername = chat.getSender();
-		if (StringUtils.equals(chat.getSender(), user.getUsername())) {
+		if (user.getUsername() != null && user.getUsername().equals(chat.getSender())) {
 			otherUsername = chat.getReceiver();
 			chat.setSender(otherUsername);
 			chat.setReceiver(user.getUsername());

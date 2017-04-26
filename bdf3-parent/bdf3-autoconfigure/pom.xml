@@ -13,6 +13,16 @@
 			<artifactId>spring-boot-autoconfigure</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP-java6</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>com.bstek.bdf3</groupId>
 			<artifactId>bdf3-jpa</artifactId>
 			<optional>true</optional>

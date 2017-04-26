@@ -244,7 +244,7 @@ public abstract class JpaUtil {
 	}
 	
 	public static <T> void flush(T entity) {
-		Assert.notNull(entity);
+		Assert.notNull(entity, "entity can not be null.");
 		EntityManager em = getEntityManager(entity.getClass());
 		em.flush();
 	}

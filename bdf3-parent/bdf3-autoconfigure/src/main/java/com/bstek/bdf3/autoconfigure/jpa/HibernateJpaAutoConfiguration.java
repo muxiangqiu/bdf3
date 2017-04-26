@@ -57,7 +57,7 @@ public class HibernateJpaAutoConfiguration extends HibernateJpaBaseConfiguration
 	}
 
 	@Override
-	protected JpaProperties getJpaProperties() {
+	public JpaProperties getJpaProperties() {
 		return jpaProperties;
 	}
 	

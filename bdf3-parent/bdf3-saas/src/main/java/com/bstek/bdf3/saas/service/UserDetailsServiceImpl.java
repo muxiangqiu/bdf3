@@ -58,7 +58,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private Organization loadOrganization() {
 		String organizationId = request.getParameter("organization");
 		Organization organization = organizationService.get(organizationId);
-		Assert.notNull(organization);
+		Assert.notNull(organization, "Organization is not exists.");
 		SaasUtils.setSecurityContext(organizationId);
 		return organization;
 	}

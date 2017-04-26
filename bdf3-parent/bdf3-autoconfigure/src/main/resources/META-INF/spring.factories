@@ -17,7 +17,6 @@ com.bstek.bdf3.autoconfigure.dbconsole.DbConsoleAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.dictionary.DictionaryAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.importer.ImporterAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.security.SecurityAutoConfiguration,\
-com.bstek.bdf3.autoconfigure.cola.ColaAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.jdbc.DataSourceAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.jpa.HibernateJpaAutoConfiguration,\
 com.bstek.bdf3.autoconfigure.jpa.HibernateJpa1AutoConfiguration,\

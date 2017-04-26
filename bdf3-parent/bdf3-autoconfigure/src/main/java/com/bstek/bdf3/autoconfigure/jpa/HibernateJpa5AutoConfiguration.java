@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -36,15 +36,13 @@ import com.bstek.bdf3.autoconfigure.jpa.HibernateJpaBaseConfiguration.HibernateE
 @Conditional(HibernateEntityManagerCondition.class)
 @ConditionalOnBean(name = DataSources.dataSource5)
 @AutoConfigureAfter({ DataSourceAutoConfiguration.class })
-@EnableConfigurationProperties(Jpa5Properties.class)
 public class HibernateJpa5AutoConfiguration extends HibernateJpaBaseConfiguration {
 
 	@Autowired(required = false)
 	@Qualifier(DataSources.dataSource5)
 	private DataSource dataSource;
 	
-	@Autowired
-	private Jpa5Properties jpaProperties;
+	private JpaProperties jpaProperties;
 	
 	
 	@Autowired(required = false)
@@ -58,7 +56,10 @@ public class HibernateJpa5AutoConfiguration extends HibernateJpaBaseConfiguratio
 	}
 
 	@Override
-	protected JpaBaseProperties getJpaProperties() {
+	@Bean("jpa5Properties")
+	@ConfigurationProperties(prefix = "spring.jpa5")
+	public JpaProperties getJpaProperties() {
+		this.jpaProperties = new JpaProperties();
 		return jpaProperties;
 	}
 	
