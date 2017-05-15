@@ -21,7 +21,7 @@ import com.bstek.bdf3.security.orm.Url;
  */
 @Service
 @Transactional(readOnly = true)
-class UrlServiceCacheImpl implements UrlServiceCache {
+public class UrlServiceCacheImpl implements UrlServiceCache {
 
 
 	@Override
