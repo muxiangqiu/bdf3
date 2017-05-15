@@ -93,7 +93,7 @@ public class EntityManagerFactoryServiceImpl implements
 	@Autowired(required = false)
 	private PersistenceUnitManager persistenceUnitManager;
 	
-	@Value("${bdf3.saas.packagesToScan:com.bstek.bdf3.security.domain,com.bstek.bdf3.message.domain}")
+	@Value("${bdf3.saas.packagesToScan:com.bstek.bdf3.security.orm,com.bstek.bdf3.message.domain}")
 	private String packagesToScan;
 	
 	protected AbstractJpaVendorAdapter createJpaVendorAdapter() {

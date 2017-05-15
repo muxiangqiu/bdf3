@@ -41,11 +41,8 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 		if (EmbeddedDatabaseConnection.isEmbedded(properties.getDriverClassName())) {
 			master = properties.getName();
 		}
-		DataSourceBuilder factory = DataSourceBuilder
-				.create(this.properties.getClassLoader())
-				.driverClassName(this.properties.getDriverClassName())
-				.url(this.properties.getUrl().replace(master, organization.getId())).username(this.properties.getUsername())
-				.password(this.properties.getPassword());
+		DataSourceBuilder factory = this.properties.initializeDataSourceBuilder();
+		factory.url(this.properties.determineUrl().replace(master, organization.getId()));
 		if (this.properties.getType() != null) {
 			factory.type(this.properties.getType());
 		}

@@ -57,7 +57,7 @@ public class DatabaseResourceAllocator implements ResourceAllocator {
 	@Override
 	public void allocate(Organization organization) {
 		EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(emf);
-		if (!EmbeddedDatabaseConnection.isEmbedded(properties.getDriverClassName())) {
+		if (!EmbeddedDatabaseConnection.isEmbedded(properties.determineDriverClassName())) {
 			em.createNativeQuery("create database " + organization.getId()).executeUpdate();
 		}
 		EntityManagerFactory entityManagerFactory = entityManagerFactoryService.getOrCreateEntityManagerFactory(organization);
