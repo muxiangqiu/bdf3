@@ -42,8 +42,7 @@ public class SaasJpaTransactionManager extends JpaTransactionManager {
 			return dataSourceService.getDataSource((Organization) support.getOrganization());
 		}
 		return super.getDataSource();
-	}
-	
+	}	
 	
 
 }

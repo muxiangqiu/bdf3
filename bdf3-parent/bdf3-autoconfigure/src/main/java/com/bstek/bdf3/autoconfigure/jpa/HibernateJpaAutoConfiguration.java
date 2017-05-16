@@ -79,7 +79,7 @@ public class HibernateJpaAutoConfiguration extends HibernateJpaBaseConfiguration
 		Map<String, Object> vendorProperties = getVendorProperties();
 		customizeVendorProperties(vendorProperties);
 		return factoryBuilder.dataSource(getDataSource()).packages(getPackagesToScan())
-				.properties(vendorProperties).jta(isJta()).persistenceUnit(EntityManagerFactories.entityManagerFactory1).build();
+				.properties(vendorProperties).jta(isJta()).persistenceUnit(EntityManagerFactories.entityManagerFactory).build();
 	}
 	
 
