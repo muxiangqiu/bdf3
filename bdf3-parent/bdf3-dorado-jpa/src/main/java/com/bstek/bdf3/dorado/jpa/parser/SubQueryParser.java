@@ -41,10 +41,10 @@ public class SubQueryParser implements CriterionParser {
 			for (String foreignKey : foreignKeys) {
 				if (StringUtils.startsWith(alias, foreignKey)
 						|| StringUtils.startsWith(foreignKey, alias)) {
-					criterion.setProperty(StringUtils.substringAfter(property, "."));
 					Linq l = linq.exists(domainClass)
 							.equalProperty(JpaUtil.getIdName(domainClass), foreignKey);
 					CriteriaUtils.parse(l, criterion);
+					l.end();
 					return true;
 				}
 			}
