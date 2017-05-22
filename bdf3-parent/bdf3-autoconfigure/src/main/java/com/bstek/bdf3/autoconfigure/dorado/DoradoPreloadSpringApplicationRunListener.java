@@ -1,6 +1,6 @@
 package com.bstek.bdf3.autoconfigure.dorado;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.springframework.boot.SpringApplication;
@@ -53,7 +53,7 @@ public class DoradoPreloadSpringApplicationRunListener implements
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			Set<Object> sources = new HashSet<Object>();
+			Set<Object> sources = new LinkedHashSet<Object>();
 			sources.addAll(doradoLoader
 					.getContextLocations(false));
 			application.setSources(sources);
