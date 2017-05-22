@@ -8,7 +8,7 @@
       <PropertyDef name="id">
         <Property></Property>
         <Property name="label">公司ID</Property>
-        <Property name="readOnly">true</Property>
+        <Property name="readOnly">false</Property>
       </PropertyDef>
       <PropertyDef name="name">
         <Property></Property>
@@ -32,7 +32,8 @@
           <Property name="width">580</Property>
           <ToolBar>
             <DataPilot>
-              <ClientEvent name="onSubControlAction" signature="self,arg,dsOrg,dialogOrg,updateAction">if (arg.code == &quot;+&quot;) {
+              <ClientEvent name="onSubControlAction" signature="self,arg,id,dsOrg,dialogOrg,updateAction">if (arg.code == &quot;+&quot;) {
+	id.set(&quot;readOnly&quot;, false);
 	dialogOrg.show();
 } else if (arg.code == &quot;-&quot;) {
 	dorado.MessageBox.confirm(&quot;删除公司会同时删除公司对应的数据库。确认要删除当前公司吗？&quot;, function() {
@@ -43,10 +44,11 @@
 }
 </ClientEvent>
               <Property name="dataSet">dsOrg</Property>
-              <Property name="itemCodes">-</Property>
+              <Property name="itemCodes">+,-</Property>
             </DataPilot>
             <ToolBarButton>
-              <ClientEvent name="onClick" signature="self,arg,dialogOrg">dialogOrg.show()
+              <ClientEvent name="onClick" signature="self,arg,dialogOrg,id">id.set(&quot;readOnly&quot;, true);
+dialogOrg.show()
 </ClientEvent>
               <Property name="caption">修改</Property>
               <Property name="iconClass">fa fa-pencil</Property>
@@ -117,7 +119,7 @@ self.urlQueryTimeout = window.setTimeout(function() {
     <Dialog id="dialogOrg">
       <ClientEvent name="onHide" signature="self,arg,dsOrg">dsOrg.getData().cancel();
 </ClientEvent>
-      <Property name="caption">公司信息修改</Property>
+      <Property name="caption">公司信息维护</Property>
       <Property name="width">500</Property>
       <Property name="height">300</Property>
       <Property name="maximizeable">true</Property>
@@ -139,7 +141,13 @@ self.urlQueryTimeout = window.setTimeout(function() {
           <Property name="cols">*</Property>
           <Property name="labelPosition">left</Property>
           <Property name="labelAlign">right</Property>
-          <AutoFormElement>
+          <Tip>
+            <Property name="text">自动创建一个默认用户，用户名/密码：admin/1234567</Property>
+            <Property name="floating">false</Property>
+            <Property name="caption">小贴士</Property>
+            <Property name="icon">INFO</Property>
+          </Tip>
+          <AutoFormElement id="id">
             <Property name="name">id</Property>
             <Property name="property">id</Property>
             <Editor/>

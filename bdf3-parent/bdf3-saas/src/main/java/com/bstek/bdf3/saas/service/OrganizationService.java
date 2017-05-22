@@ -13,4 +13,6 @@ public interface OrganizationService {
 	void register(Organization organization);
 	
 	void releaseResource(Organization organization);
+
+	void allocteResource(Organization organization);
 }

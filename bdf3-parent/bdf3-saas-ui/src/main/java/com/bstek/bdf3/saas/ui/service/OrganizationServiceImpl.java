@@ -9,7 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.bdf3.dorado.jpa.policy.SaveContext;
 import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicyAdapter;
+import com.bstek.bdf3.saas.SaasUtils;
 import com.bstek.bdf3.saas.domain.Organization;
+import com.bstek.bdf3.security.orm.User;
+import com.bstek.bdf3.security.ui.service.UserService;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
@@ -24,6 +27,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@Autowired
 	private com.bstek.bdf3.saas.service.OrganizationService organizationService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@Override
 	public void load(Page<Organization> page, Criteria criteria) {
 		JpaUtil.linq(Organization.class).where(criteria).paging(page);
@@ -33,6 +39,28 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@Transactional
 	public void save(List<Organization> organizations) {
 		JpaUtil.save(organizations, new SmartSavePolicyAdapter() {
+
+			
+			@Override
+			public void beforeInsert(SaveContext context) {
+				Organization organization = context.getEntity();
+				organizationService.allocteResource(organization);
+				try {
+					SaasUtils.pushSecurityContext(organization);
+					User user = new User();
+					user.setNickname("系统管理员");
+					user.setUsername("admin");
+					user.setPassword("123456");
+					user.setAccountNonExpired(true);
+					user.setAccountNonLocked(true);
+					user.setCredentialsNonExpired(true);
+					user.setCredentialsNonExpired(true);
+					user.setEnabled(true);
+					userService.save(user);
+				} finally {
+					SaasUtils.popSecurityContext();
+				}
+			}
 
 			@Override
 			public void beforeDelete(SaveContext context) {

@@ -43,6 +43,13 @@ public class OrganizationServiceImpl implements OrganizationService, Initializin
 		AnnotationAwareOrderComparator.sort(allocators);
 		AnnotationAwareOrderComparator.sort(releasers);
 	}
+	
+	@Override
+	public void allocteResource(Organization organization) {
+		for (ResourceAllocator allocator : allocators) {
+			allocator.allocate(organization);
+		}
+	}
 
 	@Override
 	public void releaseResource(Organization organization) {
