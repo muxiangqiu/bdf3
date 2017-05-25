@@ -113,8 +113,14 @@ public abstract class JpaUtil {
 	}
 	
 	public static <T> T persist(T entity) {
-		EntityManager em = getEntityManager(GenricTypeUtils.getGenricType(entity));
-		em.persist(entity);
+		save(entity, new SavePolicy() {
+			
+			@Override
+			public void apply(SaveContext context) {
+				context.getEntityManager().persist(context.getEntity());
+			}
+			
+		});
 		return entity;
 	}
 	

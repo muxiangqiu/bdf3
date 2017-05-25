@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.util.ReflectionUtils;
 
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
@@ -16,10 +17,21 @@ public class UUIDPolicy implements GeneratorPolicy {
 
 	@Override
 	public void apply(Object entity, Field field) {
-		EntityState state = EntityUtils.getState(entity);
-		if (EntityState.NEW.equals(state)) {
-			if(field.getType() == String.class && StringUtils.isEmpty(EntityUtils.getString(entity, field.getName()))) {
-				EntityUtils.setValue(entity, field.getName(), UUID.randomUUID().toString());	
+		
+		if (EntityUtils.isEntity(entity)) {
+			EntityState state = EntityUtils.getState(entity);
+			if (EntityState.NEW.equals(state)) {
+				if(field.getType() == String.class && StringUtils.isEmpty(EntityUtils.getString(entity, field.getName()))) {
+					EntityUtils.setValue(entity, field.getName(), UUID.randomUUID().toString());	
+				}
+			}
+		} else {
+			if(field.getType() == String.class) {
+				field.setAccessible(true);
+				Object value = ReflectionUtils.getField(field, entity);
+				if (value == null) {
+					ReflectionUtils.setField(field, entity, UUID.randomUUID().toString());
+				}
 			}
 		}
 
