@@ -269,9 +269,6 @@ public abstract class LinImpl<T extends Lin<T, Q>, Q extends CommonAbstractCrite
 		if (!beforeMethodInvoke()) {
 			return (T) this;
 		}
-		if (!beforeMethodInvoke()) {
-			return (T) this;
-		}
 		if (sq != null) {
 			equal(root.get(property), parent.root().get(otherProperty));
 		} else {
