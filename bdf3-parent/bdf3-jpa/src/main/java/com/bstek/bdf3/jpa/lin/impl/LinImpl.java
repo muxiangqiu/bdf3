@@ -131,23 +131,44 @@ public abstract class LinImpl<T extends Lin<T, Q>, Q extends CommonAbstractCrite
 		}
 		List<Selection<?>> list = new ArrayList<Selection<?>>(selections.length);
 		for (String selection : selections) {
-			String[] ps = selection.split("\\s*,\\s*");
-			for (String p : ps) {
-				String alias = p.trim();
-				String[] pa = alias.split("\\s+[aA][sS]\\s+");
-				if (pa.length > 1) {
-					alias = pa[1];
-				} else {
-					pa = alias.split("\\s+");
-					if (pa.length > 1) {
-						alias = pa[1];
-					}
-				}
-				list.add(root.get(ps[0]).alias(alias));
+			parseSelectionStr(list, selection);
+		}
+		select(list.toArray(new Selection<?>[list.size()]));
+		return (T) this;
+	}
+	
+	@Override
+	public T select(Object... selections) {
+		if (!beforeMethodInvoke()) {
+			return (T) this;
+		}
+		List<Selection<?>> list = new ArrayList<Selection<?>>(selections.length);
+		for (Object selection : selections) {
+			if (selection instanceof String) {
+				parseSelectionStr(list, (String) selection);
+			} else if (selection instanceof Selection) {
+				list.add((Selection<?>) selection);
 			}
 		}
 		select(list.toArray(new Selection<?>[list.size()]));
 		return (T) this;
+	}
+
+	private void parseSelectionStr(List<Selection<?>> result, String selection) {
+		String[] ps = selection.split("\\s*,\\s*");
+		for (String p : ps) {
+			String alias = p.trim();
+			String[] pa = alias.split("\\s+[aA][sS]\\s+");
+			if (pa.length > 1) {
+				alias = pa[1];
+			} else {
+				pa = alias.split("\\s+");
+				if (pa.length > 1) {
+					alias = pa[1];
+				}
+			}
+			result.add(root.get(ps[0]).alias(alias));
+		}
 	}
 	
 	@Override

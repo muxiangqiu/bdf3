@@ -107,6 +107,13 @@ public interface Lin<T extends Lin<T, Q>, Q extends CommonAbstractCriteria> {
 	
 	/**
 	 * 查询结果投影设置
+	 * @param selections 可以是String或者JPA标准{@link javax.persistence.criteria.Selection}
+	 * @return 自身
+	 */
+	T select(Object... selections);
+	
+	/**
+	 * 查询结果投影设置
 	 * @param selections JPA标准{@link javax.persistence.criteria.Selection}
 	 * @return 自身
 	 */
