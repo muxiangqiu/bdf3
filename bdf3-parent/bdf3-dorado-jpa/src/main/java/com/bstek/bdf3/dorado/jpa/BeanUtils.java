@@ -10,18 +10,9 @@ import java.lang.reflect.Field;
  */
 public final class BeanUtils {
 	
-	@SuppressWarnings("unchecked")
 	public static <T> T getFieldValue(Object bean, String name) {
-		Field field;
-		T result = null;
-		try {
-			field = bean.getClass().getDeclaredField(name);
-			field.setAccessible(true);
-			result = (T) field.get(bean);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		return result;
+		Field field = FieldUtils.getField(bean.getClass(), name);
+		return getFieldValue(bean, field);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -38,7 +29,7 @@ public final class BeanUtils {
 	
 	public static void setFieldValue(Object bean, String fieldName, Object value) {
 		try {
-			Field field = bean.getClass().getDeclaredField(fieldName);
+			Field field = FieldUtils.getField(bean.getClass(), fieldName);
 			field.setAccessible(true);
 			field.set(bean, value);
 		} catch (Exception e) {
