@@ -322,7 +322,7 @@ if (openUrlTree != &quot;false&quot; || hasWelcomePage) {
         </Control>
         <Container layout="hbox align:center;pack:center" layoutConstraint="top">
           <TextEditor>
-            <Property name="width">200</Property>
+            <Property name="width">300</Property>
             <Property name="style">
               <Property name="height">30px</Property>
               <Property name="line-height">30px</Property>
