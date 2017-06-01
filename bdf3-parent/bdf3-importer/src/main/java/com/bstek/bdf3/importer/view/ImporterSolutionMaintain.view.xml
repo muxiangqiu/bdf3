@@ -593,6 +593,7 @@ if (entity &amp;&amp; entity.get(&quot;sessionFactoryName&quot;)) {
 if (importerSolution) {
 	self.set(&quot;parameter&quot;, importerSolution);
 } else {
+	arg.processDefault = false;
 	dorado.MessageBox.alert(&quot;请先添加Excel导入方案。&quot;);
 }
 </ClientEvent>
