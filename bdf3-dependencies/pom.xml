@@ -114,6 +114,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
+				<artifactId>bdf3-cloudo</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-message</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
@@ -216,6 +221,11 @@
 				<groupId>com.itextpdf</groupId>
 				<artifactId>itext-asian</artifactId>
 				<version>5.2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib</artifactId>
+				<version>2.2.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

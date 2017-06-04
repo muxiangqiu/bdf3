@@ -1,6 +1,7 @@
 package com.bstek.bdf3.jpa.transform.impl;
 
-import org.springframework.cglib.beans.BeanMap;
+
+import net.sf.cglib.beans.BeanMap;
 
 import com.bstek.bdf3.jpa.transform.ResultTransformer;
 
@@ -22,6 +23,7 @@ public class AliasToBeanResultTransformer implements ResultTransformer {
 		
 		try {
 			result = resultClass.newInstance();
+			
 			BeanMap beanMap = BeanMap.create(result);
 
 			for ( int i = 0; i < aliases.length; i++ ) {
