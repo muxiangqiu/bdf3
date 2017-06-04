@@ -40,7 +40,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 public class DataSourceAutoConfiguration {
 	
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = "spring.datasource1.url")
 	@ConfigurationProperties(prefix = "spring.datasource1")
 	public DataSourceInitializer dataSourceInitializer1(DataSourceProperties properties,
 			ApplicationContext applicationContext) {
@@ -48,7 +48,7 @@ public class DataSourceAutoConfiguration {
 	}
 	
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = "spring.datasource2.url")
 	@ConfigurationProperties(prefix = "spring.datasource2")
 	public DataSourceInitializer dataSourceInitializer2(DataSourceProperties properties,
 			ApplicationContext applicationContext) {
@@ -56,7 +56,7 @@ public class DataSourceAutoConfiguration {
 	}
 	
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = "spring.datasource3.url")
 	@ConfigurationProperties(prefix = "spring.datasource3")
 	public DataSourceInitializer dataSourceInitializer3(DataSourceProperties properties,
 			ApplicationContext applicationContext) {
@@ -64,7 +64,7 @@ public class DataSourceAutoConfiguration {
 	}
 	
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = "spring.datasource4.url")
 	@ConfigurationProperties(prefix = "spring.datasource4")
 	public DataSourceInitializer dataSourceInitializer4(DataSourceProperties properties,
 			ApplicationContext applicationContext) {
@@ -72,7 +72,7 @@ public class DataSourceAutoConfiguration {
 	}
 	
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = "spring.datasource5.url")
 	@ConfigurationProperties(prefix = "spring.datasource5")
 	public DataSourceInitializer dataSourceInitializer5(DataSourceProperties properties,
 			ApplicationContext applicationContext) {
@@ -80,7 +80,7 @@ public class DataSourceAutoConfiguration {
 	}
 	
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = "spring.datasource6.url")
 	@ConfigurationProperties(prefix = "spring.datasource6")
 	public DataSourceInitializer dataSourceInitializer6(DataSourceProperties properties,
 			ApplicationContext applicationContext) {
