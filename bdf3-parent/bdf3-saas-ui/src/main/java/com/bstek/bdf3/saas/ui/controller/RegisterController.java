@@ -50,6 +50,11 @@ public class RegisterController {
 		user.setUsername((String)info.get("username"));
 		user.setNickname((String)info.get("nickname"));
 		user.setPassword((String)info.get("password"));
+		user.setAdministrator(true);
+		user.setAccountNonExpired(true);
+		user.setAccountNonLocked(true);
+		user.setCredentialsNonExpired(true);
+		user.setCredentialsNonExpired(true);
 		registerService.registerUser(user);
 	}
 	

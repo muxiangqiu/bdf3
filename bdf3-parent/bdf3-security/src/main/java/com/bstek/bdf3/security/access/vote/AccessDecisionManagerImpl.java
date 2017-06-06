@@ -13,6 +13,8 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import com.bstek.bdf3.security.service.UserService;
+
 /**
  * 默认访问决策管理器
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -23,6 +25,9 @@ public class AccessDecisionManagerImpl extends AbstractAccessDecisionManager {
 
 	@Value("${bdf3.allowIfAllAbstainDecisions:true}")
 	private boolean allowIfAllAbstainDecisions;
+	
+	@Autowired
+	private UserService userService;
 	
 	private List<AccessDecisionVoter<? extends Object>> decisionVoters;
 
@@ -39,6 +44,9 @@ public class AccessDecisionManagerImpl extends AbstractAccessDecisionManager {
 	public void decide(Authentication authentication, Object object,
 			Collection<ConfigAttribute> configAttributes)
 			throws AccessDeniedException, InsufficientAuthenticationException {
+		if (userService.isAdministrator()) {
+			return;
+		}
 		int deny = 0;
 		for (AccessDecisionVoter voter : getDecisionVoters()) {
 			if (voter.supports(object.getClass())) {

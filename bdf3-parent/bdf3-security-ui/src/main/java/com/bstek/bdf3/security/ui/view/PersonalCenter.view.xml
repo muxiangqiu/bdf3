@@ -42,6 +42,10 @@
       <PropertyDef name="permissions">
         <Property name="dataType">[Permission]</Property>
       </PropertyDef>
+      <PropertyDef name="administrator">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">是管理员</Property>
+      </PropertyDef>
     </DataType>
     <DataType name="Role">
       <Property name="creationType">com.bstek.bdf3.security.orm.Role</Property>
@@ -182,14 +186,25 @@ if (attribute) {
         <Children>
           <AutoForm>
             <Property name="dataSet">dsUser</Property>
-            <Property name="cols">*,*,*</Property>
+            <Property name="cols">*,*,*,*</Property>
             <Property name="labelAlign">right</Property>
             <Property name="labelSeparator">:</Property>
-            <Property name="width">600</Property>
+            <Property name="width">800</Property>
             <AutoFormElement>
               <Property name="name">username</Property>
               <Property name="property">username</Property>
               <Property name="editorType">Label</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">nickname</Property>
+              <Property name="property">nickname</Property>
+              <Property name="editorType">Label</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement layoutConstraint="colSpan:2">
+              <Property name="name">administrator</Property>
+              <Property name="property">administrator</Property>
               <Editor/>
             </AutoFormElement>
             <AutoFormElement>
@@ -200,12 +215,6 @@ if (attribute) {
             <AutoFormElement>
               <Property name="name">accountNonLocked</Property>
               <Property name="property">accountNonLocked</Property>
-              <Editor/>
-            </AutoFormElement>
-            <AutoFormElement>
-              <Property name="name">nickname</Property>
-              <Property name="property">nickname</Property>
-              <Property name="editorType">Label</Property>
               <Editor/>
             </AutoFormElement>
             <AutoFormElement>

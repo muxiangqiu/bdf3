@@ -12,13 +12,14 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.bstek.bdf3.security.decision.manager.SecurityDecisionManager;
 import com.bstek.bdf3.security.orm.Resource;
 import com.bstek.bdf3.security.orm.User;
-import com.bstek.bdf3.security.service.GrantedAuthorityService;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -34,7 +35,7 @@ public class SecurityDecisionManagerImpl implements SecurityDecisionManager {
 	private AccessDecisionManager accessDecisionManager;
 	
 	@Autowired
-	private GrantedAuthorityService grantedAuthorityService;
+	private UserDetailsService userDetailsService;
 	
 	@Override
 	public boolean decide(Resource resource) {
@@ -46,6 +47,10 @@ public class SecurityDecisionManagerImpl implements SecurityDecisionManager {
 		if (resource != null) {
 			Collection<ConfigAttribute> attributes = findConfigAttributes(resource);
 			Authentication authentication = getAuthentication(username);
+			User user = (User) authentication.getPrincipal();
+			if (user.isAdministrator()) {
+				return true;
+			}
 			try {
 				accessDecisionManager.decide(authentication, resource, attributes);
 			} catch (AccessDeniedException e) {
@@ -60,9 +65,7 @@ public class SecurityDecisionManagerImpl implements SecurityDecisionManager {
 
 	protected Authentication getAuthentication(String username) {
 		if (username != null) {
-			User user = new User();
-			user.setUsername(username);
-			user.setAuthorities(grantedAuthorityService.getGrantedAuthorities(user));
+			UserDetails user = userDetailsService.loadUserByUsername(username);
 			return new UsernamePasswordAuthenticationToken(user, null);
 		}
 		return SecurityContextHolder.getContext().getAuthentication();

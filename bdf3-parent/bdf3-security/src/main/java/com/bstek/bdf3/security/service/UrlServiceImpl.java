@@ -29,6 +29,9 @@ public class UrlServiceImpl implements UrlService {
 	private UrlServiceCache urlServiceCache;
 	
 	@Autowired
+	private UserService userService;
+	
+	@Autowired
 	private SecurityDecisionManager securityDecisionManager;
 	
 	@Autowired
@@ -63,7 +66,7 @@ public class UrlServiceImpl implements UrlService {
 		List<Url> result = new ArrayList<Url>();
 		rebuildLoginUserGrantedAuthorities();
 		for (Url url : urls) {
-			if (decide(null, url)) {
+			if (decide(null, url, userService.isAdministrator())) {
 				result.add(url);
 			}
 		}
@@ -75,29 +78,29 @@ public class UrlServiceImpl implements UrlService {
 		List<Url> urls = urlServiceCache.findTree();
 		List<Url> result = new ArrayList<Url>();
 		for (Url url : urls) {
-			if (decide(username, url)) {
+			if (decide(username, url, userService.isAdministrator(username))) {
 				result.add(url);
 			}
 		}
 		return result;
 	}
-	
+		
 	private void rebuildLoginUserGrantedAuthorities() {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SecurityUserUtil.setAuthorities(userDetails, grantedAuthorityService.getGrantedAuthorities(userDetails));
 	}
 
-	private boolean decide(String username, Url url) {
+	private boolean decide(String username, Url url, boolean administrator) {
 		if (!url.isNavigable()) {
 			return false;
 		}
-		if (securityDecisionManager.decide(username, url)) {
+		if (administrator || securityDecisionManager.decide(username, url)) {
 			List<Url> children = url.getChildren();
 			List<Url> newChildren = new ArrayList<Url>();
 			url.setChildren(newChildren);
 			if (!CollectionUtils.isEmpty(children)) {
 				for (Url child : children) {
-					if (decide(username, child)) {
+					if (decide(username, child, administrator)) {
 						newChildren.add(child);
 					}
 				}

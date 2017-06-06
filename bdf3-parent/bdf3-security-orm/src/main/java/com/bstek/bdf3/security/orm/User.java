@@ -32,6 +32,9 @@ public class User implements UserDetails, OrganizationSupport {
 	@Column(name = "PASSWORD_", length = 125)
 	private String password;
 	
+	@Column(name = "ADMINISTRATOR_")
+	private boolean administrator;
+	
 	@Column(name = "ACCOUNT_NON_EXPIRED_")
 	private boolean accountNonExpired = true;
 	
@@ -92,6 +95,14 @@ public class User implements UserDetails, OrganizationSupport {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public boolean isAdministrator() {
+		return administrator;
+	}
+
+	public void setAdministrator(boolean administrator) {
+		this.administrator = administrator;
+	}
 
 	public void setAccountNonExpired(boolean accountNonExpired) {
 		this.accountNonExpired = accountNonExpired;
@@ -135,8 +146,7 @@ public class User implements UserDetails, OrganizationSupport {
 	public <T> void setOrganization(T organization) {
 		this.organization = organization;
 		
-	}
-	
+	}	
 	
 	
 

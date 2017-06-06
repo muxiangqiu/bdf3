@@ -44,6 +44,10 @@
         <Property name="label">可用</Property>
         <Property name="defaultValue">true</Property>
       </PropertyDef>
+      <PropertyDef name="administrator">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">是管理员</Property>
+      </PropertyDef>
     </DataType>
   </Model>
   <View layout="padding:15">
@@ -83,7 +87,7 @@ dialogUser.show()
           <ToolBarButton>
             <ClientEvent name="onClick" signature="self,arg,ajaxActionResetPassword,dsUser">var user = dsUser.getData(&quot;#&quot;);
 if (user) {
-	dorado.MessageBox.confirm(&quot;你确定要重置【&quot; + user.get(&quot;nickname&quot;) + &quot;】的密码吗？&quot;, function() {
+	dorado.MessageBox.confirm(&quot;您确定要重置【&quot; + user.get(&quot;nickname&quot;) + &quot;】的密码吗？&quot;, function() {
 		var newPassword = Math.round(Math.random()*1000000) + &quot;&quot;;
 		ajaxActionResetPassword.set(&quot;parameter&quot;, {
 			username: user.get(&quot;username&quot;),
@@ -99,6 +103,34 @@ if (user) {
 </ClientEvent>
             <Property name="caption">重置密码</Property>
             <Property name="iconClass">fa fa-key yellow-text</Property>
+          </ToolBarButton>
+          <ToolBarButton>
+            <ClientEvent name="onClick" signature="self,arg,updateAction,dsUser">var user = dsUser.getData(&quot;#&quot;);
+if (!user.get(&quot;administrator&quot;)) {
+	dorado.MessageBox.confirm(&quot;您确定要赋予【&quot; + user.get(&quot;nickname&quot;) + &quot;】管理员身份吗？&quot;, function() {
+	 	user.set(&quot;administrator&quot;, true);
+		updateAction.execute();
+	});
+} else {
+	dorado.MessageBox.alert(&quot;当前选择的用户已经是管理员了。&quot;);
+}
+</ClientEvent>
+            <Property name="caption">赋予管理员身份</Property>
+            <Property name="iconClass">fa fa-graduation-cap green-text</Property>
+          </ToolBarButton>
+          <ToolBarButton>
+            <ClientEvent name="onClick" signature="self,arg,updateAction,dsUser">var user = dsUser.getData(&quot;#&quot;);
+if (user.get(&quot;administrator&quot;)) {
+	dorado.MessageBox.confirm(&quot;您确定要取消【&quot; + user.get(&quot;nickname&quot;) + &quot;】的管理员身份吗？&quot;, function() {
+		user.set(&quot;administrator&quot;, false);
+		updateAction.execute();
+	});
+} else {
+	dorado.MessageBox.alert(&quot;当前选择的用户已经不是管理员了。&quot;);
+}
+</ClientEvent>
+            <Property name="caption">取消管理员身份</Property>
+            <Property name="iconClass">fa fa-ban red-text</Property>
           </ToolBarButton>
           <ToolBarButton>
             <ClientEvent name="onClick" signature="self,arg,ajaxActionResetPassword,dsUser">var user = dsUser.getData(&quot;#&quot;);
@@ -156,6 +188,9 @@ self.urlQueryTimeout = window.setTimeout(function() {
           <DataColumn>
             <Property name="property">nickname</Property>
             <Property name="name">nickname</Property>
+          </DataColumn>
+          <DataColumn name="administrator">
+            <Property name="property">administrator</Property>
           </DataColumn>
           <DataColumn name="accountNonExpired">
             <Property name="property">accountNonExpired</Property>

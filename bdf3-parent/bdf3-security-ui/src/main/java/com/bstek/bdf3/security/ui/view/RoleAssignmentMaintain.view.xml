@@ -77,6 +77,10 @@
         <Property name="label">可用</Property>
         <Property name="defaultValue">true</Property>
       </PropertyDef>
+      <PropertyDef name="administrator">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">是管理员</Property>
+      </PropertyDef>
     </DataType>
     <DataType name="RoleGrantedAuthority">
       <Property name="creationType">com.bstek.bdf3.security.orm.RoleGrantedAuthority</Property>

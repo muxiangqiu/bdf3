@@ -51,6 +51,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 					user.setNickname("系统管理员");
 					user.setUsername("admin");
 					user.setPassword("123456");
+					user.setAdministrator(true);
 					user.setAccountNonExpired(true);
 					user.setAccountNonLocked(true);
 					user.setCredentialsNonExpired(true);

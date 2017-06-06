@@ -21,7 +21,7 @@ import com.bstek.dorado.data.provider.Page;
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2017年1月2日
  */
-@Service
+@Service("ui.userService")
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
