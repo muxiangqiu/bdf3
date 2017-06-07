@@ -34,20 +34,20 @@ public class RegisterServiceImpl implements RegisterService {
 		organization.setName((String)info.get("organizationName"));
 		organizationService.register(organization);
 		try {
-			SaasUtils.setSecurityContext(organization.getId());
+			SaasUtils.pushSecurityContext(organization);
 			userService.add(info);
 		} finally {
-			SaasUtils.clearSecurityContext();
+			SaasUtils.popSecurityContext();
 		}
 	}
 
 	@Override
 	public void registerUser(Map<String, Object> info) throws Exception {
 		try {
-			SaasUtils.setSecurityContext((String)info.get("organizationId"));
+			SaasUtils.pushSecurityContext((String)info.get("organizationId"));
 			userService.add(info);
 		} finally {
-			SaasUtils.clearSecurityContext();
+			SaasUtils.popSecurityContext();
 		}
 	}
 	
@@ -62,12 +62,12 @@ public class RegisterServiceImpl implements RegisterService {
 			return false;
 		}
 		try {
-			SaasUtils.setSecurityContext(organizationId);
+			SaasUtils.pushSecurityContext(organizationId);
 			return userService.isExist(username);
 		} catch(Exception e) {
 			return false;
 		} finally {
-			SaasUtils.clearSecurityContext();
+			SaasUtils.popSecurityContext();
 		}
 	}
 	

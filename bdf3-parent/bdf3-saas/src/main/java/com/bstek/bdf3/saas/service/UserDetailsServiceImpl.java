@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -50,16 +52,24 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		} catch (Exception e) {
 			throw new UsernameNotFoundException(e.getMessage());
 		} finally {
-			SaasUtils.clearSecurityContext();
+			SaasUtils.popSecurityContext();
 		}
 
 	}
 
 	private Organization loadOrganization() {
-		String organizationId = request.getParameter("organization");
-		Organization organization = organizationService.get(organizationId);
-		Assert.notNull(organization, "Organization is not exists.");
-		SaasUtils.setSecurityContext(organizationId);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Organization organization = null;
+		if (auth == null) {
+			String organizationId = request.getParameter("organization");
+			organization = organizationService.get(organizationId);
+			Assert.notNull(organization, "Organization is not exists.");
+		} else {
+			Object principal = auth.getPrincipal();
+			Assert.isInstanceOf(OrganizationSupport.class, principal);
+			organization = ((OrganizationSupport) principal).getOrganization();
+		}
+		SaasUtils.pushSecurityContext(organization);
 		return organization;
 	}
 

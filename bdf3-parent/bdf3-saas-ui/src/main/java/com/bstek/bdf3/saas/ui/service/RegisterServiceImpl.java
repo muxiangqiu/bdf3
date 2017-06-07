@@ -31,10 +31,10 @@ public class RegisterServiceImpl implements RegisterService {
 		Organization organization = user.getOrganization();
 		organizationService.register(organization);
 		try {
-			SaasUtils.setSecurityContext(organization.getId());
+			SaasUtils.pushSecurityContext(organization);
 			userService.save(user);
 		} finally {
-			SaasUtils.clearSecurityContext();
+			SaasUtils.popSecurityContext();
 		}
 	}
 
@@ -42,10 +42,10 @@ public class RegisterServiceImpl implements RegisterService {
 	public void registerUser(User user) {
 		Organization organization = user.getOrganization();
 		try {
-			SaasUtils.setSecurityContext(organization.getId());
+			SaasUtils.pushSecurityContext(organization);
 			userService.save(user);
 		} finally {
-			SaasUtils.clearSecurityContext();
+			SaasUtils.popSecurityContext();
 		}
 	}
 	
@@ -60,12 +60,12 @@ public class RegisterServiceImpl implements RegisterService {
 			return false;
 		}
 		try {
-			SaasUtils.setSecurityContext(organizationId);
+			SaasUtils.pushSecurityContext(organizationId);
 			return userService.isExist(username);
 		} catch(Exception e) {
 			return false;
 		} finally {
-			SaasUtils.clearSecurityContext();
+			SaasUtils.popSecurityContext();
 		}
 	}
 

@@ -30,6 +30,13 @@ public abstract class SaasUtils {
 		SecurityContextHolder.getContext().setAuthentication(new OrganizationAuthentication(tempOrganizationSupport));
 	}
 	
+	public static final void pushSecurityContext(String organizationId) {
+		Organization organization = new Organization();
+		organization.setId(organizationId);
+		pushSecurityContext(organization);
+	}
+
+	
 	public static final void pushSecurityContext(Organization organization) {
 		TempOrganizationSupport tempOrganizationSupport = new TempOrganizationSupport();
 		Organization tempOrganization = new Organization();
