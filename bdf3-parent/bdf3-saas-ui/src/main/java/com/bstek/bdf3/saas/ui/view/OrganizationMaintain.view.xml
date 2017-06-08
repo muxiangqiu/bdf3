@@ -36,10 +36,15 @@
 	id.set(&quot;readOnly&quot;, false);
 	dialogOrg.show();
 } else if (arg.code == &quot;-&quot;) {
-	dorado.MessageBox.confirm(&quot;删除公司会同时删除公司对应的数据库。确认要删除当前公司吗？&quot;, function() {
-		dsOrg.getData(&quot;#&quot;).remove();
-		updateAction.execute();
-	});
+	var org = dsOrg.getData(&quot;#&quot;);
+	if (org.get(&quot;id&quot;) === &quot;master&quot;) {
+		dorado.MessageBox.alert(&quot;禁止删除主公司。&quot;);
+	} else {
+		dorado.MessageBox.confirm(&quot;删除公司会同时删除公司对应的数据库。确认要删除当前公司吗？&quot;, function() {
+			dsOrg.getData(&quot;#&quot;).remove();
+			updateAction.execute();
+		});
+	}
 	arg.processDefault = false;
 }
 </ClientEvent>
