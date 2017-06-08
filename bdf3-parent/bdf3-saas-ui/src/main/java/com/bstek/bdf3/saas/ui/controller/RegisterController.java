@@ -34,6 +34,11 @@ public class RegisterController {
 		organization.setName((String)info.get("organizationName"));
 		User user = new User();
 		user.setOrganization(organization);
+		user.setAdministrator(true);
+		user.setAccountNonExpired(true);
+		user.setAccountNonLocked(true);
+		user.setCredentialsNonExpired(true);
+		user.setCredentialsNonExpired(true);
 		user.setUsername((String)info.get("username"));
 		user.setNickname((String)info.get("nickname"));
 		user.setPassword((String)info.get("password"));
@@ -50,7 +55,7 @@ public class RegisterController {
 		user.setUsername((String)info.get("username"));
 		user.setNickname((String)info.get("nickname"));
 		user.setPassword((String)info.get("password"));
-		user.setAdministrator(true);
+		user.setAdministrator(false);
 		user.setAccountNonExpired(true);
 		user.setAccountNonLocked(true);
 		user.setCredentialsNonExpired(true);
