@@ -88,7 +88,10 @@ dialogUser.show()
             <ClientEvent name="onClick" signature="self,arg,ajaxActionResetPassword,dsUser">var user = dsUser.getData(&quot;#&quot;);
 if (user) {
 	dorado.MessageBox.confirm(&quot;您确定要重置【&quot; + user.get(&quot;nickname&quot;) + &quot;】的密码吗？&quot;, function() {
-		var newPassword = Math.round(Math.random()*1000000) + &quot;&quot;;
+		var newPassword = &quot;${configure['bdf3.resetPassword']}&quot;;
+		if (!newPassword) {
+			newPassword = Math.round(Math.random()*1000000) + &quot;&quot;;
+		} 
 		ajaxActionResetPassword.set(&quot;parameter&quot;, {
 			username: user.get(&quot;username&quot;),
 			newPassword: newPassword
