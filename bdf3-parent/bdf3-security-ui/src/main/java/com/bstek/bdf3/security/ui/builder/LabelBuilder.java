@@ -17,6 +17,10 @@ public class LabelBuilder extends AbstractBuilder<Label> {
 	}
 	
 	protected String getDesc(Label label){
+		String desc = super.getDesc(label);
+		if (desc != null) {
+			return desc;
+		}
 		if(label.getId()!=null){
 			return label.getText();
 		}

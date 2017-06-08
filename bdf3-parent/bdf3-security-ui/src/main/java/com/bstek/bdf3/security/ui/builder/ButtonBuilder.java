@@ -30,6 +30,10 @@ public class ButtonBuilder extends AbstractBuilder<Button> {
 	
 	@Override
 	protected String getDesc(Button button){
+		String desc = super.getDesc(button);
+		if (desc != null) {
+			return desc;
+		}
 		if(button.getId()!=null){
 			return button.getCaption();
 		}

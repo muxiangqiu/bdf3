@@ -29,6 +29,10 @@ public class PanelBuilder extends AbstractBuilder<Panel> {
 	}
 	
 	protected String getDesc(Panel panel){
+		String desc = super.getDesc(panel);
+		if (desc != null) {
+			return desc;
+		}
 		if(StringUtils.isNotEmpty(panel.getId())){
 			return panel.getCaption();		
 		}

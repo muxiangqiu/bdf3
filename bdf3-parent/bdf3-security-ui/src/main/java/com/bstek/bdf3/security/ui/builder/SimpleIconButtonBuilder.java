@@ -22,6 +22,10 @@ public class SimpleIconButtonBuilder extends AbstractBuilder<SimpleIconButton> {
 
 	@Override
 	protected String getDesc(SimpleIconButton button){
+		String desc = super.getDesc(button);
+		if (desc != null) {
+			return desc;
+		}
 		if(button.getId()!=null){
 			if(StringUtils.isNotEmpty(button.getIcon())){
 				return button.getIcon();

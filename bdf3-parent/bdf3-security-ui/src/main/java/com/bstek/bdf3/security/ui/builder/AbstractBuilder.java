@@ -81,7 +81,7 @@ public abstract class AbstractBuilder<T extends AbstractViewElement> implements 
 	}
 	
 	protected String getDesc(T control){
-		return null;
+		return control.getUserData() == null ? null : control.getUserData().toString();
 	}
 	
 	@Override

@@ -560,6 +560,7 @@ if (enabled &amp;&amp; permissions) {
                             <Property name="name">id</Property>
                             <Property name="property">id</Property>
                             <Property name="readOnly">true</Property>
+                            <Property name="caption">组件</Property>
                             <Editor/>
                           </DataColumn>
                         </Columns>

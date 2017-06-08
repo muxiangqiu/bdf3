@@ -17,6 +17,10 @@ public class MenuTextBuilder extends AbstractBuilder<TextMenuItem> {
 	}
 	
 	protected String getDesc(TextMenuItem menuItem){
+		String desc = super.getDesc(menuItem);
+		if (desc != null) {
+			return desc;
+		}
 		if(StringUtils.isNotEmpty(menuItem.getName())){
 			return menuItem.getCaption();
 		}

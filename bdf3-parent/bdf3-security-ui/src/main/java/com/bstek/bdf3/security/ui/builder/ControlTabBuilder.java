@@ -29,6 +29,10 @@ public class ControlTabBuilder extends AbstractBuilder<ControlTab> {
 	}
 	
 	protected String getDesc(ControlTab controlTab){
+		String desc = super.getDesc(controlTab);
+		if (desc != null) {
+			return desc;
+		}
 		if(StringUtils.isNotEmpty(controlTab.getName())){
 			return controlTab.getCaption();		
 		}
