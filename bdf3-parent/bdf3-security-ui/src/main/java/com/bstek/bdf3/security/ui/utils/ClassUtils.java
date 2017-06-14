@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 /**
  * @author Kevin.yang
  */
-public final class ClassUtils {
+public abstract class ClassUtils {
 
 	public static Class<?> getGenericType(Class<?> clazz ,int index){
 		Type genType = clazz.getGenericSuperclass();

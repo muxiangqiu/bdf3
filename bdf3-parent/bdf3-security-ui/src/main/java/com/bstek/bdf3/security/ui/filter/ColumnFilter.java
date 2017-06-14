@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.bstek.bdf3.security.orm.Component;
 import com.bstek.bdf3.security.orm.ComponentType;
+import com.bstek.bdf3.security.ui.utils.ControlUtils;
 import com.bstek.bdf3.security.ui.utils.UrlUtils;
 import com.bstek.dorado.view.widget.grid.Column;
 import com.bstek.dorado.view.widget.grid.ColumnGroup;
@@ -16,29 +17,34 @@ public class ColumnFilter extends AbstractFilter<Column> {
 	
 	@Override
 	public void invoke(Column column) {
-		String path = UrlUtils.getRequestPath();
-		String componentId = getId(column);
-		if (componentId != null) {
-			Component component = new Component();
-			component.setComponentId(componentId);
-			component.setPath(path);
-			component.setComponentType(ComponentType.ReadWrite);
-			if (column instanceof DataColumn) {
-				if (!securityDecisionManager.decide(component)) {
+		if (ControlUtils.isNoSecurtiy(column)) {
+			return;
+		}
+		if (ControlUtils.supportControlType(column)) {
+			String path = UrlUtils.getRequestPath();
+			String componentId = getId(column);
+			if (componentId != null) {
+				Component component = new Component();
+				component.setComponentId(componentId);
+				component.setPath(path);
+				component.setComponentType(ComponentType.ReadWrite);
+				if (column instanceof DataColumn) {
+					if (!securityDecisionManager.decide(component)) {
+						component.setComponentType(ComponentType.Read);
+						if (!securityDecisionManager.decide(component)) {
+							column.setIgnored(true);
+							return;
+						} else {
+							((DataColumn) column).setReadOnly(true);;
+						}
+					}
+				} else {
 					component.setComponentType(ComponentType.Read);
 					if (!securityDecisionManager.decide(component)) {
 						column.setIgnored(true);
 						return;
-					} else {
-						((DataColumn) column).setReadOnly(true);;
-					}
+					} 
 				}
-			} else {
-				component.setComponentType(ComponentType.Read);
-				if (!securityDecisionManager.decide(component)) {
-					column.setIgnored(true);
-					return;
-				} 
 			}
 		}
 		filterChildren(column);

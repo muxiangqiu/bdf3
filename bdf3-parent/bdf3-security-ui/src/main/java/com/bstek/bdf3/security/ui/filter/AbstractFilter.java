@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.bstek.bdf3.security.decision.manager.SecurityDecisionManager;
 import com.bstek.bdf3.security.orm.Component;
 import com.bstek.bdf3.security.orm.ComponentType;
+import com.bstek.bdf3.security.ui.utils.ControlUtils;
 import com.bstek.bdf3.security.ui.utils.UrlUtils;
 import com.bstek.dorado.view.AbstractViewElement;
 import com.bstek.dorado.view.widget.Control;
@@ -29,16 +30,21 @@ public abstract class AbstractFilter<T extends AbstractViewElement> implements F
 	
 	@Override
 	public void invoke(T control) {
-		String path = UrlUtils.getRequestPath();
-		String componentId = getId(control);
-		if (componentId != null) {
-			Component component = new Component();
-			component.setComponentId(componentId);
-			component.setPath(path);
-			component.setComponentType(ComponentType.Read);
-			if (!securityDecisionManager.decide(component)) {
-				control.setIgnored(true);
-				return;
+		if (ControlUtils.isNoSecurtiy(control)) {
+			return;
+		}
+		if (ControlUtils.supportControlType(control)) {
+			String path = UrlUtils.getRequestPath();
+			String componentId = getId(control);
+			if (componentId != null) {
+				Component component = new Component();
+				component.setComponentId(componentId);
+				component.setPath(path);
+				component.setComponentType(ComponentType.Read);
+				if (!securityDecisionManager.decide(component)) {
+					control.setIgnored(true);
+					return;
+				}
 			}
 		}
 		

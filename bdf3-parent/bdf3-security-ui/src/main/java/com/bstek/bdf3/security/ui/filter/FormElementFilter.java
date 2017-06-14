@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.bstek.bdf3.security.orm.Component;
 import com.bstek.bdf3.security.orm.ComponentType;
+import com.bstek.bdf3.security.ui.utils.ControlUtils;
 import com.bstek.bdf3.security.ui.utils.UrlUtils;
 import com.bstek.dorado.data.type.EntityDataType;
 import com.bstek.dorado.data.type.property.PropertyDef;
@@ -21,20 +22,25 @@ public class FormElementFilter extends AbstractFilter<FormElement> {
 
 	@Override
 	public void invoke(FormElement element) {
-		String path = UrlUtils.getRequestPath();
-		String componentId = getId(element);
-		if (componentId != null) {
-			Component component = new Component();
-			component.setComponentId(componentId);
-			component.setPath(path);
-			component.setComponentType(ComponentType.ReadWrite);
-			if (!securityDecisionManager.decide(component)) {
-				component.setComponentType(ComponentType.Read);
+		if (ControlUtils.isNoSecurtiy(element)) {
+			return;
+		}
+		if (ControlUtils.supportControlType(element)) {
+			String path = UrlUtils.getRequestPath();
+			String componentId = getId(element);
+			if (componentId != null) {
+				Component component = new Component();
+				component.setComponentId(componentId);
+				component.setPath(path);
+				component.setComponentType(ComponentType.ReadWrite);
 				if (!securityDecisionManager.decide(component)) {
-					element.setIgnored(true);
-					return;
-				} else {
-					element.setReadOnly(true);;
+					component.setComponentType(ComponentType.Read);
+					if (!securityDecisionManager.decide(component)) {
+						element.setIgnored(true);
+						return;
+					} else {
+						element.setReadOnly(true);;
+					}
 				}
 			}
 		}

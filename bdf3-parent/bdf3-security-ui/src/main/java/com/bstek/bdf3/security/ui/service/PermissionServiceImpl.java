@@ -58,7 +58,7 @@ public class PermissionServiceImpl implements PermissionService {
 			}
 			if (viewConfig != null && viewConfig.getView()!=null && viewBuilder.support(viewConfig.getView())) {
 				View view = viewConfig.getView();
-				viewBuilder.build(view, root);
+				viewBuilder.build(view, root, root);
 			}
 			return root.getChildren();
 		} finally {

@@ -5,7 +5,7 @@ import com.bstek.dorado.web.DoradoContext;
 /**
  * @author Kevin.yang
  */
-public final class UrlUtils {
+public abstract class UrlUtils {
 
 	public static String getRequestPath() {
 		String url = DoradoContext.getCurrent().getRequest().getServletPath().substring(1);
