@@ -133,6 +133,7 @@ public class CriteriaUtils {
 		}		
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void parse(Linq linq, SingleValueFilterCriterion criterion) {
 		String property = criterion.getProperty();
 		if (property.contains(".")) {
@@ -147,13 +148,29 @@ public class CriteriaUtils {
 		} else if (FilterOperator.likeStart.equals(operator)) {
 			linq.like(property, (String) value + "%");
 		} else if (FilterOperator.gt.equals(operator)) {
-			linq.gt(property, (Number) value);
+			if (value instanceof Number) {
+				linq.gt(property, (Number) value);
+			} else if (value instanceof Comparable) {
+				linq.greaterThan(property, (Comparable) value);
+			}
 		}  else if (FilterOperator.lt.equals(operator)) {
-			linq.lt(property, (Number) value);
+			if (value instanceof Number) {
+				linq.lt(property, (Number) value);
+			} else if (value instanceof Comparable) {
+				linq.lessThan(property, (Comparable) value);
+			}
 		} else if (FilterOperator.ge.equals(operator)) {
-			linq.ge(property, (Number) value);
+			if (value instanceof Number) {
+				linq.ge(property, (Number) value);
+			} else if (value instanceof Comparable) {
+				linq.greaterThanOrEqualTo(property, (Comparable) value);
+			}
 		} else if (FilterOperator.le.equals(operator)) {
-			linq.le(property, (Number) value);
+			if (value instanceof Number) {
+				linq.le(property, (Number) value);
+			} else if (value instanceof Comparable) {
+				linq.lessThanOrEqualTo(property, (Comparable) value);
+			}
 		} else if (FilterOperator.eq.equals(operator)) {
 			linq.equal(property, value);
 		} else if (FilterOperator.ne.equals(operator)) {
