@@ -11,7 +11,6 @@ import com.bstek.bdf3.security.ui.utils.ClassUtils;
 import com.bstek.bdf3.security.ui.utils.ControlUtils;
 import com.bstek.dorado.view.AbstractViewElement;
 import com.bstek.dorado.view.widget.Component;
-import com.bstek.dorado.view.widget.Control;
 
 /**
  * @author Kevin.yang
@@ -55,11 +54,12 @@ public abstract class AbstractBuilder<T extends AbstractViewElement> implements 
 	}
 
 	protected void buildChildren(T control, ViewComponent parent, ViewComponent root) {
-		if (getChildren(control) != null) {
-			for (Object child : getChildren(control)) {
-				if (child instanceof Control) {
+		Collection children = getChildren(control);
+		if (children != null) {
+			for (Object child : children) {
+				if (child instanceof AbstractViewElement) {
 					boolean exist = false;
-					Control c = (Control) child;
+					AbstractViewElement c = (AbstractViewElement) child;
 					for (Builder builder : builders) {
 						if (builder.support(c)) {
 							exist = true;

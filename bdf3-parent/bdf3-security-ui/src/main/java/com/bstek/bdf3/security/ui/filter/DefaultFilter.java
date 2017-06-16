@@ -7,14 +7,14 @@ import com.bstek.bdf3.security.orm.Component;
 import com.bstek.bdf3.security.orm.ComponentType;
 import com.bstek.bdf3.security.ui.utils.ControlUtils;
 import com.bstek.bdf3.security.ui.utils.UrlUtils;
-import com.bstek.dorado.view.widget.Control;
+import com.bstek.dorado.view.AbstractViewElement;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
  * @since 2016年7月7日
  */
 @org.springframework.stereotype.Component
-public class DefaultFilter implements Filter<Control> {
+public class DefaultFilter implements Filter<AbstractViewElement> {
 
 	@Autowired
 	protected SecurityDecisionManager securityDecisionManager;
@@ -25,7 +25,7 @@ public class DefaultFilter implements Filter<Control> {
 	}
 
 	@Override
-	public void invoke(Control control) {
+	public void invoke(AbstractViewElement control) {
 		if (ControlUtils.isNoSecurtiy(control)) {
 			return;
 		}

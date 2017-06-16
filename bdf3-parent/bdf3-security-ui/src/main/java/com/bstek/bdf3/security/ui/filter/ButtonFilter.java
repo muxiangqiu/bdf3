@@ -1,6 +1,9 @@
 package com.bstek.bdf3.security.ui.filter;
 
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.bstek.bdf3.security.orm.Component;
@@ -8,6 +11,8 @@ import com.bstek.bdf3.security.orm.ComponentType;
 import com.bstek.bdf3.security.ui.utils.ControlUtils;
 import com.bstek.bdf3.security.ui.utils.UrlUtils;
 import com.bstek.dorado.view.widget.base.Button;
+import com.bstek.dorado.view.widget.base.menu.BaseMenuItem;
+import com.bstek.dorado.view.widget.base.toolbar.MenuButton;
 
 @org.springframework.stereotype.Component
 public class ButtonFilter extends AbstractFilter<Button> {
@@ -37,6 +42,13 @@ public class ButtonFilter extends AbstractFilter<Button> {
 			}
 		}
 		filterChildren(button);
+	}
+	
+	protected Collection<BaseMenuItem> getChildren(Button button){
+		if (MenuButton.class.isAssignableFrom(button.getClass())) {
+			return ((MenuButton) button).getItems();
+		}
+		return Collections.emptyList();
 	}
 	
 	
