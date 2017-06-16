@@ -91,7 +91,7 @@
                   <Editor/>
                 </AutoFormElement>
                 <Label>
-                  <Property name="text">保持登陆</Property>
+                  <Property name="text">保持登录</Property>
                 </Label>
                 <Button layoutConstraint="colSpan:2">
                   <Property name="caption">登 录</Property>
