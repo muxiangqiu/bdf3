@@ -121,7 +121,7 @@
                 </Button>
                 <Tip layoutConstraint="colSpan:3">
                   <Property name="floating">false</Property>
-                  <Property name="text">${authenticationErrorMsg}</Property>
+                  <Property name="text">${authenticationErrorMsg==&quot;坏的凭证&quot;?&quot;公司ID、用户名或密码错误&quot;:authenticationErrorMsg}</Property>
                   <Property name="visible">${authenticationErrorMsg!='none'}</Property>
                   <Property name="hideMode">display</Property>
                 </Tip>
