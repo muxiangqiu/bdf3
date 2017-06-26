@@ -11,7 +11,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
-		<java.version>1.7</java.version>
+		<java.version>1.8</java.version>
 		<antlr2.version>2.7.7</antlr2.version>
 	</properties>
 	<dependencyManagement>
@@ -114,11 +114,6 @@
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
-				<artifactId>bdf3-cloudo</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-message</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
@@ -186,6 +181,11 @@
 				<groupId>com.bstek.dorado</groupId>
 				<artifactId>dorado-source-editor</artifactId>
 				<version>0.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.bstek.dorado</groupId>
+				<artifactId>dorado-ueditor</artifactId>
+				<version>1.0.6</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>
