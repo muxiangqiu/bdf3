@@ -6,6 +6,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.saas.domain.Organization;
@@ -17,6 +18,7 @@ import com.bstek.bdf3.saas.resource.ResourceReleaser;
  * @since 2016年8月12日
  */
 @Service
+@Transactional(readOnly = true)
 public class OrganizationServiceImpl implements OrganizationService, InitializingBean {
 
 	@Autowired
@@ -31,6 +33,7 @@ public class OrganizationServiceImpl implements OrganizationService, Initializin
 	}
 
 	@Override
+	@Transactional
 	public void register(Organization organization) {
 		for (ResourceAllocator allocator : allocators) {
 			allocator.allocate(organization);
@@ -45,6 +48,7 @@ public class OrganizationServiceImpl implements OrganizationService, Initializin
 	}
 	
 	@Override
+	@Transactional
 	public void allocteResource(Organization organization) {
 		for (ResourceAllocator allocator : allocators) {
 			allocator.allocate(organization);
@@ -52,6 +56,7 @@ public class OrganizationServiceImpl implements OrganizationService, Initializin
 	}
 
 	@Override
+	@Transactional
 	public void releaseResource(Organization organization) {
 		for (ResourceReleaser releaser : releasers) {
 			releaser.release(organization);
