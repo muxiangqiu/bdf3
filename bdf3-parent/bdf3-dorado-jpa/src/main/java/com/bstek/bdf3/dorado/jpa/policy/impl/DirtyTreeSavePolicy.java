@@ -81,8 +81,9 @@ public class DirtyTreeSavePolicy implements SavePolicy {
 	}
 	
 	protected List<Field> getPersistentFields(SaveContext context) {
+		Object entity = context.getEntity();
 		List<Field> result = new ArrayList<Field>();
-		List<Field> fields = FieldUtils.getFields(ProxyBeanUtils.getProxyTargetType(context.getEntity()));
+		List<Field> fields = FieldUtils.getFields(ProxyBeanUtils.getProxyTargetType(entity));
 		if(fields != null) {
 			for (Field field : fields) {
 				Class<?> propertyClass = field.getType();
