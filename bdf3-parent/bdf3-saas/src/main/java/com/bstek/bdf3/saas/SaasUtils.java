@@ -5,8 +5,12 @@ import java.util.Stack;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.bstek.bdf3.jpa.JpaUtil;
+import com.bstek.bdf3.saas.command.Command;
+import com.bstek.bdf3.saas.command.CommandNeedReturn;
 import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.saas.domain.TempOrganizationSupport;
+import com.bstek.bdf3.saas.service.CommandService;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -15,6 +19,7 @@ import com.bstek.bdf3.saas.domain.TempOrganizationSupport;
 public abstract class SaasUtils {
 	
 	private static ThreadLocal<Stack<Authentication>> threadLocal = new ThreadLocal<Stack<Authentication>>();
+	private static CommandService saasService;
 
 	public static final void setSecurityContext(String organizationId) {
 		Organization organization = new Organization();
@@ -34,6 +39,10 @@ public abstract class SaasUtils {
 		Organization organization = new Organization();
 		organization.setId(organizationId);
 		pushSecurityContext(organization);
+	}
+	
+	public static final void pushMasterSecurityContext() {
+		pushSecurityContext(Constants.MASTER);
 	}
 
 	
@@ -63,10 +72,73 @@ public abstract class SaasUtils {
 			threadLocal.remove();
 		}
 	}
-
 	
 	public static final void clearSecurityContext() {
 		SecurityContextHolder.getContext().setAuthentication(null);
 	}
+	
+	public static <T> T doQuery(String organizationId, CommandNeedReturn<T> command) {
+		try {
+			pushSecurityContext(organizationId);
+			return getSaasService().executeQueryCommand(command);
+		} finally {
+			popSecurityContext();
+		}
+	}
+	
+	public static <T> T doNonQuery(String organizationId, CommandNeedReturn<T> command) {
+		try {
+			pushSecurityContext(organizationId);
+			return getSaasService().executeNonQueryCommand(command);
+		} finally {
+			popSecurityContext();
+		}
+	}
+	
+	public static void doQuery(String organizationId, Command command) {
+		try {
+			pushSecurityContext(organizationId);
+			getSaasService().executeQueryCommand(command);
+		} finally {
+			popSecurityContext();
+		}
+	}
+	
+	public static void doNonQuery(String organizationId, Command command) {
+		try {
+			pushSecurityContext(organizationId);
+			getSaasService().executeNonQueryCommand(command);
+		} finally {
+			popSecurityContext();
+		}
+	}
+	
+	public static <T> T doQuery(CommandNeedReturn<T> command) {
+		return doQuery(Constants.MASTER, command);
+	}
+	
+	public static <T> T doNonQuery(CommandNeedReturn<T> command) {
+		return doNonQuery(Constants.MASTER, command);
+	}
+	
+	public static void doQuery(Command command) {
+		doQuery(Constants.MASTER, command);
+	}
+	
+	public static void doNonQuery(Command command) {
+		doNonQuery(Constants.MASTER, command);
+	}
+	
+	private static CommandService getSaasService() {
+		if (saasService == null) {
+			saasService = JpaUtil.getApplicationContext().getBean(CommandService.class);
+		}
+		return saasService;
+	}
+
+	
+
+	
+	
 
 }

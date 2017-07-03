@@ -9,15 +9,43 @@
         <Property></Property>
         <Property name="label">公司ID</Property>
         <Property name="readOnly">false</Property>
+        <Validator type="ajax">
+          <Property name="name">validator</Property>
+          <Property name="service">organizationController#isExist</Property>
+        </Validator>
       </PropertyDef>
       <PropertyDef name="name">
         <Property></Property>
         <Property name="label">公司名称</Property>
       </PropertyDef>
+      <PropertyDef name="dataSourceInfoId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="dataSourceInfo">
+        <Property name="dataType">DataSourceInfo</Property>
+        <Property name="label">数据源</Property>
+        <Property name="submittable">false</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="DataSourceInfo">
+      <Property name="creationType">com.bstek.bdf3.saas.domain.DataSourceInfo</Property>
+      <Property name="defaultDisplayProperty">name</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
     </DataType>
   </Model>
   <View layout="padding:15">
     <Property name="packages">font-awesome</Property>
+    <DataSet id="dsDataSourceInfo">
+      <Property name="dataType">[DataSourceInfo]</Property>
+      <Property name="dataProvider">dataSourceInfoController#load</Property>
+    </DataSet>
     <DataSet id="dsOrg">
       <Property name="dataType">[Organization]</Property>
       <Property name="dataProvider">organizationController#load</Property>
@@ -29,11 +57,12 @@
       <Buttons/>
       <Children>
         <Container layout="regionPadding:10">
-          <Property name="width">580</Property>
+          <Property name="width">700</Property>
           <ToolBar>
             <DataPilot>
-              <ClientEvent name="onSubControlAction" signature="self,arg,id,dsOrg,dialogOrg,updateAction">if (arg.code == &quot;+&quot;) {
+              <ClientEvent name="onSubControlAction" signature="self,arg,id,ds,dsOrg,dialogOrg,updateAction">if (arg.code == &quot;+&quot;) {
 	id.set(&quot;readOnly&quot;, false);
+	ds.set(&quot;readOnly&quot;, false);
 	dialogOrg.show();
 } else if (arg.code == &quot;-&quot;) {
 	var org = dsOrg.getData(&quot;#&quot;);
@@ -52,7 +81,8 @@
               <Property name="itemCodes">+,-</Property>
             </DataPilot>
             <ToolBarButton>
-              <ClientEvent name="onClick" signature="self,arg,dialogOrg,id">id.set(&quot;readOnly&quot;, true);
+              <ClientEvent name="onClick" signature="self,arg,dialogOrg,id,ds">id.set(&quot;readOnly&quot;, true);
+ds.set(&quot;readOnly&quot;, true);
 dialogOrg.show()
 </ClientEvent>
               <Property name="caption">修改</Property>
@@ -79,12 +109,16 @@ self.urlQueryTimeout = window.setTimeout(function() {
 				property: &quot;id&quot;,
 				operator: &quot;like&quot;,
 				value: key
+			}, {
+				property: &quot;dataSourceInfo.name&quot;,
+				operator: &quot;like&quot;,
+				value: key
 			}]
 		}]);
 	}
 }, 250);</ClientEvent>
               <Property name="trigger">triggerClear</Property>
-              <Property name="blankText">按公司ID或名称</Property>
+              <Property name="blankText">支持所有属性查询</Property>
             </TextEditor>
           </ToolBar>
           <DataGrid id="dgOrg">
@@ -99,6 +133,11 @@ self.urlQueryTimeout = window.setTimeout(function() {
             </DataColumn>
             <DataColumn name="name">
               <Property name="property">name</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="property">dataSourceInfo.name</Property>
+              <Property name="name">dataSourceInfo.name</Property>
+              <Property name="caption">数据源</Property>
             </DataColumn>
           </DataGrid>
           <ToolBar layoutConstraint="bottom">
@@ -147,7 +186,7 @@ self.urlQueryTimeout = window.setTimeout(function() {
           <Property name="labelPosition">left</Property>
           <Property name="labelAlign">right</Property>
           <Tip>
-            <Property name="text">自动创建一个默认用户，用户名/密码：admin/1234567</Property>
+            <Property name="text">自动创建一个默认用户，用户名/密码：admin/123456</Property>
             <Property name="floating">false</Property>
             <Property name="caption">小贴士</Property>
             <Property name="icon">INFO</Property>
@@ -162,7 +201,19 @@ self.urlQueryTimeout = window.setTimeout(function() {
             <Property name="property">name</Property>
             <Editor/>
           </AutoFormElement>
+          <AutoFormElement id="ds">
+            <Property name="name">dataSourceInfo</Property>
+            <Property name="property">dataSourceInfo</Property>
+            <Property name="trigger">ddDataSourceInfo</Property>
+            <Property name="editable">false</Property>
+            <Editor/>
+          </AutoFormElement>
         </AutoForm>
+        <DataSetDropDown id="ddDataSourceInfo">
+          <Property name="dataSet">dsDataSourceInfo</Property>
+          <Property name="displayProperty">name</Property>
+          <Property name="assignmentMap">dataSourceInfoId=id,dataSourceInfo.name=name</Property>
+        </DataSetDropDown>
       </Children>
       <Tools/>
     </Dialog>

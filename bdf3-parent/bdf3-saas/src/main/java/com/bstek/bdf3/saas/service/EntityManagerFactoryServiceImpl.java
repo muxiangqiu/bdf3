@@ -25,6 +25,7 @@ import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.weaving.LoadTimeWeaverAware;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.instrument.classloading.LoadTimeWeaver;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.jndi.JndiLocatorDelegate;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -274,6 +275,45 @@ public class EntityManagerFactoryServiceImpl implements
 			emfMap.put(organization.getId(), emf);
 		}
 		return emf;
+	}
+	
+	@Override
+	public void generateTables(Organization organization) {
+		SingleConnectionDataSource dataSource = dataSourceService.createSingleConnectionDataSource(organization);
+		if (dataSource != null) {
+			Map<String, Object> vendorProperties = getVendorProperties(dataSource);
+			customizeVendorProperties(vendorProperties);
+			LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = getEntityManagerFactoryBuilder().dataSource(dataSource).packages(packagesToScan.split(","))
+					.properties(vendorProperties).jta(isJta()).build();
+			entityManagerFactoryBean.setBeanClassLoader(classLoader);
+			entityManagerFactoryBean.setBeanFactory(beanFactory);
+			entityManagerFactoryBean.setBeanName(beanName);
+			entityManagerFactoryBean.setLoadTimeWeaver(loadTimeWeaver);
+			entityManagerFactoryBean.setResourceLoader(resourceLoader);
+			entityManagerFactoryBean.afterPropertiesSet();
+			entityManagerFactoryBean.destroy();
+			dataSource.destroy();
+		}
+	}
+	
+	@Override
+	public EntityManagerFactory createTempEntityManagerFactory(
+			Organization organization) {
+		SingleConnectionDataSource dataSource = dataSourceService.createSingleConnectionDataSource(organization);
+		if (dataSource != null) {
+			Map<String, Object> vendorProperties = getVendorProperties(dataSource);
+			customizeVendorProperties(vendorProperties);
+			LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = getEntityManagerFactoryBuilder().dataSource(dataSource).packages(packagesToScan.split(","))
+					.properties(vendorProperties).jta(isJta()).build();
+			entityManagerFactoryBean.setBeanClassLoader(classLoader);
+			entityManagerFactoryBean.setBeanFactory(beanFactory);
+			entityManagerFactoryBean.setBeanName(beanName);
+			entityManagerFactoryBean.setLoadTimeWeaver(loadTimeWeaver);
+			entityManagerFactoryBean.setResourceLoader(resourceLoader);
+			entityManagerFactoryBean.afterPropertiesSet();
+			return entityManagerFactoryBean.getObject();
+		}
+		return null;
 	}
 
 	@Override

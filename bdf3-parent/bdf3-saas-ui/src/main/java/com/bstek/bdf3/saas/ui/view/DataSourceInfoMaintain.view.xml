@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="DataSourceInfo">
+      <Property name="creationType">com.bstek.bdf3.saas.domain.DataSourceInfo</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+        <Validator type="ajax">
+          <Property name="name">validator</Property>
+          <Property name="service">dataSourceInfoController#isExist</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
+      <PropertyDef name="url">
+        <Property></Property>
+        <Property name="label">URL</Property>
+      </PropertyDef>
+      <PropertyDef name="username">
+        <Property></Property>
+        <Property name="label">用户名</Property>
+      </PropertyDef>
+      <PropertyDef name="password">
+        <Property></Property>
+        <Property name="label">密码</Property>
+      </PropertyDef>
+      <PropertyDef name="type">
+        <Property></Property>
+        <Property name="label">数据源类型</Property>
+      </PropertyDef>
+      <PropertyDef name="driverClassName">
+        <Property></Property>
+        <Property name="label">驱动类</Property>
+      </PropertyDef>
+      <PropertyDef name="jndiName">
+        <ClientEvent name="onSet" signature="self,arg,shared">if (arg.value) {
+	arg.entity.set(&quot;shared&quot;, false);
+	shared.set(&quot;readOnly&quot;, true);
+} else {
+	shared.set(&quot;readOnly&quot;, false);
+}
+</ClientEvent>
+        <Property></Property>
+        <Property name="label">JNDI名称</Property>
+      </PropertyDef>
+      <PropertyDef name="shared">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可共享</Property>
+      </PropertyDef>
+      <PropertyDef name="enabled">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可用</Property>
+      </PropertyDef>
+      <PropertyDef name="depletionIndex">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">消耗指数</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View layout="padding:15">
+    <Property name="packages">font-awesome</Property>
+    <DataSet id="dsDataSourceInfo">
+      <Property name="dataType">[DataSourceInfo]</Property>
+      <Property name="dataProvider">dataSourceInfoController#load</Property>
+    </DataSet>
+    <Panel layout="padding:5;regionPadding:10">
+      <Property name="caption">数据源管理</Property>
+      <Property name="showCaptionBar">false</Property>
+      <Buttons/>
+      <Children>
+        <Container layout="regionPadding:10">
+          <ToolBar>
+            <DataPilot>
+              <ClientEvent name="onSubControlAction" signature="self,arg,id,dsDataSourceInfo,dialogDataSourceInfo,updateAction">if (arg.code == &quot;+&quot;) {
+	id.set(&quot;readOnly&quot;, false);
+	dialogDataSourceInfo.show();
+} else if (arg.code == &quot;-&quot;) {
+	var org = dsDataSourceInfo.getData(&quot;#&quot;);
+	if (org.get(&quot;id&quot;) === &quot;master&quot;) {
+		dorado.MessageBox.alert(&quot;禁止删除主数据源。&quot;);
+	} else {
+		dorado.MessageBox.confirm(&quot;确认要删除当前数据源吗？&quot;, function() {
+			dsDataSourceInfo.getData(&quot;#&quot;).remove();
+			updateAction.execute();
+		});
+	}
+	arg.processDefault = false;
+}
+</ClientEvent>
+              <Property name="dataSet">dsDataSourceInfo</Property>
+              <Property name="itemCodes">+,-</Property>
+            </DataPilot>
+            <ToolBarButton>
+              <ClientEvent name="onClick" signature="self,arg,dialogDataSourceInfo,id">id.set(&quot;readOnly&quot;, true);
+dialogDataSourceInfo.show()
+</ClientEvent>
+              <Property name="caption">修改</Property>
+              <Property name="iconClass">fa fa-pencil</Property>
+            </ToolBarButton>
+            <Fill/>
+            <TextEditor>
+              <ClientEvent name="onKeyDown" signature="self,arg,dgDataSourceInfo">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.queryTimeout);
+self.queryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	if (!key) {
+		dgDataSourceInfo.filter();
+	} else {
+		dgDataSourceInfo.filter([{
+			junction: &quot;or&quot;,
+			criterions: [{
+				property: &quot;name&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;id&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}]
+		}]);
+	}
+}, 250);</ClientEvent>
+              <Property name="trigger">triggerClear</Property>
+              <Property name="blankText">按数据源ID或名称</Property>
+            </TextEditor>
+          </ToolBar>
+          <DataGrid id="dgDataSourceInfo">
+            <Property name="dataSet">dsDataSourceInfo</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="showFilterBar">false</Property>
+            <Property name="sortMode">clientSide</Property>
+            <Property name="filterMode">clientSide</Property>
+            <RowNumColumn/>
+            <DataColumn name="id">
+              <Property name="property">id</Property>
+            </DataColumn>
+            <DataColumn name="name">
+              <Property name="property">name</Property>
+            </DataColumn>
+            <DataColumn name="depletionIndex">
+              <Property name="property">depletionIndex</Property>
+            </DataColumn>
+            <DataColumn name="url">
+              <Property name="property">url</Property>
+            </DataColumn>
+            <DataColumn name="username">
+              <Property name="property">username</Property>
+            </DataColumn>
+            <DataColumn name="password">
+              <Property name="property">password</Property>
+            </DataColumn>
+            <DataColumn name="type">
+              <Property name="property">type</Property>
+            </DataColumn>
+            <DataColumn name="driverClassName">
+              <Property name="property">driverClassName</Property>
+            </DataColumn>
+            <DataColumn name="jndiName">
+              <Property name="property">jndiName</Property>
+            </DataColumn>
+            <DataColumn name="shared">
+              <Property name="property">shared</Property>
+            </DataColumn>
+            <DataColumn name="enabled">
+              <Property name="property">enabled</Property>
+            </DataColumn>
+          </DataGrid>
+        </Container>
+      </Children>
+      <Tools/>
+    </Panel>
+    <UpdateAction id="updateAction">
+      <ClientEvent name="onSuccess" signature="self,arg,dialogOrg">dialogDataSourceInfo.hide()
+</ClientEvent>
+      <Property name="dataResolver">dataSourceInfoController#save</Property>
+      <Property name="successMessage">保存成功。</Property>
+      <Property name="executingMessage">正在执行……</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsDataSourceInfo</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <Dialog id="dialogDataSourceInfo">
+      <ClientEvent name="onHide" signature="self,arg,dsDataSourceInfo">dsDataSourceInfo.getData().cancel();
+</ClientEvent>
+      <Property name="caption">数据源维护</Property>
+      <Property name="width">490</Property>
+      <Property name="height">460</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="minimizeable">false</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick" signature="self,arg,tip">tip.show();
+</ClientEvent>
+          <Property name="caption">帮助</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide()
+</ClientEvent>
+          <Property name="caption">取消</Property>
+        </Button>
+        <Button>
+          <Property name="caption">保存</Property>
+          <Property name="action">updateAction</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsDataSourceInfo</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelPosition">left</Property>
+          <Property name="labelAlign">right</Property>
+          <Tip id="tip">
+            <Property name="text">普通数据源不需要填写JNDI名称，当数据源为JNDI数据源时，该数据源是独享数据源。由主公司管理员在创建公司的时候，手动指定。数据源连接的schame必须是master，JNDI数据源除外 </Property>
+            <Property name="floating">true</Property>
+            <Property name="icon">INFO</Property>
+            <Property name="closeable">true</Property>
+          </Tip>
+          <AutoFormElement id="id">
+            <Property name="name">id</Property>
+            <Property name="property">id</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">depletionIndex</Property>
+            <Property name="property">depletionIndex</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">url</Property>
+            <Property name="property">url</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">username</Property>
+            <Property name="property">username</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">password</Property>
+            <Property name="property">password</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">type</Property>
+            <Property name="property">type</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">driverClassName</Property>
+            <Property name="property">driverClassName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">jndiName</Property>
+            <Property name="property">jndiName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement id="shared">
+            <Property name="name">shared</Property>
+            <Property name="property">shared</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">enabled</Property>
+            <Property name="property">enabled</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

@@ -18,4 +18,8 @@ public interface EntityManagerFactoryService {
 	
 	void removeEntityManagerFactory(Organization organization);
 
+	void generateTables(Organization organization);
+
+	EntityManagerFactory createTempEntityManagerFactory(Organization organization);
+
 }

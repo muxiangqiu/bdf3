@@ -11,6 +11,7 @@ import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.saas.ui.service.OrganizationService;
 import com.bstek.dorado.annotation.DataProvider;
 import com.bstek.dorado.annotation.DataResolver;
+import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
@@ -34,6 +35,14 @@ public class OrganizationController {
 	@DataResolver
 	public void save(List<Organization> organizations) {
 		organizationService.save(organizations);
+	}
+	
+	@Expose
+	public String isExist(String organizationId) {
+		if (organizationService.isExist(organizationId)) {
+			return "公司ID已经存在。";
+		}
+		return null;
 	}
 	
 

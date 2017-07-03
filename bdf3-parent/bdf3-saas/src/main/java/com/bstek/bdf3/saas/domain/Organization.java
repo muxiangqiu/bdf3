@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -23,6 +24,12 @@ public class Organization implements Serializable {
 	
 	@Column(name = "NAME_")
 	private String name;
+	
+	@Column(name = "DATA_SOURCE_INFO_ID_")
+	private String dataSourceInfoId;
+	
+	@Transient
+	private DataSourceInfo dataSourceInfo;
 
 	public String getId() {
 		return id;
@@ -39,7 +46,22 @@ public class Organization implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
+	public String getDataSourceInfoId() {
+		return dataSourceInfoId;
+	}
+
+	public void setDataSourceInfoId(String dataSourceInfoId) {
+		this.dataSourceInfoId = dataSourceInfoId;
+	}
+
+	public DataSourceInfo getDataSourceInfo() {
+		return dataSourceInfo;
+	}
+
+	public void setDataSourceInfo(DataSourceInfo dataSourceInfo) {
+		this.dataSourceInfo = dataSourceInfo;
+	}
+
 
 }

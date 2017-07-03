@@ -10,6 +10,7 @@ import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.bdf3.dorado.jpa.policy.SaveContext;
 import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicyAdapter;
 import com.bstek.bdf3.saas.SaasUtils;
+import com.bstek.bdf3.saas.domain.DataSourceInfo;
 import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.security.orm.User;
 import com.bstek.bdf3.security.ui.service.UserService;
@@ -32,7 +33,11 @@ public class OrganizationServiceImpl implements OrganizationService {
 	
 	@Override
 	public void load(Page<Organization> page, Criteria criteria) {
-		JpaUtil.linq(Organization.class).where(criteria).paging(page);
+		JpaUtil.linq(Organization.class)
+			.collect(DataSourceInfo.class, "dataSourceInfoId")
+			.collectSelect(DataSourceInfo.class, "id", "name")
+			.where(criteria)
+			.paging(page);
 	}
 
 	@Override
@@ -45,8 +50,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 			public void beforeInsert(SaveContext context) {
 				Organization organization = context.getEntity();
 				organizationService.allocteResource(organization);
-				try {
-					SaasUtils.pushSecurityContext(organization);
+				SaasUtils.doNonQuery(organization.getId(), () -> {
 					User user = new User();
 					user.setNickname("系统管理员");
 					user.setUsername("admin");
@@ -58,9 +62,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 					user.setCredentialsNonExpired(true);
 					user.setEnabled(true);
 					userService.save(user);
-				} finally {
-					SaasUtils.popSecurityContext();
-				}
+				});
 			}
 
 			@Override
