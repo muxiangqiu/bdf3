@@ -14,7 +14,6 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.bstek.bdf3.jpa.JpaUtilAble;
 import com.bstek.bdf3.security.Constants;
 import com.bstek.bdf3.security.access.provider.FilterConfigAttributeProvider;
 import com.bstek.bdf3.security.orm.Url;
@@ -26,7 +25,7 @@ import com.bstek.bdf3.security.service.UrlService;
  */
 @Component
 @Order(100)
-public class UrlFilterConfigAttribueProvider extends JpaUtilAble implements
+public class UrlFilterConfigAttribueProvider implements
 		FilterConfigAttributeProvider  {
 	
 	@Autowired(required = true)
