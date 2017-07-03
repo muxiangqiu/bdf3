@@ -112,6 +112,7 @@
                 <Link layoutConstraint="align:right">
                   <Property name="text">没有账户，注册一个</Property>
                   <Property name="href">${configure['bdf3.registerPath']}</Property>
+                  <Property name="visible">${!configure['bdf3.disableRegister']}</Property>
                 </Link>
                 <Button layoutConstraint="colSpan:3">
                   <Property name="caption">登 录</Property>
