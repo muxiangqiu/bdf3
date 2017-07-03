@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 public class SecurityConfiguration {
 	
 	@Bean
-	public StandardPasswordEncoder md5PasswordEncoder() {
+	public StandardPasswordEncoder standardPasswordEncoder() {
 		return new StandardPasswordEncoder();
 	}
 	
