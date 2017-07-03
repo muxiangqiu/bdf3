@@ -26,6 +26,7 @@ import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +52,7 @@ import com.bstek.bdf3.jpa.strategy.GetEntityManagerFactoryStrategy;
 public abstract class JpaUtil {
 	
 	protected static GetEntityManagerFactoryStrategy getEntityManagerFactoryStrategy;
+	protected static ApplicationContext applicationContext;
 	
 	/**
 	 * 创建Linq
@@ -731,6 +733,14 @@ public abstract class JpaUtil {
 			GetEntityManagerFactoryStrategy getEntityManagerFactoryStrategy) {
 		JpaUtil.getEntityManagerFactoryStrategy = getEntityManagerFactoryStrategy;
 		
+	}
+	
+	public static ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+	
+	public static void setApplicationContext(ApplicationContext ctx) {
+		applicationContext = ctx;
 	}
 
 }

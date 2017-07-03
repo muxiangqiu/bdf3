@@ -1,10 +1,9 @@
 package com.bstek.bdf3.dorado.jpa.configure;
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.bstek.bdf3.dorado.jpa.JpaUtilAble;
+import com.bstek.bdf3.dorado.jpa.initiator.DoradoJpaUtilInitiator;
 import com.bstek.bdf3.dorado.jpa.policy.CriteriaPolicy;
 import com.bstek.bdf3.dorado.jpa.policy.SavePolicy;
 import com.bstek.bdf3.dorado.jpa.policy.impl.DirtyTreeSavePolicy;
@@ -17,7 +16,7 @@ import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicy;
  * @since 2016年1月24日
  */
 @Configuration
-public class JpaConfiguration extends JpaUtilAble implements InitializingBean {
+public class JpaConfiguration {
 	
 	
 	@Bean
@@ -30,6 +29,11 @@ public class JpaConfiguration extends JpaUtilAble implements InitializingBean {
 		DirtyTreeSavePolicy savePolicy = new DirtyTreeSavePolicy();
 		savePolicy.setSavePolicy(new SmartSavePolicy());
 		return savePolicy;
+	}
+	
+	@Bean
+	public DoradoJpaUtilInitiator doradoJpaUtilInitiator() {
+		return new DoradoJpaUtilInitiator();
 	}
 
 
