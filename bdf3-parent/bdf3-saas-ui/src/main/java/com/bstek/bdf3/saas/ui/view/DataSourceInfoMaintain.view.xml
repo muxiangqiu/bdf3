@@ -76,8 +76,9 @@
         <Container layout="regionPadding:10">
           <ToolBar>
             <DataPilot>
-              <ClientEvent name="onSubControlAction" signature="self,arg,id,dsDataSourceInfo,dialogDataSourceInfo,updateAction">if (arg.code == &quot;+&quot;) {
+              <ClientEvent name="onSubControlAction" signature="self,arg,id,af,dsDataSourceInfo,dialogDataSourceInfo,updateAction">if (arg.code == &quot;+&quot;) {
 	id.set(&quot;readOnly&quot;, false);
+	af.set(&quot;readOnly&quot;, false);
 	dialogDataSourceInfo.show();
 } else if (arg.code == &quot;-&quot;) {
 	var org = dsDataSourceInfo.getData(&quot;#&quot;);
@@ -96,8 +97,14 @@
               <Property name="itemCodes">+,-</Property>
             </DataPilot>
             <ToolBarButton>
-              <ClientEvent name="onClick" signature="self,arg,dialogDataSourceInfo,id">id.set(&quot;readOnly&quot;, true);
-dialogDataSourceInfo.show()
+              <ClientEvent name="onClick" signature="self,arg,af,dsDataSourceInfo,dialogDataSourceInfo,id">id.set(&quot;readOnly&quot;, true);
+var org = dsDataSourceInfo.getData(&quot;#&quot;);
+if (org.get(&quot;id&quot;) === &quot;master&quot;) {
+	af.set(&quot;readOnly&quot;, true);
+} else {
+	af.set(&quot;readOnly&quot;, false);
+}
+dialogDataSourceInfo.show();
 </ClientEvent>
               <Property name="caption">修改</Property>
               <Property name="iconClass">fa fa-pencil</Property>
@@ -177,7 +184,7 @@ self.queryTimeout = window.setTimeout(function() {
       <Tools/>
     </Panel>
     <UpdateAction id="updateAction">
-      <ClientEvent name="onSuccess" signature="self,arg,dialogOrg">dialogDataSourceInfo.hide()
+      <ClientEvent name="onSuccess" signature="self,arg,dialogDataSourceInfo">dialogDataSourceInfo.hide()
 </ClientEvent>
       <Property name="dataResolver">dataSourceInfoController#save</Property>
       <Property name="successMessage">保存成功。</Property>
@@ -191,7 +198,7 @@ self.queryTimeout = window.setTimeout(function() {
 </ClientEvent>
       <Property name="caption">数据源维护</Property>
       <Property name="width">490</Property>
-      <Property name="height">460</Property>
+      <Property name="height">490</Property>
       <Property name="maximizeable">true</Property>
       <Property name="minimizeable">false</Property>
       <Buttons>
@@ -211,7 +218,7 @@ self.queryTimeout = window.setTimeout(function() {
         </Button>
       </Buttons>
       <Children>
-        <AutoForm>
+        <AutoForm id="af">
           <Property name="dataSet">dsDataSourceInfo</Property>
           <Property name="cols">*</Property>
           <Property name="labelPosition">left</Property>

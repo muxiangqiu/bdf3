@@ -6,6 +6,10 @@
     <DataType name="User">
       <PropertyDef name="organization">
         <Property name="label">公司ID</Property>
+        <Validator name="validator1" type="regExp">
+          <Property name="whiteRegExp">${configure['bdf3.organizationIdRegExp']}</Property>
+          <Property name="resultMessage">${configure['bdf3.organizationIdRegExpResultMessage']}</Property>
+        </Validator>
         <Validator type="required">
           <Property name="name">validator</Property>
           <Property name="resultMessage">公司ID不能为空</Property>

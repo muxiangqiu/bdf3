@@ -1,6 +1,7 @@
 package com.bstek.bdf3.saas.service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,9 +21,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder.Builder;
 import org.springframework.boot.orm.jpa.hibernate.SpringJtaPlatform;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.weaving.LoadTimeWeaverAware;
+import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.instrument.classloading.LoadTimeWeaver;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
@@ -38,6 +41,7 @@ import org.springframework.util.ClassUtils;
 
 import com.bstek.bdf3.saas.Constants;
 import com.bstek.bdf3.saas.domain.Organization;
+import com.bstek.bdf3.saas.listener.EntityManagerFactoryCreateListener;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -65,6 +69,9 @@ public class EntityManagerFactoryServiceImpl implements
 	private ClassLoader classLoader;
 
 	private String beanName;
+	
+	@Autowired(required = false)
+	private List<EntityManagerFactoryCreateListener> listeners;
 	
 	private static final Log logger = LogFactory
 			.getLog(HibernateJpaAutoConfiguration.class);
@@ -140,6 +147,7 @@ public class EntityManagerFactoryServiceImpl implements
 		entityManagerFactoryBean.setBeanName(beanName);
 		entityManagerFactoryBean.setLoadTimeWeaver(loadTimeWeaver);
 		entityManagerFactoryBean.setResourceLoader(resourceLoader);
+		entityManagerFactoryBean.setPersistenceUnitName(organization.getId());
 		entityManagerFactoryBean.afterPropertiesSet();
 		return entityManagerFactoryBean.getObject();
 	}
@@ -283,8 +291,12 @@ public class EntityManagerFactoryServiceImpl implements
 		if (dataSource != null) {
 			Map<String, Object> vendorProperties = getVendorProperties(dataSource);
 			customizeVendorProperties(vendorProperties);
-			LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = getEntityManagerFactoryBuilder().dataSource(dataSource).packages(packagesToScan.split(","))
-					.properties(vendorProperties).jta(isJta()).build();
+			Builder builder = getEntityManagerFactoryBuilder().dataSource(dataSource).packages(packagesToScan.split(","))
+					.properties(vendorProperties).jta(isJta());
+			LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = builder.build();
+
+		    publishEvent(organization, builder);
+
 			entityManagerFactoryBean.setBeanClassLoader(classLoader);
 			entityManagerFactoryBean.setBeanFactory(beanFactory);
 			entityManagerFactoryBean.setBeanName(beanName);
@@ -303,8 +315,9 @@ public class EntityManagerFactoryServiceImpl implements
 		if (dataSource != null) {
 			Map<String, Object> vendorProperties = getVendorProperties(dataSource);
 			customizeVendorProperties(vendorProperties);
-			LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = getEntityManagerFactoryBuilder().dataSource(dataSource).packages(packagesToScan.split(","))
-					.properties(vendorProperties).jta(isJta()).build();
+		    Builder builder = getEntityManagerFactoryBuilder().dataSource(dataSource).packages(packagesToScan.split(","))
+					.properties(vendorProperties).jta(isJta());
+			LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = builder.build();
 			entityManagerFactoryBean.setBeanClassLoader(classLoader);
 			entityManagerFactoryBean.setBeanFactory(beanFactory);
 			entityManagerFactoryBean.setBeanName(beanName);
@@ -319,12 +332,24 @@ public class EntityManagerFactoryServiceImpl implements
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		emfMap.put(Constants.MASTER, emf);
+		if (listeners != null) {
+			AnnotationAwareOrderComparator.sort(listeners);
+		}
 	}
 
 	@Override
 	public void removeEntityManagerFactory(Organization organization) {
 		emfMap.remove(organization.getId());
 		dataSourceService.removeDataSource(organization);
+	}
+	
+	private void publishEvent(Organization organization, Builder builder) {
+		if (listeners != null) {
+			for (EntityManagerFactoryCreateListener entityManagerFactoryCreateListener : listeners) {
+				entityManagerFactoryCreateListener.onCreate(organization, builder);
+			}
+		}
+		
 	}
 
 }

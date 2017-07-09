@@ -9,6 +9,10 @@
         <Property></Property>
         <Property name="label">公司ID</Property>
         <Property name="readOnly">false</Property>
+        <Validator name="validator1" type="regExp">
+          <Property name="whiteRegExp">${configure['bdf3.organizationIdRegExp']}</Property>
+          <Property name="resultMessage">${configure['bdf3.organizationIdRegExpResultMessage']}</Property>
+        </Validator>
         <Validator type="ajax">
           <Property name="name">validator</Property>
           <Property name="service">organizationController#isExist</Property>
@@ -17,6 +21,10 @@
       <PropertyDef name="name">
         <Property></Property>
         <Property name="label">公司名称</Property>
+      </PropertyDef>
+      <PropertyDef name="username">
+        <Property name="label">管理员</Property>
+        <Property name="defaultValue">admin</Property>
       </PropertyDef>
       <PropertyDef name="dataSourceInfoId">
         <Property></Property>
@@ -165,7 +173,7 @@ self.urlQueryTimeout = window.setTimeout(function() {
 </ClientEvent>
       <Property name="caption">公司信息维护</Property>
       <Property name="width">500</Property>
-      <Property name="height">300</Property>
+      <Property name="height">330</Property>
       <Property name="maximizeable">true</Property>
       <Property name="minimizeable">false</Property>
       <Buttons>
@@ -199,6 +207,11 @@ self.urlQueryTimeout = window.setTimeout(function() {
           <AutoFormElement>
             <Property name="name">name</Property>
             <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">username</Property>
+            <Property name="property">username</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement id="ds">

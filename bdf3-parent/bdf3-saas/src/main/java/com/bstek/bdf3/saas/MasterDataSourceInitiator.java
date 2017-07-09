@@ -23,22 +23,31 @@ public class MasterDataSourceInitiator implements JpaUtilAble {
 	
 	@Override
 	public void afterPropertiesSet(ApplicationContext applicationContext) {
-		DataSourceInfo dataSourceInfo = new DataSourceInfo();
-		dataSourceInfo.setId(Constants.MASTER);
-		dataSourceInfo.setDriverClassName(properties.determineDriverClassName());
-		dataSourceInfo.setEnabled(true);
-		dataSourceInfo.setJndiName(properties.getJndiName());
-		dataSourceInfo.setName("主公司数据源");
-		dataSourceInfo.setUrl(properties.determineUrl());
-		dataSourceInfo.setUsername(properties.determineUsername());
-		dataSourceInfo.setPassword(properties.determinePassword());
-		dataSourceInfo.setShared(true);
-		dataSourceInfo.setDepletionIndex(1);
-		dataSourceInfo.setType(properties.getType() != null ? properties.getType().getName() : null);
 		EntityManager em = JpaUtil.createEntityManager(DataSourceInfo.class);
 		try {
 			em.getTransaction().begin();
-			em.persist(dataSourceInfo);
+			boolean isExist = true;
+			DataSourceInfo dataSourceInfo = em.find(DataSourceInfo.class, Constants.MASTER);
+			if (dataSourceInfo == null) {
+				dataSourceInfo = new DataSourceInfo();
+				isExist = false;
+			}
+			dataSourceInfo.setId(Constants.MASTER);
+			dataSourceInfo.setDriverClassName(properties.determineDriverClassName());
+			dataSourceInfo.setEnabled(true);
+			dataSourceInfo.setJndiName(properties.getJndiName());
+			dataSourceInfo.setName("主公司数据源");
+			dataSourceInfo.setUrl(properties.determineUrl());
+			dataSourceInfo.setUsername(properties.determineUsername());
+			dataSourceInfo.setPassword(properties.determinePassword());
+			dataSourceInfo.setShared(true);
+			dataSourceInfo.setDepletionIndex(1);
+			dataSourceInfo.setType(properties.getType() != null ? properties.getType().getName() : null);
+			if (isExist) {
+				em.merge(dataSourceInfo);
+			} else {
+				em.persist(dataSourceInfo);
+			}
 			em.getTransaction().commit();
 		} catch (Exception e) {
 		

@@ -37,5 +37,6 @@ public class DatabaseResourceReleaser implements ResourceReleaser {
 		if (!EmbeddedDatabaseConnection.isEmbedded(properties.determineDriverClassName())) {
 			em.createNativeQuery("drop database " + organization.getId()).executeUpdate();
 		}
+		
 	}
 }

@@ -14,6 +14,7 @@ import com.bstek.bdf3.saas.domain.DataSourceInfo;
 import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.security.orm.User;
 import com.bstek.bdf3.security.ui.service.UserService;
+import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
@@ -53,7 +54,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 				SaasUtils.doNonQuery(organization.getId(), () -> {
 					User user = new User();
 					user.setNickname("系统管理员");
-					user.setUsername("admin");
+					user.setUsername(EntityUtils.getString(organization, "username"));
 					user.setPassword("123456");
 					user.setAdministrator(true);
 					user.setAccountNonExpired(true);

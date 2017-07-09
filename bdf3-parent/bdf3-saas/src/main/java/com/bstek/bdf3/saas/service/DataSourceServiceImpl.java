@@ -1,5 +1,6 @@
 package com.bstek.bdf3.saas.service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import com.bstek.bdf3.saas.Constants;
 import com.bstek.bdf3.saas.SaasUtils;
 import com.bstek.bdf3.saas.domain.DataSourceInfo;
 import com.bstek.bdf3.saas.domain.Organization;
+import com.bstek.bdf3.saas.listener.DataSourceCreateListener;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -38,6 +41,8 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 	
 	private Map<String, DataSource> dataSourceMap = new ConcurrentHashMap<String, DataSource>();
 
+	@Autowired(required = false)
+	private List<DataSourceCreateListener> listeners;
 	
 	@Override
 	public DataSource getDataSource(Organization organization) {
@@ -53,7 +58,7 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 			DataSourceInfo dataSourceInfo = dataSourceInfoService.get(organization);
 			if (StringUtils.isEmpty(dataSourceInfo.getJndiName())) {
 				String master = Constants.MASTER;
-				if (EmbeddedDatabaseConnection.isEmbedded(properties.getDriverClassName())) {
+				if (EmbeddedDatabaseConnection.isEmbedded(dataSourceInfo.getDriverClassName())) {
 					master = properties.getName();
 				}
 				DataSourceBuilder factory = this.properties.initializeDataSourceBuilder();
@@ -66,6 +71,7 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 				if (!StringUtils.isEmpty(dataSourceInfo.getType())) {
 					factory.type((Class<? extends DataSource>) Class.forName(dataSourceInfo.getType()));
 				}
+				publishEvent(organization, dataSourceInfo, factory);
 				dataSouce = factory.build();
 			} else {
 				JndiDataSourceLookup dataSourceLookup = new JndiDataSourceLookup();
@@ -84,18 +90,23 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 	}
 	
 	
+	private void publishEvent(Organization organization, DataSourceInfo dataSourceInfo, DataSourceBuilder dataSourceBuilder) {
+		if (listeners != null) {
+			for (DataSourceCreateListener dataSourceCreateListener : listeners) {
+				dataSourceCreateListener.onCreate(organization, dataSourceInfo, dataSourceBuilder);
+			}
+		}
+		
+	}
+
 	@Override
 	public SingleConnectionDataSource createSingleConnectionDataSource(Organization organization) {
 		DataSourceInfo dataSourceInfo = dataSourceInfoService.get(organization);
 		if (!StringUtils.isEmpty(dataSourceInfo.getJndiName())) {
 			return null;
 		}
-		String master = Constants.MASTER;
-		if (EmbeddedDatabaseConnection.isEmbedded(dataSourceInfo.getDriverClassName())) {
-			master = properties.getName();
-		}
 		SingleConnectionDataSource dataSource = new SingleConnectionDataSource(
-				dataSourceInfo.getUrl().replace(master, organization.getId()), dataSourceInfo.getUsername(), dataSourceInfo.getPassword(), true);
+				dataSourceInfo.getUrl(), dataSourceInfo.getUsername(), dataSourceInfo.getPassword(), true);
 		dataSource.setAutoCommit(true);
 		return dataSource;
 	}
@@ -123,6 +134,10 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		dataSourceMap.put(Constants.MASTER, dataSource);
+		if (listeners != null) {
+			AnnotationAwareOrderComparator.sort(listeners);
+		}
+
 		
 	}
 
@@ -136,5 +151,7 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 	public void clearDataSource() {
 		dataSourceMap.clear();
 	}
+	
+	
 
 }

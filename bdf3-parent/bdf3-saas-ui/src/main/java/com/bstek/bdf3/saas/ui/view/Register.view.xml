@@ -30,6 +30,10 @@
         </Validator>
       </PropertyDef>
       <PropertyDef name="organizationId">
+        <Validator name="validator1" type="regExp">
+          <Property name="whiteRegExp">${configure['bdf3.organizationIdRegExp']}</Property>
+          <Property name="resultMessage">${configure['bdf3.organizationIdRegExpResultMessage']}</Property>
+        </Validator>
         <Validator type="required">
           <Property name="name">validator</Property>
           <Property name="resultMessage">密码不能为空</Property>
