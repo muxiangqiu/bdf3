@@ -1,0 +1,1 @@
+CREATE DATABASE IF NOT EXISTS ${organizationId} DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
