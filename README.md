@@ -65,6 +65,35 @@ public class SampleApplication {
 ```
 >通过以上两个步骤，一个基本的bdf3项目就搭建好了。[示例下载](http://onipkjzjl.bkt.clouddn.com/bdf3-sample.zip)
 
+## 配置文件说明
+
+1.application.properties
+
+```
+#服务器端口设置
+server.port = 8080
+#项目路径
+server.context-path=/bdf
+#是否打印sql语句
+spring.jpa.showSql=true
+#hibernate反向创建表设置，update启动时更新表结构，create 启动时重新创建表结构，none 启动时不检查
+spring.jpa.hibernate.ddl-auto=update
+#springboot热部署设置，添加文件改动不重启目录。
+spring.devtools.restart.additional-exclude=com/**
+
+#velocity模版后缀
+#spring.velocity.suffix=.html
+#velocity模版前缀
+#spring.velocity.prefix=templates/
+
+#数据源配置，pom中需要引入对应的数据库jdbc依赖
+spring.datasource.continue-on-error=true
+spring.datasource.url=jdbc:mysql://localhost:3306/bdf3
+spring.datasource.username=root
+spring.datasource.password=root
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+```
+
 ## Spring-Boot文档教程
 
 [spring-boot文档教程](https://projects.spring.io/spring-boot/#quick-start)
