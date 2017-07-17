@@ -67,7 +67,7 @@ public class SampleApplication {
 
 ## 配置文件说明
 
-1.application.properties
+1.application.properties 系统设置
 
 ```
 #服务器端口设置
@@ -92,6 +92,39 @@ spring.datasource.url=jdbc:mysql://localhost:3306/bdf3
 spring.datasource.username=root
 spring.datasource.password=root
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+```
+
+2.configure.properties 变量设置
+
+```
+#应用名称
+bdf3.appName=上海锐道信息技术有限公司
+#登录界面背景图片
+bdf3.loginImageBg=dorado/res/static/images/login-bg.jpg
+#首次启动时，用户表为空的情况下是否自动创建一个默认的用户：admin/123456
+bdf3.autoCreateIfUserIsEmpty=true
+#登陆页面地址
+bdf3.loginPath=bdf3.security.ui.view.Login.d
+#登陆页面地址
+bdf3.logoutPath=logout
+#系统需要匿名访问的RL
+bdf3.systemAnonymous=/static/**,/**/*.dpkg,/dorado/client/**,/dorado/res/**,/**/*.js, /**/*.css
+#用户自定义需要匿名访问的URL
+bdf3.customAnonymous=
+#欢迎页面标题
+bdf3.welcomeTitle=欢迎
+#欢迎页面的图标
+bdf3.welcomeIcon=fa fa-university blue-text
+#欢迎页面的地址
+bdf3.welcomePath=
+#个人中心页面的地址
+bdf3.personCenter=bdf3.security.ui.view.PersonalCenter.d
+#重置密码后的密码，当该属性为空时，随机生成六位数密码
+bdf3.resetPassword=123456
+#组件权限配置扁平化
+bdf3.componentPermissionFlat=false
+#组件权限支持的组件类型，默认支持所有，多个组件用逗号隔开
+bdf3.componentPermissionSupportType=
 ```
 
 ## Spring-Boot文档教程
