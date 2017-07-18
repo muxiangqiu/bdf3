@@ -34,6 +34,7 @@
 		<module>bdf3-export</module>
 		<module>bdf3-dbconsole</module>
 		<module>bdf3-security-orm</module>
+		<module>bdf3-profile</module>
 	</modules>
 	<properties>
 	</properties>
