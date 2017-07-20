@@ -106,7 +106,8 @@ public class EntityManagerFactoryServiceImpl implements
 			+ "com.bstek.bdf3.message.domain,"
 			+ "com.bstek.bdf3.dictionary.domain,"
 			+ "com.bstek.bdf3.log.model,"
-			+ "com.bstek.bdf3.importer.model}")
+			+ "com.bstek.bdf3.importer.model,"
+			+ "com.bstek.bdf3.profile.domain}")
 	private String packagesToScan;
 	
 	protected AbstractJpaVendorAdapter createJpaVendorAdapter() {
