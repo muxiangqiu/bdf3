@@ -46,9 +46,11 @@ public class AutoFormProfileFilter implements ProfileFilter<AutoForm> {
 				.map(c -> (AutoFormElement) c)
 				.filter(c -> c.getName() != null)
 				.collect(Collectors.toMap(AutoFormElement::getName, Function.identity()));
+		autoForm.getElements().clear();
 		HideMode hideMode = autoForm.getHideMode();
 		for (ComponentConfigMember member : members) {
 			AutoFormElement autoFormElement = sources.get(member.getControlName());
+			autoForm.addElement(autoFormElement);
 			if (autoFormElement != null) {
 				autoFormElement.setHideMode(hideMode);
 				autoFormElement = (AutoFormElement) autoFormElement;
