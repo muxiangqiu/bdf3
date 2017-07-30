@@ -57,6 +57,12 @@ public class EntityManagerFactoryServiceImpl implements
 	private DataSourceService dataSourceService;
 	
 	@Autowired
+	private ScriptService scriptService;
+	
+	@Value("${bdf3.saas.dataScript:}")
+	private String dataScript;
+	
+	@Autowired
 	private EntityManagerFactory emf;
 	
 	@Autowired(required = false)
@@ -150,6 +156,7 @@ public class EntityManagerFactoryServiceImpl implements
 		entityManagerFactoryBean.setResourceLoader(resourceLoader);
 		entityManagerFactoryBean.setPersistenceUnitName(organization.getId());
 		entityManagerFactoryBean.afterPropertiesSet();
+		scriptService.runScripts(organization.getId(), dataSource, dataScript, "saas-data");
 		return entityManagerFactoryBean.getObject();
 	}
 	
