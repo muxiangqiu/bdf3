@@ -47,7 +47,7 @@ public class AutoCreateMappingRulePolicyImpl implements AutoCreateMappingRulePol
 				mappingRule.setImporterSolutionId(importerSolution.getId());
 				mappingRule.setName(propertyName);
 				mappingRule.setPropertyName(propertyName);
-				mappingRule.setExcelColumn(col);;
+				mappingRule.setExcelColumn(col);
 				
 				PropertyDef propertyDef = field.getAnnotation(PropertyDef.class);
 				Column column = field.getAnnotation(Column.class);

@@ -84,6 +84,7 @@ public class LogAspect implements ApplicationContextAware {
 			contextHandler.set(ContextProvider.LOG_DEFINITION, logDefinition);
 			contextHandler.set(ContextProvider.JOIN_POINT, joinPoint);
 			contextHandler.set(ContextProvider.RETURN_VALUE, returnValue);
+			contextHandler.set(ContextProvider.ARGS, joinPoint.getArgs());
 			Logger logger = (Logger) applicationContext.getBean(logDefinition.getLogger());
 			for (ContextProvider provider : providers) {
 				if (provider.support(logDefinition)) {

@@ -10,7 +10,7 @@ import com.bstek.bdf3.log.context.ContextHandler;
  *@author Kevin.yang
  *@since 2015年7月20日
  */
-public abstract class AbstractContextProvider implements ContextProvider{
+public abstract class AbstractContextProvider implements ContextProvider {
 	
 	@Autowired
 	protected ContextHandler contextHandler;

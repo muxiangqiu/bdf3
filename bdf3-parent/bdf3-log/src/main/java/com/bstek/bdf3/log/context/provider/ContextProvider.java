@@ -10,11 +10,12 @@ public interface ContextProvider {
 	
 	String SMART_CONTEXT_PROVIDER = "SMART";
 	String JOIN_POINT = "JOIN_POINT";
-	String RETURN_VALUE = "RETURN_VALUE";
 	String LOG_DEFINITION = "LOG_DEFINITION";
 	String TARGET = "TARGET";
 	String ENTITY_STATE = "entityState";
 	String VAR = "entity";
+	String ARGS = "args";
+	String RETURN_VALUE = "returnValue";
 
 	Object getContext();
 	
