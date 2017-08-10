@@ -513,6 +513,12 @@ $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
 </ClientEvent>
                     <ClientEvent name="onDataRowClick">var url = self.get(&quot;currentEntity&quot;);
 window.openTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
+var node = self.get(&quot;currentNode&quot;);
+if (node.get(&quot;expanded&quot;)) {
+	node.collapse();
+} else {
+	node.expandAsync();
+}
 </ClientEvent>
                     <ClientEvent name="onDataRowDoubleClick">var url = self.get(&quot;currentEntity&quot;);
 window.refreshTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
