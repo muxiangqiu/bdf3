@@ -15,6 +15,7 @@ public abstract class AbstractModifiedGeneratorPolicy implements GeneratorPolicy
 
 	@Override
 	public void apply(Object entity, Field field) {
+		field.setAccessible(true);
 		if (EntityUtils.isEntity(entity)) {
 			EntityState state = EntityUtils.getState(entity);
 			if (EntityState.MODIFIED.equals(state)
@@ -24,7 +25,6 @@ public abstract class AbstractModifiedGeneratorPolicy implements GeneratorPolicy
 				
 			}
 		} else {
-			field.setAccessible(true);
 			ReflectionUtils.setField(field, entity, getValue(entity, field));
 		}
 	}
