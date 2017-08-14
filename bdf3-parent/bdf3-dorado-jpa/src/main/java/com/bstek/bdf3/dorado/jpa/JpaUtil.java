@@ -14,6 +14,7 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
@@ -59,20 +60,124 @@ public abstract class JpaUtil {
 		defaultSavePolicy = savePolicy;
 	}
 	
+	/**
+	 * 创建Linq
+	 * @param domainClass 领域类（实体类）
+	 * @param <T> 领域类（实体类）范型
+	 * @return Linq
+	 */
 	public static <T> Linq linq(Class<T> domainClass) {
 		return new LinqImpl(domainClass);
 	}
 	
+	/**
+	 * 创建Linq
+	 * @param domainClass 领域类（实体类）
+	 * @param resultClass 结果类
+	 * @param <T> 领域类（实体类）范型
+	 * @return Linq
+	 */
 	public static <T> Linq linq(Class<T> domainClass, Class<?> resultClass) {
 		return new LinqImpl(domainClass, resultClass);
 	}
 	
+	/**
+	 * 创建Lind
+	 * @param domainClass 领域类（实体类）
+	 * @param entityManager 实体类管理器
+	 * @return Lind
+	 */
 	public static Lind lind(Class<?> domainClass) {
 		return com.bstek.bdf3.jpa.JpaUtil.lind(domainClass);
 	}
 	
+	/**
+	 * 创建Linu
+	 * @param domainClass 领域类（实体类）
+	 * @return Linu
+	 */
 	public static Linu linu(Class<?> domainClass) {
 		return com.bstek.bdf3.jpa.JpaUtil.linu(domainClass);
+	}
+	
+	/**
+	 * 创建命名查询
+	 * @param name 查询的名称
+	 * @return Query
+	 */
+	public static Query namedQuery(String name) {
+		return com.bstek.bdf3.jpa.JpaUtil.namedQuery(name);
+	}
+	
+	/**
+	 * 创建命名查询
+	 * @param name 查询名称
+	 * @param entityManager 实体类管理器
+	 * @return Query
+	 */
+	public static Query namedQuery(String name, EntityManager entityManager) {
+		return com.bstek.bdf3.jpa.JpaUtil.namedQuery(name, entityManager);
+	}
+	
+	/**
+	 * 创建本地查询
+	 * @param sqlString 本地SQL查询字符串
+	 * @return Query
+	 */
+	public static Query nativeQuery(String sqlString) {
+		return com.bstek.bdf3.jpa.JpaUtil.nativeQuery(sqlString);
+	}
+	
+	/**
+	 * 创建本地查询
+	 * @param sqlString 本地SQL查询字符串
+	 * @param entityManager 实体类管理器
+	 * @return Query
+	 */
+	public static Query nativeQuery(String sqlString, EntityManager entityManager) {
+		return com.bstek.bdf3.jpa.JpaUtil.nativeQuery(sqlString, entityManager);
+	}
+	
+	/**
+	 * 创建本地查询
+	 * @param sqlString 本地SQL查询字符串
+	 * @param resultClass 结果实例的class
+	 * @return Query
+	 */
+	public static Query nativeQuery(String sqlString, Class<?> resultClass) {
+		return com.bstek.bdf3.jpa.JpaUtil.nativeQuery(sqlString, resultClass);
+	}
+	
+	/**
+	 * 创建本地查询
+	 * @param sqlString 本地SQL查询字符串
+	 * @param resultClass 结果实例的class
+	 * @param entityManager 实体类管理器
+	 * @return Query
+	 */
+	public static Query nativeQuery(String sqlString, Class<?> resultClass, EntityManager entityManager) {
+		return com.bstek.bdf3.jpa.JpaUtil.nativeQuery(sqlString, resultClass, entityManager);
+	}
+	
+	/**
+	 * 创建本地查询
+	 * @param sqlString 本地SQL查询字符串
+	 * @param resultSetMapping 结果集映射名称
+	 * @return Query
+	 */
+	public static Query nativeQuery(String sqlString, String resultSetMapping) {
+		return com.bstek.bdf3.jpa.JpaUtil.nativeQuery(sqlString, resultSetMapping);
+	}
+	
+	/**
+	 * 创建本地查询
+	 * @param sqlString 本地SQL查询字符串
+	 * @param resultSetMapping 结果集映射名称
+	 * @param entityManager 实体类管理器
+	 * @return Query
+	 */
+	public static Query nativeQuery(String sqlString, String resultSetMapping, EntityManager entityManager) {
+		return com.bstek.bdf3.jpa.JpaUtil.nativeQuery(sqlString, resultSetMapping, entityManager);
 	}
 	
 	/**
@@ -416,4 +521,25 @@ public abstract class JpaUtil {
 	public static <T> SingularAttribute<? super T, ?> getId(Class<T> domainClass) {
 		return com.bstek.bdf3.jpa.JpaUtil.getId(domainClass);
 	}
+	
+	public static EntityManagerFactory getEntityManagerFactory() {
+		return com.bstek.bdf3.jpa.JpaUtil.getEntityManagerFactory();
+	}
+	
+	/**
+	 * 返回默认的EntityManager
+	 * @return EntityManager
+	 */
+	public static EntityManager getEntityManager() {
+		return com.bstek.bdf3.jpa.JpaUtil.getEntityManager();
+	}
+	
+	/**
+	 * 创建默认的EntityManager
+	 * @return EntityManager
+	 */
+	public static EntityManager createEntityManager() {
+		return com.bstek.bdf3.jpa.JpaUtil.createEntityManager();
+	}
+
 }
