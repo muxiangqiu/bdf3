@@ -123,6 +123,24 @@ self.urlQueryTimeout = window.setTimeout(function() {
             <Property name="trigger">triggerClear</Property>
             <Property name="blankText">搜索</Property>
           </TextEditor>
+          <ToolBarButton>
+            <ClientEvent name="onClick" signature="self,arg,dgLogInfo">if (self.get(&quot;caption&quot;) === &quot;显示过滤工具栏&quot;) {
+	dgLogInfo.set(&quot;showFilterBar&quot;, true);
+	self.set({
+		caption: &quot;隐藏过滤工具栏&quot;,
+		iconClass: &quot;fa fa-eye-slash blue-text&quot;
+	});
+} else {
+	dgLogInfo.set(&quot;showFilterBar&quot;, false);
+	self.set({
+		caption: &quot;显示过滤工具栏&quot;,
+		iconClass: &quot;fa fa-eye blue-text&quot;
+	});
+}
+</ClientEvent>
+            <Property name="caption">显示过滤工具栏</Property>
+            <Property name="iconClass">fa fa-eye blue-text</Property>
+          </ToolBarButton>
         </ToolBar>
         <DataGrid id="dgLogInfo">
           <ClientEvent name="onDataRowDoubleClick" signature="self,arg,dialogLogInfo">dialogLogInfo.show();
