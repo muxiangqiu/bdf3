@@ -42,9 +42,9 @@ public class ImporterSolution implements java.io.Serializable {
 	@Column(name = "DESC_", length = 255)
 	private String desc;
 	
-	@PropertyDef(label = "SessionFactory")
-	@Column(name = "SESSION_FACTORY_NAME_", length = 60)
-	private String sessionFactoryName;
+	@PropertyDef(label = "实体管理工厂")
+	@Column(name = "Entity_Manager_Factory_Name_", length = 60)
+	private String EntityManagerFactoryName;
 	
 	@Column(name = "CREATE_DATE_")
 	@PropertyDef(label = "创建时间")
@@ -78,14 +78,6 @@ public class ImporterSolution implements java.io.Serializable {
 		this.excelSheetName = excelSheetName;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
 	public String getEntityClassName() {
 		return entityClassName;
 	}
@@ -102,12 +94,20 @@ public class ImporterSolution implements java.io.Serializable {
 		this.desc = desc;
 	}
 
-	public String getSessionFactoryName() {
-		return sessionFactoryName;
+	public String getEntityManagerFactoryName() {
+		return EntityManagerFactoryName;
 	}
 
-	public void setSessionFactoryName(String sessionFactoryName) {
-		this.sessionFactoryName = sessionFactoryName;
+	public void setEntityManagerFactoryName(String entityManagerFactoryName) {
+		EntityManagerFactoryName = entityManagerFactoryName;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
 	public List<MappingRule> getMappingRules() {
@@ -117,6 +117,8 @@ public class ImporterSolution implements java.io.Serializable {
 	public void setMappingRules(List<MappingRule> mappingRules) {
 		this.mappingRules = mappingRules;
 	}
+
+	
 
 	
 

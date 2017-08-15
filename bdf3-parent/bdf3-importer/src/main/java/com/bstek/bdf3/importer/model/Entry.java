@@ -12,7 +12,7 @@ import com.bstek.dorado.annotation.PropertyDef;
  *@since 2015年8月22日
  */
 @Entity
-@Table(name = "BDF3_MAPPING_RULE")
+@Table(name = "BDF3_ENTRY")
 public class Entry implements java.io.Serializable {
 
 	private static final long serialVersionUID = -6974265493073776949L;
