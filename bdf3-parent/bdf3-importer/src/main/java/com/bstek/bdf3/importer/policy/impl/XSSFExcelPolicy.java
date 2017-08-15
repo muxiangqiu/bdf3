@@ -7,6 +7,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.eventusermodel.ReadOnlySharedStringsTable;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.Assert;
 
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
@@ -22,11 +25,13 @@ import com.bstek.bdf3.importer.policy.XSSFContext;
  *@author Kevin.yang
  *@since 2015年8月22日
  */
-public class XSSFExcelPolicy implements ExcelPolicy<XSSFContext> {
+public class XSSFExcelPolicy implements ExcelPolicy<XSSFContext>, ApplicationContextAware {
  
 	private SheetPolicy<XSSFContext> sheetPolicy;
 	
 	private ParseRecordPolicy parseRecordPolicy;
+	
+	private ClassLoader classLoader;
 	
 	@Override
 	public void apply(XSSFContext context) throws Exception {
@@ -60,15 +65,13 @@ public class XSSFExcelPolicy implements ExcelPolicy<XSSFContext> {
 	
 	protected void initContext(Context context) throws ClassNotFoundException {
 		ImporterSolution importerSolution = getImporterSolution(context.getImporterSolutionId());
-		Class<?> entityClass = Class.forName(importerSolution.getEntityClassName());
+		Class<?> entityClass =  this.classLoader.loadClass(importerSolution.getEntityClassName());
 		List<MappingRule> mappingRules = importerSolution.getMappingRules();
 		Assert.notEmpty(mappingRules, "mappingRules can not be empty.");
 		
 		context.setImporterSolution(importerSolution);
 		context.setMappingRules(mappingRules);
 		context.setEntityClass(entityClass);
-		
-		
 	}
 	
 	private ImporterSolution getImporterSolution(String importerSolutionId) {
@@ -98,6 +101,12 @@ public class XSSFExcelPolicy implements ExcelPolicy<XSSFContext> {
 
 	public void setParseRecordPolicy(ParseRecordPolicy parseRecordPolicy) {
 		this.parseRecordPolicy = parseRecordPolicy;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.classLoader = applicationContext.getClassLoader();
+		
 	}
 
 }
