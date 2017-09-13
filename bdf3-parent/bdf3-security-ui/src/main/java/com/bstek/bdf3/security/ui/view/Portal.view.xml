@@ -81,7 +81,7 @@
     </DataType>
   </Model>
   <View>
-    <ClientEvent name="onReady" signature="self,arg,appName,iconRefresh,portal,historyContainer,cardBook,dsPart,dialogPart">$.cookie.json = true;
+    <ClientEvent name="onReady" signature="self,arg,Chat,appName,iconRefresh,portal,historyContainer,cardBook,dsPart,dialogPart">$.cookie.json = true;
 var pathMap = {};
 window.openTab = function (caption, icon, path) {
 	var url;
@@ -210,10 +210,31 @@ refreshVisit();
 
 setInterval(self.refreshIconRefresh, 5000);
 
+Chat.addReceiveListener(function(c, arg) {
+	if (self.refreshNoticeCountTask != null) {
+		clearTimeout(self.refreshNotifyTotalTask);
+	}
+	self.refreshNoticeCountTask = setTimeout(function() {
+		if (Chat.noticeCount) {
+			$(&quot;.notify-total&quot;).css(&quot;display&quot;,  &quot;inline-block&quot;).text(Chat.noticeCount);
+			if (Chat.noticeCount > 9) {
+				$(&quot;.notify-total&quot;).css(&quot;padding&quot;,  &quot;2px 5px&quot;);
+			} else {
+				$(&quot;.notify-total&quot;).css(&quot;padding&quot;,  &quot;2px&quot;);
+			}
+		} else {
+			$(&quot;.notify-total&quot;).css(&quot;display&quot;,  &quot;none&quot;).text(0);
+		}
+		self.refreshNoticeCountTask = null;
+	}, 80);
+});
+
+
+
 </ClientEvent>
     <ClientEvent name="onClick" signature="self,arg,personalCenter">personalCenter.hide();
 </ClientEvent>
-    <Property name="packages">jquery-cookie,font-awesome,entypo,colors</Property>
+    <Property name="packages">chat,jquery-cookie,font-awesome,entypo,colors</Property>
     <Property name="skin">${bdf3.framework.skin}</Property>
     <Property name="exClassName">main</Property>
     <Property name="cache">
@@ -267,8 +288,23 @@ arg.returnValue = false;</ClientEvent>
           <Property name="exClassName">icon personal-center</Property>
         </Control>
         <Control>
-          <ClientEvent name="onClick" signature="self,arg,appName,cardBook,portal">cardBook.set(&quot;currentControl&quot;, portal);
-appName.set(&quot;text&quot;, appName.get(&quot;userData&quot;));
+          <ClientEvent name="onClick" signature="self,arg,Chat">Chat.show();
+arg.returnValue = false;
+</ClientEvent>
+          <ClientEvent name="onRefreshDom">$(arg.dom).html(&quot;&lt;div class='notify-total'>&lt;/div>&quot;)
+</ClientEvent>
+          <Property name="exClassName">icon remind</Property>
+        </Control>
+        <Control>
+          <ClientEvent name="onClick" signature="self,arg,appName,cardBook,portal">if (cardBook.get(&quot;currentControl&quot;) === portal &amp;&amp; self.oldCard) {
+	cardBook.set(&quot;currentControl&quot;, self.oldCard);
+	appName.set(&quot;text&quot;, self.oldName);
+} else if (cardBook.get(&quot;currentControl&quot;) !== portal) {
+	self.oldCard = cardBook.get(&quot;currentControl&quot;);
+	self.oldName = appName.get(&quot;text&quot;);
+	cardBook.set(&quot;currentControl&quot;, portal);
+	appName.set(&quot;text&quot;, appName.get(&quot;userData&quot;));
+}
 </ClientEvent>
           <Property name="exClassName">icon search</Property>
         </Control>
@@ -587,5 +623,6 @@ if (url.get(&quot;path&quot;)) {
       </Children>
       <Tools/>
     </FloatPanel>
+    <Import src="com.bstek.bdf3.notice.ui.view.Chat#Chat"/>
   </View>
 </ViewConfig>

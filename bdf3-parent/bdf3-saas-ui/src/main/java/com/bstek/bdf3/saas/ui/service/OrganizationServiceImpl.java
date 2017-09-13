@@ -48,7 +48,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 			
 			@Override
-			public void beforeInsert(SaveContext context) {
+			public boolean beforeInsert(SaveContext context) {
 				Organization organization = context.getEntity();
 				organizationService.allocteResource(organization);
 				SaasUtils.doNonQuery(organization.getId(), () -> {
@@ -64,10 +64,11 @@ public class OrganizationServiceImpl implements OrganizationService {
 					user.setEnabled(true);
 					userService.save(user);
 				});
+				return true;
 			}
 
 			@Override
-			public void beforeDelete(SaveContext context) {
+			public void afterDelete(SaveContext context) {
 				Organization organization = context.getEntity();
 				organizationService.releaseResource(organization);
 			}

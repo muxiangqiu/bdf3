@@ -109,7 +109,7 @@ public class EntityManagerFactoryServiceImpl implements
 	
 	@Value("${bdf3.saas.packagesToScan:"
 			+ "com.bstek.bdf3.security.orm,"
-			+ "com.bstek.bdf3.message.domain,"
+			+ "com.bstek.bdf3.notify.domain,"
 			+ "com.bstek.bdf3.dictionary.domain,"
 			+ "com.bstek.bdf3.log.model,"
 			+ "com.bstek.bdf3.importer.model,"

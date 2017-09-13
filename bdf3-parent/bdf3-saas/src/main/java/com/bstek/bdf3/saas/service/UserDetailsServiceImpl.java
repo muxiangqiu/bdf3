@@ -17,8 +17,8 @@ import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.saas.SaasUtils;
 import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.security.orm.OrganizationSupport;
+import com.bstek.bdf3.security.orm.User;
 import com.bstek.bdf3.security.service.GrantedAuthorityService;
-import com.bstek.bdf3.security.user.SecurityUserUtil;
 
 /**
  * Spring Security的{@link org.springframework.security.core.userdetails.UserDetailsService}接口的默认实现
@@ -44,11 +44,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throws UsernameNotFoundException {			
 		try {
 			Organization organization = loadOrganization();
-			UserDetails userDetails = JpaUtil.getOne(SecurityUserUtil.getSecurityUserType(), username);
-			Assert.isInstanceOf(OrganizationSupport.class, userDetails);
-			((OrganizationSupport) userDetails).setOrganization(organization);
-			SecurityUserUtil.setAuthorities(userDetails, grantedAuthorityService.getGrantedAuthorities(userDetails));
-			return userDetails;
+			User user = JpaUtil.getOne(User.class, username);
+			Assert.isInstanceOf(OrganizationSupport.class, user);
+			((OrganizationSupport) user).setOrganization(organization);
+			user.setAuthorities(grantedAuthorityService.getGrantedAuthorities(user));
+			return user;
 		} catch (Exception e) {
 			throw new UsernameNotFoundException(e.getMessage());
 		} finally {

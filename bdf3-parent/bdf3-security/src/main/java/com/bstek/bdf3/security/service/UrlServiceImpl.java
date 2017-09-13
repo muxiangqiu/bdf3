@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -16,7 +15,7 @@ import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.security.decision.manager.SecurityDecisionManager;
 import com.bstek.bdf3.security.orm.Permission;
 import com.bstek.bdf3.security.orm.Url;
-import com.bstek.bdf3.security.user.SecurityUserUtil;
+import com.bstek.bdf3.security.orm.User;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -86,8 +85,8 @@ public class UrlServiceImpl implements UrlService {
 	}
 		
 	private void rebuildLoginUserGrantedAuthorities() {
-		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		SecurityUserUtil.setAuthorities(userDetails, grantedAuthorityService.getGrantedAuthorities(userDetails));
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		user.setAuthorities(grantedAuthorityService.getGrantedAuthorities(user));
 	}
 
 	private boolean decide(String username, Url url, boolean administrator) {

@@ -76,7 +76,7 @@
     </DataType>
   </Model>
   <View>
-    <ClientEvent name="onReady" signature="self,arg,tabControl,cardBook,dsPart,dialogPart,historyContainer">$.cookie.json = true;
+    <ClientEvent name="onReady" signature="self,arg,Chat,tabControl,cardBook,dsPart,dialogPart,historyContainer">$.cookie.json = true;
 window.openTab = function (caption, icon, path) {
 	var url;
 	if (caption instanceof dorado.Entity) {
@@ -187,10 +187,31 @@ var refreshVisit = function() {
 	historyContainer.set(&quot;children&quot;, children);
 };
 
-refreshVisit();</ClientEvent>
+refreshVisit();
+
+Chat.addReceiveListener(function(c, arg) {
+	if (self.refreshNoticeCountTask != null) {
+		clearTimeout(self.refreshNotifyTotalTask);
+	}
+	self.refreshNoticeCountTask = setTimeout(function() {
+		if (Chat.noticeCount) {
+			$(&quot;.notify-total&quot;).css(&quot;display&quot;,  &quot;inline-block&quot;).text(Chat.noticeCount);
+			if (Chat.noticeCount > 9) {
+				$(&quot;.notify-total&quot;).css(&quot;padding&quot;,  &quot;2px 5px&quot;);
+			} else {
+				$(&quot;.notify-total&quot;).css(&quot;padding&quot;,  &quot;2px&quot;);
+			}
+		} else {
+			$(&quot;.notify-total&quot;).css(&quot;display&quot;,  &quot;none&quot;).text(0);
+		}
+		self.refreshNoticeCountTask = null;
+	}, 80);
+});
+
+</ClientEvent>
     <ClientEvent name="onClick" signature="self,arg,personalCenter">personalCenter.hide();
 </ClientEvent>
-    <Property name="packages">jquery-cookie,font-awesome,entypo,colors</Property>
+    <Property name="packages">jquery-cookie,font-awesome,entypo,colors,chat</Property>
     <Property name="skin">${bdf3.framework.skin}</Property>
     <Property name="exClassName">main</Property>
     <Property name="cache">
@@ -241,6 +262,14 @@ setTimeout(function() {
 });
 arg.returnValue = false;</ClientEvent>
           <Property name="exClassName">icon personal-center</Property>
+        </Control>
+        <Control>
+          <ClientEvent name="onClick" signature="self,arg,Chat">Chat.show();
+arg.returnValue = false;
+</ClientEvent>
+          <ClientEvent name="onRefreshDom">$(arg.dom).html(&quot;&lt;div class='notify-total'>&lt;/div>&quot;)
+</ClientEvent>
+          <Property name="exClassName">icon remind</Property>
         </Control>
         <Control>
           <ClientEvent name="onClick" signature="self,arg,cardBook,portal">if (cardBook.get(&quot;currentIndex&quot;) === 1) {
@@ -297,7 +326,7 @@ dialogPassword.show();
                 <Property name="caption">修改密码</Property>
               </Button>
               <Button layoutConstraint="right">
-                <ClientEvent name="onClick">window.location.href = &quot;${configure['bdf3.logoutPath']}&quot;
+                <ClientEvent name="onClick" signature="self,arg,Chat">window.location.href = &quot;${configure['bdf3.logoutPath']}&quot;
 </ClientEvent>
                 <Property name="caption">退出</Property>
               </Button>
@@ -405,6 +434,7 @@ $(arg.dom).xCreate({
             <Panel id="workspace">
               <Property name="border">none</Property>
               <Property name="maximizeable">true</Property>
+              <Property name="exClassName">workspace</Property>
               <Buttons/>
               <Children>
                 <TabControl id="tabControl">
@@ -483,6 +513,15 @@ self.urlQueryTimeout = window.setTimeout(function() {
 }, 150);</ClientEvent>
                     <Property name="trigger">triggerQuery</Property>
                     <Property name="blankText">搜索</Property>
+                    <Property name="style">
+                      <Property name="padding-left">10px</Property>
+                      <Property name="border-radius">24px</Property>
+                      <Property name="height">24px</Property>
+                      <Property name="-webkit-border-radius">24px</Property>
+                      <Property name="-moz-border-radius">24px</Property>
+                      <Property name="line-height">24px</Property>
+                    </Property>
+                    <Property name="exClassName">menu-search</Property>
                   </TextEditor>
                   <DataTree id="dtUrl">
                     <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
@@ -526,7 +565,6 @@ window.refreshTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(
                     <Property name="dataSet">dsUrl</Property>
                     <Property name="currentNodeDataPath">currentNode</Property>
                     <Property name="draggable">false</Property>
-                    <Property name="showLines">true</Property>
                     <BindingConfigs>
                       <BindingConfig>
                         <Property name="childrenProperty">children</Property>
@@ -766,5 +804,6 @@ if (url.get(&quot;path&quot;)) {
       </Children>
       <Tools/>
     </FloatPanel>
+    <Import src="com.bstek.bdf3.notice.ui.view.Chat#Chat"/>
   </View>
 </ViewConfig>

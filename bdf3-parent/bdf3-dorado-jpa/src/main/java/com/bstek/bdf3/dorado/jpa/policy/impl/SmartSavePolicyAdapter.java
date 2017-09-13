@@ -20,39 +20,43 @@ public class SmartSavePolicyAdapter implements SavePolicy {
 		EntityManager entityManager = context.getEntityManager();
 		EntityState state = EntityUtils.getState(entity);
 		if (EntityState.NEW.equals(state)) {
-			beforeInsert(context);
-			entityManager.persist(entity);
-			afterInsert(context);
+			if (beforeInsert(context)) {
+				entityManager.persist(entity);
+				afterInsert(context);
+			}
 		} else if (EntityState.MODIFIED.equals(state) 
 				|| EntityState.MOVED.equals(state)) {
-			beforeUpdate(context);
-			entityManager.merge(entity);
-			afterUpdate(context);
+			if (beforeUpdate(context)) {
+				entityManager.merge(entity);
+				afterUpdate(context);
+			}
 		} else if (EntityState.DELETED.equals(state)) {
-			beforeDelete(context);
-			entityManager.remove(entityManager.merge(entity));
-			afterDelete(context);
+			if (beforeDelete(context)) {
+				entityManager.remove(entityManager.merge(entity));
+				afterDelete(context);
+			}
+			
 		}
 	}
 	
-	public void beforeDelete(SaveContext context) {
-		
+	public boolean beforeDelete(SaveContext context) {
+		return true;
 	}
 	
 	public void afterDelete(SaveContext context) {
 		
 	}
 	
-	public void beforeInsert(SaveContext context) {
-		
+	public boolean beforeInsert(SaveContext context) {
+		return true;
 	}
 	
 	public void afterInsert(SaveContext context) {
 		
 	}
 	
-	public void beforeUpdate(SaveContext context) {
-		
+	public boolean beforeUpdate(SaveContext context) {
+		return true;
 	}
 	
 	public void afterUpdate(SaveContext context) {

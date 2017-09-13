@@ -54,12 +54,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.bstek.bdf3</groupId>
-			<artifactId>bdf3-message</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.bstek.bdf3</groupId>
-			<artifactId>bdf3-activiti</artifactId>
+			<artifactId>bdf3-notice</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
