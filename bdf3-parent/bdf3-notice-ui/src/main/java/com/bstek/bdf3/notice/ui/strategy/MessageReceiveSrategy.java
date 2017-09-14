@@ -11,6 +11,7 @@ import com.bstek.bdf3.notice.strategy.Pusher;
 import com.bstek.bdf3.notice.strategy.ReceiveStrategy;
 import com.bstek.bdf3.notice.strategy.ReceiverIterator;
 import com.bstek.bdf3.notice.strategy.SocketSource;
+import com.bstek.bdf3.notice.ui.Constants;
 import com.bstek.bdf3.notice.ui.service.NoticeService;
 import com.bstek.dorado.view.socket.Socket;
 
@@ -21,9 +22,7 @@ import com.bstek.dorado.view.socket.Socket;
 @Order
 @Component
 public class MessageReceiveSrategy implements ReceiveStrategy {
-	
-	public static final String NOTICE_TYPE = "message";
-	
+		
 	@Autowired
 	private SocketSource<Socket> socketSource;
 	
@@ -54,7 +53,7 @@ public class MessageReceiveSrategy implements ReceiveStrategy {
 
 	@Override
 	public boolean support(Notice notice) {
-		if (NOTICE_TYPE.equals(notice.getType()) && !notice.isAll()) {
+		if (Constants.MESSAGE_TYPE.equals(notice.getType()) && !notice.isAll()) {
 			return true;
 		}
 		return false;

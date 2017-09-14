@@ -12,6 +12,7 @@ import com.bstek.bdf3.notice.domain.Group;
 import com.bstek.bdf3.notice.domain.GroupMember;
 import com.bstek.bdf3.notice.domain.MemberNotice;
 import com.bstek.bdf3.notice.domain.Notice;
+import com.bstek.bdf3.notice.ui.Constants;
 import com.bstek.bdf3.security.orm.User;
 import com.bstek.dorado.data.provider.Page;
 
@@ -69,19 +70,20 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public List<Notice> getNotices(String groupId, String memberId) {
 		return JpaUtil.linq(Notice.class)
-			.notEqual("sender", memberId)
-			.equal("groupId", groupId)
-			.notExists(MemberNotice.class)
-				.equalProperty("noticeId", "id")
-				.equal("memberId", memberId)
-			.end()
-			.list();
+				.notEqual("sender", memberId)
+				.equal("groupId", groupId)
+				.notExists(MemberNotice.class)
+					.equalProperty("noticeId", "id")
+					.equal("memberId", memberId)
+				.end()
+				.list();
 	}
 	
 	@Override
 	public Long getNoticeCount(String memberId) {
 		return JpaUtil.linq(Notice.class)
 			.notEqual("sender", memberId)
+			.equal("type", Constants.MESSAGE_TYPE)
 			.or()
 				.exists(Group.class)
 					.equalProperty("id", "groupId")

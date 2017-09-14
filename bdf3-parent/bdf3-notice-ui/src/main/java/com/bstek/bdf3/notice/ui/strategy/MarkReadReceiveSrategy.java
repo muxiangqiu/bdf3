@@ -8,6 +8,7 @@ import com.bstek.bdf3.notice.domain.Notice;
 import com.bstek.bdf3.notice.strategy.Pusher;
 import com.bstek.bdf3.notice.strategy.ReceiveStrategy;
 import com.bstek.bdf3.notice.strategy.SocketSource;
+import com.bstek.bdf3.notice.ui.Constants;
 import com.bstek.bdf3.notice.ui.service.NoticeService;
 import com.bstek.dorado.view.socket.Socket;
 
@@ -18,9 +19,7 @@ import com.bstek.dorado.view.socket.Socket;
 @Order
 @Component
 public class MarkReadReceiveSrategy implements ReceiveStrategy {
-	
-	public static final String NOTICE_TYPE = "mark-read";
-	
+		
 	@Autowired
 	private SocketSource<Socket> socketSource;
 	
@@ -41,7 +40,7 @@ public class MarkReadReceiveSrategy implements ReceiveStrategy {
 
 	@Override
 	public boolean support(Notice notice) {
-		if (NOTICE_TYPE.equals(notice.getType())) {
+		if (Constants.MARK_READ_TYPE.equals(notice.getType())) {
 			return true;
 		}
 		return false;

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.bstek.bdf3.notice.domain.Notice;
 import com.bstek.bdf3.notice.strategy.MemberProcessor;
 import com.bstek.bdf3.notice.strategy.ReceiverIterator;
+import com.bstek.bdf3.notice.ui.Constants;
 import com.bstek.bdf3.notice.ui.service.GroupService;
 
 /**
@@ -32,7 +33,7 @@ public class ReceiverIteratorImpl implements ReceiverIterator {
 
 	@Override
 	public boolean support(Notice notice) {
-		return MessageReceiveSrategy.NOTICE_TYPE.equals(notice.getType());
+		return Constants.MESSAGE_TYPE.equals(notice.getType());
 	}
 	
 	
