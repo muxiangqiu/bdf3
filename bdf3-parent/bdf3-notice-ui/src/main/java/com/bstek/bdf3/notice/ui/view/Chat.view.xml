@@ -6,7 +6,7 @@
   <View>
     <ClientEvent name="onReady" signature="self,arg,Chat">Chat.show();
 </ClientEvent>
-    <Property name="packages">font-awesome</Property>
+    <Property name="packages">font-awesome,colors</Property>
     <Dialog id="Chat">
       <ClientEvent name="onCreateDom" signature="self,arg,dsUser,activeGroupList,userResult">var dom = $(arg.dom).find(&quot;.d-caption-bar.d-dialog-caption-bar&quot;)[0];
 var userSearch = new dorado.widget.TextEditor({
@@ -32,6 +32,13 @@ $(dom).find(&quot;input&quot;).on(&quot;keydown&quot;, function(e) {
 		}
 	}, 150);
 });
+
+var chatOption = new dorado.widget.Control({
+	exClassName: &quot;chat-option&quot;
+});
+chatOption.render(dom);
+
+
 
 </ClientEvent>
       <ClientEvent name="onCreate" signature="self,arg,dsActiveGroup,dsAG">self.noticeCount = 0;
@@ -66,7 +73,9 @@ self.send = function(notice) {
 self.connectNotifyServer();
 
 $(window).bind(&quot;beforeunload&quot;, function(){
-	self._noticeSocket.disconnect();
+	if (self._noticeSocket.get(&quot;connected&quot;)) {
+		self._noticeSocket.disconnect();
+	}
 	return;
 });
 
@@ -156,9 +165,9 @@ if (group &amp;&amp; group.noticeCount > 0) {
 
 </ClientEvent>
       <Property name="modal">false</Property>
-      <Property name="width">600</Property>
-      <Property name="height">500</Property>
-      <Property name="showCaptionBar">true</Property>
+      <Property name="width">700</Property>
+      <Property name="height">560</Property>
+      <Property name="showCaptionBar">false</Property>
       <Property name="exClassName">chat</Property>
       <Property name="collapseable">true</Property>
       <Property name="minimizeable">true</Property>
@@ -166,83 +175,175 @@ if (group &amp;&amp; group.noticeCount > 0) {
       <Buttons/>
       <Children>
         <Container>
-          <DataSet id="dsPLG">
-            <Property name="dataType">ActiveGroup</Property>
-            <Property name="dataProvider">groupController#loadPrivateLetterGroup</Property>
-          </DataSet>
-          <DataSet id="dsAG">
-            <Property name="dataType">ActiveGroup</Property>
-            <Property name="dataProvider">groupController#loadActiveGroup</Property>
-          </DataSet>
-          <DataSet id="dsUser">
-            <Property name="dataType">[User]</Property>
-            <Property name="dataProvider">noticeController#loadUsers</Property>
-            <Property name="pageSize">10</Property>
-            <Property name="loadMode">manual</Property>
-          </DataSet>
-          <DataSet id="dsActiveGroup">
-            <Property name="dataType">[ActiveGroup]</Property>
-            <Property name="dataProvider">groupController#loadActiveGroups</Property>
-            <Property name="parameter">${loginUsername}</Property>
-          </DataSet>
-          <DataSet id="dsGroup">
-            <Property name="dataType">[Group]</Property>
-            <Property name="dataProvider">groupController#loadGroups</Property>
-            <Property name="parameter">${loginUsername}</Property>
-          </DataSet>
-          <SplitPanel>
-            <Property name="position">180</Property>
-            <MainControl>
+          <Container layoutConstraint="top">
+            <ClientEvent name="onClick">
+</ClientEvent>
+            <Property name="height">50</Property>
+            <Property name="className">header</Property>
+            <Container layout="hbox align:center;pack:center" layoutConstraint="left">
+              <Property name="width">180</Property>
+              <TextEditor layoutConstraint="left">
+                <ClientEvent name="onKeyDown" signature="self,arg,activeGroupList,userResult,dsUser">if (arg.keyCode === 13) {
+	return;
+}
+if (self.userQueryTask) {
+	window.clearTimeout(self.userQueryTask);
+}
+self.userQueryTask = window.setTimeout(function(){
+	var key = self.get(&quot;value&quot;);
+	if (key) {
+		activeGroupList.set(&quot;visible&quot;, false);
+		userResult.set(&quot;visible&quot;, true);
+		dsUser.set(&quot;parameter&quot;, key).flushAsync();
+	}
+	else {
+		activeGroupList.set(&quot;visible&quot;, true);
+		userResult.set(&quot;visible&quot;, false);
+	}
+}, 150);</ClientEvent>
+                <Property name="exClassName">search-text</Property>
+                <Property name="width">140</Property>
+              </TextEditor>
+            </Container>
+            <Container layout="hbox pack:center;align:center">
+              <ClientEvent name="onReady" signature="self,arg,cardBookChat">self.clickProxy = function(c, index) {
+	if (self.current === c) {
+		return;
+	}
+	var current = self.current;
+	var temp = current.get(&quot;userData&quot;);
+	current.set(&quot;userData&quot;, current.get(&quot;exClassName&quot;));
+	current.set(&quot;exClassName&quot;, temp);
+	
+	temp = c.get(&quot;userData&quot;);
+	c.set(&quot;userData&quot;, c.get(&quot;exClassName&quot;));
+	c.set(&quot;exClassName&quot;, temp);
+	
+	self.current = c;
+	
+	cardBookChat.set(&quot;currentIndex&quot;, index);
+}
+</ClientEvent>
+              <Property name="exClassName">options</Property>
+              <Control id="chatOption">
+                <ClientEvent name="onReady">self.get(&quot;parent&quot;).current = self;
+</ClientEvent>
+                <ClientEvent name="onClick">self.get(&quot;parent&quot;).clickProxy(self, 0);
+</ClientEvent>
+                <Property name="exClassName">fa fa-comment green-text</Property>
+                <Property name="userData">fa fa-comment-o</Property>
+                <Property name="tags">option</Property>
+                <Property name="metaData">
+                  <Property name="key"></Property>
+                </Property>
+              </Control>
+              <Control>
+                <ClientEvent name="onClick">self.get(&quot;parent&quot;).clickProxy(self, 1);</ClientEvent>
+                <Property name="exClassName">fa fa-sun-o</Property>
+                <Property name="userData">fa fa-certificate green-text</Property>
+                <Property name="tags">option</Property>
+              </Control>
+              <Control>
+                <ClientEvent name="onClick">self.get(&quot;parent&quot;).clickProxy(self, 2);</ClientEvent>
+                <Property name="exClassName">fa fa-square-o
+</Property>
+                <Property name="userData">fa fa-square green-text</Property>
+                <Property name="tags">option</Property>
+              </Control>
+            </Container>
+            <Container layoutConstraint="right">
+              <Property name="width">180</Property>
+            </Container>
+          </Container>
+          <CardBook id="cardBookChat" layoutConstraint="center">
+            <Container>
+              <DataSet id="dsPLG">
+                <Property name="dataType">ActiveGroup</Property>
+                <Property name="dataProvider">groupController#loadPrivateLetterGroup</Property>
+              </DataSet>
+              <DataSet id="dsAG">
+                <Property name="dataType">ActiveGroup</Property>
+                <Property name="dataProvider">groupController#loadActiveGroup</Property>
+              </DataSet>
+              <DataSet id="dsUser">
+                <Property name="dataType">[User]</Property>
+                <Property name="dataProvider">noticeController#loadUsers</Property>
+                <Property name="pageSize">10</Property>
+                <Property name="loadMode">manual</Property>
+              </DataSet>
+              <DataSet id="dsActiveGroup">
+                <Property name="dataType">[ActiveGroup]</Property>
+                <Property name="dataProvider">groupController#loadActiveGroups</Property>
+                <Property name="parameter">${loginUsername}</Property>
+              </DataSet>
+              <DataSet id="dsGroup">
+                <Property name="dataType">[Group]</Property>
+                <Property name="dataProvider">groupController#loadGroups</Property>
+                <Property name="parameter">${loginUsername}</Property>
+              </DataSet>
               <SplitPanel>
-                <Property name="position">150</Property>
-                <Property name="direction">bottom</Property>
+                <Property name="position">180</Property>
                 <MainControl>
-                  <Container>
-                    <Control id="yourTitle" layoutConstraint="top">
-                      <Property name="exClassName">your-title</Property>
-                    </Control>
-                    <DataListBox>
-                      <ClientEvent name="onRenderRow" signature="self,arg,dsActiveGroup">$(arg.dom).empty();
+                  <SplitPanel>
+                    <Property name="position">150</Property>
+                    <Property name="direction">bottom</Property>
+                    <MainControl>
+                      <Container>
+                        <Control id="yourTitle" layoutConstraint="top">
+                          <Property name="exClassName">your-title</Property>
+                        </Control>
+                        <DataListBox>
+                          <ClientEvent name="onRenderRow" signature="self,arg,dsActiveGroup">$(arg.dom).empty();
+var group = dsActiveGroup.getData(&quot;#&quot;);
 var my = arg.data.get(&quot;sender&quot;) === &quot;${loginUsername}&quot;;
 var name = &quot;&quot;;
 var tip = new dorado.widget.Tip({
 	content: arg.data.get(&quot;content&quot;).replace(/\n/g, &quot;&lt;br>&quot;),
 	floating: false,
-	arrowDirection: my ? &quot;right&quot; : &quot;left&quot;,
+	arrowDirection: (my ? &quot;right&quot; : &quot;left&quot;) + (group.get(&quot;memberCount&quot;) > 2 ? &quot; group&quot; : &quot;&quot;),
 	arrowAlign: &quot;top&quot;
 });
 var avatar = new dorado.widget.Control({
 	exClassName: &quot;message-avatar &quot; + (my ? &quot;right&quot; : &quot;left&quot;)
 });
+
 if (my) {
-	name = &quot;${loginUser.nickname}&quot;[0].toLocaleUpperCase();
+	name = &quot;${loginUser.nickname}&quot;;
 } else {
-	name = dsActiveGroup.getData(&quot;#.other.nickname&quot;)[0].toLocaleUpperCase();
+	name = arg.data.get(&quot;senderGroupMember.nickname&quot;);
 }
-$(avatar.getDom()).text(name);
+$(avatar.getDom()).text(name[0].toLocaleUpperCase());
+
+if (group.get(&quot;memberCount&quot;) > 2) {
+	var nickname = new dorado.widget.Control({
+		exClassName: &quot;message-nickname &quot; + (my ? &quot;right&quot; : &quot;left&quot;)
+	});
+	$(nickname.getDom()).text(name);
+	nickname.render(arg.dom);
+}
 
 avatar.render(arg.dom);
 tip.render(arg.dom);
 </ClientEvent>
-                      <Property name="dataSet">dsActiveGroup</Property>
-                      <Property name="dataPath">#.notices</Property>
-                      <Property name="property">content</Property>
-                      <Property name="highlightCurrentRow">false</Property>
-                      <Property name="highlightHoverRow">false</Property>
-                      <Property name="className">message-list</Property>
-                    </DataListBox>
-                  </Container>
-                </MainControl>
-                <SideControl>
-                  <Container layout="padding:5">
-                    <Container layout="hbox pack:start" layoutConstraint="top">
-                      <Property name="height">30</Property>
-                      <Control>
-                        <Property name="exClassName">message-tool fa fa-smile-o</Property>
-                      </Control>
-                    </Container>
-                    <TextArea>
-                      <ClientEvent name="onKeyPress" signature="self,arg,dsActiveGroup,Chat">var content = self.get(&quot;value&quot;);
+                          <Property name="dataSet">dsActiveGroup</Property>
+                          <Property name="dataPath">#.notices</Property>
+                          <Property name="property">content</Property>
+                          <Property name="highlightCurrentRow">false</Property>
+                          <Property name="highlightHoverRow">false</Property>
+                          <Property name="className">message-list</Property>
+                        </DataListBox>
+                      </Container>
+                    </MainControl>
+                    <SideControl>
+                      <Container layout="padding:5">
+                        <Container layout="hbox pack:start" layoutConstraint="top">
+                          <Property name="height">30</Property>
+                          <Control>
+                            <Property name="exClassName">message-tool fa fa-smile-o</Property>
+                          </Control>
+                        </Container>
+                        <TextArea>
+                          <ClientEvent name="onKeyPress" signature="self,arg,dsActiveGroup,Chat">var content = self.get(&quot;value&quot;);
 if (arg.keyCode === 13 &amp;&amp; content &amp;&amp; !arg.shiftKey) {
 	var group = dsActiveGroup.getData(&quot;#&quot;);
 	if (!group) {
@@ -253,12 +354,17 @@ if (arg.keyCode === 13 &amp;&amp; content &amp;&amp; !arg.shiftKey) {
 		sender: &quot;${loginUsername}&quot;,
 		groupId: group.get(&quot;id&quot;),
 		all: group.get(&quot;all&quot;),
-		content: content
+		content: content,
+		senderGroupMember: {
+			groupId: group.get(&quot;id&quot;),
+			memberId: &quot;${loginUsername}&quot;,
+			nickname: &quot;${loginUser.nickname}&quot;
+		}
 	});
 	self.set(&quot;value&quot;, null);
 	arg.returnValue = false;
 }</ClientEvent>
-                      <ClientEvent name="onClick" signature="self,arg,dsActiveGroup,Chat">var group = dsActiveGroup.getData(&quot;#&quot;);
+                          <ClientEvent name="onClick" signature="self,arg,dsActiveGroup,Chat">var group = dsActiveGroup.getData(&quot;#&quot;);
 if (group &amp;&amp; group.noticeCount > 0) {
 	Chat.send({
 		type: &quot;mark-read&quot;,
@@ -269,16 +375,16 @@ if (group &amp;&amp; group.noticeCount > 0) {
 }
 
 </ClientEvent>
-                      <Property name="exClassName">message-text-area</Property>
-                    </TextArea>
-                  </Container>
-                </SideControl>
-              </SplitPanel>
-            </MainControl>
-            <SideControl>
-              <Container>
-                <DataListBox id="activeGroupList">
-                  <ClientEvent name="onRenderRow">$(arg.dom).empty();
+                          <Property name="exClassName">message-text-area</Property>
+                        </TextArea>
+                      </Container>
+                    </SideControl>
+                  </SplitPanel>
+                </MainControl>
+                <SideControl>
+                  <Container>
+                    <DataListBox id="activeGroupList">
+                      <ClientEvent name="onRenderRow">$(arg.dom).empty();
 var privateLetter = arg.data.get(&quot;privateLetter&quot;);
 var n = &quot;&quot;;
 var d = &quot;&quot;;
@@ -318,13 +424,13 @@ count.render(arg.dom);
 description.render(arg.dom);
 $(arg.dom).find(&quot;.group-count&quot;).attr(&quot;id&quot;, &quot;group-count-&quot; + arg.data.entityId)
 </ClientEvent>
-                  <Property name="dataSet">dsActiveGroup</Property>
-                  <Property name="property">name</Property>
-                  <Property name="hideMode">display</Property>
-                  <Property name="highlightHoverRow">false</Property>
-                </DataListBox>
-                <DataListBox id="userResult">
-                  <ClientEvent name="onDataRowClick" signature="self,arg,dsUser,dsPLG,activeGroupList,userResult,updateActionActiveGroup,dsActiveGroup">var receiver = dsUser.getData(&quot;#&quot;);
+                      <Property name="dataSet">dsActiveGroup</Property>
+                      <Property name="property">name</Property>
+                      <Property name="hideMode">display</Property>
+                      <Property name="highlightHoverRow">false</Property>
+                    </DataListBox>
+                    <DataListBox id="userResult">
+                      <ClientEvent name="onDataRowClick" signature="self,arg,dsUser,dsPLG,activeGroupList,userResult,updateActionActiveGroup,dsActiveGroup">var receiver = dsUser.getData(&quot;#&quot;);
 var groups = dsActiveGroup.getData();
 var group = null;
 groups.each(function(g) {
@@ -349,7 +455,6 @@ if (group) {
 		} else {
 			var group = groups.insert({
 				privateLetter: true,
-				memberCount: 2,
 				creator: &quot;${loginUsername}&quot;,
 				other: {
 					memberId: receiver.get(&quot;username&quot;),
@@ -376,7 +481,7 @@ if (group) {
 activeGroupList.set(&quot;visible&quot;, true);
 userResult.set(&quot;visible&quot;, false);
 </ClientEvent>
-                  <ClientEvent name="onRenderRow">$(arg.dom).empty();
+                      <ClientEvent name="onRenderRow">$(arg.dom).empty();
 var n = arg.data.get(&quot;nickname&quot;);
 var d = arg.data.get(&quot;username&quot;);
 
@@ -400,28 +505,326 @@ $(description.getDom()).text(d);
 avatar.render(arg.dom);
 name.render(arg.dom);
 description.render(arg.dom);</ClientEvent>
-                  <Property name="dataSet">dsUser</Property>
-                  <Property name="property">nickname</Property>
-                  <Property name="visible">false</Property>
-                  <Property name="hideMode">display</Property>
-                  <Property name="highlightHoverRow">false</Property>
-                </DataListBox>
-              </Container>
-            </SideControl>
-          </SplitPanel>
-          <UpdateAction id="updateActionActiveGroup">
-            <Property name="dataResolver">groupController#save</Property>
-            <UpdateItem>
-              <Property name="dataSet">dsActiveGroup</Property>
-            </UpdateItem>
-          </UpdateAction>
-          <UpdateAction id="updateActionGroup">
-            <Property name="dataResolver">groupController#save</Property>
-            <UpdateItem>
-              <Property name="dataSet">dsGroup</Property>
-            </UpdateItem>
-          </UpdateAction>
-          <AjaxAction id="ajaxActionMarkRead"/>
+                      <Property name="dataSet">dsUser</Property>
+                      <Property name="property">nickname</Property>
+                      <Property name="visible">false</Property>
+                      <Property name="hideMode">display</Property>
+                      <Property name="highlightHoverRow">false</Property>
+                    </DataListBox>
+                  </Container>
+                </SideControl>
+              </SplitPanel>
+              <UpdateAction id="updateActionActiveGroup">
+                <Property name="dataResolver">groupController#save</Property>
+                <UpdateItem>
+                  <Property name="dataSet">dsActiveGroup</Property>
+                </UpdateItem>
+              </UpdateAction>
+              <UpdateAction id="updateActionGroup">
+                <Property name="dataResolver">groupController#save</Property>
+                <UpdateItem>
+                  <Property name="dataSet">dsGroup</Property>
+                </UpdateItem>
+              </UpdateAction>
+              <AjaxAction id="ajaxActionMarkRead"/>
+            </Container>
+            <Container>
+              <SplitPanel>
+                <Property name="position">180</Property>
+                <MainControl>
+                  <SplitPanel>
+                    <Property name="position">150</Property>
+                    <Property name="direction">bottom</Property>
+                    <MainControl>
+                      <Container/>
+                    </MainControl>
+                    <SideControl>
+                      <Container layout="padding:5">
+                        <TextArea>
+                          <ClientEvent name="onKeyPress" signature="self,arg,dsActiveGroup,Chat">var content = self.get(&quot;value&quot;);
+if (arg.keyCode === 13 &amp;&amp; content &amp;&amp; !arg.shiftKey) {
+	var group = dsActiveGroup.getData(&quot;#&quot;);
+	if (!group) {
+		return;
+	} 
+	Chat.send({
+		type: &quot;message&quot;,
+		sender: &quot;${loginUsername}&quot;,
+		groupId: group.get(&quot;id&quot;),
+		all: group.get(&quot;all&quot;),
+		content: content
+	});
+	self.set(&quot;value&quot;, null);
+	arg.returnValue = false;
+}</ClientEvent>
+                          <ClientEvent name="onClick" signature="self,arg,dsActiveGroup,Chat">var group = dsActiveGroup.getData(&quot;#&quot;);
+if (group &amp;&amp; group.noticeCount > 0) {
+	Chat.send({
+		type: &quot;mark-read&quot;,
+		sender: &quot;${loginUsername}&quot;,
+		groupId: group.get(&quot;id&quot;)
+	})
+
+}
+
+</ClientEvent>
+                          <Property name="exClassName">message-text-area</Property>
+                        </TextArea>
+                      </Container>
+                    </SideControl>
+                  </SplitPanel>
+                </MainControl>
+                <SideControl>
+                  <Container>
+                    <Container layout="hbox pack:center;align:center;padding:10" layoutConstraint="top">
+                      <Button>
+                        <ClientEvent name="onClick" signature="self,arg,dsGroup,dialogUserSelection">dialogUserSelection.show();
+dsGroup.insert({
+	name: &quot;请输入群组名称&quot;
+});
+</ClientEvent>
+                        <Property name="caption">创建群组</Property>
+                        <Property name="style">
+                          <Property name="width">100px</Property>
+                        </Property>
+                      </Button>
+                    </Container>
+                    <DataListBox id="groupList">
+                      <ClientEvent name="onRenderRow">$(arg.dom).empty();
+var n = arg.data.get(&quot;name&quot;);
+var d = &quot;&quot;;
+
+var avatar = new dorado.widget.Control({
+	exClassName: &quot;group-avatar&quot;
+});
+var name = new dorado.widget.Control({
+	exClassName: &quot;group-name&quot;,
+	tip: n
+});
+var description = new dorado.widget.Control({
+	exClassName: &quot;group-description&quot;,
+	tip: d
+});
+
+$(avatar.getDom()).text(n[0].toLocaleUpperCase());
+$(name.getDom()).text(n);
+$(description.getDom()).text(d);
+
+
+avatar.render(arg.dom);
+name.render(arg.dom);
+description.render(arg.dom);
+</ClientEvent>
+                      <ClientEvent name="onDataRowDoubleClick" signature="self,arg,dsGroup,chatOption,dsAG,activeGroupList,userResult,dsActiveGroup">var current = dsGroup.getData(&quot;#&quot;);
+var groups = dsActiveGroup.getData();
+var group = null;
+groups.each(function(g) {
+	if (g.get(&quot;id&quot;) === current.get(&quot;id&quot;)) {
+		group = g;
+		return false;
+	}	
+});
+if (group) {
+	if (groups.getFirst() !== group) {
+		groups.insert(group, &quot;begin&quot;);
+		group.setState(dorado.Entity.STATE_NONE);
+	}
+} else {
+	dsAG.set(&quot;parameter&quot;, {
+		memberId: &quot;${loginUsername}&quot;,
+		groupId: current.get(&quot;id&quot;)
+	}).flushAsync(function(data) {
+		group = groups.insert(data.toJSON(), &quot;begin&quot;);
+		group.setState(dorado.Entity.STATE_NONE);
+		activeGroupList.set(&quot;visible&quot;, true);
+		userResult.set(&quot;visible&quot;, false);
+		chatOption.fireEvent(&quot;onClick&quot;, chatOption, {});
+	});
+}
+
+</ClientEvent>
+                      <Property name="dataSet">dsGroup</Property>
+                      <Property name="property">name</Property>
+                      <Property name="hideMode">display</Property>
+                      <Property name="highlightHoverRow">false</Property>
+                    </DataListBox>
+                    <Dialog id="dialogUserSelection">
+                      <Property name="width">700</Property>
+                      <Property name="height">560</Property>
+                      <Property name="showCaptionBar">false</Property>
+                      <Property name="exClassName">chat</Property>
+                      <Buttons/>
+                      <Children>
+                        <SplitPanel>
+                          <Property name="position">50%</Property>
+                          <MainControl>
+                            <Container>
+                              <Container layout="hbox align:center;pack:center;padding:10" layoutConstraint="top">
+                                <Property name="contentOverflow">hidden</Property>
+                                <TextEditor layoutConstraint="left">
+                                  <Property name="exClassName">search-text</Property>
+                                  <Property name="width">200</Property>
+                                  <Property name="dataSet">dsGroup</Property>
+                                  <Property name="property">name</Property>
+                                </TextEditor>
+                              </Container>
+                              <DataListBox>
+                                <ClientEvent name="onRenderRow">$(arg.dom).empty();
+var n = arg.data.get(&quot;nickname&quot;);
+var d = arg.data.get(&quot;memberId&quot;);
+
+var avatar = new dorado.widget.Control({
+	exClassName: &quot;group-avatar&quot;
+});
+var name = new dorado.widget.Control({
+	exClassName: &quot;group-name&quot;,
+	tip: n
+});
+var description = new dorado.widget.Control({
+	exClassName: &quot;group-description&quot;,
+	tip: d
+});
+
+var remove = new dorado.widget.Control({
+	exClassName: &quot;selection-remove fa fa-times-circle&quot;
+});
+
+$(avatar.getDom()).text(n[0].toLocaleUpperCase());
+$(name.getDom()).text(n);
+$(description.getDom()).text(d);
+
+avatar.render(arg.dom);
+name.render(arg.dom);
+description.render(arg.dom);
+remove.render(arg.dom);
+
+$(arg.dom).find(&quot;.selection-remove&quot;).on(&quot;click&quot;, function() {
+	arg.data.remove();
+});
+</ClientEvent>
+                                <Property name="dataSet">dsGroup</Property>
+                                <Property name="property">nickname</Property>
+                                <Property name="visible">true</Property>
+                                <Property name="hideMode">display</Property>
+                                <Property name="highlightHoverRow">false</Property>
+                                <Property name="highlightCurrentRow">false</Property>
+                                <Property name="dataPath">#.members</Property>
+                              </DataListBox>
+                              <Container layout="hbox pack:center;align:center;regionPadding:16" layoutConstraint="bottom">
+                                <Button>
+                                  <ClientEvent name="onClick" signature="self,arg,dsGroup,dialogUserSelection">dialogUserSelection.hide();
+dsGroup.getData().cancel()
+</ClientEvent>
+                                  <Property name="caption">取消</Property>
+                                  <Property name="style">
+                                    <Property name="width">60</Property>
+                                  </Property>
+                                </Button>
+                                <Button>
+                                  <ClientEvent name="onClick" signature="self,arg,dsGroup,dialogUserSelection,updateActionGroup">dsGroup.getData(&quot;#&quot;).createChild(&quot;members&quot;, {
+	memberId: &quot;${loginUsername}&quot;,
+	nickname: &quot;${loginUser.nickname}&quot;
+});
+updateActionGroup.execute(function() {
+	dialogUserSelection.hide();
+});
+</ClientEvent>
+                                  <Property name="caption">确定</Property>
+                                  <Property name="style">
+                                    <Property name="width">60</Property>
+                                  </Property>
+                                  <Property name="ui">highlight</Property>
+                                </Button>
+                              </Container>
+                            </Container>
+                          </MainControl>
+                          <SideControl>
+                            <Container>
+                              <Container layout="hbox align:center;pack:center;padding:10" layoutConstraint="top">
+                                <Property name="contentOverflow">hidden</Property>
+                                <TextEditor layoutConstraint="left">
+                                  <ClientEvent name="onKeyDown" signature="self,arg,dsUser">if (arg.keyCode === 13) {
+	return;
+}
+if (self.userQueryTask) {
+	window.clearTimeout(self.userQueryTask);
+}
+self.userQueryTask = window.setTimeout(function(){
+	var key = self.get(&quot;value&quot;);
+	if (key) {
+		dsUser.set(&quot;parameter&quot;, key).flushAsync();
+	}
+	else {
+		
+	}
+}, 150);</ClientEvent>
+                                  <Property name="exClassName">search-text</Property>
+                                  <Property name="width">200</Property>
+                                  <Property name="blankText">搜索</Property>
+                                </TextEditor>
+                              </Container>
+                              <DataListBox>
+                                <ClientEvent name="onRenderRow" signature="self,arg,dsGroup">$(arg.dom).empty();
+var n = arg.data.get(&quot;nickname&quot;);
+var d = arg.data.get(&quot;username&quot;);
+
+var avatar = new dorado.widget.Control({
+	exClassName: &quot;group-avatar&quot;
+});
+var name = new dorado.widget.Control({
+	exClassName: &quot;group-name&quot;,
+	tip: n
+});
+var description = new dorado.widget.Control({
+	exClassName: &quot;group-description&quot;,
+	tip: d
+});
+
+var check = new dorado.widget.Control({
+	exClassName: &quot;selection-check fa fa-circle-o&quot;
+});
+
+$(avatar.getDom()).text(n[0].toLocaleUpperCase());
+$(name.getDom()).text(n);
+$(description.getDom()).text(d);
+
+avatar.render(arg.dom);
+name.render(arg.dom);
+description.render(arg.dom);
+check.render(arg.dom);
+
+$(arg.dom).find(&quot;.selection-check&quot;).on(&quot;click&quot;, function() {
+	if ($(this).hasClass(&quot;fa-check-circle&quot;)) {
+		$(this).removeClass(&quot;fa-check-circle green-text&quot;).addClass(&quot;fa-circle-o&quot;);
+		arg.data.member.remove();
+	} else {
+		$(this).removeClass(&quot;fa-circle-o&quot;).addClass(&quot;fa-check-circle green-text&quot;);
+		arg.data.member = dsGroup.getData(&quot;#&quot;).createChild(&quot;members&quot;, {
+			memberId: arg.data.get(&quot;username&quot;),
+			nickname: arg.data.get(&quot;nickname&quot;)
+		});
+	}
+});
+</ClientEvent>
+                                <Property name="dataSet">dsUser</Property>
+                                <Property name="property">nickname</Property>
+                                <Property name="visible">true</Property>
+                                <Property name="hideMode">display</Property>
+                                <Property name="highlightHoverRow">false</Property>
+                                <Property name="highlightCurrentRow">false</Property>
+                              </DataListBox>
+                            </Container>
+                          </SideControl>
+                        </SplitPanel>
+                      </Children>
+                      <Tools/>
+                    </Dialog>
+                  </Container>
+                </SideControl>
+              </SplitPanel>
+            </Container>
+            <Container/>
+          </CardBook>
         </Container>
       </Children>
       <Tools/>

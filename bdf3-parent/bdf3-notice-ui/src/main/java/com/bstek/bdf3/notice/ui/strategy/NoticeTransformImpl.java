@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
+import com.bstek.bdf3.notice.domain.GroupMember;
 import com.bstek.bdf3.notice.domain.Notice;
 import com.bstek.bdf3.notice.strategy.NoticeTransform;
 import com.bstek.dorado.view.socket.Message;
@@ -30,6 +31,14 @@ public class NoticeTransformImpl implements NoticeTransform<Message> {
 			notice.setGroupId((String) data.get("groupId"));
 			if (data.get("all") != null) {
 				notice.setAll((Boolean) data.get("all"));
+			}
+			Map<String, Object> senderGroupMemberMap = (Map<String, Object>) data.get("senderGroupMember");
+			if (senderGroupMemberMap != null) {
+				GroupMember senderGroupMember = new GroupMember();
+				senderGroupMember.setGroupId((String) senderGroupMemberMap.get("groupId"));
+				senderGroupMember.setMemberId((String) senderGroupMemberMap.get("memberId"));
+				senderGroupMember.setNickname((String) senderGroupMemberMap.get("nickname"));
+				notice.setSenderGroupMember(senderGroupMember);
 			}
 		}
 		if (notice.getType() == null) {

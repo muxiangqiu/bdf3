@@ -161,6 +161,10 @@ public class GroupServiceImpl implements GroupService{
 						.end()
 						.delete();
 					JpaUtil.lind(Notice.class).equal("groupId", ((Group) entity).getId()).delete();
+				} else if (entity instanceof GroupMember) {
+					Group group = context.getParent();
+					group.setMemberCount(group.getMemberCount() - 1);
+					JpaUtil.merge(group);
 				}
 				return true;
 			}
@@ -172,8 +176,9 @@ public class GroupServiceImpl implements GroupService{
 					((Group) entity).setCreateTime(new Date());
 				} else if (entity instanceof GroupMember) {
 					Group group = context.getParent();
+					group.setMemberCount(group.getMemberCount() + 1);
 					((GroupMember) entity).setGroupId(group.getId());
-					
+					JpaUtil.merge(group);
 				}
 				return true;
 			}

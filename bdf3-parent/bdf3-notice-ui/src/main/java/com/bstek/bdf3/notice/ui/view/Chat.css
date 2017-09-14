@@ -12,6 +12,11 @@
     background-color: #f7f7f7;
 }
 
+.chat.d-dialog .dialog-header {
+
+    height: 1px;
+}
+
 .chat.d-dialog .d-dialog-caption-bar {
     margin: 0;
 
@@ -74,11 +79,7 @@
 	margin-left: 10px;
 }
 
-.chat .user-search-txt {
-    position: absolute;
-    width: 140px;
-    top: 7px;
-    left: 10px;
+.chat .search-text {
     -webkit-border-radius: 22px;
     -moz-border-radius: 22px;
     border-radius: 22px;
@@ -92,15 +93,23 @@
 
 .chat .message-list .d-tip.d-tip-arrow-right {
 	float: right;
-	margin-right: 12px;
+	margin: 0 12px 0 0;
 	color: rgba(0, 0, 0, 0.8);
     background-color: #c5e8fe;
 }
 
 .chat .message-list .d-tip.d-tip-arrow-left {
-	margin-left: 12px;
+	margin: 0 0 0 12px;
 	color: rgba(0, 0, 0, 0.8);
     background-color: #ededed;
+}
+
+.chat .message-list .d-tip.d-tip-arrow-left.group {
+	margin: 20px 0 0 12px;
+}
+
+.chat .message-list .d-tip.d-tip-arrow-right.group {
+	margin: 20px 12px 0 0;
 }
 
 .chat .message-list .row td {
@@ -129,7 +138,20 @@
     color: #fff;
     text-align: center;
     line-height: 32px;
+}
 
+.chat .message-nickname {
+    display: inline-block;
+    position: absolute;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.chat .message-nickname.left {
+	left: 60px;
+}
+
+.chat .message-nickname.right {
+	right: 60px;
 }
 
 .chat .message-avatar.right{
@@ -165,7 +187,7 @@
     font-size: 1.1em;
     margin-top: 12px;
     font-weight: bolder;
-    width: calc(100% - 64px);
+    width: calc(100% - 100px);
     text-overflow: ellipsis;
     overflow: hidden;
 }
@@ -174,7 +196,7 @@
 	display: inline-block;
     position: absolute;
     margin-top: 34px;
-    width: calc(100% - 64px);
+    width: calc(100% - 100px);
     text-overflow: ellipsis;
     overflow: hidden;
 }
@@ -199,5 +221,25 @@
     border-radius: 20px;
     -moz-border-radius: 20px;
     box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+}
+
+.chat .header {
+	background-color: #f7f7f7;
+}
+
+.chat .header .options .fa {
+	width: 42px;
+	line-height: 42px;
+	font-size: 24px;
+	color: rgba(0, 0, 0, .6);
+}
+
+.chat .selection-check, .chat .selection-remove {
+	float: right;
+    line-height: 52px;
+    font-size: 20px;
+    padding: 6px;
+    color: rgba(0, 0, 0, .6);
+    cursor: pointer;
 }
 

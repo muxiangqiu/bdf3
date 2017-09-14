@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -42,6 +43,9 @@ public class Notice {
 	
 	@Column(name = "ALL_")
 	private boolean all;
+	
+	@Transient
+	private GroupMember senderGroupMember;
 
 	public String getId() {
 		return id;
@@ -113,6 +117,14 @@ public class Notice {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public GroupMember getSenderGroupMember() {
+		return senderGroupMember;
+	}
+
+	public void setSenderGroupMember(GroupMember senderGroupMember) {
+		this.senderGroupMember = senderGroupMember;
 	}
 	
 	

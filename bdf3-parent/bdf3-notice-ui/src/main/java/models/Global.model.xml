@@ -158,7 +158,10 @@
       <Property name="dataType">boolean</Property>
     </PropertyDef>
     <PropertyDef name="type">
-      <Property/>
+      <Property></Property>
+    </PropertyDef>
+    <PropertyDef name="senderGroupMember">
+      <Property name="dataType">GroupMember</Property>
     </PropertyDef>
   </DataType>
   <DataType name="User">

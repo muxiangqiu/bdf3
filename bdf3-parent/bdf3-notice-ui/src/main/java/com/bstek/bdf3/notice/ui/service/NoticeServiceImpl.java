@@ -28,6 +28,7 @@ public class NoticeServiceImpl implements NoticeService {
 	public void getNotices(Page<Notice> page, String memberId) {
 		JpaUtil.linq(Notice.class)
 			.notEqual("sender", memberId)
+			.collect("memberId", GroupMember.class, "sender")
 			.or()
 				.exists(Group.class)
 					.equalProperty("id", "groupId")
@@ -49,27 +50,29 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public List<Notice> getNotices(String memberId) {
 		return JpaUtil.linq(Notice.class)
-			.notEqual("sender", memberId)
-			.or()
-				.exists(Group.class)
-					.equalProperty("id", "groupId")
-					.isTrue("all")
+				.collect("memberId", GroupMember.class, "sender")
+				.notEqual("sender", memberId)
+				.or()
+					.exists(Group.class)
+						.equalProperty("id", "groupId")
+						.isTrue("all")
+					.end()
+					.exists(GroupMember.class)
+						.equalProperty("groupId", "groupId")
+						.equal("memberId", memberId)
+					.end()
 				.end()
-				.exists(GroupMember.class)
-					.equalProperty("groupId", "groupId")
+				.notExists(MemberNotice.class)
+					.equalProperty("noticeId", "id")
 					.equal("memberId", memberId)
 				.end()
-			.end()
-			.notExists(MemberNotice.class)
-				.equalProperty("noticeId", "id")
-				.equal("memberId", memberId)
-			.end()
-			.list();
+				.list();
 	}
 	
 	@Override
 	public List<Notice> getNotices(String groupId, String memberId) {
 		return JpaUtil.linq(Notice.class)
+				.collect("memberId", GroupMember.class, "sender")
 				.notEqual("sender", memberId)
 				.equal("groupId", groupId)
 				.notExists(MemberNotice.class)
@@ -110,7 +113,7 @@ public class NoticeServiceImpl implements NoticeService {
 			.set("lastNoticeId", notice.getId())
 			.set("lastNoticeSendTime", notice.getSendTime())
 			.update();
-		JpaUtil.persist(notice);
+		com.bstek.bdf3.jpa.JpaUtil.persist(notice);
 	}
 	
 	@Override
