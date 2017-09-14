@@ -28,6 +28,15 @@ public class ContextHandlerImpl implements ContextHandler{
 		}
         return (T) expression.evaluate();
 	}
+	
+	@Override
+	public String compileText(String value) {
+		Object v = compile(value);
+		if (v != null) {
+			return v.toString();
+		}
+		return null;
+	}
 
 	public void setExpressionHandler(ExpressionHandler expressionHandler) {
 		this.expressionHandler = expressionHandler;

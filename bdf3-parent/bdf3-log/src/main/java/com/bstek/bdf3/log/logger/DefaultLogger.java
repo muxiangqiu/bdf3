@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,19 +94,38 @@ public class DefaultLogger implements Logger {
 	protected Object getLogInfo(LogDefinition log) {
 		LogInfo logInfo = new LogInfo();
 		logInfo.setId(UUID.randomUUID().toString());
-		logInfo.setCategory((String) contextHandler.compile(log.getCategory()));
-		logInfo.setDesc((String) contextHandler.compile(log.getDesc()));
-		logInfo.setIP((String) contextHandler.compile(DoradoContext.getCurrent().getRequest().getRemoteAddr()));
-		logInfo.setModule((String) contextHandler.compile(log.getModule()));
-		logInfo.setOperation((String) contextHandler.compile(log.getOperation()));
+		logInfo.setCategory(contextHandler.compileText(log.getCategory()));
+		logInfo.setDesc(contextHandler.compileText(log.getDesc()));
+		logInfo.setIP(contextHandler.compileText(getIP()));
+		logInfo.setModule(contextHandler.compileText(log.getModule()));
+		logInfo.setOperation(contextHandler.compileText(log.getOperation()));
 		logInfo.setOperationDate(new Date());
-		logInfo.setOperationUser((String) contextHandler.compile(log.getOperationUser()));
-		logInfo.setOperationUserNickname((String) contextHandler.compile(log.getOperationUserNickname()));
+		logInfo.setOperationUser(contextHandler.compileText(log.getOperationUser()));
+		logInfo.setOperationUserNickname(contextHandler.compileText(log.getOperationUserNickname()));
 		logInfo.setSource(DoradoContext.getCurrent().getRequest().getHeader("Referer"));
-		logInfo.setTitle((String) contextHandler.compile(log.getTitle()));
+		logInfo.setTitle(contextHandler.compileText(log.getTitle()));
 		
 		return logInfo;
 	}
+	
+	protected String getIP() {
+		HttpServletRequest request = DoradoContext.getCurrent().getRequest();
+        String ip = request.getHeader("X-Real-IP");
+        if (StringUtils.isNotEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
+            return ip;
+        }
+        ip = request.getHeader("X-Forwarded-For");
+        if (StringUtils.isNotEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
+            int index = ip.indexOf(",");
+            if (index != -1) {
+                return ip.substring(0, index);
+            } else {
+                return ip;
+            }
+        } else {
+            return request.getRemoteAddr();
+        }
+    }
 
 	protected void setContext(LogDefinition log, Object entity) {
 		EntityState state = EntityUtils.getState(entity);
