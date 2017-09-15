@@ -208,6 +208,10 @@ Chat.addReceiveListener(function(c, arg) {
 	}, 80);
 });
 
+Chat.addChatCloseListener(function() {
+	Chat.hide();
+});
+
 </ClientEvent>
     <ClientEvent name="onClick" signature="self,arg,personalCenter">personalCenter.hide();
 </ClientEvent>

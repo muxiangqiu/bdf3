@@ -7,7 +7,12 @@
     <ClientEvent name="onReady" signature="self,arg,Chat">Chat.set({
 	width: &quot;100%&quot;,
 	height: &quot;100%&quot;
-}).show();</ClientEvent>
+}).show();
+
+Chat.addChatCloseListener(function() {
+	
+});
+</ClientEvent>
     <Property name="packages">font-awesome,colors</Property>
     <Dialog id="Chat">
       <ClientEvent name="onCreateDom" signature="self,arg,dsUser,activeGroupList,userResult">var dom = $(arg.dom).find(&quot;.d-caption-bar.d-dialog-caption-bar&quot;)[0];
@@ -45,8 +50,12 @@ chatOption.render(dom);
 </ClientEvent>
       <ClientEvent name="onCreate" signature="self,arg,dsActiveGroup,dsAG">self.noticeCount = 0;
 self.onReceiveListeners = [];
+self.onChatCloseListeners = [];
 self.addReceiveListener = function(l) {
 	self.onReceiveListeners.push(l);
+};
+self.addChatCloseListener = function(l) {
+	self.onChatCloseListeners.push(l);
 };
 self.onReceive = function(socket, arg) {
 	self.doReceiveNotice(socket, arg);
@@ -212,6 +221,9 @@ self.userQueryTask = window.setTimeout(function() {
 }, 150);</ClientEvent>
                 <Property name="exClassName">search-text</Property>
                 <Property name="width">140</Property>
+                <Property name="style">
+                  <Property name="margin-top">2px</Property>
+                </Property>
               </TextEditor>
             </Container>
             <Container layout="hbox pack:center;align:center">
@@ -234,6 +246,7 @@ self.userQueryTask = window.setTimeout(function() {
 }
 </ClientEvent>
               <Property name="exClassName">options</Property>
+              <Property name="contentOverflow">hidden</Property>
               <Control id="chatOption">
                 <ClientEvent name="onReady">self.get(&quot;parent&quot;).current = self;
 </ClientEvent>
@@ -260,8 +273,24 @@ self.userQueryTask = window.setTimeout(function() {
                 <Property name="tags">option</Property>
               </Control>
             </Container>
-            <Container layoutConstraint="right">
+            <Container layout="hbox pack:end;align:center;stretch:true" layoutConstraint="right">
               <Property name="width">180</Property>
+              <Property name="exClassName">options</Property>
+              <Property name="contentOverflow">hidden</Property>
+              <Control>
+                <ClientEvent name="onClick" signature="self,arg,Chat">Chat.onChatCloseListeners.each(function(l) {
+	l();
+});
+</ClientEvent>
+                <Property name="exClassName">avatar fa fa-globe</Property>
+              </Control>
+              <Control>
+                <ClientEvent name="onClick" signature="self,arg,Chat">Chat.onChatCloseListeners.each(function(l) {
+	l();
+});
+</ClientEvent>
+                <Property name="exClassName">fa fa-times-circle</Property>
+              </Control>
             </Container>
           </Container>
           <CardBook id="cardBookChat" layoutConstraint="center">
