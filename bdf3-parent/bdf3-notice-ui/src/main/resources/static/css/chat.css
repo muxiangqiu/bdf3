@@ -235,6 +235,7 @@
 	font-size: 24px;
 	color: rgba(0, 0, 0, .6);
 	margin-top: 2px;
+	cursor: pointer;
 }
 
 .chat .header .options .avatar {
@@ -244,6 +245,10 @@
 	width: 42px;
 	line-height: 42px;
 	border-radius: 50%;
+}
+
+.chat .header .options .fa-times-circle:hover {
+	color: red;
 }
 
 
