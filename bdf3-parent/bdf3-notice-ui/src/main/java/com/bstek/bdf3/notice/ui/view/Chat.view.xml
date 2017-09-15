@@ -279,10 +279,6 @@ self.userQueryTask = window.setTimeout(function() {
               <Property name="exClassName">options</Property>
               <Property name="contentOverflow">hidden</Property>
               <Control>
-                <ClientEvent name="onClick" signature="self,arg,Chat">Chat.onChatCloseListeners.each(function(l) {
-	l();
-});
-</ClientEvent>
                 <Property name="exClassName">avatar fa fa-globe</Property>
               </Control>
               <Control>
