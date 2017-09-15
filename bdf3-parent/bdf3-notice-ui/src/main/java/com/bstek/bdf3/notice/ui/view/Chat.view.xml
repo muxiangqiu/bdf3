@@ -185,7 +185,7 @@ if (group &amp;&amp; group.noticeCount > 0) {
       <Property name="maximizeable">false</Property>
       <Property name="maximized">false</Property>
       <Property name="floating">true</Property>
-      <Property name="animateType">slide</Property>
+      <Property name="animateType">fade</Property>
       <Property name="shadowMode">frame</Property>
       <Buttons/>
       <Children>
