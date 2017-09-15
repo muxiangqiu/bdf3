@@ -63,24 +63,34 @@
     </PropertyDef>
     <PropertyDef name="name">
       <Property></Property>
+      <Property name="label">群名称</Property>
     </PropertyDef>
     <PropertyDef name="creator">
       <Property></Property>
+      <Property name="label">创建者</Property>
     </PropertyDef>
     <PropertyDef name="createTime">
       <Property name="dataType">Date</Property>
+      <Property name="label">创建于</Property>
     </PropertyDef>
     <PropertyDef name="all">
       <Property name="dataType">boolean</Property>
+      <Property name="label">公告群</Property>
     </PropertyDef>
     <PropertyDef name="temporary">
       <Property name="dataType">boolean</Property>
+      <Property name="label">临时群</Property>
     </PropertyDef>
     <Reference name="members">
       <Property name="dataType">[GroupMember]</Property>
       <Property name="dataProvider">groupController#loadGroupMembers</Property>
       <Property name="pageSize">10</Property>
-      <Property name="parameter">$${this.id}</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="groupId">$${this.id}</Property>
+          <Property name="memberIdOrNickname"/>
+        </Entity>
+      </Property>
     </Reference>
     <PropertyDef name="current">
       <Property name="dataType">GroupMember</Property>
@@ -90,12 +100,15 @@
     </PropertyDef>
     <PropertyDef name="system">
       <Property name="dataType">boolean</Property>
+      <Property name="label">系统群</Property>
     </PropertyDef>
     <PropertyDef name="privateLetter">
       <Property name="dataType">boolean</Property>
     </PropertyDef>
     <PropertyDef name="memberCount">
       <Property name="dataType">int</Property>
+      <Property name="label">成员数</Property>
+      <Property name="displayFormat">#人</Property>
     </PropertyDef>
     <PropertyDef name="lastNoticeId">
       <Property></Property>

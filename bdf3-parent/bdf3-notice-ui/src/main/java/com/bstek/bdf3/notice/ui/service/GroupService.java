@@ -18,12 +18,12 @@ public interface GroupService {
 	
 	List<Group> loadGroups(String memberId);
 
-	void loadGroupMembers(Page<GroupMember> page, String groupId);
-
 	void save(List<Group> groups);
 
 	Group loadActiveGroup(String groupId, String memberId);
 
 	Group loadPrivateLetterGroup(String memberId, String otherId);
+
+	void loadGroupMembers(Page<GroupMember> page, String groupId, String memberIdOrNickname);
 	
 }

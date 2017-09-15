@@ -13,13 +13,11 @@
 }
 
 .chat.d-dialog .dialog-header {
-
     height: 1px;
 }
 
 .chat.d-dialog .d-dialog-caption-bar {
     margin: 0;
-
 }
 
 .chat.d-dialog .dialog-body-wrap {
@@ -35,7 +33,7 @@
 }
 
 .chat .d-split-panel .splitter {
-    background: #f7f7f7;
+    background: #ededed;
 }
 
 .chat.d-dialog .dialog-footer {
@@ -225,6 +223,7 @@
 
 .chat .header {
 	background-color: #f7f7f7;
+	border-bottom: 1px solid #ededed;
 }
 
 .chat .header .options .fa {
@@ -243,3 +242,64 @@
     cursor: pointer;
 }
 
+.chat .d-data-pilot .icon-previous-page {
+	
+}
+
+.chat .d-data-pilot .icon-previous-page:before {
+  content: "上一页";
+}
+
+.chat .d-data-pilot .icon-next-page:before {
+  content: "下一页";
+}
+
+.chat .d-data-pilot .d-icon-button {
+	margin: 0 8px;
+	padding: 0 8px;
+	width: auto;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    color: #000000;
+    border-color: #d7d7d7;
+    background-color: rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -ms-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: background-color, border-color, color, -webkit-box-shadow, -webkit-transform;
+    -moz-transition-property: background-color, border-color, color, -moz-box-shadow, -moz-transform;
+    -ms-transition-property: background-color, border-color, color, -ms-box-shadow, -ms-transform;
+    -o-transition-property: background-color, border-color, color, -o-box-shadow, -o-transform;
+    transition-property: background-color, border-color, color, box-shadow, transform;
+} 
+
+.chat .d-data-pilot .d-icon-button .d-icon {
+	width: auto;
+}
+
+.chat .edit-control {
+	margin-left: 16px;
+	cursor: pointer;
+	color: rgba(0, 0, 0, .6);
+	position: relative;
+    top: 1.4px;
+}
+
+.chat .member-manager {
+	margin-left: 16px;
+	text-decoration: none;
+}
+
+.chat .float-text-editor {
+	position: absolute;
+    top: 2px;
+    left: 80px;
+    border: 1px #d9d9d9 solid;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding: 2px 3px;
+}

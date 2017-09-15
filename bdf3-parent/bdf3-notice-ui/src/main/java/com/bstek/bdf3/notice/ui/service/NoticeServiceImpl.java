@@ -117,14 +117,33 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 	
 	@Override
-	public void loadUsers(Page<User> page, String usernameOrNickname) {
+	public void loadUsers(Page<User> page, String memberId, String usernameOrNickname) {
 		JpaUtil.linq(User.class)
+			.notEqual("username", memberId)
 			.or()
 				.like("username", "%" + usernameOrNickname + "%")
 				.like("nickname", "%" + usernameOrNickname + "%")
 			.end()
 			.list(page);
-		
+	}
+	
+	@Override
+	public void loadUnselectedUsers(Page<User> page, String groupId, String memberId, String usernameOrNickname) {
+		JpaUtil.linq(User.class)
+			.notEqual("username", memberId)
+			.addIf(groupId)
+				.notExists(GroupMember.class)
+					.equal("groupId", groupId)
+					.equalProperty("memberId", "username")
+				.end()
+			.endIf()
+			.addIf(usernameOrNickname)
+				.or()
+					.like("username", "%" + usernameOrNickname + "%")
+					.like("nickname", "%" + usernameOrNickname + "%")
+				.end()
+			.endIf()
+			.list(page);
 	}
 
 	@Override

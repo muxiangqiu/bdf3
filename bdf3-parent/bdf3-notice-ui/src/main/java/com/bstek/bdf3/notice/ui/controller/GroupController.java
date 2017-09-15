@@ -33,8 +33,8 @@ public class GroupController {
 	}
 	
 	@DataProvider
-	public void loadGroupMembers(Page<GroupMember> page, String groupId) {
-		groupService.loadGroupMembers(page, groupId);
+	public void loadGroupMembers(Page<GroupMember> page, String groupId, String memberIdOrNickname) {
+		groupService.loadGroupMembers(page, groupId, memberIdOrNickname);
 	}
 	
 	@DataResolver

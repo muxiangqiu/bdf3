@@ -1,5 +1,7 @@
 package com.bstek.bdf3.notice.ui.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -30,8 +32,16 @@ public class NoticeController {
 	}
 
 	@DataProvider
-	public void loadUsers(Page<User> page, String usernameOrNickname) {
-		noticeService.loadUsers(page, usernameOrNickname);
+	public void loadUsers(Page<User> page, String memberId, String usernameOrNickname) {
+		noticeService.loadUsers(page, memberId, usernameOrNickname);
+	}
+	
+	@DataProvider
+	public void loadUnselectedUsers(Page<User> page, Map<String, String> params) {
+		String groupId = params.get("groupId");
+		String memberId = params.get("memberId");
+		String usernameOrNickname = params.get("usernameOrNickname");
+		noticeService.loadUnselectedUsers(page, groupId, memberId, usernameOrNickname);
 	}
 	
 	

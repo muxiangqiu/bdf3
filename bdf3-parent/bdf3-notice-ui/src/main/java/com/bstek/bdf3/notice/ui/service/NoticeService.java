@@ -18,12 +18,14 @@ public interface NoticeService {
 
 	void addNotice(Notice notice);
 
-	void loadUsers(Page<User> page, String usernameOrNickname);
-
 	List<Notice> getNotices(String memberId);
 	
 	void markRead(String groupId, String memberId);
 
 	List<Notice> getNotices(String groupId, String memberId);
+
+	void loadUnselectedUsers(Page<User> page, String groupId, String memberId, String usernameOrNickname);
+
+	void loadUsers(Page<User> page, String memberId, String usernameOrNickname);
 
 }
