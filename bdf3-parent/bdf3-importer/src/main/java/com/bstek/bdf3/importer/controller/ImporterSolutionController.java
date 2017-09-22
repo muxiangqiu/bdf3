@@ -63,16 +63,7 @@ public class ImporterSolutionController implements ApplicationContextAware {
 	}
 	
 	@DataProvider
-	public void loadEntries(Page<com.bstek.bdf3.importer.model.Entry> page, Criteria criteria, String importerSolutionId) {
-		JpaUtil.linq(MappingRule.class)
-			.where(criteria)
-			.equal("importerSolutionId", importerSolutionId)
-			.asc("excelColumn")
-			.paging(page);
-	}
-	
-	@DataProvider
-	public Collection<String> loadSessionFactoryNames() {
+	public Collection<String> loadEntityManagerFactoryNames() {
 		return entityManagerFactoryNames;
 	}
 	

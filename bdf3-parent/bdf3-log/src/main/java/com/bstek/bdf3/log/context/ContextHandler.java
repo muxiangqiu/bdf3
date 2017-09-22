@@ -8,4 +8,5 @@ public interface ContextHandler {
 	void set(String key, Object value);
 	Object get(String key);
 	boolean has(String key);
+	String compileText(String value);
 }

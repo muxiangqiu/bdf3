@@ -7,10 +7,10 @@
   </parent>
   <artifactId>bdf3-sample-saas</artifactId>
   <dependencies>
-		<dependency>
+  		<dependency>
 			<groupId>com.bstek.bdf3</groupId>
 			<artifactId>bdf3-starter-saas</artifactId>
-		</dependency>
+  		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>

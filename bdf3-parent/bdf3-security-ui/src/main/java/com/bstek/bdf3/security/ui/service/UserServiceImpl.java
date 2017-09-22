@@ -49,17 +49,19 @@ public class UserServiceImpl implements UserService {
 		JpaUtil.save(users, new SmartSavePolicyAdapter() {
 
 			@Override
-			public void beforeInsert(SaveContext context) {
+			public boolean beforeInsert(SaveContext context) {
 				User user = context.getEntity();
 				user.setPassword(passwordEncoder.encode(user.getPassword()));
+				return true;
 			}
 
 			@Override
-			public void beforeDelete(SaveContext context) {
+			public boolean beforeDelete(SaveContext context) {
 				User user = context.getEntity();
 				JpaUtil.lind(RoleGrantedAuthority.class)
 					.equal("actorId", user.getUsername())
 					.delete();
+				return true;
 			}
 			
 			

@@ -9,12 +9,10 @@ import java.util.Set;
 
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityMetadataSource;
 
-import com.bstek.bdf3.security.Constants;
 import com.bstek.bdf3.security.access.provider.ComponentConfigAttributeProvider;
 import com.bstek.bdf3.security.orm.Component;
 
@@ -32,7 +30,6 @@ public class ComponentSecurityMetadataSource implements SecurityMetadataSource {
 	@Autowired
 	private List<ComponentConfigAttributeProvider> providers;
 	@Override
-	@Cacheable(Constants.COMPONENT_ATTRIBUTE_BY_TARGET_CACHE_KEY)
 	public Collection<ConfigAttribute> getAttributes(Object object)
 			throws IllegalArgumentException {
 		return getComponentMap().get(object.toString());

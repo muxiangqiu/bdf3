@@ -6,48 +6,48 @@
     <DataType name="LogInfo">
       <Property name="creationType">com.bstek.bdf3.log.model.LogInfo</Property>
       <PropertyDef name="id">
-        <Property/>
+        <Property></Property>
         <Property name="label">ID</Property>
       </PropertyDef>
       <PropertyDef name="module">
-        <Property/>
+        <Property></Property>
         <Property name="label">模块</Property>
       </PropertyDef>
       <PropertyDef name="title">
-        <Property/>
+        <Property></Property>
         <Property name="label">标题</Property>
       </PropertyDef>
       <PropertyDef name="desc">
-        <Property/>
+        <Property></Property>
         <Property name="label">描述</Property>
       </PropertyDef>
       <PropertyDef name="operation">
-        <Property/>
+        <Property></Property>
         <Property name="label">操作</Property>
       </PropertyDef>
       <PropertyDef name="operationUser">
-        <Property/>
+        <Property></Property>
         <Property name="label">操作人</Property>
       </PropertyDef>
       <PropertyDef name="operationUserNickname">
-        <Property/>
+        <Property></Property>
         <Property name="label">操作人昵称</Property>
       </PropertyDef>
       <PropertyDef name="operationDate">
-        <Property name="dataType">Date</Property>
+        <Property name="dataType">DateTime</Property>
         <Property name="label">操作时间</Property>
         <Property name="displayFormat">Y-m-d H:i:s</Property>
       </PropertyDef>
       <PropertyDef name="category">
-        <Property/>
+        <Property></Property>
         <Property name="label">分类</Property>
       </PropertyDef>
       <PropertyDef name="IP">
-        <Property/>
+        <Property></Property>
         <Property name="label">IP地址</Property>
       </PropertyDef>
       <PropertyDef name="source">
-        <Property/>
+        <Property></Property>
         <Property name="label">来源</Property>
       </PropertyDef>
     </DataType>
@@ -123,6 +123,24 @@ self.urlQueryTimeout = window.setTimeout(function() {
             <Property name="trigger">triggerClear</Property>
             <Property name="blankText">搜索</Property>
           </TextEditor>
+          <ToolBarButton>
+            <ClientEvent name="onClick" signature="self,arg,dgLogInfo">if (self.get(&quot;caption&quot;) === &quot;显示过滤工具栏&quot;) {
+	dgLogInfo.set(&quot;showFilterBar&quot;, true);
+	self.set({
+		caption: &quot;隐藏过滤工具栏&quot;,
+		iconClass: &quot;fa fa-eye-slash blue-text&quot;
+	});
+} else {
+	dgLogInfo.set(&quot;showFilterBar&quot;, false);
+	self.set({
+		caption: &quot;显示过滤工具栏&quot;,
+		iconClass: &quot;fa fa-eye blue-text&quot;
+	});
+}
+</ClientEvent>
+            <Property name="caption">显示过滤工具栏</Property>
+            <Property name="iconClass">fa fa-eye blue-text</Property>
+          </ToolBarButton>
         </ToolBar>
         <DataGrid id="dgLogInfo">
           <ClientEvent name="onDataRowDoubleClick" signature="self,arg,dialogLogInfo">dialogLogInfo.show();

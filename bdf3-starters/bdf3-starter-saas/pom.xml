@@ -10,10 +10,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.bstek.bdf3</groupId>
-			<artifactId>bdf3-cola</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.bstek.bdf3</groupId>
 			<artifactId>bdf3-saas-ui</artifactId>
 		</dependency>
 		<dependency>
@@ -23,6 +19,10 @@
 		<dependency>
 			<groupId>com.bstek.bdf3</groupId>
 			<artifactId>bdf3-log</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.bstek.bdf3</groupId>
+			<artifactId>bdf3-profile</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.bstek.bdf3</groupId>

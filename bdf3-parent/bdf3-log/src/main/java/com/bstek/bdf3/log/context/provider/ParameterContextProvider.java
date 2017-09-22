@@ -15,7 +15,7 @@ import com.bstek.bdf3.log.annotation.LogDefinition;
 @Component
 public class ParameterContextProvider extends AbstractContextProvider {
 
-	private static final Pattern PATTERN = Pattern.compile("^arg\\(([ha0-9]|[1-9][0-9]+)\\)$");
+	private static final Pattern PATTERN = Pattern.compile("^arg\\(([0-9]|[1-9][0-9]+)\\)$");
 	@Override
 	public Object getContext() {
 		JoinPoint joinPoint = (JoinPoint) contextHandler.get(JOIN_POINT);

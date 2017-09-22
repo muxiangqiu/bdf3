@@ -28,6 +28,10 @@ public class DictionaryExpressionObject {
 		return dictionaryService.getDefaultValueBy(code);
 	}
 	
+	public String defaultKey(String code) {		
+		return dictionaryService.getDefaultKeyBy(code);
+	}
+	
 	public DictionaryItem defaultValueItem(String code) {		
 		return dictionaryService.getDefaultValueItemBy(code);
 	}

@@ -21,9 +21,9 @@
         <Property name="label">方案名称</Property>
         <Property name="required">true</Property>
       </PropertyDef>
-      <PropertyDef name="sessionFactoryName">
+      <PropertyDef name="entityManagerFactoryName">
         <Property></Property>
-        <Property name="label">会话工厂</Property>
+        <Property name="label">实体管理工厂</Property>
         <Property name="required">true</Property>
       </PropertyDef>
       <PropertyDef name="entityClassName">
@@ -310,8 +310,9 @@ id.set(&quot;readOnly&quot;, true);
                 <DataColumn name="name">
                   <Property name="property">name</Property>
                 </DataColumn>
-                <DataColumn name="sessionFactoryName">
-                  <Property name="property">sessionFactoryName</Property>
+                <DataColumn>
+                  <Property name="property">entityManagerFactoryName</Property>
+                  <Property name="name">entityManagerFactoryName</Property>
                 </DataColumn>
                 <DataColumn name="entityClass">
                   <Property name="property">entityClassName</Property>
@@ -387,9 +388,9 @@ if (entity) {
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">sessionFactoryName</Property>
-            <Property name="property">sessionFactoryName</Property>
-            <Property name="trigger">ddSessionFactoryName</Property>
+            <Property name="name">entityManagerFactoryName</Property>
+            <Property name="property">entityManagerFactoryName</Property>
+            <Property name="trigger">ddEntityManagerFactoryName</Property>
             <Property name="editable">false</Property>
             <Editor/>
           </AutoFormElement>
@@ -560,14 +561,14 @@ if (entity) {
       </Children>
       <Tools/>
     </Dialog>
-    <DataSet id="dsSessionFactoryName">
-      <Property name="dataProvider">importer.importerSolutionMaintain#loadSessionFactoryNames</Property>
+    <DataSet id="dsEntityManagerFactoryName">
+      <Property name="dataProvider">importer.importerSolutionMaintain#loadEntityManagerFactoryNames</Property>
       <Property name="dataType">[String]</Property>
     </DataSet>
     <DataSet id="dsEntityClassName">
       <ClientEvent name="beforeLoadData" signature="self,arg,dsImporterSolution">var entity = dsImporterSolution.getData(&quot;#&quot;);
-if (entity &amp;&amp; entity.get(&quot;sessionFactoryName&quot;)) {
-	self.set(&quot;parameter&quot;, entity.get(&quot;sessionFactoryName&quot;))
+if (entity &amp;&amp; entity.get(&quot;entityManagerFactoryName&quot;)) {
+	self.set(&quot;parameter&quot;, entity.get(&quot;entityManagerFactoryName&quot;))
 } else {
 	arg.processDefault = false;
 }
@@ -575,9 +576,9 @@ if (entity &amp;&amp; entity.get(&quot;sessionFactoryName&quot;)) {
       <Property name="dataProvider">importer.importerSolutionMaintain#loadEntityClassNames</Property>
       <Property name="dataType">[String]</Property>
     </DataSet>
-    <DataSetDropDown id="ddSessionFactoryName">
+    <DataSetDropDown id="ddEntityManagerFactoryName">
       <Property name="autoOpen">true</Property>
-      <Property name="dataSet">dsSessionFactoryName</Property>
+      <Property name="dataSet">dsEntityManagerFactoryName</Property>
       <Property name="useDataBinding">false</Property>
     </DataSetDropDown>
     <DataSetDropDown id="ddEntityClassName">

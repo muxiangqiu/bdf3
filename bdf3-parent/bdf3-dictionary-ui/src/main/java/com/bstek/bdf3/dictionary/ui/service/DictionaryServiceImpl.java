@@ -40,6 +40,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 				.linq(DictionaryItem.class)
 				.equal("dictionaryId", dictionaryId)
 				.isNull("parentId")
+				.asc("order")
 				.list();
 	}
 
@@ -48,6 +49,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 		return JpaUtil
 				.linq(DictionaryItem.class)
 				.equal("parentId", parentId)
+				.asc("order")
 				.list();
 	}
 	

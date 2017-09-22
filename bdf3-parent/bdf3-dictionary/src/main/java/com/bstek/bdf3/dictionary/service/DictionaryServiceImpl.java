@@ -41,6 +41,11 @@ public class DictionaryServiceImpl implements DictionaryService {
 	public String getDefaultValueBy(String code) {
 		return getDefaultValueItemBy(code).getValue();
 	}
+	
+	@Override
+	public String getDefaultKeyBy(String code) {
+		return getDefaultValueItemBy(code).getKey();
+	}
 
 	@Override
 	public List<DictionaryItem> getDictionaryItemsBy(String code) {

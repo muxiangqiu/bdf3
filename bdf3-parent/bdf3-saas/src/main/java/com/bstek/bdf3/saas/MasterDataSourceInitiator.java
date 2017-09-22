@@ -1,11 +1,10 @@
 package com.bstek.bdf3.saas;
 
-import javax.persistence.EntityManager;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.jpa.initiator.JpaUtilAble;
@@ -22,37 +21,29 @@ public class MasterDataSourceInitiator implements JpaUtilAble {
 	private DataSourceProperties properties;
 	
 	@Override
+	@Transactional
 	public void afterPropertiesSet(ApplicationContext applicationContext) {
-		EntityManager em = JpaUtil.createEntityManager(DataSourceInfo.class);
-		try {
-			em.getTransaction().begin();
-			boolean isExist = true;
-			DataSourceInfo dataSourceInfo = em.find(DataSourceInfo.class, Constants.MASTER);
-			if (dataSourceInfo == null) {
-				dataSourceInfo = new DataSourceInfo();
-				isExist = false;
-			}
-			dataSourceInfo.setId(Constants.MASTER);
-			dataSourceInfo.setDriverClassName(properties.determineDriverClassName());
-			dataSourceInfo.setEnabled(true);
-			dataSourceInfo.setJndiName(properties.getJndiName());
-			dataSourceInfo.setName("主公司数据源");
-			dataSourceInfo.setUrl(properties.determineUrl());
-			dataSourceInfo.setUsername(properties.determineUsername());
-			dataSourceInfo.setPassword(properties.determinePassword());
-			dataSourceInfo.setShared(true);
-			dataSourceInfo.setDepletionIndex(1);
-			dataSourceInfo.setType(properties.getType() != null ? properties.getType().getName() : null);
-			if (isExist) {
-				em.merge(dataSourceInfo);
-			} else {
-				em.persist(dataSourceInfo);
-			}
-			em.getTransaction().commit();
-		} catch (Exception e) {
-		
-		} finally {
-			em.close();
+		boolean isExist = true;
+		DataSourceInfo dataSourceInfo = JpaUtil.getOne(DataSourceInfo.class, Constants.MASTER);
+		if (dataSourceInfo == null) {
+			dataSourceInfo = new DataSourceInfo();
+			isExist = false;
+		}
+		dataSourceInfo.setId(Constants.MASTER);
+		dataSourceInfo.setDriverClassName(properties.determineDriverClassName());
+		dataSourceInfo.setEnabled(true);
+		dataSourceInfo.setJndiName(properties.getJndiName());
+		dataSourceInfo.setName("主公司数据源");
+		dataSourceInfo.setUrl(properties.determineUrl());
+		dataSourceInfo.setUsername(properties.determineUsername());
+		dataSourceInfo.setPassword(properties.determinePassword());
+		dataSourceInfo.setShared(true);
+		dataSourceInfo.setDepletionIndex(1);
+		dataSourceInfo.setType(properties.getType() != null ? properties.getType().getName() : null);
+		if (isExist) {
+			JpaUtil.merge(dataSourceInfo);
+		} else {
+			JpaUtil.persist(dataSourceInfo);
 		}
 		
 	}

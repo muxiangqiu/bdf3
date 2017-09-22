@@ -64,15 +64,14 @@ public class UrlServiceImpl implements UrlService {
 	public void save(List<Url> urls) {
 		JpaUtil.save(urls, new SmartSavePolicyAdapter() {
 			
-			
-			
 			@Override
-			public void beforeDelete(SaveContext context) {
+			public boolean beforeDelete(SaveContext context) {
 				Url url = context.getEntity();
 				JpaUtil.lind(Permission.class)
 					.equal("resourceId", url.getId())
 					.equal("resourceType", Url.RESOURCE_TYPE)
 					.delete();
+				return true;
 			}
 
 			@Override

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.jpa.JpaUtil;
-import com.bstek.bdf3.security.user.SecurityUserUtil;
+import com.bstek.bdf3.security.orm.User;
 
 /**
  * Spring Security的{@link org.springframework.security.core.userdetails.UserDetailsService}接口的默认实现
@@ -27,9 +27,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throws UsernameNotFoundException {
 		try {
 			
-			UserDetails userDetails = JpaUtil.getOne(SecurityUserUtil.getSecurityUserType(), username);
-			SecurityUserUtil.setAuthorities(userDetails, grantedAuthorityService.getGrantedAuthorities(userDetails));
-			return userDetails;
+			User user = JpaUtil.getOne(User.class, username);
+			user.setAuthorities(grantedAuthorityService.getGrantedAuthorities(user));
+			return user;
 		} catch (Exception e) {
 			throw new UsernameNotFoundException("Not Found");
 		}

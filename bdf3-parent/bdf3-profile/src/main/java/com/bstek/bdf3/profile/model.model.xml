@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="ComponentConfig">
+    <Property name="creationType">com.bstek.bdf3.profile.domain.ComponentConfig</Property>
+    <PropertyDef name="id">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="controlId">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="name">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="hideMode">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="cols">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="meta1">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="meta2">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="meta3">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="ComponentConfigMember">
+    <Property name="creationType">com.bstek.bdf3.profile.domain.ComponentConfigMember</Property>
+    <PropertyDef name="id">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="controlName">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="controlType">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="order">
+      <Property name="dataType">Integer</Property>
+    </PropertyDef>
+    <PropertyDef name="parentControlName">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="caption">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="width">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="colSpan">
+      <Property name="dataType">Integer</Property>
+    </PropertyDef>
+    <PropertyDef name="rowSpan">
+      <Property name="dataType">Integer</Property>
+    </PropertyDef>
+    <PropertyDef name="visible">
+      <Property name="dataType">Boolean</Property>
+    </PropertyDef>
+    <PropertyDef name="componentConfigId">
+      <Property/>
+    </PropertyDef>
+  </DataType>
+</Model>

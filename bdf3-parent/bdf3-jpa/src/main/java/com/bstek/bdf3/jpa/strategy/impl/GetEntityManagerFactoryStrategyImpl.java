@@ -20,10 +20,17 @@ public class GetEntityManagerFactoryStrategyImpl implements
 	@Autowired
 	private List<EntityManagerFactory> entityManagerFactories;
 	
+	@Autowired
+	private EntityManagerFactory entityManagerFactory;
+	
 	
 
 	@Override
 	public EntityManagerFactory getEntityManagerFactory(Class<?> domainClass) {
+		if (domainClass == null) {
+			return entityManagerFactory;
+		}
+		
 		RuntimeException exception = new RuntimeException("entityManagerFactories can not be empty!");
 		for (EntityManagerFactory emf : entityManagerFactories) {
 			try {

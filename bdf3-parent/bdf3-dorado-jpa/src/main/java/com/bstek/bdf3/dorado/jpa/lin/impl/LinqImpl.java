@@ -732,7 +732,14 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 
 	@Override
 	public <T> List<T> list(Page<T> page) {
-		return list(page.getPageNo() - 1, page.getPageSize());
+		List<T> result = list(page.getPageNo() - 1, page.getPageSize());
+		page.setEntities(result);
+		if (result.size() == page.getPageSize()) {
+			page.setEntityCount(Integer.MAX_VALUE);
+		} else {
+			page.setEntityCount(( page.getPageNo() - 1 ) * page.getPageSize() + result.size());
+		}
+		return result;
 	}
 
 

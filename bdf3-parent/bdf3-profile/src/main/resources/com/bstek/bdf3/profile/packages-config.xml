@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <Packages>
+        <Package name="componentProfileAction" pattern="dorado-js" depends="base-widget">
+            scripts/ComponentProfileAction,
+        </Package>
+        <Package name="autoFormProfileAction" pattern="dorado-js" depends="componentProfileAction">
+            scripts/AutoFormProfileAction,
+        </Package>
+        <Package name="dataGridProfileAction" pattern="dorado-js" depends="componentProfileAction">
+            scripts/DataGridProfileAction,
+        </Package>
+    </Packages>
+</config>

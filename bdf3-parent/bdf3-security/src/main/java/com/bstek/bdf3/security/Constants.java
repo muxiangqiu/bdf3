@@ -37,7 +37,7 @@ public final class Constants {
 	public final static String COMPONENT_MAP_CACHE_KEY = "ComponentMap";
 	
 	/**
-	 * 特定组件权限婚车关键字
+	 * 特定组件权限缓存关键字
 	 */
 	public final static String COMPONENT_ATTRIBUTE_BY_TARGET_CACHE_KEY = "ComponentAttributeByTargetCacheKey";
 	public final static String[] COMPONENT_SECURITY = new String[] {COMPONENT_ATTRIBUTE_MAP_CACHE_KEY};

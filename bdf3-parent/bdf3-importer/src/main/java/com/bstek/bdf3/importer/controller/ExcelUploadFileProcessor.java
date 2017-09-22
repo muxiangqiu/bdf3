@@ -44,6 +44,7 @@ public class ExcelUploadFileProcessor implements ApplicationContextAware{
 					context.setFileName(name);
 					context.setFileSize(file.getSize());
 					context.setImporterSolutionId(importerSolutionId);
+					context.setParams(parameter);
 					excelPolicy.apply(context);
 					break;
 				}

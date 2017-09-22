@@ -42,7 +42,7 @@ public class RoleServiceImpl implements RoleService {
 	class RoleSavePolicy extends SmartSavePolicyAdapter {
 
 		@Override
-		public void beforeDelete(SaveContext context) {
+		public boolean beforeDelete(SaveContext context) {
 			if (context.getEntity() instanceof Role) {
 				Role role = context.getEntity();
 				JpaUtil
@@ -55,6 +55,7 @@ public class RoleServiceImpl implements RoleService {
 					.equal("roleId", role.getId())
 					.delete();
 			}
+			return true;
 		}
 
 	}

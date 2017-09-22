@@ -3,6 +3,7 @@ package com.bstek.bdf3.importer.policy;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.bdf3.importer.model.Cell;
@@ -44,6 +45,16 @@ public class Context {
     private Class<?> entityClass;
     
     private Object value;
+    
+    private Map<String, Object> params;
+
+	public Map<String, Object> getParams() {
+		return params;
+	}
+
+	public void setParams(Map<String, Object> params) {
+		this.params = params;
+	}
 
 	public InputStream getInpuStream() {
 		return inpuStream;

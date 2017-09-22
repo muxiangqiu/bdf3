@@ -15,5 +15,9 @@
   	  <groupId>com.bstek.bdf3</groupId>
       <artifactId>bdf3-security</artifactId>
   	</dependency>
+  	<dependency>
+  	  <groupId>com.bstek.bdf3</groupId>
+      <artifactId>bdf3-notice-ui</artifactId>
+  	</dependency>
   </dependencies>
 </project>

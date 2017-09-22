@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.bstek.bdf3.autoconfigure.security.SecurityAutoConfiguration;
+import com.bstek.bdf3.notice.NoticeConfiguration;
 import com.bstek.bdf3.saas.SaasConfiguration;
 
 /**
@@ -40,6 +41,16 @@ public class SaasAutoConfiguration {
 	@Primary
 	public PlatformTransactionManager transactionManager() {
 		return new SaasJpaTransactionManager();
+	}
+	
+	@ConditionalOnClass(NoticeConfiguration.class)
+	protected static class CategoryProviderConfiguration {
+		
+		@Bean
+		@Primary
+		public SaasCategoryProvider saasCategoryProvider() {
+			return new SaasCategoryProvider();
+		}
 	}
 	
 }

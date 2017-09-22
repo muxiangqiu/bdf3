@@ -27,6 +27,9 @@ public class GetEntityManagerFactoryStrategyImpl implements
 	private List<EntityManagerFactory> entityManagerFactories;
 	
 	@Autowired
+	private EntityManagerFactory entityManagerFactory;
+	
+	@Autowired
 	private EntityManagerFactoryService entityManagerFactoryService;
 
 	@Override
@@ -36,11 +39,19 @@ public class GetEntityManagerFactoryStrategyImpl implements
 			OrganizationSupport support = (OrganizationSupport) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			EntityManagerFactory entityManagerFactory = entityManagerFactoryService.getOrCreateEntityManagerFactory((Organization) support.getOrganization());
 			try {
-				entityManagerFactory.getMetamodel().entity(domainClass);
-				return entityManagerFactory;
+				if (domainClass == null) {
+					return entityManagerFactory;
+				} else {
+					entityManagerFactory.getMetamodel().entity(domainClass);
+					return entityManagerFactory;
+				}
 			} catch (IllegalArgumentException e) {
 				exception = e;
 			}
+		}
+		
+		if (domainClass == null) {
+			return entityManagerFactory;
 		}
 		
 		for (EntityManagerFactory emf : entityManagerFactories) {

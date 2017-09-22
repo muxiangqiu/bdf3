@@ -57,6 +57,12 @@ public class EntityManagerFactoryServiceImpl implements
 	private DataSourceService dataSourceService;
 	
 	@Autowired
+	private ScriptService scriptService;
+	
+	@Value("${bdf3.saas.dataScript:}")
+	private String dataScript;
+	
+	@Autowired
 	private EntityManagerFactory emf;
 	
 	@Autowired(required = false)
@@ -103,10 +109,11 @@ public class EntityManagerFactoryServiceImpl implements
 	
 	@Value("${bdf3.saas.packagesToScan:"
 			+ "com.bstek.bdf3.security.orm,"
-			+ "com.bstek.bdf3.message.domain,"
+			+ "com.bstek.bdf3.notify.domain,"
 			+ "com.bstek.bdf3.dictionary.domain,"
 			+ "com.bstek.bdf3.log.model,"
-			+ "com.bstek.bdf3.importer.model}")
+			+ "com.bstek.bdf3.importer.model,"
+			+ "com.bstek.bdf3.profile.domain}")
 	private String packagesToScan;
 	
 	protected AbstractJpaVendorAdapter createJpaVendorAdapter() {
@@ -149,6 +156,7 @@ public class EntityManagerFactoryServiceImpl implements
 		entityManagerFactoryBean.setResourceLoader(resourceLoader);
 		entityManagerFactoryBean.setPersistenceUnitName(organization.getId());
 		entityManagerFactoryBean.afterPropertiesSet();
+		scriptService.runScripts(organization.getId(), dataSource, dataScript, "saas-data");
 		return entityManagerFactoryBean.getObject();
 	}
 	

@@ -15,12 +15,29 @@
     display: inline-block;
 }
 
+.main .banner .icon.remind .notify-total {
+	display: none;
+	position: relative;
+	left: 19px;
+	top: -1px;
+	background: red;
+	color: white;
+	padding: 2px;
+	min-width: 16px;
+	text-align: center;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	-moz-border-radius: 20px;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+}
+
 .main .banner .icon {
 	background-repeat: no-repeat;
 	background-position: center;
 	float: right;
-    height: 64px;
-    width: 64px;
+    height: 40px;
+    width: 40px;
+    margin: 12px 0;
     cursor: pointer;
 }
 
@@ -29,10 +46,16 @@
     outline: none;
     -webkit-border-radius: 50%;
     border-radius: 50%;
+    -moz-border-radius: 50%;
 }
 
 .main .banner .icon.personal-center {
 	background-image: url(dorado/res/static/images/personal-center.svg);
+	margin-right: 10px;
+}
+
+.main .banner .icon.remind {
+	background-image: url(dorado/res/static/images/remind.svg);
 }
 
 .main .banner .icon.search {
@@ -129,6 +152,40 @@
 .main .history-container:hover .clear-history:hover {
 	color: red;
 	opacity: 1;
+}
+
+.menu-search .d-icon {
+	line-height: 24px !important;
+	-webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+	
+}
+
+.menu-search.d-text-box .d-trigger{
+	line-height: 24px !important;
+	height: 24px;
+	width: 24px;
+	-webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+	
+}
+
+.d-tabbar.d-tabbar-top .tab {
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius-topleft: 0;
+   	border-top-left-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-radius-topright: 0;
+    border-top-right-radius: 0;
+    border-right: none;
+}
+
+.workspace.d-panel {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 
 

@@ -9,11 +9,15 @@
   <dependencies>
   	<dependency>
   		<groupId>com.bstek.bdf3</groupId>
+  		<artifactId>bdf3-jpa</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.bstek.bdf3</groupId>
   		<artifactId>bdf3-autoconfigure</artifactId>
   	</dependency>
   	<dependency>
   		<groupId>com.bstek.bdf3</groupId>
-  		<artifactId>bdf3-message-cola-ui</artifactId>
+  		<artifactId>bdf3-cola</artifactId>
   	</dependency>
   </dependencies>
 </project>
