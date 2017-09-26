@@ -38,6 +38,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 
 import com.bstek.bdf3.saas.Constants;
 import com.bstek.bdf3.saas.domain.Organization;
@@ -116,8 +117,23 @@ public class EntityManagerFactoryServiceImpl implements
 			+ "com.bstek.bdf3.profile.domain}")
 	private String packagesToScan;
 	
+	@Value("${bdf3.saas.customPackagesToScan:}")
+	private String customPackagesToScan;
+	
 	protected AbstractJpaVendorAdapter createJpaVendorAdapter() {
 		return new HibernateJpaVendorAdapter();
+	}
+	
+	private String[] mergePackagesToScan() {
+		String[] packages = null;
+		if (StringUtils.hasText(packagesToScan) && StringUtils.hasText(customPackagesToScan)) {
+			packages = (packagesToScan + "," + customPackagesToScan).split(",");
+		} else if (StringUtils.hasText(packagesToScan)) {
+			packages = packagesToScan.split(",");
+		}  else if (StringUtils.hasText(customPackagesToScan)) {
+			packages = customPackagesToScan.split(",");
+		}
+		return packages;
 	}
 	
 	public JpaVendorAdapter getJpaVendorAdapter() {
@@ -147,7 +163,7 @@ public class EntityManagerFactoryServiceImpl implements
 		DataSource dataSource = dataSourceService.getOrCreateDataSource(organization);
 		Map<String, Object> vendorProperties = getVendorProperties(dataSource);
 		customizeVendorProperties(vendorProperties);
-		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = getEntityManagerFactoryBuilder().dataSource(dataSource).packages(packagesToScan.split(","))
+		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = getEntityManagerFactoryBuilder().dataSource(dataSource).packages(mergePackagesToScan())
 				.properties(vendorProperties).jta(isJta()).build();
 		entityManagerFactoryBean.setBeanClassLoader(classLoader);
 		entityManagerFactoryBean.setBeanFactory(beanFactory);
@@ -323,7 +339,7 @@ public class EntityManagerFactoryServiceImpl implements
 		if (dataSource != null) {
 			Map<String, Object> vendorProperties = getVendorProperties(dataSource);
 			customizeVendorProperties(vendorProperties);
-		    Builder builder = getEntityManagerFactoryBuilder().dataSource(dataSource).packages(packagesToScan.split(","))
+		    Builder builder = getEntityManagerFactoryBuilder().dataSource(dataSource).packages(mergePackagesToScan())
 					.properties(vendorProperties).jta(isJta());
 			LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = builder.build();
 			entityManagerFactoryBean.setBeanClassLoader(classLoader);
