@@ -52,9 +52,8 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 	@SuppressWarnings("unchecked")
 	@Override
 	public DataSource createDataSource(Organization organization) {
-		try {
+		return SaasUtils.doQuery(() -> {
 			DataSource dataSouce = null;
-			SaasUtils.pushMasterSecurityContext();
 			DataSourceInfo dataSourceInfo = dataSourceInfoService.get(organization);
 			if (StringUtils.isEmpty(dataSourceInfo.getJndiName())) {
 				String master = Constants.MASTER;
@@ -69,7 +68,11 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 					factory.driverClassName(dataSourceInfo.getDriverClassName());
 				}
 				if (!StringUtils.isEmpty(dataSourceInfo.getType())) {
-					factory.type((Class<? extends DataSource>) Class.forName(dataSourceInfo.getType()));
+					try {
+						factory.type((Class<? extends DataSource>) Class.forName(dataSourceInfo.getType()));
+					} catch (ClassNotFoundException e) {
+						throw new RuntimeException(e.getMessage());
+					}
 				}
 				publishEvent(organization, dataSourceInfo, factory);
 				dataSouce = factory.build();
@@ -79,14 +82,8 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 			}
 			dataSourceMap.put(organization.getId(), dataSouce);
 			return dataSouce;
-			
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e.getMessage());
-		} finally {
-			SaasUtils.popSecurityContext();
-		}
-		
-		
+		});
+
 	}
 	
 	

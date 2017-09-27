@@ -2,16 +2,13 @@ package com.bstek.bdf3.saas;
 
 import java.util.Stack;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.saas.command.Command;
 import com.bstek.bdf3.saas.command.CommandNeedReturn;
 import com.bstek.bdf3.saas.domain.Organization;
-import com.bstek.bdf3.saas.domain.TempOrganizationSupport;
 import com.bstek.bdf3.saas.service.CommandService;
-import com.bstek.bdf3.security.orm.OrganizationSupport;
+import com.bstek.bdf3.security.ContextUtils;
+import com.bstek.bdf3.security.orm.User;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -19,98 +16,88 @@ import com.bstek.bdf3.security.orm.OrganizationSupport;
  */
 public abstract class SaasUtils {
 	
-	private static ThreadLocal<Stack<Authentication>> threadLocal = new ThreadLocal<Stack<Authentication>>();
+	private static ThreadLocal<Stack<Organization>> threadLocal = new ThreadLocal<Stack<Organization>>();
 	private static CommandService commandService;
-
-	public static final void setSecurityContext(String organizationId) {
+	
+	public static final void pushOrganization(String organizationId) {
 		Organization organization = new Organization();
 		organization.setId(organizationId);
-		setSecurityContext(organization);
-	}
-	
-	public static final void setSecurityContext(Organization organization) {
-		TempOrganizationSupport tempOrganizationSupport = new TempOrganizationSupport();
-		Organization tempOrganization = new Organization();
-		tempOrganization.setId(organization.getId());
-		tempOrganizationSupport.setOrganization(tempOrganization);		
-		SecurityContextHolder.getContext().setAuthentication(new OrganizationAuthentication(tempOrganizationSupport));
-	}
-	
-	public static final void pushSecurityContext(String organizationId) {
-		Organization organization = new Organization();
-		organization.setId(organizationId);
-		pushSecurityContext(organization);
+		pushOrganization(organization);
 	}
 	
 	public static final void pushMasterSecurityContext() {
-		pushSecurityContext(Constants.MASTER);
+		pushOrganization(Constants.MASTER);
 	}
 
 	
-	public static final void pushSecurityContext(Organization organization) {
-		TempOrganizationSupport tempOrganizationSupport = new TempOrganizationSupport();
+	public static final void pushOrganization(Organization organization) {
 		Organization tempOrganization = new Organization();
 		tempOrganization.setId(organization.getId());
-		tempOrganizationSupport.setOrganization(tempOrganization);
-		Stack<Authentication> stack = threadLocal.get();
+		Stack<Organization> stack = threadLocal.get();
 		if (stack == null) {
-			stack = new Stack<Authentication>();
+			stack = new Stack<Organization>();
 			threadLocal.set(stack);
 		}
-		stack.push(SecurityContextHolder.getContext().getAuthentication());
-		SecurityContextHolder.getContext().setAuthentication(new OrganizationAuthentication(tempOrganizationSupport));
+		stack.push(organization);
 	}
 	
-	public static final void popSecurityContext() {
-		Stack<Authentication> stack = threadLocal.get();
-		if (stack == null) {
-			return;
-		}
+	public static final Organization popOrganization() {
+		Stack<Organization> stack = threadLocal.get();
 		if (!stack.isEmpty()) {
-			SecurityContextHolder.getContext().setAuthentication(stack.pop());
+			return stack.pop();
 		}
-		if (stack.isEmpty()) {
+		if (stack != null && stack.isEmpty()) {
 			threadLocal.remove();
 		}
+		User user = ContextUtils.getLoginUser();
+		return user.getOrganization();
 	}
 	
-	public static final void clearSecurityContext() {
-		SecurityContextHolder.getContext().setAuthentication(null);
+	public static final Organization peekOrganization() {
+		Stack<Organization> stack = threadLocal.get();
+		if (stack == null || stack.isEmpty()) {
+			User user = ContextUtils.getLoginUser();
+			if (user == null) {
+				return null;
+			}
+			return user.getOrganization();
+		}
+		return stack.peek();
 	}
 	
 	public static <T> T doQuery(String organizationId, CommandNeedReturn<T> command) {
 		try {
-			pushSecurityContext(organizationId);
+			pushOrganization(organizationId);
 			return getCommandService().executeQueryCommand(command);
 		} finally {
-			popSecurityContext();
+			popOrganization();
 		}
 	}
 	
 	public static <T> T doNonQuery(String organizationId, CommandNeedReturn<T> command) {
 		try {
-			pushSecurityContext(organizationId);
+			pushOrganization(organizationId);
 			return getCommandService().executeNonQueryCommand(command);
 		} finally {
-			popSecurityContext();
+			popOrganization();
 		}
 	}
 	
 	public static void doQuery(String organizationId, Command command) {
 		try {
-			pushSecurityContext(organizationId);
+			pushOrganization(organizationId);
 			getCommandService().executeQueryCommand(command);
 		} finally {
-			popSecurityContext();
+			popOrganization();
 		}
 	}
 	
 	public static void doNonQuery(String organizationId, Command command) {
 		try {
-			pushSecurityContext(organizationId);
+			pushOrganization(organizationId);
 			getCommandService().executeNonQueryCommand(command);
 		} finally {
-			popSecurityContext();
+			popOrganization();
 		}
 	}
 	
@@ -131,9 +118,9 @@ public abstract class SaasUtils {
 	}
 	
 	public static Organization getLoginOrg() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (principal instanceof OrganizationSupport) {
-			return ((OrganizationSupport) principal).getOrganization();
+		User user = ContextUtils.getLoginUser();
+		if (user != null) {
+			return user.getOrganization();
 		}
 		return null;
 	}

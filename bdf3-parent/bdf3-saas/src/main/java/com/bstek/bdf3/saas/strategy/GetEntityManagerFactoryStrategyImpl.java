@@ -6,13 +6,12 @@ import javax.persistence.EntityManagerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.bstek.bdf3.jpa.strategy.GetEntityManagerFactoryStrategy;
+import com.bstek.bdf3.saas.SaasUtils;
 import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.saas.service.EntityManagerFactoryService;
-import com.bstek.bdf3.security.orm.OrganizationSupport;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -35,9 +34,9 @@ public class GetEntityManagerFactoryStrategyImpl implements
 	@Override
 	public EntityManagerFactory getEntityManagerFactory(Class<?> domainClass) {
 		RuntimeException exception = new RuntimeException("entityManagerFactories can not be empty!");
-		if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof OrganizationSupport) {
-			OrganizationSupport support = (OrganizationSupport) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			EntityManagerFactory entityManagerFactory = entityManagerFactoryService.getOrCreateEntityManagerFactory((Organization) support.getOrganization());
+		Organization organization = SaasUtils.peekOrganization();
+		if (organization != null) {
+			EntityManagerFactory entityManagerFactory = entityManagerFactoryService.getOrCreateEntityManagerFactory(organization);
 			try {
 				if (domainClass == null) {
 					return entityManagerFactory;

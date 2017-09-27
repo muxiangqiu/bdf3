@@ -5,12 +5,11 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.bstek.bdf3.saas.SaasUtils;
 import com.bstek.bdf3.saas.domain.Organization;
 import com.bstek.bdf3.saas.service.DataSourceService;
 import com.bstek.bdf3.saas.service.EntityManagerFactoryService;
-import com.bstek.bdf3.security.orm.OrganizationSupport;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -25,21 +24,22 @@ public class SaasJpaTransactionManager extends JpaTransactionManager {
 	
 	@Autowired
 	private DataSourceService dataSourceService;
-
+	
 	@Override
 	public EntityManagerFactory getEntityManagerFactory() {
-		if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof OrganizationSupport) {
-			OrganizationSupport support = (OrganizationSupport) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			return entityManagerFactoryService.getOrCreateEntityManagerFactory((Organization) support.getOrganization());
+		Organization organization = SaasUtils.peekOrganization();
+		if (organization != null) {
+			return entityManagerFactoryService.getEntityManagerFactory(organization);
 		}
 		return super.getEntityManagerFactory();
+		
 	}
 
 	@Override
 	public DataSource getDataSource() {
-		if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof OrganizationSupport) {
-			OrganizationSupport support = (OrganizationSupport) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			return dataSourceService.getDataSource((Organization) support.getOrganization());
+		Organization organization = SaasUtils.peekOrganization();
+		if (organization != null) {
+			return dataSourceService.getDataSource(organization);
 		}
 		return super.getDataSource();
 	}	

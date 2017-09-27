@@ -2,9 +2,7 @@ package com.bstek.bdf3.saas.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +17,7 @@ import com.bstek.bdf3.saas.resource.ResourceReleaser;
  */
 @Service
 @Transactional(readOnly = true)
-public class OrganizationServiceImpl implements OrganizationService, InitializingBean {
+public class OrganizationServiceImpl implements OrganizationService {
 
 	@Autowired
 	private List<ResourceAllocator> allocators;
@@ -39,12 +37,6 @@ public class OrganizationServiceImpl implements OrganizationService, Initializin
 			allocator.allocate(organization);
 		}
 		JpaUtil.persist(organization);
-	}
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		AnnotationAwareOrderComparator.sort(allocators);
-		AnnotationAwareOrderComparator.sort(releasers);
 	}
 	
 	@Override

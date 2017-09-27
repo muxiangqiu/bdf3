@@ -30,23 +30,17 @@ public class RegisterServiceImpl implements RegisterService {
 	public void registerOrganization(User user) {
 		Organization organization = user.getOrganization();
 		organizationService.register(organization);
-		try {
-			SaasUtils.pushSecurityContext(organization);
+		SaasUtils.doNonQuery(organization.getId(), () -> {
 			userService.save(user);
-		} finally {
-			SaasUtils.popSecurityContext();
-		}
+		});
 	}
 
 	@Override
 	public void registerUser(User user) {
 		Organization organization = user.getOrganization();
-		try {
-			SaasUtils.pushSecurityContext(organization);
+		SaasUtils.doNonQuery(organization.getId(), () -> {
 			userService.save(user);
-		} finally {
-			SaasUtils.popSecurityContext();
-		}
+		});
 	}
 	
 	@Override
@@ -59,14 +53,9 @@ public class RegisterServiceImpl implements RegisterService {
 		if (!isExistOrganization(organizationId)) {
 			return false;
 		}
-		try {
-			SaasUtils.pushSecurityContext(organizationId);
+		return SaasUtils.doQuery(organizationId, () -> {
 			return userService.isExist(username);
-		} catch(Exception e) {
-			return false;
-		} finally {
-			SaasUtils.popSecurityContext();
-		}
+		});
 	}
 
 	@Override
