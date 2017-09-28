@@ -211,7 +211,6 @@ Chat.addReceiveListener(function(c, arg) {
 Chat.addChatCloseListener(function() {
 	Chat.hide();
 });
-
 </ClientEvent>
     <ClientEvent name="onClick" signature="self,arg,personalCenter">personalCenter.hide();
 </ClientEvent>
@@ -330,7 +329,7 @@ dialogPassword.show();
                 <Property name="caption">修改密码</Property>
               </Button>
               <Button layoutConstraint="right">
-                <ClientEvent name="onClick" signature="self,arg,Chat">window.location.href = &quot;${configure['bdf3.logoutPath']}&quot;
+                <ClientEvent name="onClick" signature="self,arg,Chat">window.location.href = &quot;${configure['bdf3.logoutPath']}&quot;;
 </ClientEvent>
                 <Property name="caption">退出</Property>
               </Button>

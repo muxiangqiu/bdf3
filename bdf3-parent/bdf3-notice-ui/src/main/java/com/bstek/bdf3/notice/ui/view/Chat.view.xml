@@ -75,6 +75,11 @@ self.connectNotifyServer = function() {
 
 		}
 	});
+	self._noticeSocket._protocol._pollingAjaxEngine.addListener(&quot;onDisconnect&quot;, function(self, arg) {
+		if (arg.result._connObj.conn.responseURL.indexOf(arg.result.url) === -1) {
+			window.location.href = &quot;${configure['bdf3.loginSuccessPage']}&quot;;
+		}
+	});
 };
 
 self.send = function(notice) {
@@ -82,13 +87,6 @@ self.send = function(notice) {
 }
 
 self.connectNotifyServer();
-
-$(window).bind(&quot;beforeunload&quot;, function(){
-	if (self._noticeSocket.get(&quot;connected&quot;)) {
-		self._noticeSocket.disconnect();
-	}
-	return;
-});
 
 self.doReceiveNotice = function(s, arg) {
 	if(arg.type === &quot;message&quot;) {
