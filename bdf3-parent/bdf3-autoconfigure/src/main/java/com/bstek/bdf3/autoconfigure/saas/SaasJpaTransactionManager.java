@@ -29,7 +29,7 @@ public class SaasJpaTransactionManager extends JpaTransactionManager {
 	public EntityManagerFactory getEntityManagerFactory() {
 		Organization organization = SaasUtils.peekOrganization();
 		if (organization != null) {
-			return entityManagerFactoryService.getEntityManagerFactory(organization);
+			return entityManagerFactoryService.getOrCreateEntityManagerFactory(organization);
 		}
 		return super.getEntityManagerFactory();
 		
@@ -39,7 +39,7 @@ public class SaasJpaTransactionManager extends JpaTransactionManager {
 	public DataSource getDataSource() {
 		Organization organization = SaasUtils.peekOrganization();
 		if (organization != null) {
-			return dataSourceService.getDataSource(organization);
+			return dataSourceService.getOrCreateDataSource(organization);
 		}
 		return super.getDataSource();
 	}	
