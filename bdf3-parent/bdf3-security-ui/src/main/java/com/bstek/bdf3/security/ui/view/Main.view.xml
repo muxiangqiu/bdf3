@@ -695,19 +695,19 @@ if (tab) {
         </AjaxAction>
         <Container layout="hbox pack:center;regionPadding:15" layoutConstraint="bottom">
           <Button>
-            <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide();
+            <ClientEvent name="onClick">self.get(&quot;parent.parent&quot;).hide();
 </ClientEvent>
             <Property name="caption">取消</Property>
             <Property name="width">60</Property>
           </Button>
           <Button>
             <ClientEvent name="onClick" signature="self,arg,ajaxActionChangePassword,autoFormPassword">var newPassword = autoFormPassword.get(&quot;entity&quot;).get(&quot;newPassword&quot;);
-if (autoFormPassword.validate(true) === &quot;ok&quot;) {
+if (autoFormPassword.validate(true) === true) {
 	ajaxActionChangePassword.set(&quot;parameter&quot;, {
 		username: &quot;${loginUsername}&quot;,
 		newPassword: newPassword
 	}).execute(function() {
-		self.get(&quot;parent&quot;).hide();
+		self.get(&quot;parent.parent&quot;).hide();
 		autoFormPassword.get(&quot;entity&quot;).reset();
 	});
 } else {
