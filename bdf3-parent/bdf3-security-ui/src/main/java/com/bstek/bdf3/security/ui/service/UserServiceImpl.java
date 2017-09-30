@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 		if (passwordEncoder.matches(oldPassword, password)) {
 			return null;
 		}
-		return "旧密码输入不正确。";
+		return "原来密码输入不正确。";
 	}
 	
 	@Override
