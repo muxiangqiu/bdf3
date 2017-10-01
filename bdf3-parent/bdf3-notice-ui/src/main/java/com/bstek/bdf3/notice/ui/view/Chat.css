@@ -180,6 +180,7 @@
     color: #fff;
     text-align: center;
     line-height: 40px;
+    font-size: 1.6em;
 }
 
 .chat .group-name {
@@ -188,7 +189,7 @@
     font-size: 1.1em;
     margin-top: 12px;
     font-weight: bolder;
-    width: calc(100% - 100px);
+    width: calc(100% - 68px);
     text-overflow: ellipsis;
     overflow: hidden;
 }
@@ -197,10 +198,15 @@
 	display: inline-block;
     position: absolute;
     margin-top: 34px;
-    width: calc(100% - 100px);
+    width: calc(100% - 68px);
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+.chat .group-name.options, .chat .group-description{
+ 	width: calc(100% - 100px);
+}
+
 
 .chat .d-list-box .data-table .current-row {
     color: rgba(0, 0, 0, 0.8);
@@ -298,6 +304,21 @@
 
 .chat .d-data-pilot .d-icon-button .d-icon {
 	width: auto;
+}
+
+.chat .group-icon-control {
+	cursor: pointer;
+	color: rgba(0, 0, 0, .6);
+	position: relative;
+    top: 1.4px;
+    font-size: 1.8em;
+}
+
+.chat .select-icon {
+	border: 1px dashed #ccc;
+    padding: 2px 3px;
+    font-size: 1em;
+    color: rgba(0, 0, 0, .5);
 }
 
 .chat .edit-control {

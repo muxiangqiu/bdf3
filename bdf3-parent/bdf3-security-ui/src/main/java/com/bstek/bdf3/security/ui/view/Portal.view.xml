@@ -234,7 +234,7 @@ Chat.addReceiveListener(function(c, arg) {
 </ClientEvent>
     <ClientEvent name="onClick" signature="self,arg,personalCenter">personalCenter.hide();
 </ClientEvent>
-    <Property name="packages">chat,jquery-cookie,font-awesome,entypo,colors</Property>
+    <Property name="packages">chat,jquery-cookie,font-awesome-new,entypo,colors</Property>
     <Property name="skin">${bdf3.framework.skin}</Property>
     <Property name="exClassName">main</Property>
     <Property name="cache">

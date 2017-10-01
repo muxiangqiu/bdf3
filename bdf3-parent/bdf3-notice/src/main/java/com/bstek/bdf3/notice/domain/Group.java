@@ -24,6 +24,9 @@ public class Group {
 	@Column(name = "NAME_", length = 255)
 	private String name;
 	
+	@Column(name = "ICON_", length = 255)
+	private String icon;
+	
 	@Column(name = "CREATOR_", length = 64)
 	private String creator;
 	
@@ -77,6 +80,14 @@ public class Group {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 	public String getCreator() {

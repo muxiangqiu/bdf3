@@ -164,7 +164,7 @@ function doPermission(url, checked) {
     </DataType>
   </Model>
   <View layout="regionPadding:15">
-    <Property name="packages">font-awesome,entypo,colors</Property>
+    <Property name="packages">font-awesome-new,entypo,colors</Property>
     <DataSet id="dsUrl">
       <Property name="dataType">[Url]</Property>
       <Property name="dataProvider">urlController#load</Property>

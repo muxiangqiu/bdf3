@@ -8,6 +8,10 @@
     <PropertyDef name="name">
       <Property></Property>
     </PropertyDef>
+    <PropertyDef name="icon">
+      <Property/>
+      <Property name="label">群图标</Property>
+    </PropertyDef>
     <PropertyDef name="creator">
       <Property></Property>
     </PropertyDef>
@@ -65,6 +69,10 @@
       <Property></Property>
       <Property name="label">群名称</Property>
     </PropertyDef>
+    <PropertyDef name="icon">
+      <Property/>
+      <Property name="label">群图标</Property>
+    </PropertyDef>
     <PropertyDef name="creator">
       <Property></Property>
       <Property name="label">创建者</Property>
@@ -88,7 +96,7 @@
       <Property name="parameter">
         <Entity>
           <Property name="groupId">$${this.id}</Property>
-          <Property name="memberIdOrNickname"/>
+          <Property name="memberIdOrNickname"></Property>
         </Entity>
       </Property>
     </Reference>

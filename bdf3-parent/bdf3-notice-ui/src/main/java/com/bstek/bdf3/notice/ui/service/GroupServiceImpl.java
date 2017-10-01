@@ -56,11 +56,14 @@ public class GroupServiceImpl implements GroupService{
 				.collect(Notice.class, "lastNoticeId")
 				.idEqual(groupId)
 				.list();
-		JpaUtil.linu(GroupMember.class)
-			.equal("groupId", groups.get(0).getId())
-			.equal("memberId", memberId)
-			.set("active", true)
-			.update();
+		Group group = groups.get(0);
+		if (!group.isAll() && !group.isSystem()) {
+			JpaUtil.linu(GroupMember.class)
+				.equal("groupId", groups.get(0).getId())
+				.equal("memberId", memberId)
+				.set("active", true)
+				.update();
+		}
 		parseActiveGroups(groups, memberId);
 		return groups.get(0);
 	}
@@ -211,5 +214,15 @@ public class GroupServiceImpl implements GroupService{
 		}
 		
 		return null;
+	}
+
+	@Override
+	@Transactional
+	public void freezeGroup(String groupId, String memberId) {
+		JpaUtil.linu(GroupMember.class)
+			.equal("groupId", groupId)
+			.equal("memberId", memberId)
+			.set("active", false)
+			.update();
 	}
 }

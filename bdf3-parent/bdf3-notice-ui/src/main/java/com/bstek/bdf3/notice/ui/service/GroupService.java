@@ -25,5 +25,7 @@ public interface GroupService {
 	Group loadPrivateLetterGroup(String memberId, String otherId);
 
 	void loadGroupMembers(Page<GroupMember> page, String groupId, String memberIdOrNickname);
+
+	void freezeGroup(String groupId, String memberId);
 	
 }

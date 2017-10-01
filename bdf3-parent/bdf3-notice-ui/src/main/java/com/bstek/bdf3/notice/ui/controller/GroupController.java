@@ -10,6 +10,7 @@ import com.bstek.bdf3.notice.domain.GroupMember;
 import com.bstek.bdf3.notice.ui.service.GroupService;
 import com.bstek.dorado.annotation.DataProvider;
 import com.bstek.dorado.annotation.DataResolver;
+import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.provider.Page;
 
 /**
@@ -50,6 +51,11 @@ public class GroupController {
 	@DataProvider
 	public Group loadPrivateLetterGroup(String memberId, String otherId) {
 		return groupService.loadPrivateLetterGroup(memberId, otherId);
+	}
+	
+	@Expose
+	public void freezeGroup(String groupId, String memberId) {
+		groupService.freezeGroup(groupId, memberId);
 	}
 
 }
