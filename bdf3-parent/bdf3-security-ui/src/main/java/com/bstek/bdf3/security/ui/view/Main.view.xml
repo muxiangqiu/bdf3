@@ -214,7 +214,7 @@ Chat.addChatCloseListener(function() {
 </ClientEvent>
     <ClientEvent name="onClick" signature="self,arg,personalCenter">personalCenter.hide();
 </ClientEvent>
-    <Property name="packages">jquery-cookie,font-awesome-new,entypo,colors,chat</Property>
+    <Property name="packages">jquery-cookie,font-awesome-info,entypo-info,colors,chat</Property>
     <Property name="skin">${bdf3.framework.skin}</Property>
     <Property name="exClassName">main</Property>
     <Property name="cache">

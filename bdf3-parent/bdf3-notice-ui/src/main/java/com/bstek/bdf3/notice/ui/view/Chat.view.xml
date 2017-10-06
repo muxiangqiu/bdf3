@@ -13,6 +13,7 @@ Chat.addChatCloseListener(function() {
 	
 });
 </ClientEvent>
+    <ClientEvent name="onCreate">self.chatFloating = false;</ClientEvent>
     <Property name="packages">font-awesome-info,entypo-info,colors</Property>
     <Dialog id="Chat">
       <ClientEvent name="onCreate" signature="self,arg,dsActiveGroup,dsAG">self.noticeCount = 0;
@@ -127,7 +128,11 @@ self.doReceiveNotice = function(s, arg) {
 		});
 	}
 };
-
+if (view.chatFloating === false) {
+	self.set(&quot;floating&quot;, false);
+} else {
+	self.set(&quot;floating&quot;, true);
+}
 </ClientEvent>
       <ClientEvent name="onClick" signature="self,arg,dsActiveGroup,Chat">var group = dsActiveGroup.getData(&quot;#&quot;);
 if (group &amp;&amp; group.noticeCount > 0) {
