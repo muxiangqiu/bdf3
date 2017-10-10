@@ -12,7 +12,7 @@
 }
 
 .login .top .banner {
-	background-image: url(dorado/res/static/images/logo-large.svg);
+	background-image: url(static/images/logo-large.svg);
 	background-repeat: no-repeat;
 	background-position: center;
 }

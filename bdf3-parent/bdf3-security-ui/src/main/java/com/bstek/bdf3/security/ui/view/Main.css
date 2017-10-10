@@ -2,7 +2,7 @@
 	background-color: #4285f4;
 }
 .main .banner {
-	background-image: url(dorado/res/static/images/logo.svg);
+	background-image: url(static/images/logo.svg);
 	background-repeat: no-repeat;
 	background-position: 24px center;
 }
@@ -50,21 +50,21 @@
 }
 
 .main .banner .icon.personal-center {
-	background-image: url(dorado/res/static/images/personal-center.svg);
+	background-image: url(static/images/personal-center.svg);
 	margin-right: 10px;
 }
 
 .main .banner .icon.remind {
-	background-image: url(dorado/res/static/images/remind.svg);
+	background-image: url(static/images/remind.svg);
 }
 
 .main .banner .icon.search {
-	background-image: url(dorado/res/static/images/search.svg);
+	background-image: url(static/images/search.svg);
 }
 
 
 .personal-center .avatar {
-	background-image: url(dorado/res/static/images/avatar.svg);
+	background-image: url(static/images/avatar.svg);
 	background-repeat: no-repeat;
 	background-position: center;
 }

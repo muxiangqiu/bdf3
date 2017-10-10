@@ -24,9 +24,6 @@
     </DataType>
   </Model>
   <View>
-    <Property name="style">
-      <Property name="background">#112345</Property>
-    </Property>
     <Container>
       <Property name="style">
         <Property name="background-image">url(&quot;${configure['bdf3.loginImageBg']}&quot;)</Property>

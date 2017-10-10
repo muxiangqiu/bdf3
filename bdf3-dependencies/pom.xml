@@ -145,7 +145,7 @@
 			<dependency>
 				<groupId>com.bstek.dorado</groupId>
 				<artifactId>dorado-core</artifactId>
-				<version>7.5.2-20161229.071334-15</version>
+				<version>7.6.0-SNAPSHOT</version>
 				<exclusions>
 					<exclusion>
 						<groupId>org.slf4j</groupId>
