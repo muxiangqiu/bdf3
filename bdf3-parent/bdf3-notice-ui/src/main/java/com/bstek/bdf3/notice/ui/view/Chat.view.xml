@@ -7,14 +7,17 @@
     <ClientEvent name="onReady" signature="self,arg,Chat">Chat.set({
 	width: &quot;100%&quot;,
 	height: &quot;100%&quot;
-}).show();
+});
 
 Chat.addChatCloseListener(function() {
 	
 });
 </ClientEvent>
-    <ClientEvent name="onCreate">self.chatFloating = false;</ClientEvent>
-    <Property name="packages">font-awesome-info,entypo-info,colors</Property>
+    <ClientEvent name="onCreate">self.chatFloating = false;
+self.chatWidth = &quot;100%&quot;;
+self.chatHeight = &quot;100%&quot;;
+</ClientEvent>
+    <Property name="packages">font-awesome-info,entypo-info,colors,quill</Property>
     <Dialog id="Chat">
       <ClientEvent name="onCreate" signature="self,arg,dsActiveGroup,dsAG">self.noticeCount = 0;
 self.onReceiveListeners = [];
@@ -133,6 +136,13 @@ if (view.chatFloating === false) {
 } else {
 	self.set(&quot;floating&quot;, true);
 }
+if (view.chatWidth) {
+	self.set(&quot;width&quot;, view.chatWidth);
+} 
+if (view.chatheight) {
+	self.set(&quot;height&quot;, view.chatheight);
+}
+
 </ClientEvent>
       <ClientEvent name="onClick" signature="self,arg,dsActiveGroup,Chat">var group = dsActiveGroup.getData(&quot;#&quot;);
 if (group &amp;&amp; group.noticeCount > 0) {
@@ -250,6 +260,7 @@ self.userQueryTask = window.setTimeout(function() {
               <Property name="contentOverflow">hidden</Property>
               <Control>
                 <Property name="exClassName">avatar fa fa-globe</Property>
+                <Property name="ignored">true</Property>
               </Control>
               <Control>
                 <ClientEvent name="onClick" signature="self,arg,Chat">Chat.onChatCloseListeners.each(function(l) {
@@ -391,7 +402,16 @@ if (group &amp;&amp; group.noticeCount > 0) {
 
 </ClientEvent>
                           <Property name="exClassName">message-text-area</Property>
+                          <Property name="ignored">false</Property>
                         </TextArea>
+                        <Control>
+                          <ClientEvent name="onCreate">var editor = new Quill(self.getDom());
+editor.on(&quot;text-change&quot;, function(delta, oldDelta, source) {
+	console.log(delta)
+});
+</ClientEvent>
+                          <Property name="ignored">true</Property>
+                        </Control>
                       </Container>
                     </SideControl>
                   </SplitPanel>
@@ -446,7 +466,7 @@ count.render(arg.dom);
 description.render(arg.dom);
 $(arg.dom).find(&quot;.group-count&quot;).attr(&quot;id&quot;, &quot;group-count-&quot; + arg.data.entityId)
 </ClientEvent>
-                      <ClientEvent name="onContextMenu" signature="self,arg,menuGroup">if ($(arg.event.target).is(&quot;td&quot;)) {
+                      <ClientEvent name="onContextMenu" signature="self,arg,menuGroup">if ($(arg.event.target).hasClass(&quot;group-avatar&quot;) || $(arg.event.target).hasClass(&quot;group-name&quot;) || $(arg.event.target).hasClass(&quot;group-description&quot;)) {
 	menuGroup.show({
 		position: {
 			left: arg.event.pageX,
@@ -599,21 +619,40 @@ ajaxActionFreezeGroup.set(&quot;parameter&quot;, {
 var n = arg.data.get(&quot;nickname&quot;);
 var d = arg.data.get(&quot;memberId&quot;);
 
+
 var avatar = new dorado.widget.Control({
 	exClassName: &quot;group-avatar green-background&quot;
 });
 var name = new dorado.widget.Control({
 	exClassName: &quot;group-name&quot;,
-	tip: n
 });
 var description = new dorado.widget.Control({
 	exClassName: &quot;group-description&quot;,
-	tip: d
 });
+
+
 
 $(avatar.getDom()).text(n[0].toLocaleUpperCase());
 $(name.getDom()).text(n);
 $(description.getDom()).text(d);
+
+var l;
+var cls =&quot;&quot;;
+var administrator = arg.data.get(&quot;administrator&quot;);
+if (administrator) {
+	if (arg.data.get(&quot;memberId&quot;) === arg.data.parent.parent.get(&quot;creator&quot;)) {
+		l = &quot;群主&quot;;
+		cls = &quot; group-creator&quot;
+	} else {
+		l = &quot;管理员&quot;;
+	}
+	var label = new dorado.widget.Control({
+		exClassName: &quot;group-label&quot; + cls,
+	});
+	$(label.getDom()).text(l);
+	label.render(name.getDom());	
+}
+
 
 avatar.render(arg.dom);
 name.render(arg.dom);
@@ -622,6 +661,9 @@ description.render(arg.dom);
                             <ClientEvent name="onDataRowDoubleClick" signature="self,arg,dsGroup,chatOption,dsPLG,activeGroupList,userResult,updateActionActiveGroup,dsActiveGroup">var member = dsGroup.getData(&quot;#.#members&quot;);
 var groups = dsActiveGroup.getData();
 var group = null;
+if (member.get(&quot;memberId&quot;) === &quot;${loginUsername}&quot;) {
+	return;
+}
 groups.each(function(g) {
 	if (g.get(&quot;other.memberId&quot;) === member.get(&quot;memberId&quot;)) {
 		group = g;
@@ -673,6 +715,27 @@ chatOption.fireEvent(&quot;onClick&quot;, chatOption, {});
 
 
 </ClientEvent>
+                            <ClientEvent name="onContextMenu" signature="self,arg,adminSettings,menuGroupMember">if ($(arg.event.target).hasClass(&quot;group-avatar&quot;) || $(arg.event.target).hasClass(&quot;group-name&quot;) || $(arg.event.target).hasClass(&quot;group-description&quot;)) {
+	var gm = self.getCurrentItem();
+	var g = gm.parent.parent;
+	var administrator = gm.get(&quot;administrator&quot;);
+	if (g.get(&quot;current.administrator&quot;) &amp;&amp; gm.get(&quot;memberId&quot;) !== g.get(&quot;creator&quot;)) {
+		adminSettings.set(&quot;visible&quot;, true);
+		if (gm.get(&quot;administrator&quot;)) {
+			adminSettings.set(&quot;caption&quot;, &quot;取消管理员身份&quot;);
+		} else {
+			adminSettings.set(&quot;caption&quot;, &quot;设置为管理员身份&quot;);
+		}
+		menuGroupMember.show({
+			position: {
+				left: arg.event.pageX,
+				top: arg.event.pageY
+			}
+		});
+	}
+}
+
+</ClientEvent>
                             <Property name="dataSet">dsGroup</Property>
                             <Property name="property">name</Property>
                             <Property name="hideMode">display</Property>
@@ -689,6 +752,30 @@ chatOption.fireEvent(&quot;onClick&quot;, chatOption, {});
                               <Property name="dataPath">#.members</Property>
                             </DataPilot>
                           </Container>
+                          <Menu id="menuGroupMember">
+                            <MenuItem id="adminSettings">
+                              <ClientEvent name="onClick" signature="self,arg,dsGroup">var gm = dsGroup.getData(&quot;#.#members&quot;);
+if (gm.get(&quot;administrator&quot;)) {
+	gm.set(&quot;administrator&quot;, false);
+} else {
+	gm.set(&quot;administrator&quot;, true);
+}
+</ClientEvent>
+                              <Property name="iconClass">fa fa-wrench</Property>
+                            </MenuItem>
+                            <Separator/>
+                            <MenuItem>
+                              <ClientEvent name="onClick" signature="self,arg,dsGroup,updataActionGroup">var gm = dsGroup.getData(&quot;#.#members&quot;);
+dorado.MessageBox.confirm(&quot;确定要删除【&quot;+ gm.get(&quot;nickname&quot;) +&quot;】成员吗？&quot;, function() {
+	gm.remove();
+	updataActionGroup.execute();
+});
+
+</ClientEvent>
+                              <Property name="caption">删除</Property>
+                              <Property name="iconClass">fa fa-minus</Property>
+                            </MenuItem>
+                          </Menu>
                         </Container>
                       </MainControl>
                       <SideControl>

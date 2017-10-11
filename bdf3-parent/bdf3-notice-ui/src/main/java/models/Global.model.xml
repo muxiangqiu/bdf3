@@ -9,7 +9,7 @@
       <Property></Property>
     </PropertyDef>
     <PropertyDef name="icon">
-      <Property/>
+      <Property></Property>
       <Property name="label">群图标</Property>
     </PropertyDef>
     <PropertyDef name="creator">
@@ -70,7 +70,7 @@
       <Property name="label">群名称</Property>
     </PropertyDef>
     <PropertyDef name="icon">
-      <Property/>
+      <Property></Property>
       <Property name="label">群图标</Property>
     </PropertyDef>
     <PropertyDef name="creator">
@@ -150,6 +150,9 @@
     </PropertyDef>
     <PropertyDef name="readOnly">
       <Property name="dataType">boolean</Property>
+    </PropertyDef>
+    <PropertyDef name="groupId">
+      <Property/>
     </PropertyDef>
   </DataType>
   <DataType name="Notice">

@@ -53,5 +53,6 @@
 		<module>bdf3-sample</module>
 		<module>bdf3-sample-cola-base</module>
 		<module>bdf3-sample-saas</module>
+		<module>bdf3-sample-uflo</module>
 	</modules>
 </project>

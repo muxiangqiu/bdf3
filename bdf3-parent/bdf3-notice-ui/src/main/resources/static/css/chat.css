@@ -1,6 +1,6 @@
 
 /**/
-.chat.d-dialog.d-focused .dialog-body-wrap .dialog-body-left, .d-dialog.d-focused .dialog-body-wrap .dialog-body-right, .d-dialog.d-focused .dialog-body-wrap .dialog-body {
+.chat.d-dialog.d-focused .dialog-body-wrap .dialog-body-left, .chat.d-dialog.d-focused .dialog-body-wrap .dialog-body-right, .chat.d-dialog.d-focused .dialog-body-wrap .dialog-body {
     background-color: #f7f7f7;
 }
 
@@ -8,7 +8,7 @@
     background-color: #f7f7f7;
 }
 
-.chat.d-dialog.d-focused .dialog-header-left, .d-dialog.d-focused .dialog-footer-left, .d-dialog.d-focused .dialog-header-right, .d-dialog.d-focused .dialog-footer-right, .d-dialog.d-focused .dialog-header-center, .d-dialog.d-focused .dialog-footer-center {
+.chat.d-dialog.d-focused .dialog-header-left, .chat.d-dialog.d-focused .dialog-footer-left, .chat.d-dialog.d-focused .dialog-header-right, .chat.d-dialog.d-focused .dialog-footer-right, .chat.d-dialog.d-focused .dialog-header-center, .chat.d-dialog.d-focused .dialog-footer-center {
     background-color: #f7f7f7;
 }
 
@@ -28,7 +28,7 @@
     margin: 0 1px;
 }
 
-.chat .d-split-panel .splitter-left, .d-split-panel .splitter-right {
+.chat .d-split-panel .splitter-left, .chat .d-split-panel .splitter-right {
     width: 1px;
 }
 
@@ -40,7 +40,7 @@
     height: 1px;
 }
 
-.chat .d-split-panel .splitter-top, .d-split-panel .splitter-bottom {
+.chat .d-split-panel .splitter-top, .chat .d-split-panel .splitter-bottom {
     height: 1px;
 }
 
@@ -117,7 +117,7 @@
 	padding: 8px 8px;
 }
 
-.chat .message-list .d-tip-arrow-left .arrow, .d-tip-arrow-right .arrow {
+.chat .message-list .d-tip-arrow-left .arrow, .chat .d-tip-arrow-right .arrow {
     border-top-width: 0px;
 }
 
@@ -192,6 +192,23 @@
     width: calc(100% - 68px);
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+.chat .group-label {
+	display: inline-block;
+    margin: 0 6px;
+    color: #fff;
+    background-color: #07c181;
+    font-size: 12px;
+    padding: 1px 3px;
+    border-radius: 2px;
+    webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    line-height: 16px;
+}
+
+.chat .group-label.group-creator {
+	background-color: #faa200;
 }
 
 .chat .group-description {
@@ -336,7 +353,7 @@
 
 .chat .float-text-editor {
 	position: absolute;
-    top: 2px;
+    top: 1px;
     left: 80px;
     border: 1px #d9d9d9 solid;
     -webkit-border-radius: 3px;
