@@ -122,34 +122,5 @@ public class DoradoAutoConfiguration implements ApplicationContextAware {
 		
 	}
 	
-//	@Configuration
-//	@EnableConfigurationProperties(ResourceProperties.class)
-//	public static class WebMvcConfigurationAdapter extends WebMvcConfigurerAdapter {
-//		private static final Log logger = LogFactory
-//				.getLog(WebMvcConfigurerAdapter.class);
-//
-//		private final ResourceProperties resourceProperties;
-//		
-//		public WebMvcConfigurationAdapter(ResourceProperties resourceProperties) {
-//			this.resourceProperties = resourceProperties;
-//		}
-//		
-//		@Override
-//		public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//			if (!this.resourceProperties.isAddMappings()) {
-//				logger.debug("Default resource handling disabled");
-//				return;
-//			}
-//			Integer cachePeriod = this.resourceProperties.getCachePeriod();
-//			if (!registry.hasMappingForPattern("*.dpkg")) {
-//				registry.addResourceHandler("*.dpkg")
-//						.setCachePeriod(cachePeriod);
-//			}
-//		}
-//		
-//		
-//
-//	}
-	
 	
 }
