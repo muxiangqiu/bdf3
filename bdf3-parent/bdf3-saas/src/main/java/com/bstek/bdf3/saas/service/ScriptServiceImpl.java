@@ -36,10 +36,15 @@ public class ScriptServiceImpl implements ScriptService {
 	@Autowired(required = false)
 	private List<ScriptVarRegister> scriptVarRegisters;
 	
+	@Autowired
+	private DatabaseNameService databaseNameService;
+	
 	@Override
 	public void runScripts(String organizationId, DataSource dataSource, String locations, String fallback) {
 		Map<String, Object> vars = new HashMap<>();
+		String databaseName = databaseNameService.getDatabaseName(organizationId);
 		vars.put("organizationId", organizationId);
+		vars.put("databaseName", databaseName);
 		if (scriptVarRegisters != null) {
 			for (ScriptVarRegister scriptVarRegister : scriptVarRegisters) {
 				scriptVarRegister.register(vars);

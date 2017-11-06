@@ -1,1 +1,1 @@
-CREATE database ${organizationId};
+CREATE database ${databaseName};
