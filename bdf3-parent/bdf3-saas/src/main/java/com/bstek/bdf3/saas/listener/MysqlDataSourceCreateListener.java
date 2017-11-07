@@ -27,7 +27,8 @@ public class MysqlDataSourceCreateListener implements DataSourceCreateListener {
 		if ("com.mysql.jdbc.Driver".equals(dataSourceInfo.getDriverClassName())) {
 			String url = dataSourceInfo.getUrl();
 			if (!url.contains(databaseNameService.getDatabaseName(Constants.MASTER))) {
-				url += "/" + organization.getId();
+				String databaseName = databaseNameService.getDatabaseName(Constants.MASTER);
+				url += "/" + databaseName;
 				dataSourceBuilder.url(url);
 			}
 		}

@@ -44,6 +44,9 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 	@Autowired(required = false)
 	private List<DataSourceCreateListener> listeners;
 	
+	@Autowired
+	private DatabaseNameService databaseNameService;
+	
 	@Override
 	public DataSource getDataSource(Organization organization) {
 		return dataSourceMap.get(organization.getId());
@@ -61,7 +64,7 @@ public class DataSourceServiceImpl implements DataSourceService, InitializingBea
 					master = properties.getName();
 				}
 				DataSourceBuilder factory = this.properties.initializeDataSourceBuilder();
-				factory.url(dataSourceInfo.getUrl().replace(master, organization.getId()))
+				factory.url(dataSourceInfo.getUrl().replace(databaseNameService.getDatabaseName(master), databaseNameService.getDatabaseName(organization.getId())))
 					.username(dataSourceInfo.getUsername())
 					.password(dataSourceInfo.getPassword());
 				if (!StringUtils.isEmpty(dataSourceInfo.getDriverClassName())) {
