@@ -469,71 +469,6 @@ $(arg.dom).xCreate({
       </Children>
       <Tools/>
     </Panel>
-    <FloatPanel id="dialogPassword">
-      <Property name="caption">密码修改</Property>
-      <Property name="center">true</Property>
-      <Property name="shadowMode">frame</Property>
-      <Property name="closeable">true</Property>
-      <Property name="containerUi">default</Property>
-      <Buttons>
-        <Button layoutConstraint="padding:15">
-          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide();
-</ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="width">60</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick" signature="self,arg,ajaxActionChangePassword,autoFormPassword">var newPassword = autoFormPassword.get(&quot;entity&quot;).get(&quot;newPassword&quot;);
-console.log(autoFormPassword.get(&quot;entity&quot;))
-if (autoFormPassword.validate()) {
-	ajaxActionChangePassword.set(&quot;parameter&quot;, {
-		username: &quot;${loginUsername}&quot;,
-		newPassword: newPassword
-	}).execute(function() {
-		self.get(&quot;parent&quot;).hide();
-		autoFormPassword.get(&quot;entity&quot;).reset();
-	});
-
-}
-</ClientEvent>
-          <Property name="caption">确认</Property>
-          <Property name="width">60</Property>
-          <Property name="ui">highlight</Property>
-        </Button>
-      </Buttons>
-      <Children>
-        <AutoForm id="autoFormPassword">
-          <Property name="dataType">PasswordChange</Property>
-          <Property name="cols">*</Property>
-          <Property name="labelAlign">right</Property>
-          <Property name="createPrivateDataSet">true</Property>
-          <AutoFormElement>
-            <Property name="name">oldPassword</Property>
-            <Property name="property">oldPassword</Property>
-            <Property name="editorType">PasswordEditor</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">newPassword</Property>
-            <Property name="property">newPassword</Property>
-            <Property name="editorType">PasswordEditor</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">confirmNewPasswod</Property>
-            <Property name="property">confirmNewPasswod</Property>
-            <Property name="editorType">PasswordEditor</Property>
-            <Editor/>
-          </AutoFormElement>
-        </AutoForm>
-        <AjaxAction id="ajaxActionChangePassword">
-          <Property name="service">userController#changePassword</Property>
-          <Property name="executingMessage">正在执行……</Property>
-          <Property name="successMessage">密码修改成功。</Property>
-        </AjaxAction>
-      </Children>
-      <Tools/>
-    </FloatPanel>
     <DataSetDropDown id="ddUrl">
       <ClientEvent name="onValueSelect">window.openTab(arg.selectedValue);
 </ClientEvent>
@@ -624,5 +559,81 @@ if (url.get(&quot;path&quot;)) {
       <Tools/>
     </FloatPanel>
     <Import src="com.bstek.bdf3.notice.ui.view.Chat#Chat"/>
+    <FloatPanel id="dialogPassword" layout="padding:20">
+      <Property name="caption">密码修改</Property>
+      <Property name="center">true</Property>
+      <Property name="shadowMode">frame</Property>
+      <Property name="closeable">true</Property>
+      <Property name="containerUi">default</Property>
+      <Property name="width">400</Property>
+      <Property name="height">250</Property>
+      <Buttons/>
+      <Children>
+        <AutoForm id="autoFormPassword">
+          <Property name="dataType">PasswordChange</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelAlign">right</Property>
+          <Property name="createPrivateDataSet">true</Property>
+          <Property name="rowPadding">12</Property>
+          <AutoFormElement>
+            <Property name="name">oldPassword</Property>
+            <Property name="property">oldPassword</Property>
+            <Property name="editorType">PasswordEditor</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">newPassword</Property>
+            <Property name="property">newPassword</Property>
+            <Property name="editorType">PasswordEditor</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">confirmNewPasswod</Property>
+            <Property name="property">confirmNewPasswod</Property>
+            <Property name="editorType">PasswordEditor</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+        <AjaxAction id="ajaxActionChangePassword">
+          <Property name="service">userController#changePassword</Property>
+          <Property name="executingMessage">正在执行……</Property>
+          <Property name="successMessage">密码修改成功。</Property>
+        </AjaxAction>
+        <Container layout="hbox pack:center;regionPadding:15" layoutConstraint="bottom">
+          <Button>
+            <ClientEvent name="onClick">self.get(&quot;parent.parent&quot;).hide();
+</ClientEvent>
+            <Property name="caption">取消</Property>
+            <Property name="width">60</Property>
+          </Button>
+          <Button>
+            <ClientEvent name="onClick" signature="self,arg,ajaxActionChangePassword,autoFormPassword">var newPassword = autoFormPassword.get(&quot;entity&quot;).get(&quot;newPassword&quot;);
+var entity = autoFormPassword.get(&quot;entity&quot;);
+
+entity.set(&quot;confirmNewPasswod&quot;, entity.get(&quot;confirmNewPasswod&quot;));
+entity.set(&quot;newPassword&quot;, entity.get(&quot;newPassword&quot;));
+entity.set(&quot;oldPassword&quot;, entity.get(&quot;oldPassword&quot;));
+
+
+if (entity.get(&quot;oldPassword&quot;) &amp;&amp; entity.get(&quot;newPassword&quot;) &amp;&amp; entity.get(&quot;confirmNewPassword&quot;) &amp;&amp; autoFormPassword.validate(true) === true) {
+	ajaxActionChangePassword.set(&quot;parameter&quot;, {
+		username: &quot;${loginUsername}&quot;,
+		newPassword: newPassword
+	}).execute(function() {
+		self.get(&quot;parent.parent&quot;).hide();
+		autoFormPassword.get(&quot;entity&quot;).reset();
+	});
+} else {
+	dorado.MessageBox.alert(&quot;验证不通过，请检查。&quot;);
+}
+</ClientEvent>
+            <Property name="caption">确认</Property>
+            <Property name="width">60</Property>
+            <Property name="ui">highlight</Property>
+          </Button>
+        </Container>
+      </Children>
+      <Tools/>
+    </FloatPanel>
   </View>
 </ViewConfig>

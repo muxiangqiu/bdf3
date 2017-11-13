@@ -702,7 +702,14 @@ if (tab) {
           </Button>
           <Button>
             <ClientEvent name="onClick" signature="self,arg,ajaxActionChangePassword,autoFormPassword">var newPassword = autoFormPassword.get(&quot;entity&quot;).get(&quot;newPassword&quot;);
-if (autoFormPassword.validate(true) === true) {
+var entity = autoFormPassword.get(&quot;entity&quot;);
+
+entity.set(&quot;confirmNewPasswod&quot;, entity.get(&quot;confirmNewPasswod&quot;));
+entity.set(&quot;newPassword&quot;, entity.get(&quot;newPassword&quot;));
+entity.set(&quot;oldPassword&quot;, entity.get(&quot;oldPassword&quot;));
+
+
+if (entity.get(&quot;oldPassword&quot;) &amp;&amp; entity.get(&quot;newPassword&quot;) &amp;&amp; entity.get(&quot;confirmNewPassword&quot;) &amp;&amp; autoFormPassword.validate(true) === true) {
 	ajaxActionChangePassword.set(&quot;parameter&quot;, {
 		username: &quot;${loginUsername}&quot;,
 		newPassword: newPassword
