@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.bstek.bdf3</groupId>
     <artifactId>bdf3-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>bdf3-profile</artifactId>
   <dependencies>

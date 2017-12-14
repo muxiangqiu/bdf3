@@ -1,5 +1,6 @@
 package com.bstek.bdf3.sample;
 
+import org.malagu.linq.JpaUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -9,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.security.orm.User;
 
 

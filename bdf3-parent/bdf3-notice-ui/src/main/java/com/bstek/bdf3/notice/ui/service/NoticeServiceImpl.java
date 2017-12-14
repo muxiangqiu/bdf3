@@ -113,7 +113,7 @@ public class NoticeServiceImpl implements NoticeService {
 			.set("lastNoticeId", notice.getId())
 			.set("lastNoticeSendTime", notice.getSendTime())
 			.update();
-		com.bstek.bdf3.jpa.JpaUtil.persist(notice);
+		org.malagu.linq.JpaUtil.persist(notice);
 	}
 	
 	@Override

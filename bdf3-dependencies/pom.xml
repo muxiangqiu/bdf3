@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.bstek.bdf3</groupId>
 	<artifactId>bdf3-dependencies</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
 		<java.version>1.8</java.version>
@@ -19,128 +19,143 @@
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-autoconfigure</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-dorado</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-dorado-jpa</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.malagu.linq</groupId>
+				<artifactId>linq</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.malagu.linq</groupId>
+				<artifactId>spring-boot-linq</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.malagu.multidatasource</groupId>
+				<artifactId>spring-boot-multidatasource</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.malagu.multientitymanagerfactory</groupId>
+				<artifactId>spring-boot-multientitymanagerfactory</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.malagu.multitenant</groupId>
+				<artifactId>multitenant</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
-				<artifactId>bdf3-jpa</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<artifactId>bdf3-multitenant-ui</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-notice</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-notice-ui</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-log</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-profile</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-cola</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.bstek.bdf3</groupId>
-				<artifactId>bdf3-saas</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-security-orm</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-security</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-security-ui</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.bstek.bdf3</groupId>
-				<artifactId>bdf3-saas-ui</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-importer</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-dictionary</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-dictionary-ui</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-swfviewer</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-export</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-dbconsole</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-starter</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
-				<artifactId>bdf3-starter-saas</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<artifactId>bdf3-starter-multitenant</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-starter-cola</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-starter-jetty</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-starter-cola-jetty</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.dorado</groupId>

@@ -5,12 +5,12 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 
+import org.malagu.linq.lin.Lin;
 import org.springframework.data.domain.Pageable;
 
 import com.bstek.bdf3.dorado.jpa.filter.Filter;
 import com.bstek.bdf3.dorado.jpa.parser.CriterionParser;
 import com.bstek.bdf3.dorado.jpa.policy.LinqContext;
-import com.bstek.bdf3.jpa.lin.Lin;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 

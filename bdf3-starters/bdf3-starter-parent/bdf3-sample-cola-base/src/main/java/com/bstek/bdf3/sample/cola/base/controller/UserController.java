@@ -4,6 +4,7 @@ package com.bstek.bdf3.sample.cola.base.controller;
 
 import java.util.List;
 
+import org.malagu.linq.JpaUtil;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.sample.cola.base.domain.User;
 
 

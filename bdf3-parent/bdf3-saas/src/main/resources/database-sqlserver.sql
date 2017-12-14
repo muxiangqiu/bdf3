@@ -1,1 +1,0 @@
-CREATE database ${databaseName};

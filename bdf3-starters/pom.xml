@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.bstek.bdf3</groupId>
     <artifactId>bdf3-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>bdf3-starters</artifactId>
   <packaging>pom</packaging>
@@ -12,6 +12,6 @@
   	<module>bdf3-starter-jetty</module>
   	<module>bdf3-starter-cola</module>
   	<module>bdf3-starter-cola-jetty</module>
-  	<module>bdf3-starter-saas</module>
+  	<module>bdf3-starter-multitenant</module>
   </modules>
 </project>
