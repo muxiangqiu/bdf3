@@ -47,9 +47,6 @@
 	</build>
 	<modules>
 		<module>bdf3-sample-cola</module>
-		<module>bdf3-sample-replaceuser</module>
-		<module>bdf3-sample-saas-cola</module>
-		<module>bdf3-sample-activiti-cola</module>
 		<module>bdf3-sample</module>
 		<module>bdf3-sample-cola-base</module>
 		<module>bdf3-sample-multitenant</module>

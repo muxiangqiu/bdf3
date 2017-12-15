@@ -17,8 +17,6 @@
 		<module>bdf3-dorado</module>
 		<module>bdf3-autoconfigure</module>
 		<module>bdf3-dorado-jpa</module>
-		<module>bdf3-saas</module>
-		<module>bdf3-saas-ui</module>
 		<module>bdf3-importer</module>
 		<module>bdf3-log</module>
 		<module>bdf3-dictionary</module>
