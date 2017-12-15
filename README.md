@@ -102,34 +102,44 @@ spring.datasource.driver-class-name=com.mysql.jdbc.Driver
 
 ## 界面截图
 
-![](http://onipkjzjl.bkt.clouddn.com/login-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/1.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/main-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/2.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/search-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/3.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/portal-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/4.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/user-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/5.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/menu-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/6.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/role-assign-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/7.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/log-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/8.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/dictionary-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/9.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/importer-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/10.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/database-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/11.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/personal-center-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/12.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/login-saas-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/13.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/register-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/14.png)
 
-![](http://onipkjzjl.bkt.clouddn.com/company-page.png)
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/15.png)
+
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/16.png)
+
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/17.png)
+
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/18.png)
+
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/19.png)
+
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/20.png)
 
 
