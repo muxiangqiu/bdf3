@@ -464,6 +464,33 @@ $(arg.dom).xCreate({
                       <Property name="subView">${configure['bdf3.welcomePath']}</Property>
                     </SubViewHolder>
                   </ControlTab>
+                  <ControlTab>
+                    <Property name="iconClass">${configure['bdf3.welcomeIcon1']}</Property>
+                    <Property name="caption">${configure['bdf3.welcomeTitle1']}</Property>
+                    <Property name="ignored">${empty configure['bdf3.welcomePath1']}</Property>
+                    <Property name="closeable">true</Property>
+                    <SubViewHolder>
+                      <Property name="subView">${configure['bdf3.welcomePath1']}</Property>
+                    </SubViewHolder>
+                  </ControlTab>
+                  <ControlTab>
+                    <Property name="iconClass">${configure['bdf3.welcomeIcon2']}</Property>
+                    <Property name="caption">${configure['bdf3.welcomeTitle2']}</Property>
+                    <Property name="ignored">${empty configure['bdf3.welcomePath2']}</Property>
+                    <Property name="closeable">true</Property>
+                    <SubViewHolder>
+                      <Property name="subView">${configure['bdf3.welcomePath2']}</Property>
+                    </SubViewHolder>
+                  </ControlTab>
+                  <ControlTab>
+                    <Property name="iconClass">${configure['bdf3.welcomeIcon3']}</Property>
+                    <Property name="caption">${configure['bdf3.welcomeTitle3']}</Property>
+                    <Property name="ignored">${empty configure['bdf3.welcomePath3']}</Property>
+                    <Property name="closeable">true</Property>
+                    <SubViewHolder>
+                      <Property name="subView">${configure['bdf3.welcomePath3']}</Property>
+                    </SubViewHolder>
+                  </ControlTab>
                 </TabControl>
               </Children>
               <Tools/>

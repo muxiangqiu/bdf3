@@ -391,6 +391,18 @@ dialogPassword.show();
             <Property name="subView">${configure['bdf3.welcomePath']}</Property>
             <Property name="ignored">${empty configure['bdf3.welcomePath']}</Property>
           </SubViewHolder>
+          <SubViewHolder>
+            <Property name="subView">${configure['bdf3.welcomePath1']}</Property>
+            <Property name="ignored">${empty configure['bdf3.welcomePath1']}</Property>
+          </SubViewHolder>
+          <SubViewHolder>
+            <Property name="subView">${configure['bdf3.welcomePath2']}</Property>
+            <Property name="ignored">${empty configure['bdf3.welcomePath2']}</Property>
+          </SubViewHolder>
+          <SubViewHolder>
+            <Property name="subView">${configure['bdf3.welcomePath3']}</Property>
+            <Property name="ignored">${empty configure['bdf3.welcomePath3']}</Property>
+          </SubViewHolder>
           <Container id="portal" layout="padding:10">
             <Control id="colorLine" layoutConstraint="top">
               <Property name="width">0</Property>
