@@ -61,7 +61,7 @@
 </ClientEvent>
         </Validator>
       </PropertyDef>
-      <PropertyDef name="confirmNewPasswod">
+      <PropertyDef name="confirmNewPassword">
         <Property name="required">true</Property>
         <Property name="label">再次确认</Property>
         <Validator name="validator1" type="custom">
@@ -709,8 +709,8 @@ if (tab) {
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">confirmNewPasswod</Property>
-            <Property name="property">confirmNewPasswod</Property>
+            <Property name="name">confirmNewPassword</Property>
+            <Property name="property">confirmNewPassword</Property>
             <Property name="editorType">PasswordEditor</Property>
             <Editor/>
           </AutoFormElement>
@@ -731,7 +731,7 @@ if (tab) {
             <ClientEvent name="onClick" signature="self,arg,ajaxActionChangePassword,autoFormPassword">var newPassword = autoFormPassword.get(&quot;entity&quot;).get(&quot;newPassword&quot;);
 var entity = autoFormPassword.get(&quot;entity&quot;);
 
-entity.set(&quot;confirmNewPasswod&quot;, entity.get(&quot;confirmNewPasswod&quot;));
+entity.set(&quot;confirmNewPassword&quot;, entity.get(&quot;confirmNewPassword&quot;));
 entity.set(&quot;newPassword&quot;, entity.get(&quot;newPassword&quot;));
 entity.set(&quot;oldPassword&quot;, entity.get(&quot;oldPassword&quot;));
 
