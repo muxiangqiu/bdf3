@@ -1,7 +1,7 @@
 # bdf3
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
->bdf3基于spring-boot研发的开发框架。包含用户、角色、菜单、权限（最小粒度为组件）、数据导入、字典、日志、Web版数据库管理器、个人中心、多数据源、用户个性化和SAAS功能模块。基于bdf3快速开发企业管理系统。
+>bdf3基于spring-boot研发的开发框架。包含用户、角色、菜单、权限（最小粒度为组件）、数据导入、字典、日志、Web版数据库管理器、个人中心、多数据源、用户个性化和一个或多个数据库实例的独立数据库模式的多租户功能模块。基于bdf3快速开发企业管理系统。
 
 ## 快速入门
 >由于基于spring-boot，bdf3项目搭建和spring-boot几乎一样，不同的是依赖的jar包不一样。
@@ -14,7 +14,7 @@
   <parent>
     <groupId>com.bstek.bdf3</groupId>
     <artifactId>bdf3-starter-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>bdf3-sample</artifactId>
   <dependencies>
@@ -65,7 +65,7 @@ public class SampleApplication {
 }
 
 ```
->通过以上两个步骤，一个基本的bdf3项目就搭建好了。[示例下载](http://onipkjzjl.bkt.clouddn.com/bdf3-sample.zip)
+>通过以上两个步骤，一个基本的bdf3项目就搭建好了。直接运行项目的主类（带main函数的类）[示例下载](http://onipkjzjl.bkt.clouddn.com/bdf3-sample.zip)
 
 ## 配置文件说明
 
@@ -83,10 +83,6 @@ spring.jpa.hibernate.ddl-auto=update
 #springboot热部署设置，添加文件改动不重启目录。
 spring.devtools.restart.additional-exclude=com/**
 
-#velocity模版后缀
-#spring.velocity.suffix=.html
-#velocity模版前缀
-#spring.velocity.prefix=templates/
 
 #数据源配置，pom中需要引入对应的数据库jdbc依赖
 spring.datasource.continue-on-error=true
@@ -95,6 +91,9 @@ spring.datasource.username=root
 spring.datasource.password=root
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver
 ```
+
+## BDF3文档教程
+[BDF3文档教程](https://github.com/muxiangqiu/bdf3/wiki/01.bdf3-jpa)
 
 ## Spring-Boot文档教程
 
