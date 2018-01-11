@@ -526,6 +526,18 @@ public abstract class JpaUtil {
 		return org.malagu.linq.JpaUtil.getEntityManagerFactory();
 	}
 	
+	public static EntityManager getEntityManager(String entityManagerFactoryName) {
+		return org.malagu.linq.JpaUtil.getEntityManager(entityManagerFactoryName);
+	}
+	
+	public static EntityManager createEntityManager(String entityManagerFactoryName) {
+		return org.malagu.linq.JpaUtil.createEntityManager(entityManagerFactoryName);
+	}
+	
+	public static EntityManagerFactory getEntityManagerFactory(String entityManagerFactoryName) {
+		return org.malagu.linq.JpaUtil.getEntityManagerFactory(entityManagerFactoryName);
+	}
+	
 	/**
 	 * 返回默认的EntityManager
 	 * @return EntityManager
