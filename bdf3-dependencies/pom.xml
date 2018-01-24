@@ -160,7 +160,7 @@
 			<dependency>
 				<groupId>com.bstek.dorado</groupId>
 				<artifactId>dorado-core</artifactId>
-				<version>7.6.0-SNAPSHOT</version>
+				<version>7.6.0-20170725.072955-30</version>
 				<exclusions>
 					<exclusion>
 						<groupId>org.slf4j</groupId>
