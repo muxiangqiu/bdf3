@@ -9,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.security.access.ConfigAttribute;
@@ -71,7 +70,7 @@ public class UrlSecurityMetadataSource  implements FilterInvocationSecurityMetad
 		requestMap = new ConcurrentHashMap<RequestMatcher, Collection<ConfigAttribute>>();
 		for (FilterConfigAttributeProvider provider : providers) {
 			Map<RequestMatcher, Collection<ConfigAttribute>> map = provider.provide();
-			if (MapUtils.isNotEmpty(map)) {
+			if (map != null && !map.isEmpty()) {
 				requestMap.putAll(map);
 			}
 		}

@@ -41,6 +41,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 			
 			http.csrf().disable();
 			http.headers().frameOptions().disable();
+			http.headers().xssProtection().disable();
+			http.headers().disable();
 			
 			FilterSecurityInterceptor securityInterceptor = createFilterSecurityInterceptor();
 			http.addFilterAfter(securityInterceptor, org.springframework.security.web.access.intercept.FilterSecurityInterceptor.class);

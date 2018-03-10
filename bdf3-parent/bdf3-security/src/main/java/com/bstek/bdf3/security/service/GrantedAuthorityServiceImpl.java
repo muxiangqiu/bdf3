@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
@@ -37,7 +36,7 @@ public class GrantedAuthorityServiceImpl implements GrantedAuthorityService, Ini
 		Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
 		for (GrantedAuthorityProvider provider : providers) {
 			Collection<? extends GrantedAuthority> list =  provider.provide(userDetails);
-			if (CollectionUtils.isNotEmpty(list)) {
+			if (list != null && !list.isEmpty()) {
 				grantedAuthorities.addAll(list);
 			}
 		}

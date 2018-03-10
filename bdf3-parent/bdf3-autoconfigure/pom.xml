@@ -4,18 +4,10 @@
 	<parent>
 		<groupId>com.bstek.bdf3</groupId>
 		<artifactId>bdf3-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>bdf3-autoconfigure</artifactId>
 	<dependencies>
-		<dependency>
-			<groupId>org.malagu.multidatasource</groupId>
-			<artifactId>spring-boot-multidatasource</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.malagu.multientitymanagerfactory</groupId>
-			<artifactId>spring-boot-multientitymanagerfactory</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.malagu.linq</groupId>
 			<artifactId>spring-boot-linq</artifactId>
@@ -27,11 +19,6 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-dbcp2</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP-java6</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>

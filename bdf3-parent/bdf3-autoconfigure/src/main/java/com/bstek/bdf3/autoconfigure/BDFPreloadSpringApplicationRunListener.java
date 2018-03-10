@@ -34,12 +34,6 @@ public class BDFPreloadSpringApplicationRunListener implements
 	}
 
 	@Override
-	public void finished(ConfigurableApplicationContext context,
-			Throwable exception) {
-
-	}
-
-	@Override
 	public void starting() {
 		Properties properties = new Properties();
 		String basePackage = application.getClass().getPackage().getName();
@@ -49,6 +43,24 @@ public class BDFPreloadSpringApplicationRunListener implements
 		properties.put("spring.mvc.staticPathPattern", "static/**");
 		properties.put("spring.cache.ehcache.config", "ehcache-security.xml");
 		application.setDefaultProperties(properties);
+		
+	}
+
+	@Override
+	public void started(ConfigurableApplicationContext context) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void running(ConfigurableApplicationContext context) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void failed(ConfigurableApplicationContext context, Throwable exception) {
+		// TODO Auto-generated method stub
 		
 	}
 

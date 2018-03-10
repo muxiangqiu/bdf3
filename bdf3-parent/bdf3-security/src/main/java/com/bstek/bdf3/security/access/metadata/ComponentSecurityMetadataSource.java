@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.security.access.ConfigAttribute;
@@ -52,7 +51,7 @@ public class ComponentSecurityMetadataSource implements SecurityMetadataSource {
 		Map<String, Collection<ConfigAttribute>> componentMap = new LinkedHashMap<String, Collection<ConfigAttribute>>();
 		for (ComponentConfigAttributeProvider provider : providers) {
 			Map<String, Collection<ConfigAttribute>> map = provider.provide();
-			if (MapUtils.isNotEmpty(map)) {
+			if (map != null && !map.isEmpty()) {
 				componentMap.putAll(map);
 			}
 		}

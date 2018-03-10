@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.bstek.bdf3</groupId>
 		<artifactId>bdf3-starters</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>bdf3-starter-cola-jetty</artifactId>
 	<dependencies>
