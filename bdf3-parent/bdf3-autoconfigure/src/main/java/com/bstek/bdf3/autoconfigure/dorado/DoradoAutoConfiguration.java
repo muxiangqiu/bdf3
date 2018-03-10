@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -38,7 +36,6 @@ import com.bstek.dorado.web.servlet.DoradoServlet;
  */
 @Configuration
 @ConditionalOnClass(DoradoConfiguration.class)
-@AutoConfigureAfter(EmbeddedServletContainerAutoConfiguration.class)
 @Import(DoradoConfiguration.class)
 public class DoradoAutoConfiguration implements ApplicationContextAware {
 	
@@ -48,16 +45,16 @@ public class DoradoAutoConfiguration implements ApplicationContextAware {
 	
 	
 	@Bean
-    public ServletRegistrationBean doradoServletRegistrationBean() {
-		ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new DoradoServlet(), "*.d", "*.dpkg", "/dorado/*");
+    public ServletRegistrationBean<DoradoServlet> doradoServletRegistrationBean() {
+		ServletRegistrationBean<DoradoServlet> servletRegistrationBean = new ServletRegistrationBean<DoradoServlet>(new DoradoServlet(), "*.d", "*.dpkg", "/dorado/*");
 		servletRegistrationBean.setLoadOnStartup(1);
 		return servletRegistrationBean;
     }
 	
 	@Bean
-	public FilterRegistrationBean someFilterRegistration() {
+	public FilterRegistrationBean<Filter> someFilterRegistration() {
 
-	    FilterRegistrationBean registration = new FilterRegistrationBean();
+	    FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
 	    registration.setFilter(new Filter() {
 	    	
 	    	private static final String HEADER_PRAGMA = "Pragma";
@@ -75,9 +72,9 @@ public class DoradoAutoConfiguration implements ApplicationContextAware {
 			public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 					throws IOException, ServletException {
 				HttpServletResponse httpResponse = (HttpServletResponse) res;
-				Integer cachePeriod = resourceProperties.getCachePeriod();
-				if (cachePeriod == null) {
-					cachePeriod = 31536000;
+				long cachePeriod = 31536000L;
+				if (resourceProperties.getCache() != null && resourceProperties.getCache().getPeriod() != null && resourceProperties.getCache().getPeriod().getSeconds() == 0) {
+					cachePeriod = resourceProperties.getCache().getPeriod().getSeconds();
 				}
 				applyCacheControl(httpResponse, CacheControl.maxAge(cachePeriod, TimeUnit.SECONDS));
 				chain.doFilter(req, res);

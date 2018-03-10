@@ -41,7 +41,7 @@ public class DoradoPreloadSpringApplicationRunListener implements
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			Set<Object> sources = new LinkedHashSet<Object>();
+			Set<String> sources = new LinkedHashSet<String>();
 			sources.addAll(doradoLoader
 					.getContextLocations(false));
 			application.setSources(sources);
@@ -54,13 +54,25 @@ public class DoradoPreloadSpringApplicationRunListener implements
 	}
 
 	@Override
-	public void finished(ConfigurableApplicationContext context,
-			Throwable exception) {
-
+	public void starting() {
+		
 	}
 
 	@Override
-	public void starting() {
+	public void failed(ConfigurableApplicationContext context, Throwable exception) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void running(ConfigurableApplicationContext context) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void started(ConfigurableApplicationContext context) {
+		// TODO Auto-generated method stub
 		
 	}
 

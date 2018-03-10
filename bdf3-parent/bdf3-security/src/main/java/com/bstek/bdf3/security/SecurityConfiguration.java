@@ -4,7 +4,8 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * 模块Spring配置类
@@ -17,8 +18,8 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 public class SecurityConfiguration {
 	
 	@Bean
-	public StandardPasswordEncoder standardPasswordEncoder() {
-		return new StandardPasswordEncoder();
+	public PasswordEncoder standardPasswordEncoder() {
+		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
 	
 }
