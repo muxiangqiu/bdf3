@@ -222,7 +222,15 @@ public abstract class JpaUtil {
 			
 			@Override
 			public void apply(SaveContext context) {
-				context.getEntityManager().persist(context.getEntity());
+				if (EntityUtils.isEntity(context.getEntity())) {
+					try {
+						context.getEntityManager().persist(EntityUtils.toPureData(context.getEntity()));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					context.getEntityManager().persist(context.getEntity());
+				}
 			}
 			
 		});
@@ -231,7 +239,15 @@ public abstract class JpaUtil {
 	
 	public static <T> T merge(T entity) {
 		EntityManager em = getEntityManager(GenricTypeUtils.getGenricType(entity));
-		return em.merge(entity);
+		if (EntityUtils.isEntity(entity)) {
+			try {
+				return em.merge(EntityUtils.toPureData(entity));
+			} catch (Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		} else {
+			return em.merge(entity);
+		}
 	}
 	
 	public static <T> List<T> persist(Iterable<? extends T> entities) {
@@ -278,7 +294,15 @@ public abstract class JpaUtil {
 	
 	public static <T> void remove(T entity) {
 		EntityManager em = getEntityManager(GenricTypeUtils.getGenricType(entity));
-		em.remove(entity);
+		if (EntityUtils.isEntity(entity)) {
+			try {
+				em.remove(EntityUtils.toPureData(entity));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			em.remove(entity);
+		}
 	}
 	
 	public static <T> void remove(Iterable<? extends T> entities) {
