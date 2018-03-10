@@ -9,6 +9,8 @@
   <packaging>pom</packaging>
   <modules>
   	<module>bdf3-starter</module>
+  	<module>bdf3-starter-parent</module>
+  	<module>bdf3-starter-war-parent</module>
   	<module>bdf3-starter-jetty</module>
   	<module>bdf3-starter-cola</module>
   	<module>bdf3-starter-cola-jetty</module>
