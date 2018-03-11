@@ -46,9 +46,9 @@
 		</plugins>
 	</build>
 	<modules>
-		<module>bdf3-sample-cola</module>
+		<!-- <module>bdf3-sample-cola</module>
 		<module>bdf3-sample</module>
 		<module>bdf3-sample-cola-base</module>
-		<module>bdf3-sample-multitenant</module>
+		<module>bdf3-sample-multitenant</module> -->
 	</modules>
 </project>
