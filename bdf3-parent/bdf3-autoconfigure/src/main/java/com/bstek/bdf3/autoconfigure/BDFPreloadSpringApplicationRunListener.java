@@ -41,7 +41,6 @@ public class BDFPreloadSpringApplicationRunListener implements
 		properties.put("bdf3.projectName", projectName);
 		properties.put("bdf3.basePackage", basePackage);
 		properties.put("spring.mvc.staticPathPattern", "static/**");
-		properties.put("spring.cache.ehcache.config", "ehcache-security.xml");
 		application.setDefaultProperties(properties);
 		
 	}
