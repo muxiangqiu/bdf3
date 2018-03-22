@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,6 +15,7 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 
@@ -69,9 +71,11 @@ public class UrlSecurityMetadataSource  implements FilterInvocationSecurityMetad
 		AnnotationAwareOrderComparator.sort(providers);
 		requestMap = new ConcurrentHashMap<RequestMatcher, Collection<ConfigAttribute>>();
 		for (FilterConfigAttributeProvider provider : providers) {
-			Map<RequestMatcher, Collection<ConfigAttribute>> map = provider.provide();
+			Map<String, Collection<ConfigAttribute>> map = provider.provide();
 			if (map != null && !map.isEmpty()) {
-				requestMap.putAll(map);
+				for (Entry<String, Collection<ConfigAttribute>> entry : map.entrySet()) {
+					requestMap.put(new AntPathRequestMatcher("/" + entry.getKey(), null), entry.getValue());
+				}
 			}
 		}
 		return requestMap;
