@@ -29,6 +29,7 @@ public class NoticeTransformImpl implements NoticeTransform<Message> {
 			notice.setTitle((String) data.get("title"));
 			notice.setSender((String) data.get("sender"));
 			notice.setGroupId((String) data.get("groupId"));
+			notice.setTemplateId((String) data.get("templateId"));
 			if (data.get("all") != null) {
 				notice.setAll((Boolean) data.get("all"));
 			}

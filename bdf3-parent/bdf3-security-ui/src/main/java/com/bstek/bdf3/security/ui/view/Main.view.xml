@@ -267,7 +267,16 @@ arg.returnValue = false;</ClientEvent>
           <Property name="exClassName">icon personal-center</Property>
         </Control>
         <Control>
-          <ClientEvent name="onClick" signature="self,arg,Chat">Chat.show();
+          <ClientEvent name="onClick" signature="self,arg,Chat">Chat.set({
+	width: &quot;700&quot;,
+	height: &quot;560&quot;
+});
+Chat.show(function() {
+	Chat.set({
+		width: &quot;701&quot;,
+		height: &quot;560&quot;
+	});
+});
 arg.returnValue = false;
 </ClientEvent>
           <ClientEvent name="onRefreshDom">$(arg.dom).html(&quot;&lt;div class='notify-total'>&lt;/div>&quot;)
