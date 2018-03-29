@@ -289,8 +289,9 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 		for (CollectInfo collectInfo : collectInfos) {
 			Set collectSet = collectInfo.getSet();
 			Map<Object, Object> relationMap = null;
+			List collectList = null;
 			if (collectInfo.getRelationClass() != null) {
-				List collectList = JpaUtil
+				collectList = JpaUtil
 					.linq(collectInfo.getRelationClass())
 					.aliasToBean()
 					.select(collectInfo.getRelationProperty(), collectInfo.getRelationOtherProperty())
@@ -316,19 +317,35 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 								}
 								linq.in(otherProperty, collectSet);
 								List result = linq.list();
+								Map<Object, Object> resultMap = JpaUtil.index(result, otherProperty);
 								Map<Object, List<Object>> map = new HashMap<Object, List<Object>>();
-								for (Object obj : result) {
-									Object key = BeanUtils.getFieldValue(obj, otherProperty);
-									if (relationMap != null) {
-										key = BeanUtils.getFieldValue(relationMap.get(key), collectInfo.getRelationProperty());
+								if (collectList != null) {
+									for (Object obj : collectList) {
+										Object key = BeanUtils.getFieldValue(obj, collectInfo.getRelationOtherProperty());
+										Object other = resultMap.get(key);
+										key = BeanUtils.getFieldValue(obj, collectInfo.getRelationProperty());
+										List<Object> list = map.get(key);
+										if (list == null) {
+											list = new ArrayList<Object>(5);
+											map.put(key, list);
+										}
+										if (other != null) {
+											list.add(other);
+										}
+										
 									}
-									List<Object> list = map.get(key);
-									if (list == null) {
-										list = new ArrayList<Object>(5);
-										map.put(key, list);
+								} else {
+									for (Object obj : result) {
+										Object key = BeanUtils.getFieldValue(obj, otherProperty);
+										List<Object> list = map.get(key);
+										if (list == null) {
+											list = new ArrayList<Object>(5);
+											map.put(key, list);
+										}
+										list.add(obj);
 									}
-									list.add(obj);
 								}
+								
 								metadata.put(property, map);
 								metadata.put(entityClass, map);
 							}

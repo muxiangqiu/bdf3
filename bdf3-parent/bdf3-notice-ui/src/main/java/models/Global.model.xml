@@ -52,13 +52,40 @@
       <Property name="dataType">Notice</Property>
       <Property name="submittable">false</Property>
     </PropertyDef>
-    <PropertyDef name="notices">
-      <Property name="dataType">[Notice]</Property>
-      <Property name="submittable">false</Property>
-    </PropertyDef>
     <PropertyDef name="members">
       <Property name="dataType">[GroupMember]</Property>
     </PropertyDef>
+    <PropertyDef name="description">
+      <Property></Property>
+      <Property name="label">群描述</Property>
+    </PropertyDef>
+    <PropertyDef name="url">
+      <Property></Property>
+    </PropertyDef>
+    <PropertyDef name="templateId">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="template">
+      <Property name="dataType">Template</Property>
+    </PropertyDef>
+    <PropertyDef name="functions">
+      <Property name="dataType">[Template]</Property>
+    </PropertyDef>
+    <Reference name="notices">
+      <ClientEvent name="onLoadData">var data = arg.entity.get(&quot;notices&quot;);
+if (data.getLast()) {
+	data.setCurrent(data.getLast());
+}
+</ClientEvent>
+      <Property name="dataProvider">noticeController#loadLastNotices</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="groupId">$${this.id}</Property>
+          <Property name="memberId">${loginUsername}</Property>
+        </Entity>
+      </Property>
+      <Property name="dataType">[Notice]</Property>
+    </Reference>
   </DataType>
   <DataType name="Group">
     <Property name="creationType">com.bstek.bdf3.notice.domain.Group</Property>
@@ -127,6 +154,30 @@
     <PropertyDef name="lastNotice">
       <Property name="dataType">Notice</Property>
     </PropertyDef>
+    <PropertyDef name="url">
+      <Property></Property>
+      <Property name="label">外链接</Property>
+    </PropertyDef>
+    <PropertyDef name="functionCount">
+      <ClientEvent name="onGet">arg.value = arg.entity.get(&quot;functions&quot;).entityCount;
+</ClientEvent>
+      <Property name="dataType">int</Property>
+      <Property name="label">功能项</Property>
+      <Property name="displayFormat">0项</Property>
+    </PropertyDef>
+    <PropertyDef name="description">
+      <Property></Property>
+      <Property name="label">群描述</Property>
+    </PropertyDef>
+    <PropertyDef name="functions">
+      <Property name="dataType">[Template]</Property>
+    </PropertyDef>
+    <PropertyDef name="templateId">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="template">
+      <Property name="dataType">Template</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="GroupMember">
     <Property name="creationType">com.bstek.bdf3.notice.domain.GroupMember</Property>
@@ -152,7 +203,10 @@
       <Property name="dataType">boolean</Property>
     </PropertyDef>
     <PropertyDef name="groupId">
-      <Property/>
+      <Property></Property>
+    </PropertyDef>
+    <PropertyDef name="exited">
+      <Property name="dataType">boolean</Property>
     </PropertyDef>
   </DataType>
   <DataType name="Notice">
@@ -187,6 +241,16 @@
     <PropertyDef name="senderGroupMember">
       <Property name="dataType">GroupMember</Property>
     </PropertyDef>
+    <PropertyDef name="url">
+      <Property></Property>
+    </PropertyDef>
+    <PropertyDef name="templateId">
+      <Property/>
+      <Property name="label">模版ID</Property>
+    </PropertyDef>
+    <PropertyDef name="template">
+      <Property name="dataType">Template</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="User">
     <Property name="creationType">com.bstek.bdf3.security.orm.User</Property>
@@ -195,6 +259,56 @@
     </PropertyDef>
     <PropertyDef name="nickname">
       <Property></Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Template">
+    <Property name="creationType">com.bstek.bdf3.notice.domain.Template</Property>
+    <PropertyDef name="id">
+      <Property></Property>
+    </PropertyDef>
+    <PropertyDef name="name">
+      <Property></Property>
+      <Property name="label">名称</Property>
+    </PropertyDef>
+    <PropertyDef name="icon">
+      <Property></Property>
+      <Property name="label">图标</Property>
+    </PropertyDef>
+    <PropertyDef name="url">
+      <Property></Property>
+      <Property name="label">视图</Property>
+    </PropertyDef>
+    <PropertyDef name="css">
+      <Property></Property>
+      <Property name="label">CSS</Property>
+    </PropertyDef>
+    <PropertyDef name="javascript">
+      <Property></Property>
+      <Property name="label">JAVASCRIPT</Property>
+    </PropertyDef>
+    <PropertyDef name="html">
+      <Property></Property>
+      <Property name="label">HTML</Property>
+    </PropertyDef>
+    <PropertyDef name="global">
+      <Property name="dataType">boolean</Property>
+      <Property name="label">全局</Property>
+    </PropertyDef>
+    <PropertyDef name="offline">
+      <Property name="dataType">boolean</Property>
+      <Property name="label">下线</Property>
+    </PropertyDef>
+    <PropertyDef name="microProgram">
+      <Property name="dataType">boolean</Property>
+      <Property name="label">微程序</Property>
+    </PropertyDef>
+    <PropertyDef name="description">
+      <Property/>
+      <Property name="label">描述</Property>
+    </PropertyDef>
+    <PropertyDef name="displayable">
+      <Property name="dataType">boolean</Property>
+      <Property name="label">可显示</Property>
     </PropertyDef>
   </DataType>
 </Model>

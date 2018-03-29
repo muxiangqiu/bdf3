@@ -27,5 +27,13 @@ public interface GroupService {
 	void loadGroupMembers(Page<GroupMember> page, String groupId, String memberIdOrNickname);
 
 	void freezeGroup(String groupId, String memberId);
+
+	List<Group> loadWithoutSystemGroups(Page<Group> page, String memberId, String groupName);
+
+	void exitGroup(String memberId, String groupId);
+
+	List<Group> loadSystemGroups(Page<Group> page, String memberId, String groupName);
+
+	void joinGroup(String memberId, String groupId, boolean administrator);
 	
 }

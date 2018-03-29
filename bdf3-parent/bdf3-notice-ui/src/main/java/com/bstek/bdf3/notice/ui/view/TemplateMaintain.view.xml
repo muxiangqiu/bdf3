@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Template">
+      <ClientEvent name="onCurrentChange" signature="self,arg,htmlSource,jsSource,cssSource">var template = arg.newCurrent;
+if (template) {
+		if (htmlSource.getCodeMirror()) {
+		htmlSource.getCodeMirror().setValue(template.get(&quot;html&quot;) || &quot;&quot;);
+	} else {
+		htmlSource.set(&quot;value&quot;, template.get(&quot;html&quot;) || &quot;&quot;)
+	}
+	
+	if (jsSource.getCodeMirror()) {
+		jsSource.getCodeMirror().setValue(template.get(&quot;javascript&quot;) || &quot;&quot;);
+	} else {
+		jsSource.set(&quot;value&quot;, template.get(&quot;javascript&quot;) || &quot;&quot;)
+	}
+	
+	if (cssSource.getCodeMirror()) {
+		cssSource.getCodeMirror().setValue(template.get(&quot;css&quot;) || &quot;&quot;);
+	} else {
+		cssSource.set(&quot;value&quot;, template.get(&quot;css&quot;) || &quot;&quot;)
+	}
+}
+htmlSource.set(&quot;readOnly&quot;, false);
+jsSource.set(&quot;readOnly&quot;, false);
+cssSource.set(&quot;readOnly&quot;, false);</ClientEvent>
+      <Property name="creationType">com.bstek.bdf3.notice.domain.Template</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
+      <PropertyDef name="icon">
+        <Property></Property>
+        <Property name="label">图标</Property>
+      </PropertyDef>
+      <PropertyDef name="url">
+        <Property></Property>
+        <Property name="label">视图</Property>
+      </PropertyDef>
+      <PropertyDef name="css">
+        <Property></Property>
+        <Property name="label">CSS</Property>
+      </PropertyDef>
+      <PropertyDef name="javascript">
+        <Property></Property>
+        <Property name="label">JAVASCRIPT</Property>
+      </PropertyDef>
+      <PropertyDef name="html">
+        <Property></Property>
+        <Property name="label">HTML</Property>
+      </PropertyDef>
+      <PropertyDef name="global">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">全局</Property>
+      </PropertyDef>
+      <PropertyDef name="offline">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">下线</Property>
+      </PropertyDef>
+      <PropertyDef name="microProgram">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">微程序</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property/>
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <PropertyDef name="displayable">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可显示</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Url">
+      <Property name="creationType">com.bstek.bdf3.security.orm.Url</Property>
+      <Property name="defaultDisplayProperty">name</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
+      <PropertyDef name="icon">
+        <Property></Property>
+        <Property name="label">图标</Property>
+      </PropertyDef>
+      <PropertyDef name="path">
+        <Property></Property>
+        <Property name="label">路径</Property>
+      </PropertyDef>
+      <PropertyDef name="navigable">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可导航</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="parentId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="order">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">排序号</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <PropertyDef name="children">
+        <Property name="dataType">[SELF]</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View layout="regionPadding:15">
+    <ClientEvent name="onReady" signature="self,arg,dsTemplate,dialogIcon">dialogIcon.addOnIconSelectedListener(function(self, arg) {
+	var t = dsTemplate.getData(&quot;#&quot;);
+	t.set(&quot;icon&quot;, arg.iconClass);
+});
+</ClientEvent>
+    <Property name="packages">font-awesome-info,entypo-info,colors</Property>
+    <DataSet id="dsQuery">
+      <Property name="dataType">[Url]</Property>
+    </DataSet>
+    <DataSet id="dsUrl">
+      <ClientEvent name="onLoadData" signature="self,arg,dsQuery">self.listUrls = [];
+var parseUrls = function(urls, result) {
+	if (urls.entityCount &lt;= 0) {
+		return;
+	}
+	urls.each(function(url) {
+		result.push(url.toJSON());
+		parseUrls(url.get(&quot;children&quot;), result);
+	});
+};
+
+setTimeout(function() {
+	parseUrls(self.getData(), self.listUrls);
+	dsQuery.setData(self.listUrls);
+}, 10);
+</ClientEvent>
+      <Property name="dataType">[Url]</Property>
+      <Property name="dataProvider">urlController#load</Property>
+    </DataSet>
+    <DataSet id="dsTemplate">
+      <Property name="dataType">[Template]</Property>
+      <Property name="dataProvider">templateController#load</Property>
+    </DataSet>
+    <UpdateAction id="updateAction">
+      <Property name="dataResolver">templateController#save</Property>
+      <Property name="successMessage">保存成功。</Property>
+      <Property name="executingMessage">正在保存……</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsTemplate</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <Panel layoutConstraint="left ">
+      <Property name="caption">模版</Property>
+      <Property name="width">38%</Property>
+      <Buttons/>
+      <Children>
+        <DataGrid>
+          <ClientEvent name="onGetBindingData" signature="self,arg,dsTemplate,htmlSource,jsSource,cssSource">var template = dsTemplate.getData(&quot;#&quot;);
+if (template) {
+	if (htmlSource.getCodeMirror()) {
+		htmlSource.getCodeMirror().setValue(template.get(&quot;html&quot;) || &quot;&quot;);
+	} else {
+		htmlSource.set(&quot;value&quot;, template.get(&quot;html&quot;) || &quot;&quot;)
+	}
+	
+	if (jsSource.getCodeMirror()) {
+		jsSource.getCodeMirror().setValue(template.get(&quot;javascript&quot;) || &quot;&quot;);
+	} else {
+		jsSource.set(&quot;value&quot;, template.get(&quot;javascript&quot;) || &quot;&quot;)
+	}
+	
+	if (cssSource.getCodeMirror()) {
+		cssSource.getCodeMirror().setValue(template.get(&quot;css&quot;) || &quot;&quot;);
+	} else {
+		cssSource.set(&quot;value&quot;, template.get(&quot;css&quot;) || &quot;&quot;)
+	}
+} else {
+	htmlSource.set(&quot;readOnly&quot;, true);
+	jsSource.set(&quot;readOnly&quot;, true);
+	cssSource.set(&quot;readOnly&quot;, true);
+}
+</ClientEvent>
+          <Property name="dataSet">dsTemplate</Property>
+          <Property name="readOnly">true</Property>
+          <RowSelectorColumn/>
+          <IndicatorColumn/>
+          <DataColumn name="icon">
+            <ClientEvent name="onRenderCell">$(arg.dom).addClass(arg.data.get(&quot;icon&quot;))
+	.css({
+		&quot;line-height&quot;: $(arg.dom).height() + &quot;px&quot;,
+		display: &quot;block&quot;
+	});
+</ClientEvent>
+            <Property name="property">icon</Property>
+            <Property name="width">60</Property>
+          </DataColumn>
+          <DataColumn name="name">
+            <Property name="property">name</Property>
+          </DataColumn>
+          <DataColumn name="global">
+            <Property name="property">global</Property>
+          </DataColumn>
+          <DataColumn name="offline">
+            <Property name="property">offline</Property>
+          </DataColumn>
+          <DataColumn name="microProgram">
+            <Property name="property">microProgram</Property>
+          </DataColumn>
+        </DataGrid>
+      </Children>
+      <Tools>
+        <SimpleIconButton>
+          <Property name="iconClass">fa fa-plus-circle</Property>
+          <Property name="action">actionAdd</Property>
+        </SimpleIconButton>
+        <SimpleIconButton>
+          <Property name="iconClass">fa fa-minus-circle</Property>
+          <Property name="action">actionDel</Property>
+        </SimpleIconButton>
+      </Tools>
+    </Panel>
+    <Panel layout="padding:10;regionPadding:10">
+      <Property name="caption">详情</Property>
+      <Buttons/>
+      <Children>
+        <FieldSet layoutConstraint="top">
+          <Property name="caption">基本属性</Property>
+          <Buttons/>
+          <Children>
+            <AutoForm>
+              <Property name="dataSet">dsTemplate</Property>
+              <Property name="cols">*,*,*,*</Property>
+              <Property name="labelAlign">right</Property>
+              <Property name="width">550</Property>
+              <AutoFormElement layoutConstraint="colSpan:4">
+                <Property name="name">name</Property>
+                <Property name="property">name</Property>
+                <Editor>
+                  <TextEditor/>
+                </Editor>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:4">
+                <Property name="name">icon</Property>
+                <Property name="property">icon</Property>
+                <Property name="trigger">trigger</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:4">
+                <Property name="name">url</Property>
+                <Property name="property">url</Property>
+                <Property name="trigger">triggerUrl</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">global</Property>
+                <Property name="property">global</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">microProgram</Property>
+                <Property name="property">microProgram</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">displayable</Property>
+                <Property name="property">displayable</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">offline</Property>
+                <Property name="property">offline</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:4">
+                <Property name="name">description</Property>
+                <Property name="property">description</Property>
+                <Property name="editorType">TextArea</Property>
+                <Editor/>
+              </AutoFormElement>
+            </AutoForm>
+          </Children>
+        </FieldSet>
+        <TabControl>
+          <ClientEvent name="onTabChange" signature="self,arg,dsTemplate,preview">if (arg.newTab.get(&quot;caption&quot;) == &quot;预览&quot;) {
+	var template = dsTemplate.getData(&quot;#&quot;);
+	var _temp = _.templateSettings
+	_.templateSettings = {
+  		interpolate: /\{\{(.+?)\}\}/g,
+		evaluate: /\{\{\((.+?)\)\}\}/g,
+		escape: /\{\{-(.+?)\}\}/g
+	};
+	$(preview.getDom()).empty()
+	.append(&quot;&lt;style type='text/css' charset='UTF-8'>&quot; +template.get(&quot;css&quot;) + &quot;&lt;\/style>&quot;)
+	.append(template.get(&quot;html&quot;));
+	_.templateSettings = _temp;
+	eval(&quot;(function(){&quot;+ template.get(&quot;javascript&quot;) +&quot;})();&quot;);
+	
+}</ClientEvent>
+          <ControlTab>
+            <Property name="caption">HTML</Property>
+            <Container>
+              <SourceEditor id="htmlSource">
+                <ClientEvent name="onBlur" signature="self,arg,dsTemplate">var template = dsTemplate.getData(&quot;#&quot;);
+if (template) {
+	template.set(&quot;html&quot;, self.getCodeMirror().getValue());
+}</ClientEvent>
+                <Property name="language">html</Property>
+                <Property name="theme">ambiance</Property>
+              </SourceEditor>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">JAVASCRIPT</Property>
+            <Container>
+              <SourceEditor id="jsSource">
+                <ClientEvent name="onBlur" signature="self,arg,dsTemplate">var template = dsTemplate.getData(&quot;#&quot;);
+if (template) {
+	template.set(&quot;javascript&quot;, self.getCodeMirror().getValue());
+}</ClientEvent>
+                <ClientEvent name="onReady">self.set(&quot;language&quot;, &quot;javascript&quot;)
+</ClientEvent>
+                <Property name="language">javascript</Property>
+                <Property name="theme">ambiance</Property>
+              </SourceEditor>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">CSS</Property>
+            <Container>
+              <SourceEditor id="cssSource">
+                <ClientEvent name="onBlur" signature="self,arg,dsTemplate">var template = dsTemplate.getData(&quot;#&quot;);
+if (template) {
+	template.set(&quot;css&quot;, self.getCodeMirror().getValue());
+}</ClientEvent>
+                <ClientEvent name="onReady">self.set(&quot;language&quot;, &quot;javascript&quot;)
+</ClientEvent>
+                <Property name="language">css</Property>
+                <Property name="theme">ambiance</Property>
+              </SourceEditor>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">预览</Property>
+            <Container>
+              <Control id="preview"/>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">帮助</Property>
+          </ControlTab>
+        </TabControl>
+      </Children>
+      <Tools>
+        <SimpleIconButton>
+          <Property name="action">updateAction</Property>
+          <Property name="iconClass">fa fa-save blue-text</Property>
+        </SimpleIconButton>
+      </Tools>
+    </Panel>
+    <Menu id="menu">
+      <MenuItem>
+        <Property name="action">actionAddTop</Property>
+      </MenuItem>
+      <MenuItem>
+        <Property name="action">actionAddSub</Property>
+        <Property name="tags">op</Property>
+      </MenuItem>
+      <Separator/>
+      <MenuItem>
+        <Property name="action">actionDel</Property>
+        <Property name="tags">op</Property>
+      </MenuItem>
+    </Menu>
+    <Trigger id="trigger">
+      <ClientEvent name="onExecute" signature="self,arg,dialogIcon">dialogIcon.show();
+</ClientEvent>
+    </Trigger>
+    <Trigger id="triggerUrl">
+      <ClientEvent name="onExecute" signature="self,arg,dialogUrl">dialogUrl.show();;
+</ClientEvent>
+    </Trigger>
+    <Action id="actionAdd">
+      <ClientEvent name="onExecute" signature="self,arg,dsTemplate">dsTemplate.insert();
+</ClientEvent>
+      <Property name="caption">添加模版</Property>
+      <Property name="iconClass">fa fa-plus-circle</Property>
+      <Property name="tip">添加模版</Property>
+    </Action>
+    <Action id="actionDel">
+      <ClientEvent name="onExecute" signature="self,arg,dsTemplate">dsTemplate.getData(&quot;#&quot;).remove();
+</ClientEvent>
+      <Property name="caption">删除模版</Property>
+      <Property name="confirmMessage">确定要删除当前选中模版？</Property>
+      <Property name="iconClass">fa fa-minus-circle</Property>
+      <Property name="tip">删除模版</Property>
+    </Action>
+    <Import src="com.bstek.bdf3.dorado.template.DialogIcon#dialogIcon"/>
+    <Dialog id="dialogUrl">
+      <Property name="caption">选择菜单（双击选择）</Property>
+      <Property name="width">400</Property>
+      <Property name="height">460</Property>
+      <Buttons/>
+      <Children>
+        <Container layout="hbox pack:center;align:center;padding:10">
+          <TextEditor layoutConstraint="top">
+            <ClientEvent name="onKeyDown" signature="self,arg,dsUrl,dsQuery,dtUrl">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.urlQueryTimeout);
+self.urlQueryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	var urls = dsUrl.getData();
+	var result = [];
+	var parseUrls = function(urls, result) {
+		if (urls.entityCount &lt;= 0) {
+			return;
+		}
+		urls.each(function(url) {
+			var name = url.get(&quot;name&quot;) || &quot;&quot;;
+			var description = url.get(&quot;description&quot;) || &quot;&quot;;
+			if (name.indexOf(key) != -1 || description.indexOf(key) != -1) {
+				result.push(url.toJSON());
+			}
+			parseUrls(url.get(&quot;children&quot;), result);
+		});
+	};
+	if (!key) {
+		dtUrl.set(&quot;dataSet&quot;, dsUrl);
+		return;
+	}
+	parseUrls(urls, result);
+	dsQuery.setData(result);
+	dtUrl.set(&quot;dataSet&quot;, dsQuery);
+}, 150);</ClientEvent>
+            <Property name="trigger">triggerQuery</Property>
+            <Property name="blankText">搜索</Property>
+            <Property name="style">
+              <Property name="padding-left">10px</Property>
+              <Property name="border-radius">24px</Property>
+              <Property name="height">24px</Property>
+              <Property name="-webkit-border-radius">24px</Property>
+              <Property name="-moz-border-radius">24px</Property>
+              <Property name="line-height">24px</Property>
+            </Property>
+            <Property name="exClassName">menu-search</Property>
+          </TextEditor>
+        </Container>
+        <DataTree id="dtUrl">
+          <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
+var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
+if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
+	if (icon != arg.node.get(&quot;iconClass&quot;)) {
+		arg.node.set(&quot;iconClass&quot;, icon);
+	}
+} else {
+	if (icon != arg.node.get(&quot;icon&quot;)) {
+		arg.node.set(&quot;icon&quot;, icon);
+	}
+}
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+</ClientEvent>
+          <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
+var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
+if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
+	if (icon != arg.node.get(&quot;iconClass&quot;)) {
+		arg.node.set(&quot;iconClass&quot;, icon);
+	}
+} else {
+	if (icon != arg.node.get(&quot;icon&quot;)) {
+		arg.node.set(&quot;icon&quot;, icon);
+	}
+}
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+</ClientEvent>
+          <ClientEvent name="onDataRowDoubleClick" signature="self,arg,dsTemplate,dialogUrl">var template = dsTemplate.getData(&quot;#&quot;);
+var url = self.get(&quot;currentEntity&quot;);
+if (!template.get(&quot;name&quot;)) {
+	template.set(&quot;name&quot;, url.get(&quot;name&quot;));
+}
+
+if (!template.get(&quot;icon&quot;)) {
+	template.set(&quot;icon&quot;, url.get(&quot;icon&quot;));
+}
+
+if (!template.get(&quot;description&quot;)) {
+	template.set(&quot;description&quot;, url.get(&quot;description&quot;));
+}
+template.set(&quot;url&quot;, url.get(&quot;path&quot;));
+dialogUrl.hide();
+</ClientEvent>
+          <Property name="dataSet">dsUrl</Property>
+          <Property name="currentNodeDataPath">currentNode</Property>
+          <Property name="draggable">false</Property>
+          <Property name="highlightCurrentRow">false</Property>
+          <BindingConfigs>
+            <BindingConfig>
+              <Property name="childrenProperty">children</Property>
+              <Property name="labelProperty">name</Property>
+              <Property name="recursive">true</Property>
+              <Property name="tipProperty">description</Property>
+              <Property name="name">name</Property>
+            </BindingConfig>
+          </BindingConfigs>
+        </DataTree>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

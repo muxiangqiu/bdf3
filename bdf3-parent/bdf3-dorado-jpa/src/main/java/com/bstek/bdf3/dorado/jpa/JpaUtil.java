@@ -35,6 +35,7 @@ import com.bstek.bdf3.dorado.jpa.policy.SaveContext;
 import com.bstek.bdf3.dorado.jpa.policy.SavePolicy;
 import com.bstek.bdf3.dorado.jpa.policy.impl.DirtyTreeSavePolicy;
 import com.bstek.dorado.data.entity.EntityUtils;
+import com.bstek.dorado.util.proxy.ProxyBeanUtils;
 
 
 /**
@@ -539,11 +540,12 @@ public abstract class JpaUtil {
 	}
 	
 	public static <T> String getIdName(Class<T> domainClass) {
-		return org.malagu.linq.JpaUtil.getIdName(domainClass);
+		return org.malagu.linq.JpaUtil.getIdName(ProxyBeanUtils.getProxyTargetType(domainClass));
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <T> SingularAttribute<? super T, ?> getId(Class<T> domainClass) {
-		return org.malagu.linq.JpaUtil.getId(domainClass);
+		return org.malagu.linq.JpaUtil.getId((Class<T>) ProxyBeanUtils.getProxyTargetType(domainClass));
 	}
 	
 	public static EntityManagerFactory getEntityManagerFactory() {

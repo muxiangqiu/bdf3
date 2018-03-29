@@ -28,4 +28,6 @@ public interface NoticeService {
 
 	void loadUsers(Page<User> page, String memberId, String usernameOrNickname);
 
+	List<Notice> loadLastNotices(String groupId, String memberId);
+
 }

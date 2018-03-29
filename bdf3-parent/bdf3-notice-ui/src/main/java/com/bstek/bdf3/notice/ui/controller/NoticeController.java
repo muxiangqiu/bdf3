@@ -1,10 +1,12 @@
 package com.bstek.bdf3.notice.ui.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.bstek.bdf3.notice.domain.Notice;
 import com.bstek.bdf3.notice.ui.service.NoticeServer;
 import com.bstek.bdf3.notice.ui.service.NoticeService;
 import com.bstek.bdf3.security.orm.User;
@@ -29,6 +31,11 @@ public class NoticeController {
 	@Expose
 	public void connectServer(Socket socket, String member) {
 		noticeServer.registerSocket(member, socket);
+	}
+	
+	@DataProvider
+	public List<Notice> loadLastNotices(String groupId, String memberId) {
+		return noticeService.loadLastNotices(groupId, memberId);
 	}
 
 	@DataProvider

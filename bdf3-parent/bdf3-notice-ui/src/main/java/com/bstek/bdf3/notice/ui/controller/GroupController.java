@@ -29,6 +29,17 @@ public class GroupController {
 	}
 	
 	@DataProvider
+	public List<Group> loadWithoutSystemGroups(Page<Group> page, String memberId, String groupName) {
+		return groupService.loadWithoutSystemGroups(page, memberId, groupName);
+	}
+	
+	@DataProvider
+	public List<Group> loadSystemGroups(Page<Group> page, String memberId, String groupName) {
+		return groupService.loadSystemGroups(page, memberId, groupName);
+	}
+
+	
+	@DataProvider
 	public List<Group> loadActiveGroups(String memberId) {
 		return groupService.loadActiveGroups(memberId);
 	}
@@ -56,6 +67,16 @@ public class GroupController {
 	@Expose
 	public void freezeGroup(String groupId, String memberId) {
 		groupService.freezeGroup(groupId, memberId);
+	}
+	
+	@Expose
+	public void joinGroup(String groupId, String memberId) {
+		groupService.joinGroup(memberId, groupId, false);
+	}
+	
+	@Expose
+	public void exitGroup(String groupId, String memberId) {
+		groupService.exitGroup(memberId, groupId);
 	}
 
 }
