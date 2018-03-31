@@ -3,6 +3,13 @@
 
 >bdf3基于spring-boot研发的开发框架。包含用户、角色、菜单、权限（最小粒度为组件）、数据导入、字典、日志、Web版数据库管理器、个人中心、多数据源、用户个性化和一个或多个数据库实例的独立数据库模式的多租户功能模块。基于bdf3快速开发企业管理系统。
 
+## 演示地址
+[传统风格多租户版](http://106.14.191.97:8081/bdf3.security.ui.view.Main.d) 公司ID/用户名/密码：master/admin/123456
+[实时通讯+公众号+微程序风格非多租户版](http://106.14.191.97:8080/bdf3.notice.ui.view.Chat.d) 用户名/密码：admin/123456
+[方块风格非多租户版](http://106.14.191.97:8080/bdf3.security.ui.view.Portal.d) 用户名/密码：admin/123456
+[传统风格非多租户版](http://106.14.191.97:8080/bdf3.security.ui.view.Main.d) 用户名/密码：admin/123456
+
+
 ## 快速入门
 >由于基于spring-boot，bdf3项目搭建和spring-boot几乎一样，不同的是依赖的jar包不一样。
 
