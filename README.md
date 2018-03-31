@@ -109,6 +109,8 @@ spring.datasource.driver-class-name=com.mysql.jdbc.Driver
 
 ## 界面截图
 
+![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/bdf3.png)
+
 ![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/1.png)
 
 ![](https://raw.githubusercontent.com/muxiangqiu/bdf3/master/screenshot/2.png)
