@@ -9,6 +9,7 @@
 3. [方块风格非多租户版](http://106.14.191.97:8080/bdf3.security.ui.view.Portal.d) 用户名/密码：admin/123456
 4. [传统风格非多租户版](http://106.14.191.97:8080/bdf3.security.ui.view.Main.d) 用户名/密码：admin/123456
 
+### 所有用户的密码都是123456
 
 ## 快速入门
 >由于基于spring-boot，bdf3项目搭建和spring-boot几乎一样，不同的是依赖的jar包不一样。
