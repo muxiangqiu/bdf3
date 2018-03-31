@@ -1,7 +1,7 @@
 # bdf3
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
->bdf3基于spring-boot研发的开发框架。包含用户、角色、菜单、权限（最小粒度为组件）、数据导入、字典、日志、Web版数据库管理器、个人中心、多数据源、用户个性化和一个或多个数据库实例的独立数据库模式的多租户功能模块。基于bdf3快速开发企业管理系统。
+>bdf3基于spring-boot研发的开发框架。包含用户、角色、菜单、权限（最小粒度为组件）、数据导入、字典、日志、实时通讯、公众号、微程序、云数据库、个人中心、云数据源、用户个性化和一个或多个数据库实例的独立数据库模式的多租户功能模块。功能模块化，自动化，参考spring boot项目结构构建，提供一些列预定义依赖项目快。基于bdf3快速开发企业管理系统。
 
 ## 演示地址
 1. [传统风格多租户版](http://106.14.191.97:8081/bdf3.security.ui.view.Main.d) 公司ID/用户名/密码：master/admin/123456
