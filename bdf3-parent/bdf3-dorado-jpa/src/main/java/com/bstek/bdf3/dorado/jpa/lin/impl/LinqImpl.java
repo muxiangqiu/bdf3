@@ -290,17 +290,18 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 			Set collectSet = collectInfo.getSet();
 			Map<Object, Object> relationMap = null;
 			List collectList = null;
-			if (collectInfo.getRelationClass() != null) {
-				collectList = JpaUtil
-					.linq(collectInfo.getRelationClass())
-					.aliasToBean()
-					.select(collectInfo.getRelationProperty(), collectInfo.getRelationOtherProperty())
-					.in(collectInfo.getRelationProperty(), collectSet)
-					.list();
-				relationMap = JpaUtil.index(collectList, collectInfo.getRelationOtherProperty());
-				collectSet = relationMap.keySet();
-			}
+		
 			if (!CollectionUtils.isEmpty(collectSet)) {
+				if (collectInfo.getRelationClass() != null) {
+					collectList = JpaUtil
+						.linq(collectInfo.getRelationClass())
+						.aliasToBean()
+						.select(collectInfo.getRelationProperty(), collectInfo.getRelationOtherProperty())
+						.in(collectInfo.getRelationProperty(), collectSet)
+						.list();
+					relationMap = JpaUtil.index(collectList, collectInfo.getRelationOtherProperty());
+					collectSet = relationMap.keySet();
+				}
 				for (String property : collectInfo.getProperties()) {
 					if (!metadata.containsKey(property)) {
 						Class<?> entityClass = collectInfo.getEntityClass();
