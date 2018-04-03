@@ -98,6 +98,8 @@ spring.datasource.url=jdbc:mysql://localhost:3306/bdf3
 spring.datasource.username=root
 spring.datasource.password=root
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+#如果数据库为非嵌入式数据库，这个属性第一次启动的时候一定要设置为ALWAYS，用于初始化数据，初始化好后，可以关闭，也可以不关闭，有自己决定
+spring.datasource.initialization-mode=ALWAYS
 ```
 
 ## BDF3文档教程
