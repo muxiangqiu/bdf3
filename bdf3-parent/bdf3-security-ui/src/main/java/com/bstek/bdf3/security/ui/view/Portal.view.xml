@@ -126,7 +126,13 @@ window.refreshTab = function (caption, icon, path) {
 	}
 	var tab = pathMap[path];
 	if (tab) {
-		tab.refresh();
+		if (tab) {
+			if (tab instanceof dorado.widget.tab.IFrameTab) {
+				tab.get(&quot;control&quot;).reload();
+			} else {
+				tab.refresh();
+			}
+		}
 	}
 }
 
