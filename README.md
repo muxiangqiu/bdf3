@@ -93,6 +93,8 @@ spring.jpa.showSql=true
 spring.jpa.hibernate.ddl-auto=update
 #springboot热部署设置，添加文件改动不重启目录。
 spring.devtools.restart.additional-exclude=com/**
+#数据库脚本的编码设置为UTF-8
+spring.datasource.sql-script-encoding=UTF-8
 
 
 #数据源配置，pom中需要引入对应的数据库jdbc依赖
