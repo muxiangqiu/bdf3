@@ -2,9 +2,7 @@
 	background-color: #4285f4;
 }
 .main .banner {
-	background-image: url(static/images/logo.svg);
-	background-repeat: no-repeat;
-	background-position: 24px center;
+
 }
 
 .main .app-name {
