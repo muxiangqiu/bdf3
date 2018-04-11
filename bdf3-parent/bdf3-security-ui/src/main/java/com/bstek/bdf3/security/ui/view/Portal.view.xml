@@ -235,6 +235,10 @@ Chat.addReceiveListener(function(c, arg) {
 	}, 80);
 });
 
+Chat.addChatCloseListener(function() {
+	Chat.hide();
+});
+
 
 
 </ClientEvent>
