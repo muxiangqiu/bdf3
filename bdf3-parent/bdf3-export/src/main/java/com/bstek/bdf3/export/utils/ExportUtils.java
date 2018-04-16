@@ -10,7 +10,7 @@ import com.bstek.dorado.core.Configure;
 public class ExportUtils {
 
 	public static String getFileStorePath() {
-		String fileLocation = Configure.getString("bdf2.export.location");
+		String fileLocation = Configure.getString("bdf3.export.location");
 		if (StringUtils.isNotEmpty(fileLocation)) {
 			return fileLocation.endsWith(File.separator) ? fileLocation : fileLocation + File.separator;
 		} else {
@@ -18,7 +18,11 @@ public class ExportUtils {
 			if (!fileLocation.endsWith(File.separator)) {
 				fileLocation += File.separator;
 			}
-			return fileLocation + "bdf2-export-temp"+ File.separator;
+			File file = new File(fileLocation + "bdf3-export-temp");
+			if (!file.exists()) {
+				file.mkdirs();
+			}
+			return fileLocation + "bdf3-export-temp"+ File.separator;
 		}
 	}
 
