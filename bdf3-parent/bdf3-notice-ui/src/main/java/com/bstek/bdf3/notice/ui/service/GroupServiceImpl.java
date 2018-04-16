@@ -15,7 +15,6 @@ import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicyAdapter;
 import com.bstek.bdf3.notice.domain.Group;
 import com.bstek.bdf3.notice.domain.GroupMember;
 import com.bstek.bdf3.notice.domain.GroupTemplate;
-import com.bstek.bdf3.notice.domain.Link;
 import com.bstek.bdf3.notice.domain.MemberNotice;
 import com.bstek.bdf3.notice.domain.Notice;
 import com.bstek.bdf3.notice.domain.Template;
@@ -34,7 +33,6 @@ public class GroupServiceImpl implements GroupService{
 	@Override
 	public List<String> getMemberIds(String groupId) {
 		return JpaUtil.linq(GroupMember.class, String.class)
-				.collect("groupId", Link.class)
 				.select("memberId")
 				.equal("groupId", groupId)
 				.isFalse("exited")
@@ -151,7 +149,6 @@ public class GroupServiceImpl implements GroupService{
 	@Override
 	public List<Group> loadSystemGroups(Page<Group> page, String memberId, String groupName) {
 		List<Group> groups =  JpaUtil.linq(Group.class)
-				.collect("groupId", Link.class)
 				.isFalse("privateLetter")
 				.isTrue("system")
 				.addIf(groupName)
@@ -283,7 +280,6 @@ public class GroupServiceImpl implements GroupService{
 						.end()
 						.delete();
 					JpaUtil.lind(Notice.class).equal("groupId", ((Group) entity).getId()).delete();
-					JpaUtil.lind(Link.class).equal("groupId", ((Group) entity).getId()).delete();
 
 				} else if (entity instanceof GroupMember) {
 					GroupMember groupMember = (GroupMember) entity;
