@@ -1062,10 +1062,10 @@ var avatar = new dorado.widget.Control({
 	exClassName: &quot;group-avatar green-background&quot;
 });
 var name = new dorado.widget.Control({
-	exClassName: &quot;group-name&quot;,
+	exClassName: &quot;group-name&quot;
 });
 var description = new dorado.widget.Control({
-	exClassName: &quot;group-description&quot;,
+	exClassName: &quot;group-description&quot;
 });
 
 
