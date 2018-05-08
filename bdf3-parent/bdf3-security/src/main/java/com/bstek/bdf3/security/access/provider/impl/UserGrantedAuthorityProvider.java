@@ -3,11 +3,11 @@ package com.bstek.bdf3.security.access.provider.impl;
 import java.util.Collection;
 import java.util.List;
 
+import org.malagu.linq.JpaUtil;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.security.access.provider.GrantedAuthorityProvider;
 import com.bstek.bdf3.security.orm.RoleGrantedAuthority;
 

@@ -9,6 +9,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.util.ClassUtils;
 
+import com.bstek.dorado.core.CommonContext;
+import com.bstek.dorado.core.Context;
 import com.bstek.dorado.web.loader.DoradoLoader;
 
 public class DoradoPreloadSpringApplicationRunListener implements
@@ -27,8 +29,23 @@ public class DoradoPreloadSpringApplicationRunListener implements
 	}
 
 	@Override
-	public void contextPrepared(ConfigurableApplicationContext context) {
-
+	public void contextPrepared(ConfigurableApplicationContext applicationContext) {
+		if (ClassUtils.isPresent("com.bstek.dorado.web.loader.DoradoLoader", this.getClass().getClassLoader())){
+			System.setProperty("doradoHome", "classpath:dorado-home/");
+	
+			DoradoLoader doradoLoader = DoradoLoader.getInstance();
+			try {
+				Context context = CommonContext.init(applicationContext);
+				DoradoLoader.getInstance().setFailSafeContext(context);
+				doradoLoader.preload(true);;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Set<String> sources = new LinkedHashSet<String>();
+			sources.addAll(doradoLoader
+					.getContextLocations(false));
+			application.setSources(sources);
+		}
 	}
 
 	@Override
@@ -37,27 +54,25 @@ public class DoradoPreloadSpringApplicationRunListener implements
 	}
 
 	@Override
-	public void finished(ConfigurableApplicationContext context,
-			Throwable exception) {
-
+	public void starting() {
+		
 	}
 
 	@Override
-	public void starting() {
-		if (ClassUtils.isPresent("com.bstek.dorado.web.loader.DoradoLoader", this.getClass().getClassLoader())){
-			System.setProperty("doradoHome", "classpath:dorado-home/");
-	
-			DoradoLoader doradoLoader = DoradoLoader.getInstance();
-			try {
-				doradoLoader.preload(null, true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			Set<Object> sources = new LinkedHashSet<Object>();
-			sources.addAll(doradoLoader
-					.getContextLocations(false));
-			application.setSources(sources);
-		}
+	public void failed(ConfigurableApplicationContext context, Throwable exception) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void running(ConfigurableApplicationContext context) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void started(ConfigurableApplicationContext context) {
+		// TODO Auto-generated method stub
 		
 	}
 

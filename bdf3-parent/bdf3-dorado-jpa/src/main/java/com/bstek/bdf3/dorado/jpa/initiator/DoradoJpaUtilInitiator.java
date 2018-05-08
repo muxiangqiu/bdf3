@@ -1,12 +1,12 @@
 package com.bstek.bdf3.dorado.jpa.initiator;
 
+import org.malagu.linq.initiator.JpaUtilInitiator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.bdf3.dorado.jpa.policy.CriteriaPolicy;
 import com.bstek.bdf3.dorado.jpa.policy.SavePolicy;
-import com.bstek.bdf3.jpa.initiator.JpaUtilInitiator;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)

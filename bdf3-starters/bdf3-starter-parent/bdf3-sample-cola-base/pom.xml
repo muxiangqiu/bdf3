@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.bstek.bdf3</groupId>
     <artifactId>bdf3-starter-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+	<version>2.0.0.RELEASE</version>
   </parent>
   <artifactId>bdf3-sample-cola-base</artifactId>
   <dependencies>
@@ -16,8 +16,12 @@
 			<artifactId>bdf3-cola</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.bstek.bdf3</groupId>
-			<artifactId>bdf3-jpa</artifactId>
+			<groupId>org.malagu.linq</groupId>
+			<artifactId>linq</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -1,3 +1,7 @@
 .d-tree .selected-row .node-icon, .d-tree .current-row .node-icon {
     color: rgba(255, 255, 255, 0.7) !important;
 }
+
+.d-tree .node-icon {
+    font-size: 14px;
+}

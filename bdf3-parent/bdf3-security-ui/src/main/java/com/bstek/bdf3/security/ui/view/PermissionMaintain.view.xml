@@ -376,7 +376,7 @@ if (attribute) {
     </DataType>
   </Model>
   <View>
-    <Property name="packages">font-awesome,entypo,colors</Property>
+    <Property name="packages">font-awesome-new,entypo,colors</Property>
     <DataSet id="dsQuery">
       <Property name="dataType">[Url]</Property>
     </DataSet>

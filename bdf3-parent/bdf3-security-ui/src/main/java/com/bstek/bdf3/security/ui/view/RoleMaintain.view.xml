@@ -20,7 +20,7 @@
     </DataType>
   </Model>
   <View layout="padding:15">
-    <Property name="packages">font-awesome</Property>
+    <Property name="packages">font-awesome-new</Property>
     <DataSet id="dsRole">
       <Property name="dataType">[Role]</Property>
       <Property name="dataProvider">roleController#load</Property>

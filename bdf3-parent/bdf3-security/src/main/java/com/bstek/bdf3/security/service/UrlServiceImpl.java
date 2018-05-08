@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.malagu.linq.JpaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.security.decision.manager.SecurityDecisionManager;
 import com.bstek.bdf3.security.orm.Permission;
 import com.bstek.bdf3.security.orm.Url;
@@ -65,11 +65,25 @@ public class UrlServiceImpl implements UrlService {
 		List<Url> result = new ArrayList<Url>();
 		rebuildLoginUserGrantedAuthorities();
 		for (Url url : urls) {
-			if (decide(null, url, userService.isAdministrator())) {
-				result.add(url);
+			Url copy = copyFor(url);
+			if (decide(username, copy, url, userService.isAdministrator())) {
+				result.add(copy);
 			}
 		}
 		return result;
+	}
+	
+	protected Url copyFor(Url url) {
+		Url u = new Url();
+		u.setId(url.getId());
+		u.setIcon(url.getIcon());
+		u.setDescription(url.getDescription());
+		u.setName(url.getName());
+		u.setNavigable(url.isNavigable());
+		u.setOrder(url.getOrder());
+		u.setParentId(url.getParentId());
+		u.setPath(url.getPath());
+		return u;
 	}
 	
 	@Override
@@ -77,8 +91,9 @@ public class UrlServiceImpl implements UrlService {
 		List<Url> urls = urlServiceCache.findTree();
 		List<Url> result = new ArrayList<Url>();
 		for (Url url : urls) {
-			if (decide(username, url, userService.isAdministrator(username))) {
-				result.add(url);
+			Url copy = copyFor(url);
+			if (decide(username, copy, url, userService.isAdministrator(username))) {
+				result.add(copy);
 			}
 		}
 		return result;
@@ -89,18 +104,19 @@ public class UrlServiceImpl implements UrlService {
 		user.setAuthorities(grantedAuthorityService.getGrantedAuthorities(user));
 	}
 
-	private boolean decide(String username, Url url, boolean administrator) {
+	private boolean decide(String username, Url copy, Url url, boolean administrator) {
 		if (!url.isNavigable()) {
 			return false;
 		}
 		if (administrator || securityDecisionManager.decide(username, url)) {
 			List<Url> children = url.getChildren();
 			List<Url> newChildren = new ArrayList<Url>();
-			url.setChildren(newChildren);
+			copy.setChildren(newChildren);
 			if (!CollectionUtils.isEmpty(children)) {
 				for (Url child : children) {
-					if (decide(username, child, administrator)) {
-						newChildren.add(child);
+					Url copyChild = copyFor(child);
+					if (decide(username, copyChild, child, administrator)) {
+						newChildren.add(copyChild);
 					}
 				}
 			}

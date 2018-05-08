@@ -1,0 +1,1 @@
+INSERT INTO BDF3_URL (DESCRIPTION_, NAME_, ICON_, PATH_, NAVIGABLE_, ORDER_, PARENT_ID_, ID_) VALUES(NULL,'云微程序','fa fa-superscript','bdf3.notice.ui.view.TemplateMaintain.d',1,8,NULL,'317952ad-a481-45e4-aa5b-d880a8fd51f8')

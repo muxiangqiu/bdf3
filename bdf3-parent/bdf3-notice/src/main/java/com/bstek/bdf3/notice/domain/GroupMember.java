@@ -35,6 +35,9 @@ public class GroupMember {
 	@Column(name = "ACTIVE_")
 	private boolean active;
 	
+	@Column(name = "EXITED_")
+	private boolean exited;
+	
 	@Column(name = "READ_ONLY_")
 	private boolean readOnly;
 
@@ -101,6 +104,16 @@ public class GroupMember {
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 	}
+
+	public boolean isExited() {
+		return exited;
+	}
+
+	public void setExited(boolean exited) {
+		this.exited = exited;
+	}
+	
+	
 
 	
 	

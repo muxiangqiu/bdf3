@@ -99,7 +99,7 @@
     </DataType>
   </Model>
   <View layout="padding:5;regionPadding:10">
-    <Property name="packages">font-awesome,colors</Property>
+    <Property name="packages">font-awesome-new,colors</Property>
     <DataSet id="dsRole">
       <Property name="dataType">[Role]</Property>
       <Property name="dataProvider">roleController#load</Property>

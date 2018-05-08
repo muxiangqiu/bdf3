@@ -20,6 +20,9 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.malagu.linq.lin.impl.LinImpl;
+import org.malagu.linq.transform.ResultTransformer;
+import org.malagu.linq.transform.impl.Transformers;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -38,9 +41,6 @@ import com.bstek.bdf3.dorado.jpa.parser.SmartSubQueryParser;
 import com.bstek.bdf3.dorado.jpa.parser.SubQueryParser;
 import com.bstek.bdf3.dorado.jpa.policy.LinqContext;
 import com.bstek.bdf3.dorado.jpa.policy.impl.QBCCriteriaContext;
-import com.bstek.bdf3.jpa.lin.impl.LinImpl;
-import com.bstek.bdf3.jpa.transform.ResultTransformer;
-import com.bstek.bdf3.jpa.transform.impl.Transformers;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
@@ -289,17 +289,19 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 		for (CollectInfo collectInfo : collectInfos) {
 			Set collectSet = collectInfo.getSet();
 			Map<Object, Object> relationMap = null;
-			if (collectInfo.getRelationClass() != null) {
-				List collectList = JpaUtil
-					.linq(collectInfo.getRelationClass())
-					.aliasToBean()
-					.select(collectInfo.getRelationProperty(), collectInfo.getRelationOtherProperty())
-					.in(collectInfo.getRelationProperty(), collectSet)
-					.list();
-				relationMap = JpaUtil.index(collectList, collectInfo.getRelationOtherProperty());
-				collectSet = relationMap.keySet();
-			}
+			List collectList = null;
+		
 			if (!CollectionUtils.isEmpty(collectSet)) {
+				if (collectInfo.getRelationClass() != null) {
+					collectList = JpaUtil
+						.linq(collectInfo.getRelationClass())
+						.aliasToBean()
+						.select(collectInfo.getRelationProperty(), collectInfo.getRelationOtherProperty())
+						.in(collectInfo.getRelationProperty(), collectSet)
+						.list();
+					relationMap = JpaUtil.index(collectList, collectInfo.getRelationOtherProperty());
+					collectSet = relationMap.keySet();
+				}
 				for (String property : collectInfo.getProperties()) {
 					if (!metadata.containsKey(property)) {
 						Class<?> entityClass = collectInfo.getEntityClass();
@@ -316,19 +318,35 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 								}
 								linq.in(otherProperty, collectSet);
 								List result = linq.list();
+								Map<Object, Object> resultMap = JpaUtil.index(result, otherProperty);
 								Map<Object, List<Object>> map = new HashMap<Object, List<Object>>();
-								for (Object obj : result) {
-									Object key = BeanUtils.getFieldValue(obj, otherProperty);
-									if (relationMap != null) {
-										key = BeanUtils.getFieldValue(relationMap.get(key), collectInfo.getRelationProperty());
+								if (collectList != null) {
+									for (Object obj : collectList) {
+										Object key = BeanUtils.getFieldValue(obj, collectInfo.getRelationOtherProperty());
+										Object other = resultMap.get(key);
+										key = BeanUtils.getFieldValue(obj, collectInfo.getRelationProperty());
+										List<Object> list = map.get(key);
+										if (list == null) {
+											list = new ArrayList<Object>(5);
+											map.put(key, list);
+										}
+										if (other != null) {
+											list.add(other);
+										}
+										
 									}
-									List<Object> list = map.get(key);
-									if (list == null) {
-										list = new ArrayList<Object>(5);
-										map.put(key, list);
+								} else {
+									for (Object obj : result) {
+										Object key = BeanUtils.getFieldValue(obj, otherProperty);
+										List<Object> list = map.get(key);
+										if (list == null) {
+											list = new ArrayList<Object>(5);
+											map.put(key, list);
+										}
+										list.add(obj);
 									}
-									list.add(obj);
 								}
+								
 								metadata.put(property, map);
 								metadata.put(entityClass, map);
 							}
@@ -526,8 +544,8 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 			orders.addAll(QueryUtils.toOrders(sort, root, cb));
 			beforeExecute(criteria);
 			TypedQuery<?> query = em.createQuery(criteria);
-			
-			query.setFirstResult(pageable.getOffset());
+			Long offset = pageable.getOffset();
+			query.setFirstResult(offset.intValue());
 			query.setMaxResults(pageable.getPageSize());
 
 			Long total = JpaUtil.count(criteria);
@@ -707,7 +725,8 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 			applyPredicateToCriteria(criteria);
 			TypedQuery<?> query = em.createQuery(criteria);
 			
-			query.setFirstResult(pageable.getOffset());
+			Long offset = pageable.getOffset();
+			query.setFirstResult(offset.intValue());
 			query.setMaxResults(pageable.getPageSize());
 
 			return transform(query, false);

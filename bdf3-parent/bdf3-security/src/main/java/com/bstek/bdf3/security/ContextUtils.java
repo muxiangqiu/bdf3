@@ -1,5 +1,6 @@
 package com.bstek.bdf3.security;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.bstek.bdf3.security.orm.User;
@@ -11,9 +12,10 @@ import com.bstek.bdf3.security.orm.User;
 public abstract class ContextUtils {
 	
 	public static User getLoginUser() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (principal instanceof User) {
-			return (User) principal;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.getPrincipal() instanceof User) {
+			return (User) authentication.getPrincipal();
+			
 		}
 		return null;
 	}

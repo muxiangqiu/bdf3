@@ -10,6 +10,7 @@ import com.bstek.bdf3.notice.domain.GroupMember;
 import com.bstek.bdf3.notice.ui.service.GroupService;
 import com.bstek.dorado.annotation.DataProvider;
 import com.bstek.dorado.annotation.DataResolver;
+import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.provider.Page;
 
 /**
@@ -26,6 +27,17 @@ public class GroupController {
 	public List<Group> loadGroups(String memberId) {
 		return groupService.loadGroups(memberId);
 	}
+	
+	@DataProvider
+	public List<Group> loadWithoutSystemGroups(Page<Group> page, String memberId, String groupName) {
+		return groupService.loadWithoutSystemGroups(page, memberId, groupName);
+	}
+	
+	@DataProvider
+	public List<Group> loadSystemGroups(Page<Group> page, String memberId, String groupName) {
+		return groupService.loadSystemGroups(page, memberId, groupName);
+	}
+
 	
 	@DataProvider
 	public List<Group> loadActiveGroups(String memberId) {
@@ -50,6 +62,21 @@ public class GroupController {
 	@DataProvider
 	public Group loadPrivateLetterGroup(String memberId, String otherId) {
 		return groupService.loadPrivateLetterGroup(memberId, otherId);
+	}
+	
+	@Expose
+	public void freezeGroup(String groupId, String memberId) {
+		groupService.freezeGroup(groupId, memberId);
+	}
+	
+	@Expose
+	public void joinGroup(String groupId, String memberId) {
+		groupService.joinGroup(memberId, groupId, false);
+	}
+	
+	@Expose
+	public void exitGroup(String groupId, String memberId) {
+		groupService.exitGroup(memberId, groupId);
 	}
 
 }
