@@ -41,8 +41,14 @@ public class Notice {
 	@Column(name = "GROUP_ID_", length = 64)
 	private String groupId;
 	
+	@Column(name = "TEMPLATE_ID_", length = 64)
+	private String templateId;
+	
 	@Column(name = "ALL_")
 	private boolean all;
+	
+	@Column(name = "URL_", length = 512)
+	private String url;
 	
 	@Transient
 	private GroupMember senderGroupMember;
@@ -126,6 +132,23 @@ public class Notice {
 	public void setSenderGroupMember(GroupMember senderGroupMember) {
 		this.senderGroupMember = senderGroupMember;
 	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
+	}
+	
 	
 	
 	

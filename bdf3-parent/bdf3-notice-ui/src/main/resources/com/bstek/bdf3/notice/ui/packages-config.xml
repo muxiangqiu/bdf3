@@ -10,5 +10,12 @@
 		<Package name="chat" pattern="css">
 			static/css/chat
 		</Package>
+		
+		<Package name="quill-css" pattern="css">
+			static/quill/quill.core
+		</Package>
+		<Package name="quill" pattern="js" depends="quill-css">
+			static/quill/quill.core
+		</Package>
 	</Packages>
 </config>

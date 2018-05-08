@@ -22,7 +22,7 @@ import com.bstek.dorado.annotation.PropertyDef;
 public class ImporterSolution implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "ID_", length = 60)
+	@Column(name = "ID_", length = 64)
 	@PropertyDef(label = "方案编码")
 	private String id;
 	

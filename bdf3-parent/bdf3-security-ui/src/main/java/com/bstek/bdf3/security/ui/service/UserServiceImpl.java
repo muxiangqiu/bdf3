@@ -35,12 +35,15 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public String validateOldPassword(String oldPassword) {
-		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String password = JpaUtil.getOne(User.class, user.getUsername()).getPassword();
-		if (passwordEncoder.matches(oldPassword, password)) {
-			return null;
+		if (oldPassword != null) {
+			UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			String password = JpaUtil.getOne(User.class, user.getUsername()).getPassword();
+			if (passwordEncoder.matches(oldPassword, password)) {
+				return null;
+			}
 		}
-		return "旧密码输入不正确。";
+		
+		return "原来密码输入不正确。";
 	}
 	
 	@Override

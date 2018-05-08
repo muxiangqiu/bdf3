@@ -24,6 +24,9 @@ public class Group {
 	@Column(name = "NAME_", length = 255)
 	private String name;
 	
+	@Column(name = "ICON_", length = 255)
+	private String icon;
+	
 	@Column(name = "CREATOR_", length = 64)
 	private String creator;
 	
@@ -48,9 +51,18 @@ public class Group {
 	@Column(name = "LAST_NOTICE_ID_", length = 64)
 	private String lastNoticeId;
 	
+	@Column(name = "TEMPLATE_ID_", length = 64)
+	private String templateId;
+	
 	@Column(name = "LAST_NOTICE_SEND_TIME_")
 	private Date lastNoticeSendTime;
-		
+	
+	@Column(name = "URL_", length = 512)
+	private String url;
+	
+	@Column(name = "DESCRIPTION_", length = 512)
+	private String description;
+	
 	@Transient
 	private GroupMember current;
 	
@@ -59,6 +71,9 @@ public class Group {
 	
 	@Transient
 	private List<GroupMember> members;
+	
+	@Transient
+	private List<Template> functions;
 	
 	@Transient
 	private Notice lastNotice;
@@ -77,6 +92,14 @@ public class Group {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 	public String getCreator() {
@@ -183,6 +206,38 @@ public class Group {
 
 	public void setMembers(List<GroupMember> members) {
 		this.members = members;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public List<Template> getFunctions() {
+		return functions;
+	}
+
+	public void setFunctions(List<Template> functions) {
+		this.functions = functions;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
 	}
 	
 	

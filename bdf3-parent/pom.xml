@@ -7,19 +7,16 @@
 	<parent>
 		<groupId>com.bstek.bdf3</groupId>
 		<artifactId>bdf3-dependencies</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>2.0.0.RELEASE</version>
 		<relativePath>../bdf3-dependencies/pom.xml</relativePath>
 	</parent>
 	<modules>
 		<module>bdf3-security</module>
 		<module>bdf3-cola</module>
-		<module>bdf3-jpa</module>
 		<module>bdf3-security-ui</module>
 		<module>bdf3-dorado</module>
 		<module>bdf3-autoconfigure</module>
 		<module>bdf3-dorado-jpa</module>
-		<module>bdf3-saas</module>
-		<module>bdf3-saas-ui</module>
 		<module>bdf3-importer</module>
 		<module>bdf3-log</module>
 		<module>bdf3-dictionary</module>
@@ -31,6 +28,7 @@
 		<module>bdf3-profile</module>
 		<module>bdf3-notice</module>
 		<module>bdf3-notice-ui</module>
+		<module>bdf3-multitenant-ui</module>
 	</modules>
 	<properties>
 	</properties>

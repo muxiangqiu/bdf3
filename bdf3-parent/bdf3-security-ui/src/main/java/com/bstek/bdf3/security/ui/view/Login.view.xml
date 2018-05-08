@@ -24,9 +24,6 @@
     </DataType>
   </Model>
   <View>
-    <Property name="style">
-      <Property name="background">#112345</Property>
-    </Property>
     <Container>
       <Property name="style">
         <Property name="background-image">url(&quot;${configure['bdf3.loginImageBg']}&quot;)</Property>
@@ -51,6 +48,9 @@
               <Control>
                 <Property name="exClassName">banner</Property>
                 <Property name="height">64</Property>
+                <Property name="style">
+                  <Property name="background">${configure['bdf3.logoLarge']}</Property>
+                </Property>
               </Control>
               <Label>
                 <Property name="text">${configure['bdf3.appName']}</Property>

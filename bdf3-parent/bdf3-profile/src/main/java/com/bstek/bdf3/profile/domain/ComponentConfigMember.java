@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "BDF2_COMP_MEMB")
+@Table(name = "BDF3_COMP_MEMB")
 public class ComponentConfigMember implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = -7658024545081912471L;

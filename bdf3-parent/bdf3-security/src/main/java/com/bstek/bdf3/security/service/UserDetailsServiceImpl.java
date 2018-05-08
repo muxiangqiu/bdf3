@@ -1,5 +1,6 @@
 package com.bstek.bdf3.security.service;
 
+import org.malagu.linq.JpaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -7,7 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.security.orm.User;
 
 /**

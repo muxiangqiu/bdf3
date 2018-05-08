@@ -1,5 +1,6 @@
 package com.bstek.bdf3.notice.ui.service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -113,7 +114,7 @@ public class NoticeServiceImpl implements NoticeService {
 			.set("lastNoticeId", notice.getId())
 			.set("lastNoticeSendTime", notice.getSendTime())
 			.update();
-		com.bstek.bdf3.jpa.JpaUtil.persist(notice);
+		org.malagu.linq.JpaUtil.persist(notice);
 	}
 	
 	@Override
@@ -135,6 +136,7 @@ public class NoticeServiceImpl implements NoticeService {
 				.notExists(GroupMember.class)
 					.equal("groupId", groupId)
 					.equalProperty("memberId", "username")
+					.isFalse("exited")
 				.end()
 			.endIf()
 			.addIf(usernameOrNickname)
@@ -144,6 +146,24 @@ public class NoticeServiceImpl implements NoticeService {
 				.end()
 			.endIf()
 			.list(page);
+	}
+	
+	@Override
+	public List<Notice> loadLastNotices(String groupId, String memberId) {
+		List<Notice> notices = JpaUtil.linq(Notice.class)
+			.collect("memberId", GroupMember.class, "sender")
+			.equal("groupId", groupId)
+			.or()
+				.exists(MemberNotice.class)
+					.equalProperty("noticeId", "id")
+					.equal("memberId", memberId)
+				.end()
+				.equal("sender", memberId)
+			.end()
+			.desc("sendTime")
+			.list(0, 10);
+		Collections.<Notice>sort(notices, (o1, o2) -> o1.getSendTime().compareTo(o2.getSendTime()));
+		return notices;
 	}
 
 	@Override

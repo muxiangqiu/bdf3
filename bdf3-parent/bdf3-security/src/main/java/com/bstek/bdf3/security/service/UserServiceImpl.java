@@ -1,10 +1,10 @@
 package com.bstek.bdf3.security.service;
 
+import org.malagu.linq.JpaUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bstek.bdf3.jpa.JpaUtil;
 import com.bstek.bdf3.security.orm.User;
 
 

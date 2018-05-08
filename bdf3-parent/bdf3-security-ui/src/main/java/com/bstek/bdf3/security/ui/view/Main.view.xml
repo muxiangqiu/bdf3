@@ -43,14 +43,14 @@
     <DataType name="PasswordChange">
       <PropertyDef name="oldPassword">
         <Property name="required">true</Property>
-        <Property name="label">旧密码</Property>
+        <Property name="label">原来密码</Property>
         <Validator name="validator1" type="ajax">
           <Property name="service">userController#validateOldPassword</Property>
         </Validator>
       </PropertyDef>
       <PropertyDef name="newPassword">
         <Property name="required">true</Property>
-        <Property name="label">新密码</Property>
+        <Property name="label">新设密码</Property>
         <Validator name="validator1" type="custom">
           <ClientEvent name="onValidate">if (arg.data != arg.entity.get(&quot;comfirmNewPassword&quot;)) {
 	arg.result = &quot;两次密码输入不相同。&quot;
@@ -61,9 +61,9 @@
 </ClientEvent>
         </Validator>
       </PropertyDef>
-      <PropertyDef name="confirmNewPasswod">
+      <PropertyDef name="confirmNewPassword">
         <Property name="required">true</Property>
-        <Property name="label">确认新密码</Property>
+        <Property name="label">再次确认</Property>
         <Validator name="validator1" type="custom">
           <ClientEvent name="onValidate">if (arg.data != arg.entity.get(&quot;newPassword&quot;)) {
 	arg.result = &quot;两次密码输入不相同。&quot;
@@ -125,7 +125,11 @@ window.refreshTab = function (caption, icon, path) {
 	}
 	var tab = tabControl.getTab(path);
 	if (tab) {
-		tab.refresh();
+		if (tab instanceof dorado.widget.tab.IFrameTab) {
+			tab.get(&quot;control&quot;).reload();
+		} else {
+			tab.refresh();
+		}
 	}
 }
 
@@ -211,11 +215,10 @@ Chat.addReceiveListener(function(c, arg) {
 Chat.addChatCloseListener(function() {
 	Chat.hide();
 });
-
 </ClientEvent>
     <ClientEvent name="onClick" signature="self,arg,personalCenter">personalCenter.hide();
 </ClientEvent>
-    <Property name="packages">jquery-cookie,font-awesome,entypo,colors,chat</Property>
+    <Property name="packages">jquery-cookie,font-awesome-info,entypo-info,colors,chat</Property>
     <Property name="skin">${bdf3.framework.skin}</Property>
     <Property name="exClassName">main</Property>
     <Property name="cache">
@@ -254,6 +257,9 @@ setTimeout(function() {
       <Property name="exClassName">top</Property>
       <Container layout="native">
         <Property name="exClassName">banner</Property>
+        <Property name="style">
+          <Property name="background">${configure['bdf3.logo']}</Property>
+        </Property>
         <Label>
           <Property name="text">${empty loginUser.organization.name ? configure['bdf3.appName'] : loginUser.organization.name}</Property>
           <Property name="exClassName">app-name</Property>
@@ -268,7 +274,16 @@ arg.returnValue = false;</ClientEvent>
           <Property name="exClassName">icon personal-center</Property>
         </Control>
         <Control>
-          <ClientEvent name="onClick" signature="self,arg,Chat">Chat.show();
+          <ClientEvent name="onClick" signature="self,arg,Chat">Chat.set({
+	width: &quot;700&quot;,
+	height: &quot;560&quot;
+});
+Chat.show(function() {
+	Chat.set({
+		width: &quot;701&quot;,
+		height: &quot;560&quot;
+	});
+});
 arg.returnValue = false;
 </ClientEvent>
           <ClientEvent name="onRefreshDom">$(arg.dom).html(&quot;&lt;div class='notify-total'>&lt;/div>&quot;)
@@ -330,7 +345,7 @@ dialogPassword.show();
                 <Property name="caption">修改密码</Property>
               </Button>
               <Button layoutConstraint="right">
-                <ClientEvent name="onClick" signature="self,arg,Chat">window.location.href = &quot;${configure['bdf3.logoutPath']}&quot;
+                <ClientEvent name="onClick" signature="self,arg,Chat">window.location.href = &quot;${configure['bdf3.logoutPath']}&quot;;
 </ClientEvent>
                 <Property name="caption">退出</Property>
               </Button>
@@ -463,6 +478,33 @@ $(arg.dom).xCreate({
                     <Property name="closeable">true</Property>
                     <SubViewHolder>
                       <Property name="subView">${configure['bdf3.welcomePath']}</Property>
+                    </SubViewHolder>
+                  </ControlTab>
+                  <ControlTab>
+                    <Property name="iconClass">${configure['bdf3.welcomeIcon1']}</Property>
+                    <Property name="caption">${configure['bdf3.welcomeTitle1']}</Property>
+                    <Property name="ignored">${empty configure['bdf3.welcomePath1']}</Property>
+                    <Property name="closeable">true</Property>
+                    <SubViewHolder>
+                      <Property name="subView">${configure['bdf3.welcomePath1']}</Property>
+                    </SubViewHolder>
+                  </ControlTab>
+                  <ControlTab>
+                    <Property name="iconClass">${configure['bdf3.welcomeIcon2']}</Property>
+                    <Property name="caption">${configure['bdf3.welcomeTitle2']}</Property>
+                    <Property name="ignored">${empty configure['bdf3.welcomePath2']}</Property>
+                    <Property name="closeable">true</Property>
+                    <SubViewHolder>
+                      <Property name="subView">${configure['bdf3.welcomePath2']}</Property>
+                    </SubViewHolder>
+                  </ControlTab>
+                  <ControlTab>
+                    <Property name="iconClass">${configure['bdf3.welcomeIcon3']}</Property>
+                    <Property name="caption">${configure['bdf3.welcomeTitle3']}</Property>
+                    <Property name="ignored">${empty configure['bdf3.welcomePath3']}</Property>
+                    <Property name="closeable">true</Property>
+                    <SubViewHolder>
+                      <Property name="subView">${configure['bdf3.welcomePath3']}</Property>
                     </SubViewHolder>
                   </ControlTab>
                 </TabControl>
@@ -654,44 +696,22 @@ if (tab) {
 }</ClientEvent>
       <Property name="hotkey">space</Property>
     </Action>
-    <FloatPanel id="dialogPassword">
+    <FloatPanel id="dialogPassword" layout="padding:20">
       <Property name="caption">密码修改</Property>
       <Property name="center">true</Property>
       <Property name="shadowMode">frame</Property>
       <Property name="closeable">true</Property>
       <Property name="containerUi">default</Property>
-      <Buttons>
-        <Button layoutConstraint="padding:15">
-          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide();
-</ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="width">60</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick" signature="self,arg,ajaxActionChangePassword,autoFormPassword">var newPassword = autoFormPassword.get(&quot;entity&quot;).get(&quot;newPassword&quot;);
-console.log(autoFormPassword.get(&quot;entity&quot;))
-if (autoFormPassword.validate()) {
-	ajaxActionChangePassword.set(&quot;parameter&quot;, {
-		username: &quot;${loginUsername}&quot;,
-		newPassword: newPassword
-	}).execute(function() {
-		self.get(&quot;parent&quot;).hide();
-		autoFormPassword.get(&quot;entity&quot;).reset();
-	});
-
-}
-</ClientEvent>
-          <Property name="caption">确认</Property>
-          <Property name="width">60</Property>
-          <Property name="ui">highlight</Property>
-        </Button>
-      </Buttons>
+      <Property name="width">400</Property>
+      <Property name="height">250</Property>
+      <Buttons/>
       <Children>
         <AutoForm id="autoFormPassword">
           <Property name="dataType">PasswordChange</Property>
           <Property name="cols">*</Property>
           <Property name="labelAlign">right</Property>
           <Property name="createPrivateDataSet">true</Property>
+          <Property name="rowPadding">12</Property>
           <AutoFormElement>
             <Property name="name">oldPassword</Property>
             <Property name="property">oldPassword</Property>
@@ -705,8 +725,8 @@ if (autoFormPassword.validate()) {
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">confirmNewPasswod</Property>
-            <Property name="property">confirmNewPasswod</Property>
+            <Property name="name">confirmNewPassword</Property>
+            <Property name="property">confirmNewPassword</Property>
             <Property name="editorType">PasswordEditor</Property>
             <Editor/>
           </AutoFormElement>
@@ -716,6 +736,39 @@ if (autoFormPassword.validate()) {
           <Property name="executingMessage">正在执行……</Property>
           <Property name="successMessage">密码修改成功。</Property>
         </AjaxAction>
+        <Container layout="hbox pack:center;regionPadding:15" layoutConstraint="bottom">
+          <Button>
+            <ClientEvent name="onClick">self.get(&quot;parent.parent&quot;).hide();
+</ClientEvent>
+            <Property name="caption">取消</Property>
+            <Property name="width">60</Property>
+          </Button>
+          <Button>
+            <ClientEvent name="onClick" signature="self,arg,ajaxActionChangePassword,autoFormPassword">var newPassword = autoFormPassword.get(&quot;entity&quot;).get(&quot;newPassword&quot;);
+var entity = autoFormPassword.get(&quot;entity&quot;);
+
+entity.set(&quot;confirmNewPassword&quot;, entity.get(&quot;confirmNewPassword&quot;));
+entity.set(&quot;newPassword&quot;, entity.get(&quot;newPassword&quot;));
+entity.set(&quot;oldPassword&quot;, entity.get(&quot;oldPassword&quot;));
+
+
+if (entity.get(&quot;oldPassword&quot;) &amp;&amp; entity.get(&quot;newPassword&quot;) &amp;&amp; entity.get(&quot;confirmNewPassword&quot;) &amp;&amp; autoFormPassword.validate(true) === true) {
+	ajaxActionChangePassword.set(&quot;parameter&quot;, {
+		username: &quot;${loginUsername}&quot;,
+		newPassword: newPassword
+	}).execute(function() {
+		self.get(&quot;parent.parent&quot;).hide();
+		autoFormPassword.get(&quot;entity&quot;).reset();
+	});
+} else {
+	dorado.MessageBox.alert(&quot;验证不通过，请检查。&quot;);
+}
+</ClientEvent>
+            <Property name="caption">确认</Property>
+            <Property name="width">60</Property>
+            <Property name="ui">highlight</Property>
+          </Button>
+        </Container>
       </Children>
       <Tools/>
     </FloatPanel>
