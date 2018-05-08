@@ -76,7 +76,7 @@ public class SampleApplication {
 }
 
 ```
->通过以上两个步骤，一个基本的bdf3项目就搭建好了。直接运行项目的主类（带main函数的类）[示例下载](https://github.com/muxiangqiu/bdf3/blob/master/sample/bdf3-sample.zip)
+>通过以上两个步骤，一个基本的bdf3项目就搭建好了。直接运行项目的主类（带main函数的类）[示例下载](https://github.com/muxiangqiu/bdf3/blob/master/sample/bdf3-sample.zip?raw=true)
 
 ## 配置文件说明
 
