@@ -45,7 +45,7 @@
 			<dependency>
 				<groupId>org.malagu.multitenant</groupId>
 				<artifactId>multitenant</artifactId>
-				<version>1.1.2.RELEASE</version>
+				<version>1.1.3.RELEASE</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
