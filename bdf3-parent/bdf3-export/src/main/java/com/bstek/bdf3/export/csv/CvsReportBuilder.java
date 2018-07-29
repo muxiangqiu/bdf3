@@ -25,15 +25,15 @@ public class CvsReportBuilder implements ReportBuilder {
 	/**
 	 * 分隔符
 	 */
-	public String delimiter = Configure.getString("bdf2.export.csv.delimiter");
+	public String delimiter = Configure.getString("bdf3.export.csv.delimiter");
 	/**
 	 * 单元格包裹符号
 	 */
-	public String cellWrapSymbol = Configure.getString("bdf2.export.csv.cellWrapSymbol");
+	public String cellWrapSymbol = Configure.getString("bdf3.export.csv.cellWrapSymbol");
 	/**
 	 * 字符集
 	 */
-	public String charset = Configure.getString("bdf2.export.csv.charset");
+	public String charset = Configure.getString("bdf3.export.csv.charset");
 
 	/*
 	 * (non-Javadoc)
