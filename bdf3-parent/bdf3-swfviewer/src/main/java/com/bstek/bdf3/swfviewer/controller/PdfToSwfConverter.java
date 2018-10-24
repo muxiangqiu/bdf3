@@ -36,10 +36,10 @@ public class PdfToSwfConverter {
 		}
 
 		if (!StringUtils.isNotEmpty(pdfToSwfPath)) {
-			throw new RuntimeException("请先在dorado-home/configure.properties文件中配置bdf2.swfviewer.pdfToSwf属性值");
+			throw new RuntimeException("请先在dorado-home/configure.properties文件中配置bdf3.swfviewer.pdfToSwf属性值");
 		}
 		if (!StringUtils.isNotEmpty(xpdfPath)) {
-			throw new RuntimeException("请先在dorado-home/configure.properties文件中配置bdf2.swfviewer.xpdfPath属性值");
+			throw new RuntimeException("请先在dorado-home/configure.properties文件中配置bdf3.swfviewer.xpdfPath属性值");
 		}
 
 		sourcePdf = "\"" + sourcePdf + "\"";

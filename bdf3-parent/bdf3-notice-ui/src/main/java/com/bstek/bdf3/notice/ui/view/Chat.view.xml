@@ -846,7 +846,21 @@ description.render(arg.dom);
 if (script) {
 	eval(&quot;(function(){&quot;+ script +&quot;})();&quot;)	
 }
-$(arg.dom).find(&quot;.group-count&quot;).attr(&quot;id&quot;, &quot;group-count-&quot; + arg.data.entityId)
+$(arg.dom).find(&quot;.group-count&quot;).attr(&quot;id&quot;, &quot;group-count-&quot; + arg.data.entityId);
+
+var group = arg.data;
+var countDom = count.getDom();
+var count = group.noticeCount > 99 ? &quot;99+&quot; : group.noticeCount;
+$(&quot;#group-count-&quot; + group.entityId).css(&quot;display&quot;, group.noticeCount ? &quot;inline-block&quot; : &quot;none&quot;).text(count);
+if (group.noticeCount) {
+	var count = group.noticeCount > 99 ? &quot;99+&quot; : group.noticeCount;
+	$(&quot;#group-count-&quot; + group.entityId).css(&quot;display&quot;, group.noticeCount ? &quot;inline-block&quot; : &quot;none&quot;).text(count);
+	if (group.noticeCount > 9) {
+		$(&quot;#group-count-&quot; + group.entityId).css(&quot;padding&quot;, &quot;2px 4px&quot;);
+	} else {
+		$(&quot;#group-count-&quot; + group.entityId).css(&quot;padding&quot;, &quot;2px&quot;);
+	}
+}
 </ClientEvent>
                       <ClientEvent name="onContextMenu" signature="self,arg,menuGroup">if ($(arg.event.target).hasClass(&quot;group-avatar&quot;) || $(arg.event.target).hasClass(&quot;group-name&quot;) || $(arg.event.target).hasClass(&quot;group-description&quot;)) {
 	menuGroup.show({

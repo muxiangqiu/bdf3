@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,9 @@ import com.bstek.bdf3.notice.domain.Notice;
 import com.bstek.bdf3.notice.ui.Constants;
 import com.bstek.bdf3.security.orm.User;
 import com.bstek.dorado.data.provider.Page;
+import com.bstek.dorado.view.socket.Message;
+
+import net.sf.cglib.beans.BeanMap;
 
 /**
  * @author Kevin Yang (mailto:kevin.yang@bstek.com)
@@ -24,6 +28,9 @@ import com.bstek.dorado.data.provider.Page;
 @Service("ui.noticeService")
 @Transactional(readOnly = true)
 public class NoticeServiceImpl implements NoticeService {
+	
+	@Autowired
+	private com.bstek.bdf3.notice.service.NoticeService noticeService;
 
 	@Override
 	public void getNotices(Page<Notice> page, String memberId) {
@@ -185,7 +192,79 @@ public class NoticeServiceImpl implements NoticeService {
 			}
 
 		}
+		
+		this.send("admin", "user1", "test");
 
+	}
+	
+	@Override
+	@Transactional
+	public Group getOrCreatePrivateLetterGroup(String sender, String receiver) {
+		Group group = null;
+		try {
+			group = JpaUtil.linq(Group.class)
+					.isTrue("privateLetter")
+					.notExists(GroupMember.class)
+						.equalProperty("groupId", "id")
+						.notIn("memberId", sender, receiver)
+					.end()
+					.findOne();
+		} catch (Exception e) {
+			group = new Group();
+			group.setPrivateLetter(true);
+			group.setCreateTime(new Date());
+			group.setCreator(sender);
+			group.setId(UUID.randomUUID().toString());
+			group.setMemberCount(2);
+			
+			GroupMember senderMember = new GroupMember();
+			senderMember.setActive(true);
+			senderMember.setGroupId(group.getId());
+			senderMember.setMemberId(sender);
+			senderMember.setNickname(JpaUtil.getOne(User.class, sender).getNickname());
+			
+			GroupMember receiverMember = new GroupMember();
+			receiverMember.setActive(true);
+			receiverMember.setGroupId(group.getId());
+			receiverMember.setMemberId(receiver);
+			receiverMember.setNickname(JpaUtil.getOne(User.class, receiver).getNickname());
+			
+			JpaUtil.persist(group);
+			JpaUtil.persist(senderMember);
+			JpaUtil.persist(receiverMember);
+		}
+		
+		return group;
+	}
+	
+	@Override
+	@Transactional
+	public void send(String sender, String receiver, String message) {
+		Notice notice = new Notice();
+		notice.setType("message");
+		notice.setSender(sender);
+		notice.setSendTime(new Date());
+		notice.setContent(message);
+		
+		this.send(sender, receiver, notice);
+	}
+	
+	@Override
+	@Transactional
+	public void send(String sender, String receiver, Notice notice) {
+		if (notice.getGroupId() == null) {
+			Group group = this.getOrCreatePrivateLetterGroup(sender, receiver);
+			notice.setGroupId(group.getId());	
+		}
+		notice.setSender(sender);
+		this.send(notice);
+	}
+	
+	@Override
+	@Transactional
+	public void send(Notice notice) {
+		Message message = new Message(notice.getType(), BeanMap.create(notice));
+		noticeService.receive(message);
 	}
 
 }

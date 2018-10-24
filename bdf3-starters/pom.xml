@@ -15,5 +15,6 @@
   	<module>bdf3-starter-cola</module>
   	<module>bdf3-starter-cola-jetty</module>
   	<module>bdf3-starter-multitenant</module>
+  	<module>bdf3-starter-war-parent</module>
   </modules>
 </project>
