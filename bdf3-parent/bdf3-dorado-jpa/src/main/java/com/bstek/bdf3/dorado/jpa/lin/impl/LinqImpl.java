@@ -305,7 +305,7 @@ public class LinqImpl extends LinImpl<Linq, CriteriaQuery<?>> implements Linq {
 				for (String property : collectInfo.getProperties()) {
 					if (!metadata.containsKey(property)) {
 						Class<?> entityClass = collectInfo.getEntityClass();
-						if (entityClass != null) {
+						if (entityClass != null && !collectSet.isEmpty()) {
 							if (metadata.containsKey(entityClass)) {
 								metadata.put(property, metadata.get(entityClass));
 							} else {

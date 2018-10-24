@@ -14,7 +14,7 @@ import com.bstek.bdf3.security.ui.builder.ViewComponent;
  */
 public interface PermissionService {
 
-	Collection<ViewComponent> loadComponents(String viewName) throws Exception;
+	Collection<ViewComponent> loadComponents(String viewName);
 
 	List<Permission> loadPermissions(String roleId, String urlId);
 

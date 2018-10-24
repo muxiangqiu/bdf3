@@ -40,7 +40,7 @@ public class PermissionServiceImpl implements PermissionService {
 	
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
-	public Collection<ViewComponent> loadComponents(String viewName) throws Exception {
+	public Collection<ViewComponent> loadComponents(String viewName) {
 		if(StringUtils.isEmpty(viewName)){
 			return Collections.EMPTY_LIST;
 		}
@@ -61,6 +61,8 @@ public class PermissionServiceImpl implements PermissionService {
 				viewBuilder.build(view, root, root);
 			}
 			return root.getChildren();
+		} catch (Exception e) {
+			return Collections.emptyList();
 		} finally {
 			context.setAttribute(VIEWSTATE_KEY, ViewState.servcing);
 		}
