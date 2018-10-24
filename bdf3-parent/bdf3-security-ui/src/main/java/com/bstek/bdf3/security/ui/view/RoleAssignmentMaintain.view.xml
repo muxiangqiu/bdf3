@@ -324,7 +324,7 @@ window.clearTimeout(self.urlQueryTimeout);
 self.urlQueryTimeout = window.setTimeout(function() {
 	var key = self.get(&quot;value&quot;);
 	if (!key) {
-		dgUser.filter();
+		dgRole.filter();
 	} else {
 		dgRole.filter([{
 			junction: &quot;or&quot;,
