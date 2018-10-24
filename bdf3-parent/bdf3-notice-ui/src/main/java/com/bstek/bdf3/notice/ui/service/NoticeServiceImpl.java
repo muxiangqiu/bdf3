@@ -193,8 +193,6 @@ public class NoticeServiceImpl implements NoticeService {
 
 		}
 		
-		this.send("admin", "user1", "test");
-
 	}
 	
 	@Override
