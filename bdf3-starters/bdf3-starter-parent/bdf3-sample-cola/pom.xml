@@ -3,13 +3,13 @@
   <parent>
     <groupId>com.bstek.bdf3</groupId>
     <artifactId>bdf3-starter-parent</artifactId>
-	<version>2.0.0.RELEASE</version>
+	<version>2.0.2.RELEASE</version>
   </parent>
   <artifactId>bdf3-sample-cola</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.bstek.bdf3</groupId>
-			<artifactId>bdf3-starter-cola-jetty</artifactId>
+			<artifactId>bdf3-starter-cola</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -2,6 +2,7 @@ package com.bstek.bdf3.notice.ui.service;
 
 import java.util.List;
 
+import com.bstek.bdf3.notice.domain.Group;
 import com.bstek.bdf3.notice.domain.Notice;
 import com.bstek.bdf3.security.orm.User;
 import com.bstek.dorado.data.provider.Page;
@@ -29,5 +30,13 @@ public interface NoticeService {
 	void loadUsers(Page<User> page, String memberId, String usernameOrNickname);
 
 	List<Notice> loadLastNotices(String groupId, String memberId);
+
+	Group getOrCreatePrivateLetterGroup(String sender, String receiver);
+
+	void send(String sender, String receiver, String message);
+
+	void send(String sender, String receiver, Notice notice);
+
+	void send(Notice notice);
 
 }

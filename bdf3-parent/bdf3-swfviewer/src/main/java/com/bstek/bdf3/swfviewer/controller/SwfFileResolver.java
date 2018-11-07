@@ -55,7 +55,7 @@ public class SwfFileResolver extends AbstractResolver {
 			}
 		}
 		log.info("SwfFileHandler Parameter: " + parameterMap);
-		Assert.notNull(swfFileHandler, "没有找到com.bstek.bdf2.swfviewer.controller.ISwfFileHandler的实现类！");
+		Assert.notNull(swfFileHandler, "没有找到com.bstek.bdf3.swfviewer.controller.ISwfFileHandler的实现类！");
 		File file = swfFileHandler.execute(parameterMap);
 		if (file == null || !file.exists()) {
 			String msg = swfFileHandler.getHandlerName()+"返回的SWF文件不存在！";
