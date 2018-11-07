@@ -272,6 +272,9 @@ if (url) {
       <ClientEvent name="onExecute" signature="self,arg,dsUrl,updateAction">var url = dsUrl.getData(&quot;!currentNode&quot;);
 if (url) {
 	delUrl(url);
+	if(updateAction.get("hasUpdateData")){
+		updateAction.execute();
+	}
 } else {
 	dorado.MessageBox.alert(&quot;请选选择菜单。&quot;);
 }
@@ -283,9 +286,6 @@ function delUrl(url) {
 		c.remove();
 		delUrl(c);
 	});
-	if(updateAction.get("hasUpdateData")){
-		updateAction.execute();
-	}
 }
 </ClientEvent>
       <Property name="caption">删除菜单</Property>
