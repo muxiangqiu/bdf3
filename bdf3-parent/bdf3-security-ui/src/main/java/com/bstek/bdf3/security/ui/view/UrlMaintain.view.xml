@@ -269,9 +269,12 @@ if (url) {
       <Property name="tip">添加子级菜单</Property>
     </Action>
     <Action id="actionDel">
-      <ClientEvent name="onExecute" signature="self,arg,dsUrl">var url = dsUrl.getData(&quot;!currentNode&quot;);
+      <ClientEvent name="onExecute" signature="self,arg,dsUrl,updateAction">var url = dsUrl.getData(&quot;!currentNode&quot;);
 if (url) {
 	delUrl(url);
+	if(updateAction.get("hasUpdateData")){
+		updateAction.execute();
+	}
 } else {
 	dorado.MessageBox.alert(&quot;请选选择菜单。&quot;);
 }
