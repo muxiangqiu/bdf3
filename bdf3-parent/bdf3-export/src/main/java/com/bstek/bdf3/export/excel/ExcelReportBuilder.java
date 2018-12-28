@@ -96,12 +96,7 @@ public class ExcelReportBuilder extends AbstractExcelReportBuilder {
 			int lastCol = currentCol;
 			int colspan = calculateGridHeaderColspan(headerModel);
 			cell.setCellStyle(headerStyle);
-			if (headerModel.getHeaders().size() == 0) {
-				int rowspan = maxHeaderLevel - headerModel.getLevel();
-				cellRangeAddress = new CellRangeAddress(firstRow, lastRow + rowspan, firstCol, lastCol + colspan - 1);
-				sheet.addMergedRegion(cellRangeAddress);
-				this.setCellRangeAddressBorder(cellRangeAddress, sheet);
-			} else {
+			if (headerModel.getHeaders().size() > 0){
 				cellRangeAddress = new CellRangeAddress(firstRow, lastRow, firstCol, lastCol + colspan - 1);
 				sheet.addMergedRegion(cellRangeAddress);
 				this.setCellRangeAddressBorder(cellRangeAddress, sheet);
@@ -151,7 +146,6 @@ public class ExcelReportBuilder extends AbstractExcelReportBuilder {
 			int key = entry.getKey();
 			int currentRow = initDataRow + key;
 			row = sheet.createRow(currentRow);
-			;
 			List<ReportFormData> value = entry.getValue();
 			int firstCol = 0;
 			for (ReportFormData reportFormDataModel : value) {
@@ -169,11 +163,13 @@ public class ExcelReportBuilder extends AbstractExcelReportBuilder {
 				cellData.setCellStyle(dataCellStyle);
 				this.fillCellValue(cellData, data, sdf);
 				sheet.setColumnWidth(cellData.getColumnIndex(), 30 * 256);
-
-				cellRangeAddress = new CellRangeAddress(currentRow, currentRow, firstCol, firstCol + colSpan * 2 - 2);
-				sheet.addMergedRegion(cellRangeAddress);
-				this.setFormRegionStyle(sheet, cellRangeAddress, dataCellStyle);
-
+								
+				int lastCol = firstCol + colSpan * 2 - 2;
+				if(firstCol != lastCol){
+					cellRangeAddress = new CellRangeAddress(currentRow, currentRow, firstCol, lastCol);
+					sheet.addMergedRegion(cellRangeAddress);
+					this.setFormRegionStyle(sheet, cellRangeAddress, dataCellStyle);
+				}
 				firstCol = firstCol + colSpan * 2 - 1;
 			}
 		}
