@@ -33,6 +33,7 @@ public class PersonalCenterServiceImpl implements PersonalCenterService {
 	@Override
 	public User getUser(String username) {
 		User user = JpaUtil.getOne(User.class, username);
+		JpaUtil.getEntityManager().detach(user);
 		user.setPassword(null);
 		try {
 			user = EntityUtils.toEntity(user);
