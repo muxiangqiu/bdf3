@@ -9,7 +9,7 @@
 	<groupId>com.bstek.bdf3</groupId>
 	<artifactId>bdf3-dependencies</artifactId>
 	<packaging>pom</packaging>
-	<version>2.0.2.RELEASE</version>
+	<version>2.0.3-SNAPSHOT</version>
 	<properties>
 		<java.version>1.8</java.version>
 		<antlr2.version>2.7.7</antlr2.version>
@@ -19,18 +19,18 @@
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-autoconfigure</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-dorado</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-dorado-jpa</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.malagu.linq</groupId>
@@ -50,102 +50,102 @@
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-multitenant-ui</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-notice</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-notice-ui</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-log</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-profile</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-cola</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-security-orm</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-security</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-security-ui</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-importer</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-dictionary</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-dictionary-ui</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-swfviewer</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-export</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-dbconsole</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-starter</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-starter-multitenant</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-starter-cola</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-starter-jetty</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.bdf3</groupId>
 				<artifactId>bdf3-starter-cola-jetty</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bstek.dorado</groupId>
