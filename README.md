@@ -7,10 +7,10 @@
 [BDF3文档教程](https://github.com/muxiangqiu/bdf3/wiki/01.bdf3-jpa)
 
 ## 演示地址
-1. [传统风格多租户版](http://106.14.191.97:8081/bdf3.security.ui.view.Main.d) 公司ID/用户名/密码：master/admin/123456
-2. [实时通讯+公众号+微程序风格非多租户版](http://106.14.191.97:8080/bdf3.notice.ui.view.Chat.d) 用户名/密码：admin/123456
-3. [方块风格非多租户版](http://106.14.191.97:8080/bdf3.security.ui.view.Portal.d) 用户名/密码：admin/123456
-4. [传统风格非多租户版](http://106.14.191.97:8080/bdf3.security.ui.view.Main.d) 用户名/密码：admin/123456
+1. [传统风格多租户版](http://119.45.227.114:8081/bdf3.security.ui.view.Main.d) 公司ID/用户名/密码：master/admin/123456
+2. [实时通讯+公众号+微程序风格非多租户版](http://119.45.227.114:8080/bdf3.notice.ui.view.Chat.d) 用户名/密码：admin/123456
+3. [方块风格非多租户版](http://119.45.227.114:8080/bdf3.security.ui.view.Portal.d) 用户名/密码：admin/123456
+4. [传统风格非多租户版](http://119.45.227.114:8080/bdf3.security.ui.view.Main.d) 用户名/密码：admin/123456
 
 ### 所有用户的密码都是123456
 
