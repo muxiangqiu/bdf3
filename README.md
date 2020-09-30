@@ -1,13 +1,13 @@
 # BDF3 
 
-[![License](http://img.shields.io/license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+**BDF3 是基于 Spring Boot 组件化的渐进式企业级开发框架。** 提供一系列企业级通用模块功能，使用 BDF3 框架在业务项目，我们可以直接专注到业务功能模块的开发。
 
-BDF3 是基于 Spring Boot 组件化的渐进式企业级开发框架。
+_**欢迎大家联系我们：技术交流、商业合作、共建开源等。**_
 
-
+**非多租户模式：**
 ![演示 BDF3 框架.gif](https://i.loli.net/2020/10/01/auB1CKnjd8zOZ9w.gif)
 
-多租户模式：
+**多租户模式：**
 ![演示 BDF3 框架（多租户）.gif](https://i.loli.net/2020/10/01/dOht7uPsGcBzja3.gif)
 
 ## 特征
@@ -28,10 +28,10 @@ BDF3 是基于 Spring Boot 组件化的渐进式企业级开发框架。
 
 ## 在线演示
 
-* [传统风格多租户版](http://106.14.191.97:8081/bdf3.security.ui.view.Main.d) 
-* [实时通讯+公众号+微程序风格非多租户版](http://106.14.191.97:8080/bdf3.notice.ui.view.Chat.d)
-* [方块风格非多租户版](http://106.14.191.97:8080/bdf3.security.ui.view.Portal.d)
-* [传统风格非多租户版](http://106.14.191.97:8080/bdf3.security.ui.view.Main.d)
+* [传统风格多租户版](http://119.45.227.114:8081/bdf3.security.ui.view.Main.d) 
+* [实时通讯+公众号+微程序风格非多租户版](http://119.45.227.114:8080/bdf3.notice.ui.view.Chat.d)
+* [方块风格非多租户版](http://119.45.227.114:8080/bdf3.security.ui.view.Portal.d)
+* [传统风格非多租户版](http://119.45.227.114:8080/bdf3.security.ui.view.Main.d)
 
 其中，公司 ID 为 master，用户名/密码为 admin/123456
 
@@ -108,11 +108,11 @@ public class SampleApplication {
 
 ```
 
-通过以上两个步骤，一个基本的BDF3 框架的项目就搭建好了。直接运行项目的启动类（运行 main 静态方法）[示例下载](https://github.com/muxiangqiu/bdf3/blob/master/sample/bdf3-sample.zip?raw=true)
+通过以上两个步骤，一个基本的BDF3 框架的项目就搭建好了。直接运行项目的启动类（运行 main 静态方法）[示例下载](https://github.com/muxiangqiu/bdf3/blob/master/sample/bdf3-sample.zip?raw=true)。
 
 ## 数据源与 JPA 配置
 
-在 Spring 的配置中，做如下配置（application.properties）：
+在 Spring 的配置中，如下配置：
 
 ```
 # 文件 application.properties
@@ -128,7 +128,6 @@ spring.jpa.hibernate.ddl-auto=update
 spring.devtools.restart.additional-exclude=com/**
 #数据库脚本的编码设置为 UTF-8
 spring.datasource.sql-script-encoding=UTF-8
-
 
 # 数据源配置，pom 中需要引入对应的数据库 jdbc 依赖，以下使用 mysql 数据库为例
 spring.datasource.continue-on-error=true
