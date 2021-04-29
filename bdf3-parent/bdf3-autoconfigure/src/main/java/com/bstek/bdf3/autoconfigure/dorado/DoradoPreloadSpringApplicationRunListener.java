@@ -44,6 +44,8 @@ public class DoradoPreloadSpringApplicationRunListener implements
 			Set<String> sources = new LinkedHashSet<String>();
 			sources.addAll(doradoLoader
 					.getContextLocations(false));
+			// 解决dorado xml内重复注册bean的bug
+			application.setAllowBeanDefinitionOverriding(true);
 			application.setSources(sources);
 		}
 	}
