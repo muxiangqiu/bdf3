@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.ss.util.RegionUtil;
@@ -228,12 +228,11 @@ public class ExcelReportBuilder extends AbstractExcelReportBuilder {
 	}
 
 	private void setCellRangeAddressBorder(CellRangeAddress rangle, Sheet sheet) {
-		int border = 1;
-		Workbook wb = sheet.getWorkbook();
-		RegionUtil.setBorderBottom(border, rangle, sheet, wb);
-		RegionUtil.setBorderLeft(border, rangle, sheet, wb);
-		RegionUtil.setBorderRight(border, rangle, sheet, wb);
-		RegionUtil.setBorderTop(border, rangle, sheet, wb);
+	    BorderStyle border = BorderStyle.THIN;
+	    RegionUtil.setBorderBottom(border, rangle, sheet);
+	    RegionUtil.setBorderLeft(border, rangle, sheet);
+	    RegionUtil.setBorderRight(border, rangle, sheet);
+	    RegionUtil.setBorderTop(border, rangle, sheet);
 	}
 
 	private void setFormRegionStyle(Sheet sheet, CellRangeAddress ca, CellStyle cs) {
