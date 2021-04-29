@@ -5,7 +5,7 @@
 		<groupId>com.bstek.bdf3</groupId>
 		<artifactId>bdf3-dependencies</artifactId>
 		<version>2.0.4-SNAPSHOT</version>
-		<relativePath>../../bdf3-dependencies/</relativePath>
+		<relativePath>../bdf3-dependencies/pom.xml</relativePath>
 		
 	</parent>
 	<artifactId>bdf3-starter-parent</artifactId>
@@ -48,9 +48,9 @@
 		</plugins>
 	</build>
 	<modules>
-		<!-- <module>bdf3-sample-cola</module>
-		<module>bdf3-sample</module>
-		<module>bdf3-sample-cola-base</module>
-		<module>bdf3-sample-multitenant</module> -->
+<!-- 		<module>bdf3-sample-cola</module> -->
+<!-- 		<module>bdf3-sample</module> -->
+<!-- 		<module>bdf3-sample-cola-base</module> -->
+<!-- 		<module>bdf3-sample-multitenant</module> -->
 	</modules>
 </project>

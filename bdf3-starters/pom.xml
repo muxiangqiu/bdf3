@@ -4,13 +4,11 @@
     <groupId>com.bstek.bdf3</groupId>
     <artifactId>bdf3-parent</artifactId>
 	<version>2.0.4-SNAPSHOT</version>
-	<relativePath>../bdf3-parent/pom.xml</relativePath>
   </parent>
   <artifactId>bdf3-starters</artifactId>
   <packaging>pom</packaging>
   <modules>
   	<module>bdf3-starter</module>
-  	<module>bdf3-starter-parent</module>
   	<module>bdf3-starter-jetty</module>
   	<module>bdf3-starter-cola</module>
   	<module>bdf3-starter-cola-jetty</module>

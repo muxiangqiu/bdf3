@@ -3,22 +3,30 @@
   <parent>
     <groupId>com.bstek.bdf3</groupId>
     <artifactId>bdf3-starter-parent</artifactId>
-	<version>2.0.2.RELEASE</version>
+	<version>2.0.4-SNAPSHOT</version>
   </parent>
-  <artifactId>bdf3-sample-multitenant</artifactId>
+  <artifactId>bdf3-sample-cola-base</artifactId>
   <dependencies>
+	  	<dependency>
+	  		<groupId>com.bstek.bdf3</groupId>
+	  		<artifactId>bdf3-autoconfigure</artifactId>
+	  	</dependency>
   		<dependency>
 			<groupId>com.bstek.bdf3</groupId>
-			<artifactId>bdf3-starter-multitenant</artifactId>
-  		</dependency>
+			<artifactId>bdf3-cola</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.malagu.linq</groupId>
+			<artifactId>linq</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
-		<!-- <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-         </dependency> -->
 		<dependency> 
 			<groupId>com.h2database</groupId>
 			 <artifactId>h2</artifactId> 
