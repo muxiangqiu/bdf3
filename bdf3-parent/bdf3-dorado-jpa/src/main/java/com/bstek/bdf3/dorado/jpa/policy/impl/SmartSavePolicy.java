@@ -21,20 +21,20 @@ public class SmartSavePolicy implements SavePolicy {
 		EntityState state = EntityUtils.getState(entity);
 		if (EntityState.NEW.equals(state)) {
 			try {
-				entityManager.persist(EntityUtils.toPureData(entity));
+				entityManager.persist(entity);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else if (EntityState.MODIFIED.equals(state) 
 				|| EntityState.MOVED.equals(state)) {
 			try {
-				entityManager.merge(EntityUtils.toPureData(entity));
+				entityManager.merge(entity);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else if (EntityState.DELETED.equals(state)) {
 			try {
-				entityManager.remove(entityManager.merge(EntityUtils.toPureData(entity)));
+				entityManager.remove(entityManager.merge(entity));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
