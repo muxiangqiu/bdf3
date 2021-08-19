@@ -23,7 +23,7 @@ import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.bstek.bdf3.dbconsole.DbConstants;
@@ -39,7 +39,7 @@ import com.bstek.bdf3.dbconsole.service.IDbCommonService;
 import com.bstek.dorado.core.Configure;
 
 
-@Component(IDbCommonService.BEAN_ID)
+@Service
 public class DbCommonServiceImpl implements IDbCommonService {
 
 	@Autowired
