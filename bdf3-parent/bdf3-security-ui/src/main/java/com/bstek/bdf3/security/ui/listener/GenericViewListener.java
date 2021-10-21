@@ -28,7 +28,7 @@ public class GenericViewListener extends GenericObjectListener<View> {
 	public void onInit(View view) throws Exception {
 		view.setTitle(applicationTitle);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth.isAuthenticated() && auth.getPrincipal() instanceof String && "anonymousUser".equals(auth.getPrincipal())) {
+		if (auth!=null && auth.isAuthenticated() && auth.getPrincipal() instanceof String && "anonymousUser".equals(auth.getPrincipal())) {
 			return;
 		}
 		viewFilter.invoke(view);

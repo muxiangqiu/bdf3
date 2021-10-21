@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import com.bstek.bdf3.security.ui.utils.ClassUtils;
 import com.bstek.bdf3.security.ui.utils.ControlUtils;
 import com.bstek.dorado.view.AbstractViewElement;
+import com.bstek.dorado.view.manager.ViewConfig;
 import com.bstek.dorado.view.widget.Component;
 
 /**
@@ -28,7 +29,7 @@ public abstract class AbstractBuilder<T extends AbstractViewElement> implements 
 	private boolean componentPermissionFlat;
 
 	@Override
-	public void build(T control, ViewComponent parent, ViewComponent root) {
+	public void build(T control, ViewComponent parent, ViewComponent root, ViewConfig viewConfig) {
 		if (ControlUtils.isNoSecurtiy(control)) {
 			return;
 		}
@@ -36,7 +37,7 @@ public abstract class AbstractBuilder<T extends AbstractViewElement> implements 
 		if (ControlUtils.supportControlType(control)) {
 			ViewComponent component = new ViewComponent();
 			component.setId(getId(control));
-			component.setDesc(getDesc(control));
+			component.setDesc(getDesc(control, viewConfig));
 			component.setIcon(getIcon(control));
 			component.setEnabled(isEnabled(control));
 			component.setName(getName(control));
@@ -50,10 +51,10 @@ public abstract class AbstractBuilder<T extends AbstractViewElement> implements 
 			p = parent;
 		}
 
-		buildChildren(control, p, root);
+		buildChildren(control, p, root, viewConfig);
 	}
 
-	protected void buildChildren(T control, ViewComponent parent, ViewComponent root) {
+	protected void buildChildren(T control, ViewComponent parent, ViewComponent root, ViewConfig viewConfig) {
 		Collection children = getChildren(control);
 		if (children != null) {
 			for (Object child : children) {
@@ -63,12 +64,12 @@ public abstract class AbstractBuilder<T extends AbstractViewElement> implements 
 					for (Builder builder : builders) {
 						if (builder.support(c)) {
 							exist = true;
-							builder.build(c, parent, root);
+							builder.build(c, parent, root, viewConfig);
 							break;
 						}
 					}
 					if (!exist) {
-						defaultBuilder.build(c, parent, root);
+						defaultBuilder.build(c, parent, root, viewConfig);
 					}
 				}
 			}
@@ -98,7 +99,7 @@ public abstract class AbstractBuilder<T extends AbstractViewElement> implements 
 		return Collections.EMPTY_LIST;
 	}
 
-	protected String getDesc(T control) {
+	protected String getDesc(T control, ViewConfig viewConfig) {
 		return ControlUtils.getSecurityDesc(control);
 	}
 

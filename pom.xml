@@ -8,6 +8,8 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>bdf3-dependencies</module>
+		<module>bdf3-parent</module>
+		<module>bdf3-starters</module>
 	</modules>
 	
 	<distributionManagement>

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
-
+import com.bstek.dorado.view.manager.ViewConfig;
 import com.bstek.dorado.view.widget.base.menu.BaseMenuItem;
 import com.bstek.dorado.view.widget.base.menu.TextMenuItem;
 
@@ -25,8 +25,8 @@ public class MenuTextBuilder extends AbstractBuilder<TextMenuItem> {
 		return id;
 	}
 	
-	protected String getDesc(TextMenuItem menuItem){
-		String desc = super.getDesc(menuItem);
+	protected String getDesc(TextMenuItem menuItem, ViewConfig viewConfig){
+		String desc = super.getDesc(menuItem, viewConfig);
 		if (desc != null) {
 			return desc;
 		}

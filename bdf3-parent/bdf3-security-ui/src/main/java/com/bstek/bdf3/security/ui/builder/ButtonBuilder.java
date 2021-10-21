@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
-
+import com.bstek.dorado.view.manager.ViewConfig;
 import com.bstek.dorado.view.widget.base.Button;
 import com.bstek.dorado.view.widget.base.menu.BaseMenuItem;
 import com.bstek.dorado.view.widget.base.toolbar.MenuButton;
@@ -42,8 +42,8 @@ public class ButtonBuilder extends AbstractBuilder<Button> {
 
 	
 	@Override
-	protected String getDesc(Button button){
-		String desc = super.getDesc(button);
+	protected String getDesc(Button button, ViewConfig viewConfig){
+		String desc = super.getDesc(button, viewConfig);
 		if (desc != null) {
 			return desc;
 		}

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
-
+import com.bstek.dorado.view.manager.ViewConfig;
 import com.bstek.dorado.view.widget.Component;
 import com.bstek.dorado.view.widget.base.Panel;
 
@@ -28,8 +28,8 @@ public class PanelBuilder extends AbstractBuilder<Panel> {
 		return id;
 	}
 	
-	protected String getDesc(Panel panel){
-		String desc = super.getDesc(panel);
+	protected String getDesc(Panel panel, ViewConfig viewConfig){
+		String desc = super.getDesc(panel, viewConfig);
 		if (desc != null) {
 			return desc;
 		}
