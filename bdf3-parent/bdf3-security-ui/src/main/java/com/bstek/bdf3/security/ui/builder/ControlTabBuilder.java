@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
-
+import com.bstek.dorado.view.manager.ViewConfig;
 import com.bstek.dorado.view.widget.Control;
 import com.bstek.dorado.view.widget.base.tab.ControlTab;
 
@@ -28,8 +28,8 @@ public class ControlTabBuilder extends AbstractBuilder<ControlTab> {
 		return id;
 	}
 	
-	protected String getDesc(ControlTab controlTab){
-		String desc = super.getDesc(controlTab);
+	protected String getDesc(ControlTab controlTab, ViewConfig viewConfig){
+		String desc = super.getDesc(controlTab, viewConfig);
 		if (desc != null) {
 			return desc;
 		}
