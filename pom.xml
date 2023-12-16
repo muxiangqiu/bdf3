@@ -16,12 +16,12 @@
 		<repository>
 			<id>bsdn-releases</id>
 			<name>Nexus Release Repository</name>
-			<url>http://nexus.bsdn.org/content/repositories/dorado_releases/</url>
+			<url>https://nexus.bsdn.org/content/repositories/dorado_releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>bsdn-snapshots</id>
 			<name>Nexus Snapshot Repository</name>
-			<url>http://nexus.bsdn.org/content/repositories/dorado_snapshots/</url>
+			<url>https://nexus.bsdn.org/content/repositories/dorado_snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 	</project>
