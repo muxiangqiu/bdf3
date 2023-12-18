@@ -85,7 +85,7 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>bsdn-maven-plugin-repository</id>
-			<url>http://nexus.bsdn.org/content/groups/public/</url>
+			<url>https://nexus.bsdn.org/content/groups/public/</url>
 		</pluginRepository>
 	</pluginRepositories>
 </project>
